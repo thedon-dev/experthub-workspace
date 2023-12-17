@@ -8,6 +8,7 @@
 body {
   font-family: 'Fredoka', sans-serif !important;
   background-color: #F8F7F4;
+  overflow-x: hidden !important;
 }
 
 ul {

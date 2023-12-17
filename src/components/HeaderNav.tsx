@@ -1,7 +1,9 @@
-import React from 'react';
+"use client"
+
+import React, { useState } from 'react';
 
 const HeaderNav = () => {
-  
+  const [open, setOpen] = useState(false)
   return (
     <header className='absolute p-2 top-0 lg:w-[80%] left-0 right-0 mx-auto border-b border-white flex justify-between'>
       <div className='flex'>
@@ -17,8 +19,24 @@ const HeaderNav = () => {
         <button className='border text-primary my-auto ml-10 border-primary p-1'>LOGIN</button>
         <button className=' bg-primary text-black p-1 my-auto'>REGISTER</button>
       </div>
-      <button className='bg-primary lg:hidden block'>bar</button>
+      <button onClick={() => setOpen(!open)} className='bg-primary h-10 w-10 my-auto lg:hidden block'>
+        <img src="/images/icons/menu.png" className='w-8 h-8 mx-auto' alt="" />
+      </button>
+      {open &&
+        <div className='fixed z-50 top-24 left-0 right-0 p-6 bg-primary text-white w-[90%] mx-auto rounded-md'>
+          <p onClick={() => setOpen(!open)} className="float-right text-4xl cursor-pointer">&times;</p>
 
+          <p className='my-4 mt-20 font-bold'>Home</p>
+          <p className='my-4 font-bold'>About Us</p>
+          <p className='my-4 font-bold'>Instructors</p>
+          <p className='my-4 font-bold'>Our Partners</p>
+          <p className='my-4 font-bold'>Contact</p>
+          <div className='flex justify-between my-4'>
+            <button className='border text-white border-white w-[40%] p-1'>LOGIN</button>
+            <button className=' bg-white text-black p-1  w-[40%]'>REGISTER</button>
+          </div>
+        </div>
+      }
     </header>
   );
 };
