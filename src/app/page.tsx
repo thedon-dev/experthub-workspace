@@ -10,10 +10,9 @@ export default function Home() {
 
       <HeaderNav />
       <main>
-
         <section>
           <img className="h-[89vh] w-full object-cover" src="/images/hero.png" alt="" />
-          <div className="absolute w-[30%] left-0 text-white right-0 mx-auto text-center bottom-32">
+          <div className="absolute lg:w-[30%] left-0 text-white right-0 mx-auto text-center bottom-32">
             <h1 className="font-bold text-3xl my-4">Start Your Journey to Become
               a Digital Nomad</h1>
             <p className="text-sm my-4">Learn how to become a trained professional and gain the
@@ -21,9 +20,8 @@ export default function Home() {
             <button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Register</button>
           </div>
         </section>
-        <section className="flex justify-between mx-20 my-20">
-          <img src="/images/about-img.png" alt="" />
-          <div className="w-[43%] my-auto">
+        <section className="lg:flex justify-between lg:mx-20 mx-4 my-20">
+          <div className="lg:w-[43%] my-auto lg:order-1">
             <h3 className="text-xl mb-3 font-medium">About Experthub Trainings</h3>
             <p>We are determine to raise the next generation of global leaders and
               empower youths to harness the immense power of technology to
@@ -33,32 +31,34 @@ export default function Home() {
               Together, we learn, grow, and collaborate to make a tangible impact
               on our communities and planet.</p>
           </div>
+          <img className="sm:mt-6 lg:order-0" src="/images/about-img.png" alt="" />
+
         </section>
-        <section>
-          <h3 className="text-2xl my-10 mb-3 font-medium text-center">Improve Skills & Earn Through Our  Partners</h3>
-          <div className="flex w-1/2 mx-auto my-10 justify-between">
+        <section className="lg:m-0 m-4">
+          <h3 className="lg:text-2xl text-xl my-10 mb-3 font-medium text-center">Improve Skills & Earn Through Our  Partners</h3>
+          <div className="flex lg:w-1/2 mx-auto my-10 justify-between">
             <div>
-              <img className="w-20 object-cover h-20 mx-auto" src="/images/expat.png" alt="" />
-              <p className="font-medium">EXPERTHUB LLC</p>
+              <img className="lg:w-20 w-10 object-cover lg:h-20 mx-auto" src="/images/expat.png" alt="" />
+              <p className="lg:text-base text-xs font-medium">EXPERTHUB LLC</p>
             </div>
             <div>
-              <img className="w-20 mx-auto" src="/images/peoples-pow.png" alt="" />
-              <p className="font-medium">PEOPLES POWER</p>
+              <img className="lg:w-20 w-10 mx-auto" src="/images/peoples-pow.png" alt="" />
+              <p className="lg:text-base text-xs  font-medium">PEOPLES POWER</p>
             </div>
             <div>
-              <img className="w-20 mx-auto" src="/images/edf.png" alt="" />
-              <p className="font-medium">ED FOUNDATION</p>
+              <img className="lg:w-20 w-10 mx-auto" src="/images/edf.png" alt="" />
+              <p className="lg:text-base text-xs font-medium">ED FOUNDATION</p>
             </div>
           </div>
         </section>
-        <section className="mx-20 bg-[#F9F7FFE5]">
-          <div className="w-1/2 py-10 mx-auto text-center">
+        <section className="lg:mx-20 mx-4 bg-[#F9F7FFE5]">
+          <div className="lg:w-1/2 py-10 mx-auto text-center">
             <h3 className="text-2xl font-medium">Explore Courses</h3>
             <p>Experthub Trainings is a training provider that specialises in accredited and
               bespoke training courses, We crush the barriers to getting a degree</p>
           </div>
           <div className="flex justify-between flex-wrap">
-            <div className="p-2 w-[32%] my-3 rounded-sm bg-white">
+            <div className="p-2 lg:w-[32%] my-3 rounded-sm bg-white">
               <img className="rounded-sm w-full" src="/images/card.png" alt="" />
               <h3 className="font-medium my-3">Virtual Assistant</h3>
               <div className="flex justify-between">
@@ -69,7 +69,7 @@ export default function Home() {
                 <p className="text-sm font-medium">45 Lessons</p>
               </div>
             </div>
-            <div className="p-2 my-3 w-[32%] rounded-sm bg-white">
+            <div className="p-2 my-3 lg:w-[32%] rounded-sm bg-white">
               <img className="rounded-sm w-full" src="/images/card.png" alt="" />
               <h3 className="font-medium my-3">Virtual Assistant</h3>
               <div className="flex justify-between">
@@ -80,7 +80,7 @@ export default function Home() {
                 <p className="text-sm font-medium">45 Lessons</p>
               </div>
             </div>
-            <div className="p-2 my-3 w-[32%] rounded-sm bg-white">
+            <div className="p-2 my-3 lg:w-[32%] rounded-sm bg-white">
               <img className="rounded-sm w-full" src="/images/card.png" alt="" />
               <h3 className="font-medium my-3">Virtual Assistant</h3>
               <div className="flex justify-between">
@@ -91,7 +91,7 @@ export default function Home() {
                 <p className="text-sm font-medium">45 Lessons</p>
               </div>
             </div>
-            <div className="p-2 my-3 w-[32%] rounded-sm bg-white">
+            <div className="p-2 my-3 lg:w-[32%] rounded-sm bg-white">
               <img className="rounded-sm w-full" src="/images/card.png" alt="" />
               <h3 className="font-medium my-3">Virtual Assistant</h3>
               <div className="flex justify-between">
@@ -108,13 +108,13 @@ export default function Home() {
           </div>
         </section>
         <section className="">
-          <div className="w-[35%] py-10 mx-auto text-center">
+          <div className="lg:w-[35%] py-10 mx-auto text-center">
             <h3 className="text-2xl font-medium">Get To Your Success In 3 Simple Steps</h3>
             <p>Here's a glimpse into the 3 stages we'll adopt to execute this
               transformative training initiative</p>
           </div>
-          <div className="flex justify-between my-10 px-20 border-t border-[#1E1E1EA6]">
-            <div className="-mt-6 w-[32%]">
+          <div className="lg:flex justify-between my-10 lg:px-20 px-4 border-t border-[#1E1E1EA6]">
+            <div className="lg:-mt-6 mt-6 lg:w-[32%]">
               <div className="bg-[#DC9F08] w-12 h-12 text-xl pt-[10px] text-white font-mediun text-center rounded-full">1</div>
               <div className="mt-4">
                 <h3 className="mb-3 font-medium">Needs Assessment and Skill Profiling</h3>
@@ -127,7 +127,7 @@ export default function Home() {
                   personalized, setting them up for success.</p>
               </div>
             </div>
-            <div className="-mt-6 w-[32%]">
+            <div className="lg:-mt-6 mt-6 lg:w-[32%]">
               <div className="bg-[#1E1E1E] w-12 h-12 text-xl pt-[10px] text-white font-mediun text-center rounded-full">2</div>
               <div className="mt-4">
                 <h3 className="mb-3 font-medium">Specialized Training Modules</h3>
@@ -142,7 +142,7 @@ export default function Home() {
                   and up-to-date knowledge.</p>
               </div>
             </div>
-            <div className="-mt-6 w-[32%]">
+            <div className="lg:-mt-6 mt-6 lg:w-[32%]">
               <div className="bg-[#1E1E1E] w-12 h-12 text-xl pt-[10px] text-white font-mediun text-center rounded-full">3</div>
               <div className="mt-4">
                 <h3 className="mb-3 font-medium">Hands-On Experience and Placement</h3>
@@ -160,13 +160,13 @@ export default function Home() {
           </div>
         </section>
         <section className=" bg-[#F9F7FFE5]">
-          <div className="w-1/2 py-10 mx-auto text-center">
+          <div className="lg:w-1/2 py-10 mx-auto text-center">
             <h3 className="text-2xl font-medium">Shape the future workforce</h3>
             <p>We invite individuals and trainers all over the word to submit applications for the initial phase of the training</p>
           </div>
-          <div className="flex justify-between">
-            <div className="w-[49%] relative">
-              <img className="w-full h-[80vh] object-cover" src="/images/fellow.png" alt="" />
+          <div className="lg:flex justify-between">
+            <div className="lg:w-[49%] relative">
+              <img className="w-full lg:h-[80vh] object-cover" src="/images/fellow.png" alt="" />
               <div className="absolute w-[80%] left-0 text-white right-0 mx-auto text-center bottom-10">
                 <h1 className="font-bold text-2xl my-4">Become A Fellow</h1>
                 <p className="text-sm my-4">You don't need any previous knowledge just great English
@@ -174,8 +174,8 @@ export default function Home() {
                 <button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Sign Up Now</button>
               </div>
             </div>
-            <div className="w-[49%] relative">
-              <img className="w-full h-[80vh] object-cover" src="/images/trainer.png" alt="" />
+            <div className="lg:w-[49%] relative">
+              <img className="w-full lg:h-[80vh] object-cover" src="/images/trainer.png" alt="" />
               <div className="absolute w-[80%] left-0 text-white right-0 mx-auto text-center bottom-10">
                 <h1 className="font-bold text-2xl my-4">Become A Trainer</h1>
                 <p className="text-sm my-4">Organizations & Individuals interested in becoming part of our network of
@@ -188,16 +188,16 @@ export default function Home() {
           </div>
         </section>
         <section>
-          <div className="w-[35%] py-10 mx-auto text-center">
+          <div className="lg:w-[35%] py-10 sm:px-4 mx-auto text-center">
             <h3 className="text-2xl font-medium">Our Instructors</h3>
             <p>Connect with top instructors that are sound and see the future in teaching</p>
           </div>
           <SliderComp />
         </section>
         <section className="my-20 relative">
-          <img src="/images/trainings-bg.png" alt="" />
-          <div className="flex justify-between absolute top-8 left-20">
-            <div className="w-[40%]">
+          <img className="sm:h-[100vh]" src="/images/trainings-bg.png" alt="" />
+          <div className="flex justify-between absolute lg:top-8 top-6 lg:left-20 sm:p-4">
+            <div className="lg:w-[40%]">
               <h3 className="font-medium mb-5 text-2xl">Experthub Trainings Is Going To</h3>
               <ul>
                 <li className="p-2">Provide comprehensive training programs that cover a wide
@@ -215,17 +215,17 @@ export default function Home() {
                 <li className="p-2">Teach you hands-on projects and exercises to reinforce your learning</li>
               </ul>
             </div>
-            <img src="/images/trainings.png" alt="" />
+            <img className="lg:block hidden" src="/images/trainings.png" alt="" />
           </div>
         </section>
-        <section className="mx-20">
-          <div className="w-[70%] py-10 mx-auto text-center">
+        <section className="lg:mx-20 mx-4">
+          <div className="lg:w-[70%] py-10 mx-auto text-center">
             <h3 className="text-2xl font-medium">JOIN OUR NETWORKS</h3>
             <p>We're not just a training provider; we're a career accelerator. We are dedicated to helping you
               not only become an expert in your field but also to apply that expertise to meaningful and financially rewarding work.</p>
           </div>
-          <div className="flex justify-between">
-            <div className="w-[33%] relative">
+          <div className="lg:flex justify-between">
+            <div className="lg:w-[33%] my-3 relative">
               <img src="/images/network_1.png" alt="" />
               <div className="absolute p-3 left-0 right-0 top-0">
                 <div className="flex mb-3 text-white justify-between">
@@ -236,7 +236,7 @@ export default function Home() {
                 <p className="text-white">Mentorship is the cornerstone of success in any field, and at Expert Hub LLC, we understand its importance. As you complete your training, we don't leave you hanging. We provide mentorship to guide you through your career path. Our mentors are seasoned professionals with a wealth of experience in their respective fields. They will offer insights, advice, and support to help you navigate the complexities of your chosen industry.</p>
               </div>
             </div>
-            <div className="w-[33%] relative">
+            <div className="lg:w-[33%] my-3 relative">
               <img src="/images/network_2.png" alt="" />
               <div className="absolute p-3 left-0 right-0 top-0">
                 <div className="flex mb-3 text-white justify-between">
@@ -246,7 +246,7 @@ export default function Home() {
                 <p className="text-white">At Expert Hub LLC, we're not just about learning; we're about application. As soon as you complete your training, we're thrilled to enlist you into our prestigious network of experts. What does this mean for you? It means you gain access to a diverse pool of businesses and clients looking for your expertise</p>
               </div>
             </div>
-            <div className="w-[33%] relative">
+            <div className="lg:w-[33%] my-3 relative">
               <img src="/images/network_1.png" alt="" />
               <div className="absolute p-3 left-0 right-0 top-0">
                 <div className="flex mb-3 text-white justify-between">

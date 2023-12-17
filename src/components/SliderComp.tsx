@@ -41,7 +41,7 @@ const SliderComp = () => {
     ]
   };
   return (
-    <div className='mx-20'>
+    <div className='lg:mx-20 mx-4'>
       <link
         rel="stylesheet"
         type="text/css"
