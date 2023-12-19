@@ -263,6 +263,7 @@ export default function Home() {
             <h3 className="text-2xl font-medium">Frequently Asked Questions</h3>
             <div className="w-20 my-6 mx-auto h-1 bg-primary"></div>
           </div>
+          
         </section>
       </main>
       <FooterNav />
