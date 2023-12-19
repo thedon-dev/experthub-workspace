@@ -9,7 +9,7 @@ export default function Home() {
     <Fragment>
 
       <HeaderNav />
-      <main>
+      <main className="landing">
         <section>
           <img className="h-[89vh] w-full object-cover" src="/images/hero.png" alt="" />
           <div className="absolute lg:w-[30%] left-0 text-white right-0 mx-auto text-center bottom-32">
