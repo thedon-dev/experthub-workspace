@@ -4,35 +4,40 @@ import CoursesCard from '@/components/CoursesCard';
 import DashboardLayout from '@/components/DashboardLayout';
 import RecommendedCard from '@/components/RecommendedCard';
 import StatCard from '@/components/StatCard';
-import React from 'react';
+import React, { useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
+import AddCourse from '@/components/modals/AddCourse';
+import AddResources from '@/components/modals/AddResources';
 
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: (
-      <p>Courses</p>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-      <p>Materials</p>
-
-    ),
-  },
-  {
-    key: '3',
-    label: (
-      <p>Resources</p>
-    ),
-  },
-
-];
 
 const tutor = () => {
+  const [open, setOpen] = useState(false)
+  const [resources, setResources] = useState(false)
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <p onClick={() => setOpen(true)} >Courses</p>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <p>Materials</p>
+
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <p onClick={() => setResources(true)}>Resources</p>
+      ),
+    },
+
+  ];
+
   return (
     <DashboardLayout>
       <section>
@@ -66,7 +71,7 @@ const tutor = () => {
             <Dropdown menu={{ items }} trigger={["click"]}>
               <button className='bg-primary p-2 font-medium text-sm rounded-md'>
                 + Add training resources
-                <DownOutlined />  
+                <DownOutlined />
               </button>
             </Dropdown>
           </div>
@@ -90,6 +95,8 @@ const tutor = () => {
           <RecommendedCard />
         </div>
       </section>
+      <AddCourse open={open} handleClick={() => setOpen(!open)} />
+      <AddResources open={resources} handleClick={() => setResources(!resources)} />
     </DashboardLayout>
   );
 };

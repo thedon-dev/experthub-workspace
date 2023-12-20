@@ -3,37 +3,18 @@
 import CoursesCard from '@/components/CoursesCard';
 import DashboardLayout from '@/components/DashboardLayout';
 import RecommendedCard from '@/components/RecommendedCard';
-import React from 'react';
+import React, { useState } from 'react';
 import Slider from 'react-slick';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
-
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: (
-      <p>Courses</p>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-      <p>Materials</p>
-
-    ),
-  },
-  {
-    key: '3',
-    label: (
-      <p>Resources</p>
-    ),
-  },
-
-];
+import AddResources from '@/components/modals/AddResources';
+import AddCourse from '@/components/modals/AddCourse';
 
 
 const courses = () => {
+  const [open, setOpen] = useState(false)
+  const [resources, setResources] = useState(false)
   var settings = {
     dots: true,
     infinite: false,
@@ -70,6 +51,29 @@ const courses = () => {
       }
     ]
   };
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <p onClick={() => setOpen(true)} >Courses</p>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <p>Materials</p>
+
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <p onClick={() => setResources(true)}>Resources</p>
+      ),
+    },
+
+  ];
+
   return (
     <DashboardLayout>
       <link
@@ -224,6 +228,8 @@ const courses = () => {
           <RecommendedCard />
         </div>
       </section>
+      <AddCourse open={open} handleClick={() => setOpen(!open)} />
+      <AddResources open={resources} handleClick={() => setResources(!resources)} />
     </DashboardLayout>
   );
 };
