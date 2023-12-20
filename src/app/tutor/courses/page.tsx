@@ -5,6 +5,33 @@ import DashboardLayout from '@/components/DashboardLayout';
 import RecommendedCard from '@/components/RecommendedCard';
 import React from 'react';
 import Slider from 'react-slick';
+import { DownOutlined } from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Dropdown } from 'antd';
+
+const items: MenuProps['items'] = [
+  {
+    key: '1',
+    label: (
+      <p>Courses</p>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <p>Materials</p>
+
+    ),
+  },
+  {
+    key: '3',
+    label: (
+      <p>Resources</p>
+    ),
+  },
+
+];
+
 
 const courses = () => {
   var settings = {
@@ -79,6 +106,14 @@ const courses = () => {
             <p className='font-medium'>Assigned Courses</p>
             <p className='text-sm'>This is the list of courses and modules you
               are taking</p>
+          </div>
+          <div className='ml-10'>
+            <Dropdown menu={{ items }} trigger={["click"]}>
+              <button className='bg-primary p-2 font-medium text-sm rounded-md'>
+                + Add training resources
+                <DownOutlined />
+              </button>
+            </Dropdown>
           </div>
         </div>
       </section>
@@ -161,6 +196,7 @@ const courses = () => {
               <p className='font-medium'>Training Resources</p>
               <p className='text-sm my-2'>Added training resources for further studies</p>
             </div>
+
             <div className='flex justify-between my-10 flex-wrap w-[70%]'>
               <p className='w-[30%] text-sm font-medium my-2'>Product Management</p>
               <p className='w-[30%] text-sm font-medium my-2'>Social Media Management</p>

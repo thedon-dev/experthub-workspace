@@ -19,7 +19,14 @@ ul {
   content: '✓';
   margin-right: 5px;
 }
-.slick-next:before, .slick-prev:before{
+
+.slick-next:before,
+.slick-prev:before {
   color: #FDC332 !important;
 }
 
+input:focus,
+textarea:focus,
+button:focus {
+  outline: none !important;
+}

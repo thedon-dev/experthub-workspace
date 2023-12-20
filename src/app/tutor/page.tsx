@@ -1,8 +1,36 @@
+"use client"
+
 import CoursesCard from '@/components/CoursesCard';
 import DashboardLayout from '@/components/DashboardLayout';
 import RecommendedCard from '@/components/RecommendedCard';
 import StatCard from '@/components/StatCard';
 import React from 'react';
+import { DownOutlined } from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Dropdown } from 'antd';
+
+const items: MenuProps['items'] = [
+  {
+    key: '1',
+    label: (
+      <p>Courses</p>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <p>Materials</p>
+
+    ),
+  },
+  {
+    key: '3',
+    label: (
+      <p>Resources</p>
+    ),
+  },
+
+];
 
 const tutor = () => {
   return (
@@ -33,9 +61,14 @@ const tutor = () => {
       </section>
       <section className='m-2 p-3 shadow-md'>
         <div className='text-sm flex justify-between'>
-          <div className='flex'>
-            <p>Assigned Courses</p>
-
+          <div className='flex justify-between w-[40%]'>
+            <p className='my-auto'>Assigned Courses</p>
+            <Dropdown menu={{ items }} trigger={["click"]}>
+              <button className='bg-primary p-2 font-medium text-sm rounded-md'>
+                + Add training resources
+                <DownOutlined />  
+              </button>
+            </Dropdown>
           </div>
           <p className='text-[#DC9F08]'>VIEW ALL</p>
         </div>
