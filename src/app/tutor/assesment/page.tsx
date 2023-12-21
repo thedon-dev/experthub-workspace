@@ -1,4 +1,4 @@
-import AssesmentCard from '@/components/AssesmentCard';
+import AssesmentCard from '@/components/cards/AssesmentCard';
 import DashboardLayout from '@/components/DashboardLayout';
 import React from 'react';
 

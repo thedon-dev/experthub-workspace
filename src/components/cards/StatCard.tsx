@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StatCard = ({ img, title, count, bg }: { img: string, title: string, count: number, bg: string }) => {
+const StatCard = ({ img, title, count, bg }: { img: string, title: string, count: string, bg: string }) => {
   let background = `bg-[${bg}]`
   return (
     <div className={`w-[24%] rounded-md p-4 bg-[${bg}1C]`} style={{ backgroundColor: bg+'1C' }}>

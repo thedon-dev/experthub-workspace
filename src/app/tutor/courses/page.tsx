@@ -1,8 +1,8 @@
 "use client"
 
-import CoursesCard from '@/components/CoursesCard';
+import CoursesCard from '@/components/cards/CoursesCard';
 import DashboardLayout from '@/components/DashboardLayout';
-import RecommendedCard from '@/components/RecommendedCard';
+import RecommendedCard from '@/components/cards/RecommendedCard';
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 import { DownOutlined } from '@ant-design/icons';

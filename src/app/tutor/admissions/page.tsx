@@ -2,7 +2,7 @@
 
 import DashboardLayout from '@/components/DashboardLayout';
 import React, { useState } from 'react';
-import AdmissionCard from '@/components/AdmissionCard';
+import AdmissionCard from '@/components/cards/AdmissionCard';
 
 const addmissions = () => {
   const [active, setActive] = useState("students")

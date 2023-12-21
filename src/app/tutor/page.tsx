@@ -1,9 +1,9 @@
 "use client"
 
-import CoursesCard from '@/components/CoursesCard';
+import CoursesCard from '@/components/cards/CoursesCard';
 import DashboardLayout from '@/components/DashboardLayout';
-import RecommendedCard from '@/components/RecommendedCard';
-import StatCard from '@/components/StatCard';
+import RecommendedCard from '@/components/cards/RecommendedCard';
+import StatCard from '@/components/cards/StatCard';
 import React, { useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
@@ -59,10 +59,10 @@ const tutor = () => {
         </div>
       </section>
       <section className='p-4 flex justify-between'>
-        <StatCard title='Total No. of Assigned Courses' count={40} bg='#27C2D6' img='clock-line' />
-        <StatCard title='My Students' count={40} bg='#DC9F08' img='ic_outline-assessment' />
-        <StatCard title='My Graduates' count={40} bg='#53C48C' img='game-icons_progression' />
-        <StatCard title='My Mentees' count={40} bg='#7E34C9' img='ph_chalkboard-teacher' />
+        <StatCard title='Total No. of Assigned Courses' count={"40"} bg='#27C2D6' img='clock-line' />
+        <StatCard title='My Students' count={"40"} bg='#DC9F08' img='ic_outline-assessment' />
+        <StatCard title='My Graduates' count={"40"} bg='#53C48C' img='game-icons_progression' />
+        <StatCard title='My Mentees' count={"40"} bg='#7E34C9' img='ph_chalkboard-teacher' />
       </section>
       <section className='m-2 p-3 shadow-md'>
         <div className='text-sm flex justify-between'>
