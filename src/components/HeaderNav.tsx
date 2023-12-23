@@ -1,5 +1,6 @@
 "use client"
 
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 const HeaderNav = () => {
@@ -16,8 +17,8 @@ const HeaderNav = () => {
         <p className='my-auto'>Instructors</p>
         <p className='my-auto'>Our Partners</p>
         <p className='my-auto'>Contact</p>
-        <button className='border text-primary my-auto ml-10 border-primary p-1'>LOGIN</button>
-        <button className=' bg-primary text-black p-1 my-auto'>REGISTER</button>
+        <Link href={"/auth/login"} className='my-auto'><button className='border text-primary my-auto ml-10 border-primary p-1'>LOGIN</button></Link>
+        <Link href={"/auth/signup"} className='my-auto'><button className=' bg-primary text-black p-1 my-auto'>REGISTER</button></Link>
       </div>
       <button onClick={() => setOpen(!open)} className='bg-primary h-10 w-10 my-auto lg:hidden block'>
         <img src="/images/icons/menu.png" className='w-8 h-8 mx-auto' alt="" />
@@ -32,8 +33,8 @@ const HeaderNav = () => {
           <p className='my-4 font-bold'>Our Partners</p>
           <p className='my-4 font-bold'>Contact</p>
           <div className='flex justify-between my-4'>
-            <button className='border text-white border-white w-[40%] p-1'>LOGIN</button>
-            <button className=' bg-white text-black p-1  w-[40%]'>REGISTER</button>
+            <Link href={"/auth/login"}><button className='border text-white border-white w-[40%] p-1'>LOGIN</button></Link>
+            <Link href={"/auth/signup"}><button className=' bg-white text-black p-1  w-[40%]'>REGISTER</button></Link>
           </div>
         </div>
       }

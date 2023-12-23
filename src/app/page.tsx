@@ -1,6 +1,7 @@
 import FooterNav from "@/components/FooterNav";
 import HeaderNav from "@/components/HeaderNav";
 import SliderComp from "@/components/SliderComp";
+import Link from "next/link";
 import { Fragment } from "react";
 
 export default function Home() {
@@ -17,7 +18,7 @@ export default function Home() {
               a Digital Nomad</h1>
             <p className="text-sm my-4">Learn how to become a trained professional and gain the
               financial freedom that you want!</p>
-            <button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Register</button>
+            <Link href={"/auth/signup"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Register</button></Link>
           </div>
         </section>
         <section className="lg:flex justify-between lg:mx-20 mx-4 my-20">
@@ -263,7 +264,7 @@ export default function Home() {
             <h3 className="text-2xl font-medium">Frequently Asked Questions</h3>
             <div className="w-20 my-6 mx-auto h-1 bg-primary"></div>
           </div>
-          
+
         </section>
       </main>
       <FooterNav />
