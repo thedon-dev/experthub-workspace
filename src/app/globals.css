@@ -30,3 +30,8 @@ textarea:focus,
 button:focus {
   outline: none !important;
 }
+
+.ant-collapse-item {
+  border: 1px solid #000000;
+  /* margin-top: 10px; */
+}

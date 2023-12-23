@@ -3,9 +3,34 @@ import HeaderNav from "@/components/HeaderNav";
 import SliderComp from "@/components/SliderComp";
 import Link from "next/link";
 import { Fragment } from "react";
+import type { CollapseProps } from 'antd';
+import { Collapse } from 'antd';
 
 export default function Home() {
-
+  const text = `Ans: We are determine to raise the next generation of Global leaders and empower youths to harness the immense potential of technology to overcome the challenges our planet faces, including its dwindling economy.
+`;
+  const items: CollapseProps['items'] = [
+    {
+      key: '1',
+      label: <p className="font-bold">What is Experthub and what can it do?</p>,
+      children: <p className="font-medium">{text}</p>,
+    },
+    {
+      key: '2',
+      label: <p className="font-bold">Is it worth paying that much for it?</p>,
+      children: <p className="font-medium">{text}</p>,
+    },
+    {
+      key: '3',
+      label: <p className="font-bold">Can Experthub cover all my training?</p>,
+      children: <p className="font-medium">{text}</p>,
+    },
+    {
+      key: '4',
+      label: <p className="font-bold">How can I signup and get started?</p>,
+      children: <p className="font-medium">{text}</p>,
+    },
+  ];
   return (
     <Fragment>
 
@@ -259,12 +284,14 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="my-20">
+        <section className="py-20">
           <div className="text-center">
             <h3 className="text-2xl font-medium">Frequently Asked Questions</h3>
             <div className="w-20 my-6 mx-auto h-1 bg-primary"></div>
           </div>
-
+          <div className="lg:w-[60%] sm:mx-4 mx-auto">
+            <Collapse items={items} defaultActiveKey={['1']} expandIconPosition={"end"} ghost={true} size={"large"} />
+          </div>
         </section>
       </main>
       <FooterNav />
