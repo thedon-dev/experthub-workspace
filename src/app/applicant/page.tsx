@@ -1,8 +1,11 @@
+"use client"
+
 import DashboardLayout from '@/components/DashboardLayout';
 import ApplicantCourses from '@/components/cards/ApplicantCourses';
 import RecommendedCard from '@/components/cards/RecommendedCard';
 import StatCard from '@/components/cards/StatCard';
-import React from 'react';
+import CourseDetails from '@/components/modals/CourseDetails';
+import React, { useState } from 'react';
 
 const applicant = () => {
   return (

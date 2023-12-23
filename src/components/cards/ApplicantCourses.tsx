@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import CourseDetails from '../modals/CourseDetails';
 
 const ApplicantCourses = () => {
+  const [open, setOpen] = useState(false)
+
   return (
     <div className=" lg:w-[32%] my-3 ">
       <div className='flex my-2'>
@@ -16,10 +19,11 @@ const ApplicantCourses = () => {
           <p className='text-xs text-[#0ACF83]'>Time: 00:08:23</p>
         </div>
         <h3 className="font-medium text-xl my-2">Design Systems for Websites
-          with Figma <button className='text-sm bg-primary p-1 rounded-md'>Join Live</button></h3>
+          with Figma <button onClick={() => setOpen(true)} className='text-sm bg-primary p-1 rounded-md'>Join Live</button></h3>
         <p className='text-xs'>Learn how to build and design websites
           using Figma...</p>
       </div>
+      <CourseDetails open={open} handleClick={() => setOpen(false)} />
     </div>
   );
 };
