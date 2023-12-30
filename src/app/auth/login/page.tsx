@@ -1,11 +1,33 @@
 "use client"
 
+import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const login = () => {
   const [active, setActive] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
+  const loginUser = async () => {
+    setLoading(true)
+    try {
+      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/tutor/login`, {
+        email,
+        password
+      })
+        .then(function (response) {
+          console.log(response.data)
+          setLoading(false)
+          router.push("")
+        })
+    } catch (e) {
+      setLoading(false)
+    }
+  }
   return (
     <main >
       <img src="/images/auth-bg.png" className='h-[100vh] w-full' alt="" />
@@ -25,7 +47,7 @@ const login = () => {
               <img onClick={() => setActive(!active)} className='absolute top-7 right-2 cursor-pointer' src="/images/icons/eyes.svg" alt="" />
             </div>
             <div className='my-2 text-xs'>
-              <button className='w-full bg-primary p-2 rounded-sm font-medium'>Login</button>
+              <button onClick={() => loginUser()} className='w-full bg-primary p-2 rounded-sm font-medium'>{loading ? "Loading..." : "Login"}</button>
             </div>
           </div>
         </section>

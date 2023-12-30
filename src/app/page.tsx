@@ -1,10 +1,14 @@
+"use client"
+
+
 import FooterNav from "@/components/FooterNav";
 import HeaderNav from "@/components/HeaderNav";
 import SliderComp from "@/components/SliderComp";
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
+import axios from "axios";
 
 export default function Home() {
   const text = `Ans: We are determine to raise the next generation of Global leaders and empower youths to harness the immense potential of technology to overcome the challenges our planet faces, including its dwindling economy.
@@ -31,9 +35,21 @@ export default function Home() {
       children: <p className="font-medium">{text}</p>,
     },
   ];
+
+  const [courses, setCourses] = useState([])
+
+  const getCourses = async () => {
+    axios.get("https://experthub-20f6efa1a0d9.herokuapp.com/courses/all")
+      .then(function (response) {
+        console.log(response.data)
+      })
+  }
+  useEffect(() => {
+    getCourses()
+  })
+
   return (
     <Fragment>
-
       <HeaderNav />
       <main className="landing">
         <section>
