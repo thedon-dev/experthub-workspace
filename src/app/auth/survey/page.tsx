@@ -24,7 +24,7 @@ const test = () => {
   const submit = async () => {
     setLoading(true)
     try {
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/${role === 'applicant' ? 'student' : "tutor"}/survey`, {
+      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/tutor/survey`, {
         computerAccess: computer,
         internetAccess: internet,
         gender,
@@ -39,7 +39,7 @@ const test = () => {
         .then(function (response) {
           console.log(response.data)
           setLoading(false)
-          router.push(`/auth/test?role=${role}`)
+          router.push(`/auth/test`)
         })
     } catch (e) {
       setLoading(false)

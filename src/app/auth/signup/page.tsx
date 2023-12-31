@@ -21,7 +21,7 @@ const signup = () => {
   const signupApplicant = async () => {
     setLoading(true)
     try {
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/${role === 'applicant' ? 'student' : "tutor"}/register`, {
+      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/auth/register`, {
         fullname,
         email,
         phone,
@@ -33,7 +33,7 @@ const signup = () => {
         .then(function (response) {
           console.log(response.data)
           setLoading(false)
-          router.push(`/auth/survey?role=${role}`)
+          router.push(`/auth/verify`)
         })
     } catch (e) {
       setLoading(false)

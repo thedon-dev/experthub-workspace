@@ -2,19 +2,17 @@
 
 import axios from 'axios';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 const verify = () => {
   const [success, setSuccess] = useState(false)
   const [code, setCode] = useState("")
   const [loading, setLoading] = useState(false)
-  const role = useSearchParams().get("role")
 
   const submit = async () => {
     setLoading(true)
     try {
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/${role === 'applicant' ? 'student' : "tutor"}/verify`, {
+      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/auth/verify`, {
         verifyCode: code
       })
         .then(function (response) {
@@ -48,7 +46,7 @@ const verify = () => {
               <p className='font-bold my-3'>Thank you!</p>
               <p className='text-xs'>we will review your application and contact you shortly.</p>
             </div>
-            <Link href={"/"}><button className='w-full bg-primary p-2 text-sm rounded-md mt-10'>Done</button></Link>
+            <Link href={"/auth/login"}><button className='w-full bg-primary p-2 text-sm rounded-md mt-10'>Done</button></Link>
           </div>}
         </section>
       </section>

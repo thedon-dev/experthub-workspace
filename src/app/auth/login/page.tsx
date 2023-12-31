@@ -4,6 +4,8 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { useAppDispatch } from '@/store/hooks';
+import { setUser } from '@/store/slices/userSlice'
 
 const login = () => {
   const [active, setActive] = useState(false)
@@ -11,18 +13,20 @@ const login = () => {
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const dispatch = useAppDispatch();
 
   const loginUser = async () => {
     setLoading(true)
     try {
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/tutor/login`, {
+      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/auth/login`, {
         email,
         password
       })
         .then(function (response) {
           console.log(response.data)
           setLoading(false)
-          router.push("")
+          dispatch(setUser(response.data.user))
+          router.push(response.data.user.role === "student" ? "/applicant" : "/tutor")
         })
     } catch (e) {
       setLoading(false)
@@ -38,12 +42,12 @@ const login = () => {
           <div>
             <div className='my-2 text-xs'>
               <label className='font-medium'>Email</label>
-              <input className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type="text" placeholder='Sample@gmail.com' />
+              <input onChange={e => setEmail(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type="text" placeholder='Sample@gmail.com' />
             </div>
 
             <div className='my-2 text-xs relative'>
               <label className='font-medium'> Password</label>
-              <input className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type={active ? "text" : "password"} placeholder='************' />
+              <input onChange={e => setPassword(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type={active ? "text" : "password"} placeholder='************' />
               <img onClick={() => setActive(!active)} className='absolute top-7 right-2 cursor-pointer' src="/images/icons/eyes.svg" alt="" />
             </div>
             <div className='my-2 text-xs'>

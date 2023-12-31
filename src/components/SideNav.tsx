@@ -1,11 +1,12 @@
 "use client"
 
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 const SideNav = () => {
   const pathname = usePathname()
+  const [nav, setNav] = useState<any[]>([])
 
   const TutorNavigation = [
     {
@@ -95,13 +96,17 @@ const SideNav = () => {
     }
   ]
 
+  useEffect(() => {
+    pathname.includes("applicant") ? setNav(ApplicantNavigation) : setNav(TutorNavigation)
+  }, [])
+
   return (
     <aside className='h-screen fixed w-[20%] shadow-md p-6'>
       <h3 className='font-bold text-lg text-[#DC9F08]'>UNIVERSITY</h3>
       <div className="flex-1 flex flex-col h-full my-6 overflow-auto">
         <ol className="text-sm font-medium flex-1">
           {
-            ApplicantNavigation.map((item, idx) => (
+            nav?.map((item, idx) => (
               <li key={idx} className='my-3'>
                 <Link href={item.href} className={item.href === pathname ? "flex items-center gap-x-2 text-white p-2 rounded-lg bg-[#DC9F08]" :
                   "flex items-center gap-x-2 text-gray-600 p-2 rounded-lg"}>
