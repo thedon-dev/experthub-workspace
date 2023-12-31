@@ -1,11 +1,10 @@
 "use client";
 
 import { createSlice } from '@reduxjs/toolkit';
-import { HYDRATE } from 'next-redux-wrapper';
 
 type UserState = {
   value: {
-    name: String
+    fullName: String
   };
 };
 
@@ -24,8 +23,6 @@ export const userSlice = createSlice({
     clearUser: (state, action) => {
       state.value = action.payload
     },
-
-    
   }
 })
 

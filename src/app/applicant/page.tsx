@@ -6,18 +6,17 @@ import RecommendedCard from '@/components/cards/RecommendedCard';
 import StatCard from '@/components/cards/StatCard';
 import CourseDetails from '@/components/modals/CourseDetails';
 import React, { useState } from 'react';
-import { useAppSelector  } from '@/store/hooks';
+import { useAppSelector } from '@/store/hooks';
 
 const applicant = () => {
-  const user = useAppSelector((state) => state.userSlice.value);
-
+  const user = useAppSelector((state) => state.value);
   return (
     <DashboardLayout>
       <section>
         <div className='p-4 flex justify-between w-full shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38]'>
           <div>
             <p className='font-medium'>Welcome</p>
-            <p className='font-bold'>{user.name}</p>
+            <p className='font-bold capitalize'>{user.fullName}</p>
           </div>
           <div className='w-1/2 relative'>
             <input type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
