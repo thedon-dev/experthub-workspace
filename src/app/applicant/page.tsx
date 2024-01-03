@@ -5,11 +5,23 @@ import ApplicantCourses from '@/components/cards/ApplicantCourses';
 import RecommendedCard from '@/components/cards/RecommendedCard';
 import StatCard from '@/components/cards/StatCard';
 import CourseDetails from '@/components/modals/CourseDetails';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
+import axios from 'axios';
 
 const applicant = () => {
   const user = useAppSelector((state) => state.value);
+
+  const getRecommended = () => {
+    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/recommended-courses')
+      .then(function (response) {
+        console.log(response.data)
+      })
+  }
+
+  useEffect(() => {
+    getRecommended()
+  }, [])
   return (
     <DashboardLayout>
       <section>

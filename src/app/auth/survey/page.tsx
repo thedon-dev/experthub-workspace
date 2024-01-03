@@ -39,7 +39,7 @@ const test = () => {
         .then(function (response) {
           console.log(response.data)
           setLoading(false)
-          router.push(`/auth/test`)
+          router.push(`/auth/verify`)
         })
     } catch (e) {
       setLoading(false)

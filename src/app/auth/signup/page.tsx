@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 
 const signup = () => {
   const [active, setActive] = useState(false)
-  const [role, setRole] = useState("applicant")
+  const [role, setRole] = useState("student")
   const [fullname, setName] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
@@ -28,12 +28,13 @@ const signup = () => {
         country,
         state,
         address,
-        password
+        password,
+        userType: role
       })
         .then(function (response) {
           console.log(response.data)
           setLoading(false)
-          router.push(`/auth/verify`)
+          router.push(`/auth/survey`)
         })
     } catch (e) {
       setLoading(false)
@@ -46,8 +47,8 @@ const signup = () => {
         <section className='rounded-md bg-white border border-[#FDC3327D] p-6 '>
           <h3 className='font-bold text-base text-center'>Sign up</h3>
           <div className='flex my-3 justify-evenly'>
-            <button onClick={() => setRole("applicant")} className={role === "applicant" ? 'bg-primary text-sm p-1 px-6 rounded-sm' : "bg-gray p-1 px-6 text-sm rounded-sm"}>Applicant</button>
-            <button onClick={() => setRole("trainer")} className={role === "trainer" ? 'bg-primary p-1 px-6 text-sm rounded-sm' : "bg-gray p-1 px-6 text-sm rounded-sm"}>Trainer</button>
+            <button onClick={() => setRole("student")} className={role === "student" ? 'bg-primary text-sm p-1 px-6 rounded-sm' : "bg-gray p-1 px-6 text-sm rounded-sm"}>Applicant</button>
+            <button onClick={() => setRole("tutor")} className={role === "tutor" ? 'bg-primary p-1 px-6 text-sm rounded-sm' : "bg-gray p-1 px-6 text-sm rounded-sm"}>Trainer</button>
           </div>
 
           {/* {

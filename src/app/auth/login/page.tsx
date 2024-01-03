@@ -26,7 +26,7 @@ const login = () => {
           console.log(response.data)
           setLoading(false)
           dispatch(setUser(response.data.user))
-          router.push(response.data.user.role === "student" ? "/applicant" : "/tutor")
+          router.push(response.data.user.role === "student" ? "/applicant" : response.data.user.role === "admin" ? '/admin' : "/tutor")
         })
     } catch (e) {
       setLoading(false)
