@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 type UserState = {
   value: {
     fullName: String
+    id: string
   };
 };
 

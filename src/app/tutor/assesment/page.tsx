@@ -1,5 +1,6 @@
 import AssesmentCard from '@/components/cards/AssesmentCard';
 import DashboardLayout from '@/components/DashboardLayout';
+import Link from 'next/link';
 import React from 'react';
 
 const assesment = () => {
@@ -10,7 +11,9 @@ const assesment = () => {
       </section>
       <section className='p-10'>
         <div className='text-center'>
-          <button className='p-2 bg-[#D9D9D9] font-medium px-10'>+ Add Assesmment</button>
+          <Link href={"/tutor/assesment/new"}>
+            <button className='p-2 bg-[#D9D9D9] font-medium px-10'>+ Add Assesmment</button>
+          </Link>
         </div>
         <div className='flex mt-10 justify-between flex-wrap'>
           <AssesmentCard />

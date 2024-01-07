@@ -10,9 +10,11 @@ import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import AddCourse from '@/components/modals/AddCourse';
 import AddResources from '@/components/modals/AddResources';
+import { useAppSelector } from '@/store/hooks';
 
 
 const tutor = () => {
+  const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
   const items: MenuProps['items'] = [
@@ -44,7 +46,7 @@ const tutor = () => {
         <div className='p-4 flex justify-between w-full shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38]'>
           <div>
             <p className='font-medium'>Welcome</p>
-            <p className='font-bold'>Ayoola Janet</p>
+            <p className='font-bold capitalize'>{user.fullName}</p>
           </div>
           <div className='w-1/2 relative'>
             <input type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
