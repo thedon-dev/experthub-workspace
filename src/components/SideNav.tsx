@@ -137,11 +137,15 @@ const SideNav = () => {
   ]
 
   const logout = () => {
-    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/logout')
-      .then(function (response) {
-        console.log(response.data)
-        router.push('/auth/login')
-      })
+    try {
+      axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/auth/logout')
+        .then(function (response) {
+          console.log(response.data)
+          router.push('/auth/login')
+        })
+    } catch (e) {
+      console.log(e)
+    }
   }
   useEffect(() => {
     pathname.includes("applicant") ? setNav(ApplicantNavigation) : pathname.includes("admin") ? setNav(AdminNav) : setNav(TutorNavigation)

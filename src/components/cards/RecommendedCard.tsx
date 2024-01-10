@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RecommendedCard = () => {
+const RecommendedCard = ({ course }: { course: any }) => {
   return (
     <div className='flex justify-between border p-3 my-3 w-[49%] rounded-md border-[#1E1E1E75]'>
       <img className='w-32 rounded-md' src="/images/card.png" alt="" />

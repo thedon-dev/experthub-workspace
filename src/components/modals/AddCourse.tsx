@@ -13,9 +13,9 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
   const [endDate, setEndDate] = useState("")
   const [startTime, setStartTime] = useState("")
   const [endTime, setEndTime] = useState("")
-  const [striked, setStriked] = useState("")
-  const [fee, setFee] = useState("")
-  const [duration, setDuration] = useState("")
+  const [striked, setStriked] = useState<number>(0)
+  const [fee, setFee] = useState<number>(0)
+  const [duration, setDuration] = useState<number>(0)
   const [category, setCategory] = useState("")
   const [privacy, setPrivacy] = useState("")
   const [type, setType] = useState("")
@@ -39,9 +39,9 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
   }
 
   const add = () => {
-    setLoading(true)
     try {
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/add-course/${user.id}`,
+      setLoading(true)
+      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/courses/add-course/${user.id}`,
         {
           title,
           about,
@@ -55,14 +55,16 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
           privacy,
           fee,
           strikedFee: striked,
-          instructorName: author,
-          thumbnailImage: image[0]
+          scholarship: "students",
+          // instructorName: author,
+          thumbnailImage: image
         },
-       
+
       )
         .then(function (response) {
           console.log(response.data)
           setLoading(false)
+          handleClick()
         })
     } catch (e) {
       setLoading(false)
@@ -157,11 +159,12 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
                       <div className='flex justify-between mt-6 my-1'>
                         <div className='w-[48%]'>
                           <label className='text-sm font-medium my-1'>Duration</label>
-                          <input onChange={e => setDuration(e.target.value)} value={duration} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                          <input onChange={e => setDuration(parseInt(e.target.value))} value={duration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                         </div>
                         <div className='w-[48%]'>
                           <label className='text-sm font-medium my-1'>Course type</label>
                           <select onChange={e => setType(e.target.value)} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                            <option value="online">Online</option>
                             <option value="offline">Offline</option>
                             <option value="video">Video</option>
                             <option value="pdf">PDF</option>
@@ -193,12 +196,12 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
                     return <div>
                       <div className='my-1'>
                         <label className='text-sm font-medium my-1'>Course Fee</label>
-                        <input onChange={e => setFee(e.target.value)} value={fee} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                        <input onChange={e => setFee(parseInt(e.target.value))} value={fee} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                         <p className='text-xs'>Set course fee to 0 for a free course</p>
                       </div>
                       <div className='my-5'>
                         <label className='text-sm font-medium my-1'>Show striked out original cost fee</label>
-                        <textarea onChange={e => setStriked(e.target.value)} value={striked} className='border rounded-md border-[#1E1E1ED9] w-full h-20 p-2 bg-transparent'></textarea>
+                        <input type='number' onChange={e => setStriked(parseInt(e.target.value))} value={striked} className='border rounded-md border-[#1E1E1ED9] w-full h-20 p-2 bg-transparent' />
                       </div>
                     </div>
                   default:

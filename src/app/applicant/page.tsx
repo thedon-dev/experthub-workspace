@@ -11,10 +11,12 @@ import axios from 'axios';
 
 const applicant = () => {
   const user = useAppSelector((state) => state.value);
+  const [reccomended, setReccomended] = useState([])
 
   const getRecommended = () => {
     axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/recommended-courses')
       .then(function (response) {
+        setReccomended(response.data.courses)
         console.log(response.data)
       })
   }
@@ -75,15 +77,18 @@ const applicant = () => {
           courses in your skill area in the resources section in your archive. We are excited to support your learning journey. Thank you for your cooperation,
           and enjoy your journey to becoming an expert and a digital nomad.</p>
       </section>
-      <section className='m-4 p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md '>
+      <section className='m-2 p-3 shadow-md'>
         <div className='text-sm my-3 flex justify-between'>
           <p className='font-bold text-base'>Recommended for you</p>
           <p className='text-[#DC9F08] text-sm'>VIEW ALL</p>
         </div>
         <div className='flex flex-wrap justify-between'>
+          {
+            reccomended.map((course) => <RecommendedCard course={course} />)
+          }
+          {/* <RecommendedCard />
           <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard />
+          <RecommendedCard /> */}
         </div>
       </section>
     </DashboardLayout>

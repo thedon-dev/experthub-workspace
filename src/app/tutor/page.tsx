@@ -4,13 +4,14 @@ import CoursesCard from '@/components/cards/CoursesCard';
 import DashboardLayout from '@/components/DashboardLayout';
 import RecommendedCard from '@/components/cards/RecommendedCard';
 import StatCard from '@/components/cards/StatCard';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import AddCourse from '@/components/modals/AddCourse';
 import AddResources from '@/components/modals/AddResources';
 import { useAppSelector } from '@/store/hooks';
+import axios from 'axios';
 
 
 const tutor = () => {
@@ -39,7 +40,27 @@ const tutor = () => {
     },
 
   ];
+  const [courses, setCourses] = useState([])
+  const [reccomended, setReccomended] = useState([])
 
+  const getCourses = async () => {
+    axios.get("https://experthub-20f6efa1a0d9.herokuapp.com/courses/all")
+      .then(function (response) {
+        // setCourses(response.data.courses)
+        // console.log(response.data)
+      })
+  }
+  const getReccomended = async () => {
+    axios.get("https://experthub-20f6efa1a0d9.herokuapp.com/courses/recommended-courses")
+      .then(function (response) {
+        setReccomended(response.data.courses)
+        console.log(response.data)
+      })
+  }
+  useEffect(() => {
+    getCourses()
+    getReccomended()
+  }, [])
   return (
     <DashboardLayout>
       <section>
@@ -80,23 +101,26 @@ const tutor = () => {
           <p className='text-[#DC9F08]'>VIEW ALL</p>
         </div>
         <div className='flex flex-wrap justify-between'>
-          <CoursesCard />
-          <CoursesCard />
-          <CoursesCard />
-          <CoursesCard />
+          {
+            courses.length >=1 ?
+            courses.map((course) => <CoursesCard course={course} />) : <div>No Assigned course!</div>
+          }
         </div>
       </section>
-      <section className='m-2 p-3 shadow-md'>
+      {/* <section className='m-2 p-3 shadow-md'>
         <div className='text-sm my-3 flex justify-between'>
           <p className='font-bold text-base'>Recommended for you</p>
           <p className='text-[#DC9F08] text-sm'>VIEW ALL</p>
         </div>
         <div className='flex flex-wrap justify-between'>
+          {
+            reccomended.map((course) => <RecommendedCard course={course} />)
+          }
           <RecommendedCard />
           <RecommendedCard />
           <RecommendedCard />
         </div>
-      </section>
+      </section> */}
       <AddCourse open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
     </DashboardLayout>
