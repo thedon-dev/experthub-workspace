@@ -24,15 +24,15 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const AdmissionCard = () => {
+const AdmissionCard = ({ tutor }: { tutor: any }) => {
   const pathname = usePathname()
 
   return (
     <div>
       <div className='flex border border-[#1E1E1E80] p-3 rounded-md my-3 flex justify-between'>
         <img src="/images/user.png" alt="" />
-        <div>
-          <p className='font-medium text-sm'>Evans D</p>
+        <div className='w-40'>
+          <p className='font-medium text-sm'>{tutor.fullname}</p>
           <p className='text-xs'>Software Engineer</p>
         </div>
         <div>

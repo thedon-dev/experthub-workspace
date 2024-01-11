@@ -14,9 +14,9 @@ const applicant = () => {
   const [reccomended, setReccomended] = useState([])
 
   const getRecommended = () => {
-    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/recommended-courses')
+    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/courses/recommended-courses')
       .then(function (response) {
-        setReccomended(response.data.courses)
+        // setReccomended(response.data.courses)
         console.log(response.data)
       })
   }

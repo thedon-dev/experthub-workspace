@@ -3,7 +3,8 @@
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 const signup = () => {
   const [active, setActive] = useState(false)
@@ -17,6 +18,12 @@ const signup = () => {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const params = useSearchParams().get("role")
+
+
+  useEffect(() => {
+    params != null && setRole(params)
+  }, [])
 
   const signupApplicant = async () => {
     setLoading(true)

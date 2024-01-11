@@ -59,7 +59,7 @@ export default function Home() {
               a Digital Nomad</h1>
             <p className="text-sm my-4">Learn how to become a trained professional and gain the
               financial freedom that you want!</p>
-            <Link href={"/auth/signup"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Register</button></Link>
+            <Link href={"#auth"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Register</button></Link>
           </div>
         </section>
         <section className="lg:flex justify-between lg:mx-20 mx-4 my-20">
@@ -201,7 +201,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className=" bg-[#F9F7FFE5]">
+        <section id="auth" className=" bg-[#F9F7FFE5]">
           <div className="lg:w-1/2 py-10 mx-auto text-center">
             <h3 className="text-2xl font-medium">Shape the future workforce</h3>
             <p>We invite individuals and trainers all over the word to submit applications for the initial phase of the training</p>
@@ -213,9 +213,10 @@ export default function Home() {
                 <h1 className="font-bold text-2xl my-4">Become A Fellow</h1>
                 <p className="text-sm my-4">You don't need any previous knowledge just great English
                   speaking skills. It's easy fill and submit the form.</p>
-                <button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Sign Up Now</button>
+                <Link href={"/auth/signup"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Sign Up Now</button></Link>
               </div>
             </div>
+
             <div className="lg:w-[49%] relative">
               <img className="w-full lg:h-[80vh] object-cover" src="/images/trainer.png" alt="" />
               <div className="absolute w-[80%] left-0 text-white right-0 mx-auto text-center bottom-10">
@@ -224,7 +225,7 @@ export default function Home() {
                   training providers to educate African fellows throughout as we develop
                   an effective strategy for training and deploying technical talents
                 </p>
-                <button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Sign Up Now</button>
+                <Link href={"/auth/signup?role=tutor"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Sign Up Now</button></Link>
               </div>
             </div>
           </div>
