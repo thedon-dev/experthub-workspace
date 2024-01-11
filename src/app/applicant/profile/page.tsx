@@ -1,7 +1,22 @@
+"use client"
+
 import DashboardLayout from '@/components/DashboardLayout';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 
 const profile = () => {
+
+  const getUser = () => {
+    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/user/profile')
+      .then(function (response) {
+        // setReccomended(response.data.courses)
+        console.log(response.data)
+      })
+  }
+
+  useEffect(() => {
+    getUser()
+  })
   return (
     <DashboardLayout>
       <section className='flex justify-evenly'>

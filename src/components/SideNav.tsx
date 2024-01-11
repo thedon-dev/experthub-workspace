@@ -136,21 +136,18 @@ const SideNav = () => {
     }
   ]
 
-  const logout = () => {
-    try {
-      axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/auth/logout')
-        .then(function (response) {
-          console.log(response.data)
-          router.push('/auth/login')
-        })
-    } catch (e) {
-      console.log(e)
-    }
-  }
+
   useEffect(() => {
     pathname.includes("applicant") ? setNav(ApplicantNavigation) : pathname.includes("admin") ? setNav(AdminNav) : setNav(TutorNavigation)
   }, [])
 
+  const logout = () => {
+    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/auth/logout')
+      .then(function (response) {
+        // setReccomended(response.data.courses)
+        console.log(response.data)
+      })
+  }
   return (
     <aside className='h-screen fixed w-[20%] shadow-md p-6'>
       <h3 className='font-bold text-lg text-[#DC9F08]'>UNIVERSITY</h3>
@@ -167,8 +164,8 @@ const SideNav = () => {
               </li>
             ))
           }
-          <li className='my-3' onClick={() => logout()}>
-            <Link href={""} className={"flex items-center gap-x-2 text-gray-600 p-2 rounded-lg"}>
+          <li className='my-3' >
+            <Link href={""} onClick={() => logout()} className={"flex items-center gap-x-2 text-gray-600 p-2 rounded-lg"}>
               < div className="text-gray-500"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-box-arrow-right" viewBox="0 0 16 16">
                 <path fillRule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
                 <path fillRule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />

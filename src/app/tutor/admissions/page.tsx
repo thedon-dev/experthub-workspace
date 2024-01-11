@@ -1,12 +1,25 @@
 "use client"
 
 import DashboardLayout from '@/components/DashboardLayout';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdmissionCard from '@/components/cards/AdmissionCard';
 import SearchNav from '@/components/SearchNav';
+import axios from 'axios';
 
 const addmissions = () => {
   const [active, setActive] = useState("students")
+
+  const getStudents = () => {
+    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/user/students')
+      .then(function (response) {
+        // setReccomended(response.data.courses)
+        console.log(response.data)
+      })
+  }
+
+  useEffect(() => {
+    getStudents()
+  })
   return (
     <DashboardLayout>
       <SearchNav />
@@ -26,8 +39,8 @@ const addmissions = () => {
           switch (active) {
             case 'students':
               return <div>
-                <AdmissionCard />
-                <AdmissionCard />
+                {/* <AdmissionCard />
+                <AdmissionCard /> */}
               </div>
             case 'mentees':
               return <div>
