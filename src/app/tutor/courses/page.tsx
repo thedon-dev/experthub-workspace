@@ -124,9 +124,9 @@ const courses = () => {
       <section className='m-2 p-3'>
         <p className='font-bold text-sm my-2'>Data Analytics</p>
         <div className='flex flex-wrap justify-between'>
+          {/* <CoursesCard />
           <CoursesCard />
-          <CoursesCard />
-          <CoursesCard />
+          <CoursesCard /> */}
         </div>
       </section>
       <section className='m-4 w-[90%]'>
@@ -223,9 +223,9 @@ const courses = () => {
           <p className='text-[#DC9F08] text-sm'>VIEW ALL</p>
         </div>
         <div className='flex flex-wrap justify-between'>
+          {/* <RecommendedCard />
           <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard />
+          <RecommendedCard /> */}
         </div>
       </section>
       <AddCourse open={open} handleClick={() => setOpen(!open)} />
