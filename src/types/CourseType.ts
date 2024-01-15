@@ -15,4 +15,5 @@ export interface CourseType {
   enrolledStudents: any[];
   resources:        any[];
   videos:           any[];
+  [key: string]: any;
 }

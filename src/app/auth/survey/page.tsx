@@ -24,7 +24,7 @@ const test = () => {
   const submit = async () => {
     setLoading(true)
     try {
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/tutor/survey`, {
+      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/user/survey`, {
         computerAccess: computer,
         internetAccess: internet,
         gender,
@@ -207,7 +207,8 @@ const test = () => {
           <p>Thanks for your interest in Experthub trainings. Note, you need to own a laptop & have access to internet to be part of our trainings.</p>
         </div>
         <div className='text-center'>
-          <button onClick={() => submit()} disabled={steps < 6} className='w-44  p-3 my-3 rounded-sm bg-gray text-white'>{loading ? "Loading..." : "Sumbit"}</button>
+          {steps < 6 ? <button onClick={() => setSteps(steps + 1)} className='w-44  p-3 my-3 rounded-sm bg-primary text-white'>Next</button> : <button onClick={() => submit()} disabled={steps < 6} className='w-44  p-3 my-3 rounded-sm bg-gray text-white'>{loading ? "Loading..." : "Sumbit"}</button>}
+
         </div>
       </section>
     </main>
