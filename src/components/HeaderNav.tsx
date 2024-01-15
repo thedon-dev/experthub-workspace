@@ -12,10 +12,11 @@ const HeaderNav = () => {
         <h3 className='text-base lg:block hidden font-medium my-auto text-white'>EXPERTHUB INSTITUTE</h3>
       </div>
       <div className='lg:flex hidden justify-between text-white text-sm w-[60%]'>
-        <p className='my-auto'>Home</p>
-        <p className='my-auto'>About Us</p>
-        <p className='my-auto'>Instructors</p>
-        <p className='my-auto'>Our Partners</p>
+        <Link className='my-auto' href={"/"}><p >Home</p></Link>
+        <a href="#about" className='my-auto'><p >About Us</p></a>
+        <a href="#instructors" className='my-auto'><p >Instructors</p></a>
+        <a href="#patners" className='my-auto'><p >Our Partners</p></a>
+
         <p className='my-auto'>Contact</p>
         <Link href={"/auth/login"} className='my-auto'><button className='border text-primary my-auto ml-10 border-primary p-1'>LOGIN</button></Link>
         <Link href={"/auth/signup"} className='my-auto'><button className=' bg-primary text-black p-1 my-auto'>REGISTER</button></Link>

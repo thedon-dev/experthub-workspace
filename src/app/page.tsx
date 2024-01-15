@@ -9,6 +9,7 @@ import { Fragment, useEffect, useState } from "react";
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
 import axios from "axios";
+import { CourseType } from "@/types/CourseType";
 
 export default function Home() {
   const text = `Ans: We are determine to raise the next generation of Global leaders and empower youths to harness the immense potential of technology to overcome the challenges our planet faces, including its dwindling economy.
@@ -36,17 +37,18 @@ export default function Home() {
     },
   ];
 
-  const [courses, setCourses] = useState([])
+  const [courses, setCourses] = useState<CourseType | []>([])
 
   const getCourses = async () => {
     axios.get("https://experthub-20f6efa1a0d9.herokuapp.com/courses/all")
       .then(function (response) {
         console.log(response.data)
+        setCourses(response.data.courses)
       })
   }
   useEffect(() => {
     getCourses()
-  })
+  }, [])
 
   return (
     <Fragment>
@@ -62,7 +64,7 @@ export default function Home() {
             <Link href={"#auth"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Register</button></Link>
           </div>
         </section>
-        <section className="lg:flex justify-between lg:mx-20 mx-4 my-20">
+        <section id="about" className="lg:flex justify-between lg:mx-20 mx-4 my-20">
           <div className="lg:w-[43%] my-auto lg:order-1">
             <h3 className="text-xl mb-3 font-medium">About Experthub Trainings</h3>
             <p>We are determine to raise the next generation of global leaders and
@@ -76,7 +78,7 @@ export default function Home() {
           <img className="sm:mt-6 lg:order-0" src="/images/about-img.png" alt="" />
 
         </section>
-        <section className="lg:m-0 m-4">
+        <section id="patners" className="lg:m-0 m-4">
           <h3 className="lg:text-2xl text-xl my-10 mb-3 font-medium text-center">Improve Skills & Earn Through Our  Partners</h3>
           <div className="flex lg:w-1/2 mx-auto my-10 justify-between">
             <div>
@@ -100,50 +102,17 @@ export default function Home() {
               bespoke training courses, We crush the barriers to getting a degree</p>
           </div>
           <div className="flex justify-between flex-wrap">
-            <div className="p-2 lg:w-[32%] my-3 rounded-sm bg-white">
+            {courses.slice(0, 9).map((course: any) => <div key={course._id} className="p-2 lg:w-[32%] my-3 rounded-sm bg-white">
               <img className="rounded-sm w-full" src="/images/card.png" alt="" />
-              <h3 className="font-medium my-3">Virtual Assistant</h3>
+              <h3 className="font-medium my-3">{course.title}</h3>
               <div className="flex justify-between">
                 <div className="flex">
                   <img className="w-6 h-6 rounded-full" src="/images/user.png" alt="" />
-                  <p className="text-sm font-medium ml-3">Michael samson</p>
+                  <p className="text-sm font-medium ml-3">{course.instructor}</p>
                 </div>
                 <p className="text-sm font-medium">45 Lessons</p>
               </div>
-            </div>
-            <div className="p-2 my-3 lg:w-[32%] rounded-sm bg-white">
-              <img className="rounded-sm w-full" src="/images/card.png" alt="" />
-              <h3 className="font-medium my-3">Virtual Assistant</h3>
-              <div className="flex justify-between">
-                <div className="flex">
-                  <img className="w-6 h-6 rounded-full" src="/images/user.png" alt="" />
-                  <p className="text-sm font-medium ml-3">Michael samson</p>
-                </div>
-                <p className="text-sm font-medium">45 Lessons</p>
-              </div>
-            </div>
-            <div className="p-2 my-3 lg:w-[32%] rounded-sm bg-white">
-              <img className="rounded-sm w-full" src="/images/card.png" alt="" />
-              <h3 className="font-medium my-3">Virtual Assistant</h3>
-              <div className="flex justify-between">
-                <div className="flex">
-                  <img className="w-6 h-6 rounded-full" src="/images/user.png" alt="" />
-                  <p className="text-sm font-medium ml-3">Michael samson</p>
-                </div>
-                <p className="text-sm font-medium">45 Lessons</p>
-              </div>
-            </div>
-            <div className="p-2 my-3 lg:w-[32%] rounded-sm bg-white">
-              <img className="rounded-sm w-full" src="/images/card.png" alt="" />
-              <h3 className="font-medium my-3">Virtual Assistant</h3>
-              <div className="flex justify-between">
-                <div className="flex">
-                  <img className="w-6 h-6 rounded-full" src="/images/user.png" alt="" />
-                  <p className="text-sm font-medium ml-3">Michael samson</p>
-                </div>
-                <p className="text-sm font-medium">45 Lessons</p>
-              </div>
-            </div>
+            </div>)}
           </div>
           <div className="text-center my-10">
             <button className="bg-primary p-3 rounded-sm px-10">View Less Courses</button>
@@ -230,7 +199,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section>
+        <section id="instructors">
           <div className="lg:w-[35%] py-10 sm:px-4 mx-auto text-center">
             <h3 className="text-2xl font-medium">Our Instructors</h3>
             <p>Connect with top instructors that are sound and see the future in teaching</p>

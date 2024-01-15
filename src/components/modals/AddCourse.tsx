@@ -22,12 +22,16 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
   const [loading, setLoading] = useState(false)
+  const [file, setFile] = useState<FileList | null>()
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    const reader = new FileReader()
 
+    const files = e.target.files
+    setFile(e.target.files)
+
+    const reader = new FileReader()
     if (files && files.length > 0) {
+
       reader.readAsDataURL(files[0])
       reader.onloadend = () => {
         if (reader.result) {
@@ -41,25 +45,24 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
   const add = () => {
     try {
       setLoading(true)
+      const formData = new FormData()
+      formData.append("image", file[0])
+      formData.append("title", title)
+      formData.append("about", about)
+      formData.append("duration", duration.toString())
+      formData.append("type", type)
+      formData.append("startDate", startDate)
+      formData.append("endDate", endDate)
+      formData.append("startTime", startTime)
+      formData.append("endTime", endTime)
+      formData.append("category", category)
+      formData.append("privacy", privacy)
+      formData.append("fee", fee.toString())
+      formData.append("strikedFee", striked.toString())
+      formData.append("scholarship", "students")
+      
       axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/courses/add-course/${user.id}`,
-        {
-          title,
-          about,
-          duration,
-          type,
-          startDate,
-          endDate,
-          startTime,
-          endTime,
-          category,
-          privacy,
-          fee,
-          strikedFee: striked,
-          scholarship: "students",
-          // instructorName: author,
-          thumbnailImage: image
-        },
-
+        formData
       )
         .then(function (response) {
           console.log(response.data)

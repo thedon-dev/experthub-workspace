@@ -146,6 +146,7 @@ const SideNav = () => {
       .then(function (response) {
         // setReccomended(response.data.courses)
         console.log(response.data)
+        router.push("/auth/login")
       })
   }
   return (
