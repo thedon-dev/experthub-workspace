@@ -8,13 +8,22 @@ import CourseDetails from '@/components/modals/CourseDetails';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
+import { CourseType } from '@/types/CourseType';
 
 const applicant = () => {
   const user = useAppSelector((state) => state.value);
-  const [reccomended, setReccomended] = useState([])
+  const [reccomended, setReccomended] = useState<CourseType | []>([])
+  const [courses, setCourses] = useState<CourseType | []>([])
 
   const getRecommended = () => {
     axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/courses/recommended-courses')
+      .then(function (response) {
+        setReccomended(response.data.courses)
+        console.log(response.data)
+      })
+  }
+  const getCourses = () => {
+    axios.get(`https://experthub-20f6efa1a0d9.herokuapp.com/courses/enrolled-courses/${user.id}`)
       .then(function (response) {
         // setReccomended(response.data.courses)
         console.log(response.data)
@@ -23,6 +32,7 @@ const applicant = () => {
 
   useEffect(() => {
     getRecommended()
+    getCourses()
   }, [])
   return (
     <DashboardLayout>
@@ -84,7 +94,7 @@ const applicant = () => {
         </div>
         <div className='flex flex-wrap justify-between'>
           {
-            reccomended.map((course) => <RecommendedCard course={course} />)
+            reccomended.map((course: any) => <RecommendedCard course={course} />)
           }
           {/* <RecommendedCard />
           <RecommendedCard />
