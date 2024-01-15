@@ -46,7 +46,7 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
     try {
       setLoading(true)
       const formData = new FormData()
-      formData.append("image", file[0])
+      file && formData.append("image", file[0])
       formData.append("title", title)
       formData.append("about", about)
       formData.append("duration", duration.toString())
@@ -60,7 +60,7 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
       formData.append("fee", fee.toString())
       formData.append("strikedFee", striked.toString())
       formData.append("scholarship", "students")
-      
+
       axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/courses/add-course/${user.id}`,
         formData
       )
