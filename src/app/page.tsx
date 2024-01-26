@@ -59,7 +59,7 @@ export default function Home() {
           <div className="absolute lg:w-[30%] left-0 text-white right-0 mx-auto text-center bottom-32">
             <h1 className="font-bold text-3xl my-4">Start Your Journey to Become
               a Digital Nomad</h1>
-            <p className="text-sm my-4">Learn how to become a trained professional and gain the
+            <p className="my-4">Learn how to become a trained professional and gain the
               financial freedom that you want!</p>
             <Link href={"#auth"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Register</button></Link>
           </div>
@@ -95,7 +95,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section id="courses" className="lg:mx-20 mx-4 bg-[#F9F7FFE5]">
+        <section id="courses" className="lg:mx-20 mx-4 py-10 bg-[#F9F7FFE5]">
           <div className="lg:w-1/2 py-10 mx-auto text-center">
             <h3 className="text-2xl font-medium">Explore Courses</h3>
             <p>Experthub Trainings is a training provider that specialises in accredited and
@@ -182,7 +182,7 @@ export default function Home() {
                 <h1 className="font-bold text-2xl my-4">Become A Fellow</h1>
                 <p className="text-sm my-4">You don't need any previous knowledge just great English
                   speaking skills. It's easy fill and submit the form.</p>
-                <Link href={"/auth/signup"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Sign Up Now</button></Link>
+                <Link href={"/auth/signup"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Register Now</button></Link>
               </div>
             </div>
 
@@ -191,21 +191,21 @@ export default function Home() {
               <div className="absolute w-[80%] left-0 text-white right-0 mx-auto text-center bottom-10">
                 <h1 className="font-bold text-2xl my-4">Become A Trainer</h1>
                 <p className="text-sm my-4">Organizations & Individuals interested in becoming part of our network of
-                  training providers to educate African fellows throughout as we develop
+                  trainers to educate African fellows throughout as we develop
                   an effective strategy for training and deploying technical talents
                 </p>
-                <Link href={"/auth/signup?role=tutor"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Sign Up Now</button></Link>
+                <Link href={"/auth/signup?role=tutor"}><button className="bg-primary text-black font-medium w-52 p-2 rounded-sm">Register Now</button></Link>
               </div>
             </div>
           </div>
         </section>
-        <section id="instructors">
+        {/* <section id="instructors">
           <div className="lg:w-[35%] py-10 sm:px-4 mx-auto text-center">
             <h3 className="text-2xl font-medium">Our Instructors</h3>
             <p>Connect with top instructors that are sound and see the future in teaching</p>
           </div>
           <SliderComp />
-        </section>
+        </section> */}
         <section className="my-20 relative">
           <img className="sm:h-[100vh]" src="/images/trainings-bg.png" alt="" />
           <div className="flex justify-between absolute lg:top-8 top-6 lg:left-20 sm:p-4">

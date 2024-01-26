@@ -16,8 +16,9 @@ const HeaderNav = () => {
         <a href="#about" className='my-auto'><p >About Us</p></a>
         <a href="#courses" className='my-auto'><p >Courses</p></a>
         <a href="#patners" className='my-auto'><p >Our Partners</p></a>
-
-        <p className='my-auto'>Contact</p>
+        <a href="#footer">
+          <p className='my-auto'>Contact</p>
+        </a>
         <Link href={"/auth/login"} className='my-auto'><button className='border text-primary my-auto ml-10 border-primary p-1'>LOGIN</button></Link>
         <Link href={"/auth/signup"} className='my-auto'><button className=' bg-primary text-black p-1 my-auto'>REGISTER</button></Link>
       </div>

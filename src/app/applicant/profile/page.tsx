@@ -2,16 +2,54 @@
 
 import DashboardLayout from '@/components/DashboardLayout';
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAppSelector } from '@/store/hooks';
 
 const profile = () => {
+  const user = useAppSelector((state) => state.value);
+  // const [userData, setUserData] = useState(null)
+  const [phone, setPhone] = useState("")
+  const [skill, setSkill] = useState("")
+  const [age, setAge] = useState("")
+  const [gender, setGender] = useState("")
+  const [state, setState] = useState("")
+  const [country, setCountry] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const getUser = () => {
-    axios.get('https://shark-app-2-k9okk.ondigitalocean.app/user/profile')
+    axios.get(`https://shark-app-2-k9okk.ondigitalocean.app/user/profile/${user.id}`)
       .then(function (response) {
-        // setReccomended(response.data.courses)
+        setPhone(response.data.user.phone)
+        setSkill(response.data.user.skillLevel)
+        setAge(response.data.user.age)
+        setGender(response.data.user.gender)
+        setState(response.data.user.state)
+        setCountry(response.data.user.country)
+
         console.log(response.data)
       })
+  }
+
+  const updateUser = () => {
+    setLoading(true)
+    try {
+      axios.put(`https://shark-app-2-k9okk.ondigitalocean.app/user/updateProfile/${user.id}`, {
+        phone,
+        gender,
+        age,
+        skillLevel: skill,
+        country,
+        state
+      })
+        .then(function (response) {
+          getUser()
+          setLoading(false)
+          console.log(response.data)
+        })
+    } catch (e) {
+      console.log(e)
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -34,29 +72,29 @@ const profile = () => {
           <div className='my-4 p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md'>
             <div className='my-2'>
               <label className='text-sm font-medium my-1'>Phone Number</label>
-              <input className='bg-transparent border-b border-[#1E1E1E66] w-full' type="number" />
+              <input onChange={e => setPhone(e.target.value)} value={phone} className='bg-transparent border-b border-[#1E1E1E66] w-full' type="number" />
             </div>
             <div className='my-2'>
               <label className='text-sm font-medium my-1'>Gender</label>
-              <input className='bg-transparent border-b border-[#1E1E1E66] w-full' type="text" />
+              <input onChange={e => setGender(e.target.value)} value={gender} className='bg-transparent border-b border-[#1E1E1E66] w-full' type="text" />
             </div>
             <div className='my-2'>
               <label className='text-sm font-medium my-1'>Age</label>
-              <input className='bg-transparent border-b border-[#1E1E1E66] w-full' type="number" />
+              <input onChange={e => setAge(e.target.value)} value={age} className='bg-transparent border-b border-[#1E1E1E66] w-full' type="number" />
             </div>
             <div className='my-2'>
               <label className='text-sm font-medium my-1'>Country of Residence</label>
-              <input className='bg-transparent border-b border-[#1E1E1E66] w-full' type="text" />
+              <input onChange={e => setCountry(e.target.value)} value={country} className='bg-transparent border-b border-[#1E1E1E66] w-full' type="text" />
             </div>
             <div className='my-2'>
               <label className='text-sm font-medium my-1'>State of Residence</label>
-              <input className='bg-transparent border-b border-[#1E1E1E66] w-full' type="text" />
+              <input onChange={e => setState(e.target.value)} value={state} className='bg-transparent border-b border-[#1E1E1E66] w-full' type="text" />
             </div>
             <div className='my-2'>
               <label className='text-sm font-medium my-1'>Skill Level</label>
-              <input className='bg-transparent border-b border-[#1E1E1E66] w-full' type="text" />
+              <input onChange={e => setSkill(e.target.value)} value={skill} className='bg-transparent border-b border-[#1E1E1E66] w-full' type="text" />
             </div>
-            <div className='text-center'><button className='bg-primary p-2 px-6 my-4 font-medium'>Edit highlights</button></div>
+            <div className='text-center'><button onClick={updateUser} className='bg-primary p-2 px-6 my-4 font-medium'>{loading ? "updating..." : "Edit highlights"}</button></div>
           </div>
         </div>
         <div className='mt-4 w-[65%]'>

@@ -2,7 +2,7 @@ import React from 'react';
 
 const FooterNav = () => {
   return (
-    <footer className='bg-[#253131] text-white flex flex-wrap justify-between lg:p-16 p-4'>
+    <footer id='footer' className='bg-[#253131] text-white flex flex-wrap justify-between lg:p-16 p-4'>
       <div className='lg:w-1/2 w-full'>
         <h3 className='text-xl font-bold'>EXPERTHUB TRAININGS</h3>
         <p>We are determine to raise the next generation of global leaders
@@ -33,8 +33,7 @@ const FooterNav = () => {
           <img src="/images/icons/location.svg" alt="" />
           <div className='ml-2'>
             <p className='text-sm font-medium'>OUR LOCATION</p>
-            <p className='text-xs'>7b Promise Wali Crescent, Rumudara 500102
-              Port Harcourt, Rivers</p>
+            <p className='text-xs'>1st Floor Chelsea International Plaza, KM10 Igwuruta Road, Port Harcourt, Rivers State, Nigeria.</p>
           </div>
         </div>
         <div className='flex my-3'>
@@ -48,7 +47,7 @@ const FooterNav = () => {
           <img src="/images/icons/call.svg" alt="" />
           <div className='ml-2'>
             <p className='text-sm font-medium'>CALL US</p>
-            <p className='text-xs'>08107639372</p>
+            <p className='text-xs'>+2342013303380</p>
           </div>
         </div>
       </div>

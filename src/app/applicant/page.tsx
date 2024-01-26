@@ -55,10 +55,10 @@ const applicant = () => {
         </div>
       </section>
       <section className='p-4 flex justify-between'>
-        <StatCard title='Total Learning Hours' count={"4 hrs 37 mins"} bg='#27C2D6' img='clock-line' />
-        <StatCard title='Module Assessments' count={"67"} bg='#DC9F08' img='ic_outline-assessment' />
-        <StatCard title='Progress' count={"70%"} bg='#53C48C' img='game-icons_progression' />
-        <StatCard title='Training Providers' count={"13"} bg='#7E34C9' img='ph_chalkboard-teacher' />
+        <StatCard title='Total Learning Hours' count={"0 hrs 0 mins"} bg='#27C2D6' img='clock-line' />
+        <StatCard title='Module Assessments' count={"0"} bg='#DC9F08' img='ic_outline-assessment' />
+        <StatCard title='Progress' count={"0%"} bg='#53C48C' img='game-icons_progression' />
+        <StatCard title='Training Providers' count={"0"} bg='#7E34C9' img='ph_chalkboard-teacher' />
       </section>
       <section className='m-3 p-3 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
         <div className='text-sm flex justify-between'>
