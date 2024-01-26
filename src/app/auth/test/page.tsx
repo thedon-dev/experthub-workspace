@@ -17,7 +17,7 @@ const aptitudeTest = () => {
   const submit = async () => {
     setLoading(true)
     try {
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/student/aptitude-test`, {
+      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/student/aptitude-test`, {
         willDadicate6Hours: time,
         describeSelf: description,
         personality: personality,

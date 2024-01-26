@@ -40,7 +40,7 @@ export default function Home() {
   const [courses, setCourses] = useState<CourseType | []>([])
 
   const getCourses = async () => {
-    axios.get("https://experthub-20f6efa1a0d9.herokuapp.com/courses/all")
+    axios.get("https://shark-app-2-k9okk.ondigitalocean.app/courses/all")
       .then(function (response) {
         console.log(response.data)
         setCourses(response.data.courses)
@@ -95,7 +95,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="lg:mx-20 mx-4 bg-[#F9F7FFE5]">
+        <section id="courses" className="lg:mx-20 mx-4 bg-[#F9F7FFE5]">
           <div className="lg:w-1/2 py-10 mx-auto text-center">
             <h3 className="text-2xl font-medium">Explore Courses</h3>
             <p>Experthub Trainings is a training provider that specialises in accredited and
@@ -237,35 +237,35 @@ export default function Home() {
               not only become an expert in your field but also to apply that expertise to meaningful and financially rewarding work.</p>
           </div>
           <div className="lg:flex justify-between">
-            <div className="lg:w-[33%] my-3 relative">
-              <img src="/images/network_1.png" alt="" />
+            <div className="lg:w-[32%] my-3 relative">
+              <img src="/images/network_1.png"  className="w-full"  alt="" />
               <div className="absolute p-3 left-0 right-0 top-0">
                 <div className="flex mb-3 text-white justify-between">
-                  <p className="text-xl font-medium uppercase w-[60%]">Mentorship Beyond
+                  <p className="text-xl font-medium uppercase">Mentorship Beyond <br />
                     Training</p>
                   <img src="/images/icons/mic.svg" alt="" />
                 </div>
-                <p className="text-white">Mentorship is the cornerstone of success in any field, and at Expert Hub LLC, we understand its importance. As you complete your training, we don't leave you hanging. We provide mentorship to guide you through your career path. Our mentors are seasoned professionals with a wealth of experience in their respective fields. They will offer insights, advice, and support to help you navigate the complexities of your chosen industry.</p>
+                <p className="text-white text-sm">Mentorship is the cornerstone of success in any field, and at Expert Hub LLC, we understand its importance. As you complete your training, we don't leave you hanging. We provide mentorship to guide you through your career path. Our mentors are seasoned professionals with a wealth of experience in their respective fields. They will offer insights, advice, and support to help you navigate the complexities of your chosen industry.</p>
               </div>
             </div>
-            <div className="lg:w-[33%] my-3 relative">
-              <img src="/images/network_2.png" alt="" />
+            <div className="lg:w-[32%] my-3 relative">
+              <img src="/images/network_2.png"  className="w-full"  alt="" />
               <div className="absolute p-3 left-0 right-0 top-0">
                 <div className="flex mb-3 text-white justify-between">
                   <p className="text-xl font-medium uppercase w-[60%]">Opportunities to Make Money</p>
                   <img src="/images/icons/mic.svg" alt="" />
                 </div>
-                <p className="text-white">At Expert Hub LLC, we're not just about learning; we're about application. As soon as you complete your training, we're thrilled to enlist you into our prestigious network of experts. What does this mean for you? It means you gain access to a diverse pool of businesses and clients looking for your expertise</p>
+                <p className="text-white text-sm">At Expert Hub LLC, we're not just about learning; we're about application. As soon as you complete your training, we're thrilled to enlist you into our prestigious network of experts. What does this mean for you? It means you gain access to a diverse pool of businesses and clients looking for your expertise</p>
               </div>
             </div>
-            <div className="lg:w-[33%] my-3 relative">
-              <img src="/images/network_1.png" alt="" />
+            <div className="lg:w-[32%] my-3 relative">
+              <img src="/images/network_1.png" className="w-full" alt="" />
               <div className="absolute p-3 left-0 right-0 top-0">
                 <div className="flex mb-3 text-white justify-between">
                   <p className="text-xl font-medium uppercase w-[60%]">Join Our Network of Experts</p>
                   <img src="/images/icons/mic.svg" alt="" />
                 </div>
-                <p className="text-white">Our platform is a marketplace of opportunity. As a member of our expert network, you can browse through a wide range of job listings and projects that align with your skills and interests. Whether you're a tech guru, a virtual assistant, or a journalist, there are opportunities waiting for you. Your journey doesn't stop at learning – it continues with earning.</p>
+                <p className="text-white text-sm">Our platform is a marketplace of opportunity. As a member of our expert network, you can browse through a wide range of job listings and projects that align with your skills and interests. Whether you're a tech guru, a virtual assistant, or a journalist, there are opportunities waiting for you. Your journey doesn't stop at learning – it continues with earning.</p>
               </div>
             </div>
           </div>

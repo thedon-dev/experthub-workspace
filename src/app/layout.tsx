@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-  // axios.defaults.baseURL = "https://experthub-20f6efa1a0d9.herokuapp.com/"
+  // axios.defaults.baseURL = "https://shark-app-2-k9okk.ondigitalocean.app/"
 
   return (
     <html lang="en">

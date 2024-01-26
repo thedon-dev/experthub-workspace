@@ -14,7 +14,7 @@ const HeaderNav = () => {
       <div className='lg:flex hidden justify-between text-white text-sm w-[60%]'>
         <Link className='my-auto' href={"/"}><p >Home</p></Link>
         <a href="#about" className='my-auto'><p >About Us</p></a>
-        <a href="#instructors" className='my-auto'><p >Instructors</p></a>
+        <a href="#courses" className='my-auto'><p >Courses</p></a>
         <a href="#patners" className='my-auto'><p >Our Partners</p></a>
 
         <p className='my-auto'>Contact</p>
@@ -30,7 +30,7 @@ const HeaderNav = () => {
 
           <p className='my-4 mt-20 font-bold'>Home</p>
           <p className='my-4 font-bold'>About Us</p>
-          <p className='my-4 font-bold'>Instructors</p>
+          <p className='my-4 font-bold'>Courses</p>
           <p className='my-4 font-bold'>Our Partners</p>
           <p className='my-4 font-bold'>Contact</p>
           <div className='flex justify-between my-4'>

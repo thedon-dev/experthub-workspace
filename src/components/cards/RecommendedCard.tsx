@@ -5,7 +5,7 @@ import React from 'react';
 const RecommendedCard = ({ course }: { course: CourseType }) => {
   const enroll = (id: string) => {
     try {
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/courses/enroll/${id}`)
+      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/courses/enroll/${id}`)
         .then(function (response) {
           console.log(response.data)
         })

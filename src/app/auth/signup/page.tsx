@@ -28,7 +28,7 @@ const signup = () => {
   const signupApplicant = async () => {
     setLoading(true)
     try {
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/auth/register`, {
+      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/register`, {
         fullname,
         email,
         phone,

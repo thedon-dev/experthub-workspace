@@ -10,7 +10,7 @@ const tutor = () => {
   const [instructors, setInstructors] = useState([])
 
   const getTutors = () => {
-    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/user/instructors')
+    axios.get('https://shark-app-2-k9okk.ondigitalocean.app/user/instructors')
       .then(function (response) {
         setInstructors(response.data.instructors)
         console.log(response.data)

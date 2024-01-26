@@ -18,7 +18,7 @@ const login = () => {
   const loginUser = async () => {
     setLoading(true)
     try {
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/auth/login`, {
+      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/login`, {
         email,
         password
       })

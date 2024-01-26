@@ -142,7 +142,7 @@ const SideNav = () => {
   }, [])
 
   const logout = () => {
-    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/auth/logout')
+    axios.get('https://shark-app-2-k9okk.ondigitalocean.app/auth/logout')
       .then(function (response) {
         // setReccomended(response.data.courses)
         console.log(response.data)

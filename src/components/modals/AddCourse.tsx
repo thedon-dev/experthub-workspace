@@ -61,7 +61,7 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
       formData.append("strikedFee", striked.toString())
       formData.append("scholarship", "students")
 
-      axios.post(`https://experthub-20f6efa1a0d9.herokuapp.com/courses/add-course/${user.id}`,
+      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/courses/add-course/${user.id}`,
         formData
       )
         .then(function (response) {

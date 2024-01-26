@@ -44,14 +44,14 @@ const tutor = () => {
   const [reccomended, setReccomended] = useState([])
 
   const getCourses = async () => {
-    axios.get("https://experthub-20f6efa1a0d9.herokuapp.com/courses/all")
+    axios.get("https://shark-app-2-k9okk.ondigitalocean.app/courses/all")
       .then(function (response) {
         // setCourses(response.data.courses)
         // console.log(response.data)
       })
   }
   const getReccomended = async () => {
-    axios.get("https://experthub-20f6efa1a0d9.herokuapp.com/courses/recommended-courses")
+    axios.get("https://shark-app-2-k9okk.ondigitalocean.app/courses/recommended-courses")
       .then(function (response) {
         setReccomended(response.data.courses)
         console.log(response.data)

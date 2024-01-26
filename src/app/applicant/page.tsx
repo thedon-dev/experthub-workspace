@@ -16,14 +16,14 @@ const applicant = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
 
   const getRecommended = () => {
-    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/courses/recommended-courses')
+    axios.get('https://shark-app-2-k9okk.ondigitalocean.app/courses/recommended-courses')
       .then(function (response) {
         setReccomended(response.data.courses)
         console.log(response.data)
       })
   }
   const getCourses = () => {
-    axios.get(`https://experthub-20f6efa1a0d9.herokuapp.com/courses/enrolled-courses/${user.id}`)
+    axios.get(`https://shark-app-2-k9okk.ondigitalocean.app/courses/enrolled-courses/${user.id}`)
       .then(function (response) {
         // setReccomended(response.data.courses)
         console.log(response.data)

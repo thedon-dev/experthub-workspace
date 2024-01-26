@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 const profile = () => {
 
   const getUser = () => {
-    axios.get('https://experthub-20f6efa1a0d9.herokuapp.com/user/profile')
+    axios.get('https://shark-app-2-k9okk.ondigitalocean.app/user/profile')
       .then(function (response) {
         // setReccomended(response.data.courses)
         console.log(response.data)
