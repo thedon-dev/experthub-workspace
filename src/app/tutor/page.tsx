@@ -44,14 +44,14 @@ const tutor = () => {
   const [reccomended, setReccomended] = useState([])
 
   const getCourses = async () => {
-    axios.get("https://shark-app-2-k9okk.ondigitalocean.app/courses/all")
+    axios.get("courses/all")
       .then(function (response) {
         // setCourses(response.data.courses)
         // console.log(response.data)
       })
   }
   const getReccomended = async () => {
-    axios.get("https://shark-app-2-k9okk.ondigitalocean.app/courses/recommended-courses")
+    axios.get("courses/recommended-courses")
       .then(function (response) {
         setReccomended(response.data.courses)
         console.log(response.data)

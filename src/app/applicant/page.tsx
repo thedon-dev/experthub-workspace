@@ -16,14 +16,14 @@ const applicant = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
 
   const getRecommended = () => {
-    axios.get('https://shark-app-2-k9okk.ondigitalocean.app/courses/recommended-courses')
+    axios.get('courses/recommended-courses')
       .then(function (response) {
         setReccomended(response.data.courses)
         console.log(response.data)
       })
   }
   const getCourses = () => {
-    axios.get(`https://shark-app-2-k9okk.ondigitalocean.app/courses/enrolled-courses/${user.id}`)
+    axios.get(`courses/enrolled-courses/${user.id}`)
       .then(function (response) {
         // setReccomended(response.data.courses)
         console.log(response.data)

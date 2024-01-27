@@ -10,7 +10,7 @@ const addmissions = () => {
   const [active, setActive] = useState("students")
 
   const getStudents = () => {
-    axios.get('https://shark-app-2-k9okk.ondigitalocean.app/user/students')
+    axios.get('user/students')
       .then(function (response) {
         // setReccomended(response.data.courses)
         console.log(response.data)

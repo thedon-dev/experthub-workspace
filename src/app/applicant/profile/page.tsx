@@ -16,8 +16,9 @@ const profile = () => {
   const [country, setCountry] = useState("")
   const [loading, setLoading] = useState(false)
 
+
   const getUser = () => {
-    axios.get(`https://shark-app-2-k9okk.ondigitalocean.app/user/profile/${user.id}`)
+    axios.get(`user/profile/${user.id}`)
       .then(function (response) {
         setPhone(response.data.user.phone)
         setSkill(response.data.user.skillLevel)
@@ -33,7 +34,7 @@ const profile = () => {
   const updateUser = () => {
     setLoading(true)
     try {
-      axios.put(`https://shark-app-2-k9okk.ondigitalocean.app/user/updateProfile/${user.id}`, {
+      axios.put(`user/updateProfile/${user.id}`, {
         phone,
         gender,
         age,
@@ -54,7 +55,7 @@ const profile = () => {
 
   useEffect(() => {
     getUser()
-  })
+  }, [])
   return (
     <DashboardLayout>
       <section className='flex justify-evenly'>
@@ -157,7 +158,7 @@ const profile = () => {
             </div>
             <div className='border-t mt-4 border-[#1E1E1E4F]'>
               {/* <p className='my-3 font-medium'>Employed</p> */}
-              <div className='flex justify-between'>
+              <div className='flex pt-4 justify-between'>
                 <div className='flex'>
                   <img className='w-12 mr-4 h-10' src="/images/peoples-pow.png" alt="" />
                   <div>
