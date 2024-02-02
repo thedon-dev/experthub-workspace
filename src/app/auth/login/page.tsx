@@ -18,10 +18,10 @@ const login = () => {
   const loginUser = async () => {
     setLoading(true)
     try {
-      axios.post(`https://experthub.onrender.com/auth/login`, {
+      await axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/login`, {
         email,
         password
-      })
+      },)
         .then(function (response) {
           console.log(response.data)
           setLoading(false)

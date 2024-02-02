@@ -56,6 +56,7 @@ const profile = () => {
   useEffect(() => {
     getUser()
   }, [])
+  
   return (
     <DashboardLayout>
       <section className='flex justify-evenly'>

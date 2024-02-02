@@ -141,8 +141,8 @@ const SideNav = () => {
     pathname.includes("applicant") ? setNav(ApplicantNavigation) : pathname.includes("admin") ? setNav(AdminNav) : setNav(TutorNavigation)
   }, [])
 
-  const logout = () => {
-    axios.get('auth/logout')
+  const logout = async () => {
+    await axios.get('auth/logout')
       .then(function (response) {
         // setReccomended(response.data.courses)
         console.log(response.data)
