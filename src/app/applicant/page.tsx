@@ -96,7 +96,7 @@ const applicant = () => {
         </div>
         <div className='flex flex-wrap justify-between'>
           {
-            reccomended.map((course: any) => <RecommendedCard key={course._id} course={course} />)
+            reccomended.map((course: any) => <RecommendedCard key={course._id} course={course} call={() => getCourses()} />)
           }
           {/* <RecommendedCard />
           <RecommendedCard />

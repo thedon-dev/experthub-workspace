@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useAppDispatch } from '@/store/hooks';
 import { setUser } from '@/store/slices/userSlice'
+import { notification } from 'antd';
 
 const login = () => {
   const [active, setActive] = useState(false)
@@ -14,6 +15,8 @@ const login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const dispatch = useAppDispatch();
+  const [api, contextHolder] = notification.useNotification();
+
 
   const loginUser = async () => {
     setLoading(true)
@@ -26,14 +29,21 @@ const login = () => {
           console.log(response.data)
           setLoading(false)
           dispatch(setUser(response.data.user))
+          api.open({
+            message: 'Logged in Successfully!'
+          });
           router.push(response.data.user.role === "student" ? "/applicant" : response.data.user.role === "admin" ? '/admin' : "/tutor")
         })
     } catch (e) {
       setLoading(false)
+      api.open({
+        message: 'Oops an error occured!'
+      });
     }
   }
   return (
     <main >
+      {contextHolder}
       <img src="/images/auth-bg.png" className='h-[100vh] w-full' alt="" />
       <section className='absolute top-40 left-0 right-0 mx-auto lg:w-[30%] w-[95%]'>
         <section className='rounded-md bg-white border border-[#FDC3327D] p-6 '>

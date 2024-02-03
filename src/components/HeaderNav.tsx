@@ -35,8 +35,8 @@ const HeaderNav = () => {
           <p className='my-4 font-bold'>Our Partners</p>
           <p className='my-4 font-bold'>Contact</p>
           <div className='flex justify-between my-4'>
-            <Link href={"/auth/login"}><button className='border text-white border-white w-[40%] p-1'>LOGIN</button></Link>
-            <Link href={"/auth/signup"}><button className=' bg-white text-black p-1  w-[40%]'>REGISTER</button></Link>
+            <Link href={"/auth/login"}><button className='border text-white border-white p-1'>LOGIN</button></Link>
+            <Link href={"/auth/signup"}><button className=' bg-white text-black p-1 '>REGISTER</button></Link>
           </div>
         </div>
       }

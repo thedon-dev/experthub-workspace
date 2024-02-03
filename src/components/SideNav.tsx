@@ -4,8 +4,10 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import axios from 'axios';
+import { notification } from 'antd';
 
 const SideNav = () => {
+  const [api, contextHolder] = notification.useNotification();
   const pathname = usePathname()
   const [nav, setNav] = useState<any[]>([])
   const router = useRouter()
@@ -146,11 +148,15 @@ const SideNav = () => {
       .then(function (response) {
         // setReccomended(response.data.courses)
         console.log(response.data)
+        api.open({
+          message: 'Logged out Successfully!'
+        });
         router.push("/auth/login")
       })
   }
   return (
     <aside className='h-screen fixed w-[20%] shadow-md p-6'>
+      {contextHolder}
       <h3 className='font-bold text-lg text-[#DC9F08]'>UNIVERSITY</h3>
       <div className="flex-1 flex flex-col h-full my-6 overflow-auto">
         <ol className="text-sm font-medium flex-1">

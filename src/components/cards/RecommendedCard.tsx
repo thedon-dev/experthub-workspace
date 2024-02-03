@@ -2,9 +2,11 @@ import { CourseType } from '@/types/CourseType';
 import axios from 'axios';
 import React from 'react';
 import { useAppSelector } from '@/store/hooks';
+import { notification } from 'antd';
 
-const RecommendedCard = ({ course }: { course: CourseType }) => {
+const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) => {
   const user = useAppSelector((state) => state.value);
+  const [api, contextHolder] = notification.useNotification();
 
   const enroll = (id: string) => {
     try {
@@ -12,15 +14,26 @@ const RecommendedCard = ({ course }: { course: CourseType }) => {
         id: user.id
       })
         .then(function (response) {
-          console.log(response.data)
+          // console.log(response.data)
+          call()
+          api.open({
+            message: 'Enrolled Successfully'
+          });
         })
-    } catch (e) {
-      console.log(e)
+        .catch(err => {
+          api.open({
+            message: err.response.data.message
+          });
+          // console.log(err.response.data.message)
+        })
+    } catch (e: any) {
+      // console.log(e.response.data.message)
     }
   }
 
   return (
     <div className='flex justify-between border p-3 my-3 w-[49%] rounded-md border-[#1E1E1E75]'>
+      {contextHolder}
       <div className='w-52'>
         <img className='w-full h-20 object-cover rounded-md' src={course.thumbnail} alt="" />
       </div>

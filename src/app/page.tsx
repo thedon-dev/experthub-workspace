@@ -102,7 +102,7 @@ export default function Home() {
               bespoke training courses, We crush the barriers to getting a degree</p>
           </div>
           <div className="flex justify-between flex-wrap">
-            {courses.slice(0, 9).map((course: any) => <div key={course._id} className="p-2 lg:w-[32%] my-3 rounded-sm bg-white">
+            {courses.slice(0, 9).map((course: any) => <div key={course._id} className="p-2 lg:w-[32%] my-3 sm:w-full rounded-sm bg-white">
               <img className="rounded-sm w-full h-40 object-cover" src={course.thumbnail} alt="" />
               <h3 className="font-medium my-3">{course.title}</h3>
               <div className="flex justify-between">
