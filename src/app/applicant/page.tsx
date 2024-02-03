@@ -16,17 +16,17 @@ const applicant = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
 
   const getRecommended = async () => {
-     await axios.get('courses/recommended-courses')
-    .then(function (response) {
-      setReccomended(response.data.courses)
-      console.log(response.data)
-    })
+    await axios.get('courses/recommended-courses')
+      .then(function (response) {
+        setReccomended(response.data.courses)
+        // console.log(response.data)
+      })
   }
   const getCourses = async () => {
     await axios.get(`courses/enrolled-courses/${user.id}`)
       .then(function (response) {
-        // setReccomended(response.data.courses)
-        console.log(response.data)
+        setCourses(response.data.enrolledCourses)
+        console.log(response.data.enrolledCourses)
       })
   }
 
@@ -71,9 +71,10 @@ const applicant = () => {
           <p className='text-[#DC9F08] mt-auto'>VIEW ALL</p>
         </div>
         <div className='flex flex-wrap justify-between'>
+          {courses.map((course: CourseType) => <ApplicantCourses key={course._id} course={course} />)}
+          {/* <ApplicantCourses />
           <ApplicantCourses />
-          <ApplicantCourses />
-          <ApplicantCourses />
+          <ApplicantCourses /> */}
 
         </div>
       </section>
@@ -95,7 +96,7 @@ const applicant = () => {
         </div>
         <div className='flex flex-wrap justify-between'>
           {
-            reccomended.map((course: any) => <RecommendedCard course={course} />)
+            reccomended.map((course: any) => <RecommendedCard key={course._id} course={course} />)
           }
           {/* <RecommendedCard />
           <RecommendedCard />
