@@ -64,8 +64,8 @@ const profile = () => {
           <div className='shadow-[0px_2px_4px_0px_#1E1E1E21] p-3 text-center rounded-md'>
             <p className='font-medium text-lg'>Personal Details</p>
             <img src="/images/user.png" className='w-20 h-20 mx-auto my-3' alt="" />
-            <p className='font-medium'>Adams John</p>
-            <p className='text-xs'>Ayoolajanet12@gmail.com</p>
+            <p className='font-medium'>{user.fullName}</p>
+            <p className='text-xs'>{user.email}</p>
             <button className='bg-primary p-2 px-6 my-4 font-medium'>Edit profile</button>
           </div>
           <div className='my-4 text-center p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md'>

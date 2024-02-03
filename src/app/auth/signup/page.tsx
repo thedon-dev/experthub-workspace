@@ -41,7 +41,7 @@ const signup = () => {
         .then(function (response) {
           console.log(response.data)
           setLoading(false)
-          router.push(`/auth/survey`)
+          router.push(`/auth/verify`)
         })
     } catch (e) {
       setLoading(false)

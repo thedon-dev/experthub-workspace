@@ -41,6 +41,10 @@ const test = () => {
           setLoading(false)
           router.push(`/auth/verify`)
         })
+        .catch(err => {
+          setLoading(false)
+          // console.log(err.response.data.message)
+        })
     } catch (e) {
       setLoading(false)
     }

@@ -6,6 +6,7 @@ type UserState = {
   value: {
     fullName: String
     id: string
+    email: string
   };
 };
 

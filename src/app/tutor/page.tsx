@@ -13,7 +13,6 @@ import AddResources from '@/components/modals/AddResources';
 import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
 
-
 const tutor = () => {
   const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
@@ -102,8 +101,8 @@ const tutor = () => {
         </div>
         <div className='flex flex-wrap justify-between'>
           {
-            courses.length >=1 ?
-            courses.map((course) => <CoursesCard course={course} />) : <div>No Assigned course!</div>
+            courses.length >= 1 ?
+              courses.map((course) => <CoursesCard course={course} />) : <div>No Assigned course!</div>
           }
         </div>
       </section>
