@@ -1,6 +1,7 @@
+import { CourseType } from '@/types/CourseType';
 import React from 'react';
 
-const CourseDetails = ({ open, handleClick }: { open: boolean, handleClick: any }) => {
+const CourseDetails = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType }) => {
   return (
     open && <div>
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
@@ -12,10 +13,10 @@ const CourseDetails = ({ open, handleClick }: { open: boolean, handleClick: any 
         <div className='py-4 px-10'>
           <div className='flex justify-between'>
             <div className='w-[40%]'>
-              <img src="/images/card.png" className='w-full' alt="" />
+              <img src={course.thumbnail} className='w-full h-52 object-cover' alt="" />
               <div className='p-4'>
-                <p className='font-medium text-base'>Get Started With Prototyping</p>
-                <div className='my-4'>
+                <p className='font-medium text-base'>{course.title}</p>
+                {/* <div className='my-4'>
                   <p className='font-medium'>The course includes</p>
                   <div className='flex my-1'>
                     <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
@@ -29,35 +30,17 @@ const CourseDetails = ({ open, handleClick }: { open: boolean, handleClick: any 
                     <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
                     <p className='text-sm'>Certificate of completion</p>
                   </div>
-                </div>
-                <button className='bg-primary p-2 rounded-md px-8'>Buy Now</button>
+                </div> */}
+                {
+                  course.type === "online" ? <button className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : course.type === "video" ? <button className='bg-primary p-2 my-3 rounded-md px-8'>Enroll Now</button> : course.type === "pdf" ? <button className='bg-primary p-2 my-3 rounded-md px-8'>Buy Now</button> : null
+                }
               </div>
             </div>
             <div className='w-[58%]'>
-              <p className='text-lg font-bold'>Get Started With Prototyping</p>
-              <p className='my-2 text-sm font-medium'>This great online course will equip you with the knowledge and basic skills
-                needed to design vector graphics using Figma.</p>
-              <p className='text-sm'>This ‘Figma Design Basics and Features’ course has been designed to teach you the
-                essential skills and techniques required to create websites and app prototypes.
-                This course teaches you how to develop basic shapes in Figma, make comments
-                share Figma files and export your designs. Explore some advanced Figma features
-                which include some keyboard shortcuts and how to design an IOS prototype app.
-                Start today!This ‘Figma Design Basics and Features’ course has been designed to teach you the
-                essential skills and techniques required to create websites and app prototypes.
-                This course teaches you how to develop basic shapes in Figma, make comments
-                share Figma files and export your designs. Explore some advanced Figma features
-                which include some keyboard shortcuts and how to design an IOS prototype app.
-                Start today!This ‘Figma Design Basics and Features’ course has been designed to teach you the
-                essential skills and techniques required to create websites and app prototypes.
-                This course teaches you how to develop basic shapes in Figma, make comments
-                share Figma files and export your designs. Explore some advanced Figma features
-                which include some keyboard shortcuts and how to design an IOS prototype app.
-                Start today!This ‘Figma Design Basics and Features’ course has been designed to teach you the
-                essential skills and techniques required to create websites and app prototypes.
-                This course teaches you how to develop basic shapes in Figma, make comments
-                share Figma files and export your designs. Explore some advanced Figma features
-                which include some keyboard shortcuts and how to design an IOS prototype app.
-                Start today!</p>
+              <p className='text-lg font-bold'>{course.title}</p>
+              {/* <p className='my-2 text-sm font-medium'>This great online course will equip you with the knowledge and basic skills
+                needed to design vector graphics using Figma.</p> */}
+              <p className='text-sm'>{course.about}</p>
             </div>
           </div>
         </div>

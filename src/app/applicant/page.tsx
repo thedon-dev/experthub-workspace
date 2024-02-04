@@ -14,6 +14,7 @@ const applicant = () => {
   const user = useAppSelector((state) => state.value);
   const [reccomended, setReccomended] = useState<CourseType | []>([])
   const [courses, setCourses] = useState<CourseType | []>([])
+  const [view, setView] = useState(3)
 
   const getRecommended = async () => {
     await axios.get('courses/recommended-courses')
@@ -26,7 +27,7 @@ const applicant = () => {
     await axios.get(`courses/enrolled-courses/${user.id}`)
       .then(function (response) {
         setCourses(response.data.enrolledCourses)
-        console.log(response.data.enrolledCourses)
+        // console.log(response.data.enrolledCourses)
       })
   }
 
@@ -68,10 +69,10 @@ const applicant = () => {
             <p className='my-2'>Your Courses</p>
 
           </div>
-          <p className='text-[#DC9F08] mt-auto'>VIEW ALL</p>
+          <p onClick={() => setView(view === 3 ? courses.length : 3)} className='text-[#DC9F08] cursor-pointer mt-auto'>VIEW {view === 3 ? "ALL" : "LESS"}</p>
         </div>
         <div className='flex flex-wrap justify-between'>
-          {courses.map((course: CourseType) => <ApplicantCourses key={course._id} course={course} />)}
+          {courses.slice(0, view).map((course: CourseType) => <ApplicantCourses key={course._id} course={course} />)}
           {/* <ApplicantCourses />
           <ApplicantCourses />
           <ApplicantCourses /> */}

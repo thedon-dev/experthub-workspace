@@ -15,7 +15,6 @@ const profile = () => {
   const [state, setState] = useState("")
   const [country, setCountry] = useState("")
   const [loading, setLoading] = useState(false)
-  const [profilePicture, setProfilePicture] = useState("")
 
 
   const getUser = () => {
@@ -27,7 +26,7 @@ const profile = () => {
         setGender(response.data.user.gender)
         setState(response.data.user.state)
         setCountry(response.data.user.country)
-        setProfilePicture(response.data.user.profilePicture)
+
         console.log(response.data)
       })
   }
@@ -62,7 +61,7 @@ const profile = () => {
       <section className='w-[25%] mt-4 mx-auto'>
         <div className='shadow-[0px_2px_4px_0px_#1E1E1E21] p-3 text-center rounded-md'>
           <p className='font-medium text-lg'>Personal Details</p>
-          <img src={profilePicture ? profilePicture : "/images/user.png"} className='w-10 h-10 rounded-full mx-auto my-3' alt="" />
+          <img src="/images/user.png" className='w-10 h-10 mx-auto my-3' alt="" />
           <p className='font-medium'>{user.fullName}</p>
           <p className='text-xs'>{user.email} </p>
           <button className='bg-primary p-2 px-6 my-4 font-medium'>Edit profile</button>
