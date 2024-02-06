@@ -1,9 +1,63 @@
 import { CourseType } from '@/types/CourseType';
 import React from 'react';
+import { usePaystackPayment } from 'react-paystack';
+import { useAppSelector } from '@/store/hooks';
+import { notification } from 'antd';
+import axios from 'axios';
+import { PaystackProps } from 'react-paystack/dist/types';
 
-const CourseDetails = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType }) => {
+const CourseDetails = ({ open, handleClick, course, type, call }: { call?: any, open: boolean, handleClick: any, course: CourseType, type: string }) => {
+  const user = useAppSelector((state) => state.value);
+  const [api, contextHolder] = notification.useNotification();
+  // console.log(course)
+
+  const enroll = () => {
+    try {
+      axios.post(`courses/enroll/${course._id}`, {
+        id: user.id
+      })
+        .then(function (response) {
+          console.log(response.data)
+          call()
+          api.open({
+            message: 'Enrolled Successfully'
+          });
+          handleClick()
+        })
+        .catch(err => {
+          api.open({
+            message: err.response.data.message
+          });
+          // console.log(err.response.data.message)
+        })
+    } catch (e: any) {
+      // console.log(e.response.data.message)
+    }
+  }
+
+  const config: PaystackProps = {
+    reference: (new Date()).getTime().toString(),
+    email: user.email,
+    amount: course.fee * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    publicKey: 'pk_test_4611aa9c08b8fc8025407dbfae5253d0e5796383',
+  };
+
+  const initializePayment = usePaystackPayment(config);
+
+  const onSuccess = async () => {
+    console.log("success")
+    enroll()
+  };
+
+  const onClose = () => {
+    console.log('closed')
+  }
+
+
   return (
     open && <div>
+      {contextHolder}
+
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
       <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 w-[80%] mx-auto z-20 bg-[#F8F7F4]'>
         <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 px-12 flex justify-between'>
@@ -32,9 +86,11 @@ const CourseDetails = ({ open, handleClick, course }: { open: boolean, handleCli
                   </div>
                 </div> */}
                 {
-                  course.type === "online" ? <button className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : course.type === "video" ? <button className='bg-primary p-2 my-3 rounded-md px-8'>Enroll Now</button> : course.type === "pdf" ? <button className='bg-primary p-2 my-3 rounded-md px-8'>Buy Now</button> : null
+                  type === "view" ? course.type === "online" ? <button className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : <button className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
+                    : <button onClick={() => { initializePayment(onSuccess, onClose) }} className='bg-primary p-2 my-3 rounded-md px-8'>Enroll Now</button>
                 }
               </div>
+              
             </div>
             <div className='w-[58%]'>
               <p className='text-lg font-bold'>{course.title}</p>
