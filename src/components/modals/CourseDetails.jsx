@@ -1,15 +1,13 @@
 import { CourseType } from '@/types/CourseType';
 import React from 'react';
-import { usePaystackPayment } from 'react-paystack';
+import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import { useAppSelector } from '@/store/hooks';
 import { notification } from 'antd';
 import axios from 'axios';
-import { PaystackProps } from 'react-paystack/dist/types';
 
-const CourseDetails = ({ open, handleClick, course, type, call }: { call?: any, open: boolean, handleClick: any, course: CourseType, type: string }) => {
+const CourseDetails = ({ open, handleClick, course, type, call }) => {
   const user = useAppSelector((state) => state.value);
   const [api, contextHolder] = notification.useNotification();
-  // console.log(course)
 
   const enroll = () => {
     try {
@@ -30,28 +28,25 @@ const CourseDetails = ({ open, handleClick, course, type, call }: { call?: any, 
           });
           // console.log(err.response.data.message)
         })
-    } catch (e: any) {
+    } catch (e) {
       // console.log(e.response.data.message)
     }
   }
 
-  const config: PaystackProps = {
-    reference: (new Date()).getTime().toString(),
-    email: user.email,
-    amount: course.fee * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-    publicKey: 'pk_test_4611aa9c08b8fc8025407dbfae5253d0e5796383',
+  const config = {
+    public_key: 'FLWPUBK-**************************-X',
+    tx_ref: Date.now(),
+    amount: 100,
+    currency: 'NGN',
+    payment_options: 'card,mobilemoney,ussd',
+    customer: {
+      email: 'user@gmail.com',
+      phone_number: '070********',
+      name: 'john doe',
+    },
   };
 
-  const initializePayment = usePaystackPayment(config);
-
-  const onSuccess = async () => {
-    console.log("success")
-    enroll()
-  };
-
-  const onClose = () => {
-    console.log('closed')
-  }
+  const handleFlutterPayment = useFlutterwave(config);
 
 
   return (
@@ -87,10 +82,19 @@ const CourseDetails = ({ open, handleClick, course, type, call }: { call?: any, 
                 </div> */}
                 {
                   type === "view" ? course.type === "online" ? <button className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : <button className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
-                    : <button onClick={() => { initializePayment(onSuccess, onClose) }} className='bg-primary p-2 my-3 rounded-md px-8'>Enroll Now</button>
+                    : <button onClick={() => handleFlutterPayment({
+                      callback: (response) => {
+                        enroll()
+                        console.log(response);
+                        closePaymentModal() // this will close the modal programmatically
+                      },
+                      onClose: () => {
+                        console.log("closed")
+                      },
+                    })} className='bg-primary p-2 my-3 rounded-md px-8'>Enroll Now</button>
                 }
               </div>
-              
+
             </div>
             <div className='w-[58%]'>
               <p className='text-lg font-bold'>{course.title}</p>
