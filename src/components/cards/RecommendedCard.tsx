@@ -1,7 +1,5 @@
 import { CourseType } from '@/types/CourseType';
 import React, { useState } from 'react';
-import { useAppSelector } from '@/store/hooks';
-import { notification } from 'antd';
 import CourseDetails from '../modals/CourseDetails';
 
 const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) => {

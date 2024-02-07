@@ -1,6 +1,7 @@
 import React from 'react';
 import SideNav from './SideNav';
 import axios from 'axios';
+import ChatWidget from './ChatWidget';
 
 const DashboardLayout = ({ children }: { children: any }) => {
   axios.defaults.baseURL = "https://shark-app-2-k9okk.ondigitalocean.app/"
@@ -8,6 +9,7 @@ const DashboardLayout = ({ children }: { children: any }) => {
 
   return (
     <main className='flex'>
+      <ChatWidget />
       <div className='w-[20%]'>
         <SideNav />
       </div>

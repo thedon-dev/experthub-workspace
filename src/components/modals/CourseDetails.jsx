@@ -34,15 +34,15 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
   }
 
   const config = {
-    public_key: 'FLWPUBK-**************************-X',
+    public_key: 'FLWPUBK_TEST-6330f5c973d7919b3b553f52d5a82098-X',
     tx_ref: Date.now(),
     amount: 100,
     currency: 'NGN',
     payment_options: 'card,mobilemoney,ussd',
     customer: {
-      email: 'user@gmail.com',
-      phone_number: '070********',
-      name: 'john doe',
+      email: user.email,
+      // phone_number: '070********',
+      name: user.fullName,
     },
   };
 
