@@ -5,21 +5,26 @@ import React, { useEffect, useState } from 'react';
 import AdmissionCard from '@/components/cards/AdmissionCard';
 import SearchNav from '@/components/SearchNav';
 import axios from 'axios';
+import { useAppSelector } from '@/store/hooks';
 
 const addmissions = () => {
   const [active, setActive] = useState("students")
+  const user = useAppSelector((state) => state.value);
+  const [students, setStudents] = useState([])
 
   const getStudents = () => {
-    axios.get('user/students')
+    axios.put('user/mystudents', {
+      course: user.assignedCourse
+    })
       .then(function (response) {
-        // setReccomended(response.data.courses)
+        setStudents(response.data.students)
         console.log(response.data)
       })
   }
 
   useEffect(() => {
     getStudents()
-  })
+  }, [])
   return (
     <DashboardLayout>
       <SearchNav />
@@ -39,8 +44,9 @@ const addmissions = () => {
           switch (active) {
             case 'students':
               return <div>
-                {/* <AdmissionCard />
-                <AdmissionCard /> */}
+                {
+                  students.map((student, index) => <AdmissionCard role={active} tutor={student} key={index} />)
+                }
               </div>
             case 'mentees':
               return <div>

@@ -85,14 +85,14 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
   return (
     <div>
       <div className='flex border border-[#1E1E1E80] p-3 rounded-md my-3 flex justify-between'>
-        <img src="/images/user.png" alt="" />
-        <div className='w-40'>
-          <p className='font-medium text-sm'>{tutor.fullname}</p>
-          <p className='text-xs'>Software Engineer</p>
+        <img src={tutor.profilePicture ? tutor.profilePicture : "/images/user.png"} className='w-10 h-10 rounded-full object-cover' alt="" />
+        <div className='w-52'>
+          <p className='font-medium text-sm capitalize'>{tutor.fullname}</p>
+          <p className='text-xs'>{tutor.email}</p>
         </div>
-        <div>
+        <div className='w-52'>
           <p className='text-xs'>Course</p>
-          <p className=' text-sm'>Data Analysis</p>
+          <p className=' text-sm'>{tutor.course}</p>
         </div>
         <p className='text-sm text-[#0BC01E] my-auto font-medium'>Completed</p>
         {pathname.includes("applicant") ? <button className='text-primary text-sm'>Send Message</button> : <div className='my-auto'>

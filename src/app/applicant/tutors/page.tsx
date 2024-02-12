@@ -5,12 +5,16 @@ import SearchNav from '@/components/SearchNav';
 import AdmissionCard from '@/components/cards/AdmissionCard';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useAppSelector } from '@/store/hooks';
 
 const tutor = () => {
   const [instructors, setInstructors] = useState([])
+  const user = useAppSelector((state) => state.value);
 
   const getTutors = () => {
-    axios.get('user/instructors')
+    axios.put('user/myinstructors', {
+      course: user.assignedCourse
+    })
       .then(function (response) {
         setInstructors(response.data.instructors)
         console.log(response.data)
@@ -25,7 +29,7 @@ const tutor = () => {
       <SearchNav />
       <section className='m-4'>
         <p className='text-lg my-3 font-medium'>Training Providers</p>
-        {instructors.map((tutor) => <AdmissionCard tutor={tutor} />)}
+        {instructors.map((tutor, index) => <AdmissionCard role='mentors' tutor={tutor} key={index} />)}
       </section>
     </DashboardLayout>
   );

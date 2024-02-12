@@ -41,7 +41,6 @@ const adminDashboard = () => {
 
   ];
   const [courses, setCourses] = useState([])
-  const [reccomended, setReccomended] = useState([])
   const [students, setStudents] = useState([])
   const [tutors, setTutors] = useState([])
 
@@ -67,13 +66,6 @@ const adminDashboard = () => {
       })
   }
 
-  const getReccomended = async () => {
-    axios.get("courses/recommended-courses")
-      .then(function (response) {
-        setReccomended(response.data.courses)
-        // console.log(response.data)
-      })
-  }
   useEffect(() => {
     getCourses()
     getStudents()
@@ -121,7 +113,7 @@ const adminDashboard = () => {
         <div className='flex flex-wrap justify-between'>
           {
             courses.length >= 1 ?
-              courses.slice(0, 6).map((course) => <CoursesCard course={course} />) : <div>No Assigned course!</div>
+              courses.slice(0, 6).map((course) => <CoursesCard course={course} />) : <div>No course yet!</div>
           }
         </div>
       </section>
