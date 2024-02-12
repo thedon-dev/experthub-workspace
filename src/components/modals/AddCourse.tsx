@@ -137,7 +137,24 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
                       <div className='flex justify-between my-1'>
                         <div className='w-[48%]'>
                           <label className='text-sm font-medium my-1'>Course Category</label>
-                          <input onChange={e => setCategory(e.target.value)} value={category} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                          <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                            <option value="Virtual Assistant">Virtual Assistant</option>
+                            <option value="Product Management">Product Management</option>
+                            <option value="Cybersecurity">Cybersecurity </option>
+                            <option value="Software Development">Software Development</option>
+                            <option value="AI / Machine Learning">AI / Machine Learning</option>
+                            <option value="Data Analysis & Visualisation">Data Analysis & Visualisation</option>
+                            <option value="Story Telling">Story Telling</option>
+                            <option value="Animation">Animation</option>
+                            <option value="Cloud Computing">Cloud Computing</option>
+                            <option value="Dev Ops">Dev Ops</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                            <option value="Journalism">Journalism</option>
+                            <option value="Game development">Game development</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="Digital Marketing">Digital Marketing</option>
+                            <option value="Advocacy">Advocacy</option>
+                          </select>
                         </div>
                         <div className='w-[48%]'>
                           <label className='text-sm font-medium my-1'>Privacy</label>
