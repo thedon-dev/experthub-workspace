@@ -42,6 +42,8 @@ const adminDashboard = () => {
   ];
   const [courses, setCourses] = useState([])
   const [reccomended, setReccomended] = useState([])
+  const [students, setStudents] = useState([])
+  const [tutors, setTutors] = useState([])
 
   const getCourses = async () => {
     axios.get("courses/all")
@@ -50,6 +52,21 @@ const adminDashboard = () => {
         // console.log(response.data)
       })
   }
+  const getStudents = () => {
+    axios.get('user/students')
+      .then(function (response) {
+        setStudents(response.data.students)
+        console.log(response.data)
+      })
+  }
+  const getTutors = () => {
+    axios.get('user/instructors')
+      .then(function (response) {
+        setTutors(response.data.instructors)
+        console.log(response.data)
+      })
+  }
+
   const getReccomended = async () => {
     axios.get("courses/recommended-courses")
       .then(function (response) {
@@ -59,7 +76,8 @@ const adminDashboard = () => {
   }
   useEffect(() => {
     getCourses()
-    getReccomended()
+    getStudents()
+    getTutors()
   }, [])
   return (
     <DashboardLayout>
@@ -82,10 +100,10 @@ const adminDashboard = () => {
         </div>
       </section>
       <section className='p-4 flex justify-between'>
-        <StatCard title='Total No. of Assigned Courses' count={"40"} bg='#27C2D6' img='clock-line' />
-        <StatCard title='My Students' count={"40"} bg='#DC9F08' img='ic_outline-assessment' />
-        <StatCard title='My Graduates' count={"40"} bg='#53C48C' img='game-icons_progression' />
-        <StatCard title='My Mentees' count={"40"} bg='#7E34C9' img='ph_chalkboard-teacher' />
+        <StatCard title='Total No. of Courses' count={courses.length} bg='#27C2D6' img='clock-line' />
+        <StatCard title='Total No. of Admissions' count={students.length} bg='#DC9F08' img='ic_outline-assessment' />
+        <StatCard title='Graduates/Experts' count={"40"} bg='#53C48C' img='game-icons_progression' />
+        <StatCard title='Training Providers' count={tutors.length} bg='#7E34C9' img='ph_chalkboard-teacher' />
       </section>
       <section className='m-2 p-3 shadow-md'>
         <div className='text-sm flex justify-between'>
