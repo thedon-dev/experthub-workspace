@@ -1,33 +1,14 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import { usePathname } from 'next/navigation';
-
-// const items: MenuProps['items'] = [
-//   {
-//     label: 'Send Assessment',
-//     key: '1',
-//   },
-//   {
-//     label: 'Send Message',
-//     key: '2',
-//   },
-//   {
-//     label: 'Assign Course',
-//     key: '3',
-//   },
-//   {
-//     label: 'View Account',
-//     key: '4',
-//   },
-// ];
-
-
+import AssignCourse from '../modals/AssignCourse';
 
 
 const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
+  const [assign, setAssign] = useState(false)
   const pathname = usePathname()
   const items: MenuProps['items'] = [
     ...(role === 'students' ? [{
@@ -39,7 +20,9 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       key: '2',
     },
     {
-      label: 'Assign Course',
+      label: (
+        <p onClick={() => setAssign(true)} >Assign Course</p>
+      ),
       key: '3',
     },
     {
@@ -67,7 +50,9 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         key: '2',
       },
       {
-        label: 'Assign Course',
+        label: (
+          <p onClick={() => setAssign(true)} >Assign Course</p>
+        ),
         key: '3',
       },
       {
@@ -105,6 +90,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         </div>}
 
       </div>
+      <AssignCourse open={assign} handleClick={() => setAssign(false)} studentId={tutor.studentId || tutor.id} />
     </div>
   );
 };

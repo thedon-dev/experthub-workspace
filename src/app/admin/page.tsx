@@ -117,20 +117,6 @@ const adminDashboard = () => {
           }
         </div>
       </section>
-      {/* <section className='m-2 p-3 shadow-md'>
-        <div className='text-sm my-3 flex justify-between'>
-          <p className='font-bold text-base'>Recommended for you</p>
-          <p className='text-[#DC9F08] text-sm'>VIEW ALL</p>
-        </div>
-        <div className='flex flex-wrap justify-between'>
-          {
-            reccomended.map((course) => <RecommendedCard course={course} />)
-          }
-          <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard />
-        </div>
-      </section> */}
       <AddCourse open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
     </DashboardLayout>

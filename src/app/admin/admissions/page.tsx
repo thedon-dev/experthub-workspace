@@ -37,7 +37,7 @@ const addmissions = () => {
       <section className='m-4'>
         <div className='flex justify-between w-[40%]'>
           <div onClick={() => setActive("students")} className={active === "students" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
-            <p className='font-medium text-lg'>My Students</p>
+            <p className='font-medium text-lg'>Students</p>
           </div>
           <div onClick={() => setActive("mentors")} className={active === "mentors" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
             <p className='font-medium text-lg'>Training Providers</p>
