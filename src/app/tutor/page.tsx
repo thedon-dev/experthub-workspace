@@ -95,7 +95,7 @@ const tutor = () => {
         <div className='flex flex-wrap justify-between'>
           {
             courses.length >= 1 ?
-              courses.slice(0, 6).map((course, index) => <CoursesCard course={course} key={index} />) : <div>No Assigned course!</div>
+              courses.slice(0, 6).map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard course={course} /></div>) : <div>No Assigned course!</div>
           }
         </div>
       </section>

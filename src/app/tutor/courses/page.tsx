@@ -140,10 +140,8 @@ const courses = () => {
       <section className='m-2 p-3'>
         <p className='font-bold text-sm my-2'>{user.assignedCourse}</p>
         <div className='flex flex-wrap justify-between'>
-          {courses.map((course, index) => <CoursesCard course={course} key={index} />)}
-          {/* <CoursesCard />
-          <CoursesCard />
-          <CoursesCard /> */}
+          {courses.map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard course={course} /></div>)}
+
         </div>
       </section>
       <section className='m-4 w-[90%]'>

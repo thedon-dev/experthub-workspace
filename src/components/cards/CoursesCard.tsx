@@ -3,7 +3,7 @@ import { Progress } from 'antd';
 
 const CoursesCard = ({ course }: { course: any }) => {
   return (
-    <div className="p-2 lg:w-[32%] shadow-md my-3 rounded-md bg-white">
+    <div className="p-2 w-full shadow-md my-3 rounded-md bg-white">
       <img className="rounded-md w-full h-44 object-cover" src={course.thumbnail} alt="" />
       <h3 className="font-medium my-3">{course.title} </h3>
       <p className='text-xs'>{course.about.substring(0, 50)}...</p>
