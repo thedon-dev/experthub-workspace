@@ -7,6 +7,7 @@ type UserState = {
     fullName: String
     id: string
     email: string
+    assignedCourse: string
   };
 };
 

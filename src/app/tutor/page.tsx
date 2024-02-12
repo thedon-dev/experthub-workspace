@@ -12,6 +12,7 @@ import AddCourse from '@/components/modals/AddCourse';
 import AddResources from '@/components/modals/AddResources';
 import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
+import Link from 'next/link';
 
 const tutor = () => {
   const user = useAppSelector((state) => state.value);
@@ -40,25 +41,17 @@ const tutor = () => {
 
   ];
   const [courses, setCourses] = useState([])
-  const [reccomended, setReccomended] = useState([])
 
   const getCourses = async () => {
-    axios.get("courses/all")
+    axios.get(`courses/category/${user.assignedCourse}`)
       .then(function (response) {
-        // setCourses(response.data.courses)
-        // console.log(response.data)
-      })
-  }
-  const getReccomended = async () => {
-    axios.get("courses/recommended-courses")
-      .then(function (response) {
-        setReccomended(response.data.courses)
+        setCourses(response.data.courses)
         console.log(response.data)
       })
   }
+
   useEffect(() => {
     getCourses()
-    getReccomended()
   }, [])
   return (
     <DashboardLayout>
@@ -97,29 +90,15 @@ const tutor = () => {
               </button>
             </Dropdown>
           </div>
-          <p className='text-[#DC9F08]'>VIEW ALL</p>
+          <Link href={'/tutor/courses'}><p className='text-[#DC9F08]'>VIEW ALL</p></Link>
         </div>
         <div className='flex flex-wrap justify-between'>
           {
             courses.length >= 1 ?
-              courses.map((course) => <CoursesCard course={course} />) : <div>No Assigned course!</div>
+              courses.slice(0, 6).map((course, index) => <CoursesCard course={course} key={index} />) : <div>No Assigned course!</div>
           }
         </div>
       </section>
-      {/* <section className='m-2 p-3 shadow-md'>
-        <div className='text-sm my-3 flex justify-between'>
-          <p className='font-bold text-base'>Recommended for you</p>
-          <p className='text-[#DC9F08] text-sm'>VIEW ALL</p>
-        </div>
-        <div className='flex flex-wrap justify-between'>
-          {
-            reccomended.map((course) => <RecommendedCard course={course} />)
-          }
-          <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard />
-        </div>
-      </section> */}
       <AddCourse open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
     </DashboardLayout>

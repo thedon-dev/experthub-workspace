@@ -66,7 +66,7 @@ const applicant = () => {
         <div className='text-sm flex justify-between'>
           <div className=' w-[40%]'>
             <h4 className='text-lg font-medium'>Continue learning</h4>
-            <p className='my-2'>Your Courses</p>
+            <p className='my-2 text-base'>{user.assignedCourse}</p>
 
           </div>
           <p onClick={() => setView(view === 3 ? courses.length : 3)} className='text-[#DC9F08] cursor-pointer mt-auto'>VIEW {view === 3 ? "ALL" : "LESS"}</p>
@@ -76,7 +76,6 @@ const applicant = () => {
           {/* <ApplicantCourses />
           <ApplicantCourses />
           <ApplicantCourses /> */}
-
         </div>
       </section>
       <section className='m-4'>

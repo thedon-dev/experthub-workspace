@@ -3,16 +3,19 @@
 import CoursesCard from '@/components/cards/CoursesCard';
 import DashboardLayout from '@/components/DashboardLayout';
 import RecommendedCard from '@/components/cards/RecommendedCard';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import AddResources from '@/components/modals/AddResources';
 import AddCourse from '@/components/modals/AddCourse';
+import { useAppSelector } from '@/store/hooks';
+import axios from 'axios';
 
 
 const courses = () => {
+  const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
   var settings = {
@@ -73,6 +76,19 @@ const courses = () => {
     },
 
   ];
+  const [courses, setCourses] = useState([])
+
+  const getCourses = async () => {
+    axios.get(`courses/category/${user.assignedCourse}`)
+      .then(function (response) {
+        setCourses(response.data.courses)
+        console.log(response.data)
+      })
+  }
+
+  useEffect(() => {
+    getCourses()
+  }, [])
 
   return (
     <DashboardLayout>
@@ -122,8 +138,9 @@ const courses = () => {
         </div>
       </section>
       <section className='m-2 p-3'>
-        <p className='font-bold text-sm my-2'>Data Analytics</p>
+        <p className='font-bold text-sm my-2'>{user.assignedCourse}</p>
         <div className='flex flex-wrap justify-between'>
+          {courses.map((course, index) => <CoursesCard course={course} key={index} />)}
           {/* <CoursesCard />
           <CoursesCard />
           <CoursesCard /> */}
@@ -134,40 +151,46 @@ const courses = () => {
         <div className='flex justify-between'>
           <div className='w-[62%]'>
             <Slider {...settings}>
-              <div className=''>
-                <div className='p-3 rounded-md bg-white'>
-                  <img className='rounded-md w-full' src="/images/card.png" alt="" />
-                </div>
-                <div className='p-1'>
-                  <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p>
-                  <h4 className='text-xl my-3'>Design Systems for Websites
-                    with Figma</h4>
-                  <p className='text-sm'>Learn how to build and design websites
-                    using Figma...</p>
-                </div>
-              </div>
-              <div className=''>
-                <div className='p-3 rounded-md bg-white'>
-                  <img className='rounded-md w-full' src="/images/card.png" alt="" />
-                </div>
-                <div className='p-1'>
-                  <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p>
-                  <h4 className='text-xl my-3'>Design Systems for Websites
-                    with Figma</h4>
-                  <p className='text-sm'>Learn how to build and design websites
-                    using Figma...</p>
+              <div className='p-1'>
+                <div className=''>
+                  <div className='p-3 rounded-md bg-white'>
+                    <img className='rounded-md w-full' src="/images/card.png" alt="" />
+                  </div>
+                  <div className='p-1'>
+                    <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p>
+                    <h4 className='text-xl my-3'>Design Systems for Websites
+                      with Figma</h4>
+                    <p className='text-sm'>Learn how to build and design websites
+                      using Figma...</p>
+                  </div>
                 </div>
               </div>
-              <div className=''>
-                <div className='p-3 rounded-md bg-white'>
-                  <img className='rounded-md w-full' src="/images/card.png" alt="" />
+              <div className='p-1'>
+                <div className=''>
+                  <div className='p-3 rounded-md bg-white'>
+                    <img className='rounded-md w-full' src="/images/card.png" alt="" />
+                  </div>
+                  <div className='p-1'>
+                    <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p>
+                    <h4 className='text-xl my-3'>Design Systems for Websites
+                      with Figma</h4>
+                    <p className='text-sm'>Learn how to build and design websites
+                      using Figma...</p>
+                  </div>
                 </div>
-                <div className='p-1'>
-                  <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p>
-                  <h4 className='text-xl my-3'>Design Systems for Websites
-                    with Figma</h4>
-                  <p className='text-sm'>Learn how to build and design websites
-                    using Figma...</p>
+              </div>
+              <div className='p-1'>
+                <div className=''>
+                  <div className='p-3 rounded-md bg-white'>
+                    <img className='rounded-md w-full' src="/images/card.png" alt="" />
+                  </div>
+                  <div className='p-1'>
+                    <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p>
+                    <h4 className='text-xl my-3'>Design Systems for Websites
+                      with Figma</h4>
+                    <p className='text-sm'>Learn how to build and design websites
+                      using Figma...</p>
+                  </div>
                 </div>
               </div>
             </Slider>
@@ -217,17 +240,7 @@ const courses = () => {
         <img className='w-52 h-52 absolute -right-10 top-10' src="/images/image_19.png" alt="" />
 
       </section>
-      <section className='m-2 p-3 shadow-md'>
-        <div className='text-sm mb-3 flex justify-between'>
-          <p className='font-medium text-lg text-base'>Recommended for you</p>
-          <p className='text-[#DC9F08] text-sm'>VIEW ALL</p>
-        </div>
-        <div className='flex flex-wrap justify-between'>
-          {/* <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard /> */}
-        </div>
-      </section>
+
       <AddCourse open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
     </DashboardLayout>
