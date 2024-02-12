@@ -121,8 +121,8 @@ const courses = () => {
               <p className='font-bold mt-4'>{course.category}</p>
               <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] my-2'>
                 <Slider {...settings}>
-                  {course.courses.map((item: any, index: React.Key | null | undefined) => <div className='p-1 w-full'>
-                    <CoursesCard key={index} course={item} />
+                  {course.courses.map((item: any, index: React.Key | null | undefined) => <div key={index} className='p-1 w-full'>
+                    <CoursesCard course={item} />
                   </div>)}
                 </Slider>
               </div>

@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Progress } from 'antd';
+import { usePathname } from 'next/navigation';
+import CourseDetails from '../modals/CourseDetails';
 
 const CoursesCard = ({ course }: { course: any }) => {
+  const pathname = usePathname()
+  const [open, setOpen] = useState(false)
+
   return (
     <div className="p-2 w-full shadow-md my-3 rounded-md bg-white">
       <img className="rounded-md w-full h-44 object-cover" src={course.thumbnail} alt="" />
-      <h3 className="font-medium my-3">{course.title} </h3>
+      <h3 className="font-medium my-3">{course.title} {pathname.includes("courses") ? <button onClick={() => setOpen(true)} className='bg-primary p-2 rounded-md'>
+        {course.type === 'online' ? 'Join Live' : course.type}</button> : null}  </h3>
       <p className='text-xs'>{course.about.substring(0, 50)}...</p>
       <div className='flex justify-between my-3'>
         <div>
@@ -23,6 +29,7 @@ const CoursesCard = ({ course }: { course: any }) => {
 
         </div>
       </div>
+      {/* <CourseDetails course={course} open={open} call={null} type='view' handleClick={() => setOpen(false)} /> */}
     </div>
   );
 };
