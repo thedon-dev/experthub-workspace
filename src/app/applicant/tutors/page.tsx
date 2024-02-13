@@ -29,7 +29,7 @@ const tutor = () => {
       <SearchNav />
       <section className='m-4'>
         <p className='text-lg my-3 font-medium'>Training Providers</p>
-        {instructors.map((tutor, index) => <AdmissionCard role='mentors' tutor={tutor} key={index} />)}
+        {instructors.length > 0 ? instructors.map((tutor, index) => <AdmissionCard role='mentors' tutor={tutor} key={index} />) : <p>No Instructors available!</p>}
       </section>
     </DashboardLayout>
   );

@@ -17,7 +17,7 @@ const applicant = () => {
   const [view, setView] = useState(3)
 
   const getRecommended = async () => {
-    await axios.get('courses/recommended-courses')
+    await axios.get(`courses/recommended-courses/${user.id}`)
       .then(function (response) {
         setReccomended(response.data.courses)
         // console.log(response.data)

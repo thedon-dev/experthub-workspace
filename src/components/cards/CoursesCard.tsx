@@ -29,7 +29,7 @@ const CoursesCard = ({ course }: { course: any }) => {
 
         </div>
       </div>
-      {/* <CourseDetails course={course} open={open} call={null} type='view' handleClick={() => setOpen(false)} /> */}
+      <CourseDetails course={course} open={open} call={null} type='view' handleClick={() => setOpen(false)} />
     </div>
   );
 };

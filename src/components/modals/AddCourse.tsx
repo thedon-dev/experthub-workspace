@@ -86,13 +86,13 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
         <div className='flex justify-between mx-12 my-4'>
           <div className='w-[48%]'>
             <div>
-              <p className='text-sm font-medium my-1'>Course Thumbnail</p>
-              <button className='border border-[#1E1E1ED9] p-2 my-1 rounded-md font-medium w-full' onClick={() => uploadRef.current?.click()}>
-                <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
-                <p> Add course</p></button>
+              <p className='text-sm font-medium my-1'>Course Image</p>
+              {image ? <img onClick={() => uploadRef.current?.click()} src={image} className='w-full h-40' alt="" /> :
+                <button className='border border-[#1E1E1ED9] p-2 my-1 rounded-md font-medium w-full' onClick={() => uploadRef.current?.click()}>
+                  <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
+                  <p> Add course</p></button>}
             </div>
             <div className='flex my-1'>
-              {image && <img src={image} className='w-12 h-10' alt="" />}
             </div>
             <input
               onChange={handleImage}
@@ -104,12 +104,14 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
               multiple={false}
             />
 
-            <div>
-              <p className='text-sm font-medium my-1'>Course Content</p>
-              <button className='border border-[#1E1E1ED9] h-32 p-2 my-1 rounded-md font-medium w-full' onClick={() => uploadRef.current?.click()}>
-                <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
-                <p> Click to upload</p></button>
-            </div>
+            {
+              type === 'pdf' && <div>
+                <p className='text-sm font-medium my-1'>Course Content</p>
+                <button className='border border-[#1E1E1ED9] h-32 p-2 my-1 rounded-md font-medium w-full' onClick={() => uploadRef.current?.click()}>
+                  <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
+                  <p> Click to upload</p></button>
+              </div>
+            }
             {/* <Dragger {...props}>
               <div className=''>
                 <img src="/images/icons/upload.svg" className='mx-auto' alt="" />

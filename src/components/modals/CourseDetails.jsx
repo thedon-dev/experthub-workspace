@@ -64,11 +64,11 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
               <img src={course.thumbnail} className='w-full h-52 object-cover' alt="" />
               <div className='p-4'>
                 <p className='font-medium text-base'>{course.title}</p>
-                {/* <div className='my-4'>
+                <div className='my-4'>
                   <p className='font-medium'>The course includes</p>
                   <div className='flex my-1'>
                     <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
-                    <p className='text-sm'>2 learning hours</p>
+                    <p className='text-sm'>Learning hours</p>
                   </div>
                   <div className='flex my-1'>
                     <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
@@ -78,19 +78,23 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
                     <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
                     <p className='text-sm'>Certificate of completion</p>
                   </div>
-                </div> */}
+                </div>
                 {
-                  type === "view" ? course.type === "online" ? <button className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : <button className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
-                    : <button onClick={() => handleFlutterPayment({
-                      callback: (response) => {
-                        enroll()
-                        console.log(response);
-                        closePaymentModal() // this will close the modal programmatically
-                      },
-                      onClose: () => {
-                        console.log("closed")
-                      },
-                    })} className='bg-primary p-2 my-3 rounded-md px-8'>Enroll Now</button>
+                  type === "view" ? course.type === "online" ?
+                    <a href={user.role === 'applicant' ? course.joinMeetingUrl : course.startMeetingUrl}> <button className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> </a> :
+                    <button className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
+                    : <button onClick={() => {
+                      course.fee === 0 ? enroll() : handleFlutterPayment({
+                        callback: (response) => {
+                          enroll()
+                          console.log(response);
+                          closePaymentModal() // this will close the modal programmatically
+                        },
+                        onClose: () => {
+                          console.log("closed")
+                        },
+                      })
+                    }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : "Enroll Now"}</button>
                 }
               </div>
 
@@ -100,6 +104,9 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
               {/* <p className='my-2 text-sm font-medium'>This great online course will equip you with the knowledge and basic skills
                 needed to design vector graphics using Figma.</p> */}
               <p className='text-sm'>{course.about}</p>
+              <div className='text-center'>
+                {type === "view" && course.type === 'pdf' ? <button className='bg-primary p-1 mx-auto my-3 rounded-md px-8'>Download/Read</button> : null}
+              </div>
             </div>
           </div>
         </div>
