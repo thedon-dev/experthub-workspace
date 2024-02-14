@@ -81,7 +81,7 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
                 </div>
                 {
                   type === "view" ? course.type === "online" ?
-                    <a href={user.role === 'applicant' ? course.joinMeetingUrl : course.startMeetingUrl}> <button className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> </a> :
+                    <a target='_blank' href={user.role === 'applicant' ? course.joinMeetingUrl : course.startMeetingUrl}> <button className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> </a> :
                     <button className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
                     : <button onClick={() => {
                       course.fee === 0 ? enroll() : handleFlutterPayment({

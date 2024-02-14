@@ -20,7 +20,7 @@ const applicant = () => {
     await axios.get(`courses/recommended-courses/${user.id}`)
       .then(function (response) {
         setReccomended(response.data.courses)
-        // console.log(response.data)
+        console.log(response.data)
       })
   }
   const getCourses = async () => {
@@ -96,7 +96,7 @@ const applicant = () => {
         </div>
         <div className='flex flex-wrap justify-between'>
           {
-            reccomended.map((course: any) => <RecommendedCard key={course._id} course={course} call={() => getCourses()} />)
+            reccomended.length > 1 ? reccomended.map((course: any) => <RecommendedCard key={course._id} course={course} call={() => getCourses()} />) : <div>No reccomended courses</div>
           }
           {/* <RecommendedCard />
           <RecommendedCard />
