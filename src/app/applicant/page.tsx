@@ -96,7 +96,7 @@ const applicant = () => {
         </div>
         <div className='flex flex-wrap justify-between'>
           {
-            reccomended.length > 1 ? reccomended.map((course: any) => <RecommendedCard key={course._id} course={course} call={() => getCourses()} />) : <div>No reccomended courses</div>
+            reccomended.length === 0 ? <div>No reccomended courses</div> : reccomended.map((course: any) => <RecommendedCard key={course._id} course={course} call={() => getCourses()} />)
           }
           {/* <RecommendedCard />
           <RecommendedCard />
