@@ -1,12 +1,14 @@
 import { CourseType } from '@/types/CourseType';
+import ZoomMeeting from '../ZoomMeeting';
 import React from 'react';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import { useAppSelector } from '@/store/hooks';
 import { notification } from 'antd';
 import axios from 'axios';
-
+import { useState } from "react"
 const CourseDetails = ({ open, handleClick, course, type, call }) => {
   const user = useAppSelector((state) => state.value);
+  const [joinMeeting, setJoinMeeting] = useState(false)
   const [api, contextHolder] = notification.useNotification();
 
   const enroll = () => {
@@ -50,68 +52,80 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
 
 
   return (
-    open && <div>
-      {contextHolder}
-      <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
-      <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 w-[80%] mx-auto z-20 bg-[#F8F7F4]'>
-        <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 px-12 flex justify-between'>
-          <p className='font-medium'>Course Details</p>
-          <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
-        </div>
-        <div className='py-4 px-10'>
-          <div className='flex justify-between'>
-            <div className='w-[40%]'>
-              <img src={course.thumbnail} className='w-full h-52 object-cover' alt="" />
-              <div className='p-4'>
-                <p className='font-medium text-base'>{course.title}</p>
-                <div className='my-4'>
-                  <p className='font-medium'>The course includes</p>
-                  <div className='flex my-1'>
-                    <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
-                    <p className='text-sm'>Learning hours</p>
-                  </div>
-                  <div className='flex my-1'>
-                    <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
-                    <p className='text-sm'>Course modules/assesments</p>
-                  </div>
-                  <div className='flex my-1'>
-                    <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
-                    <p className='text-sm'>Certificate of completion</p>
-                  </div>
-                </div>
-                {
-                  type === "view" ? course.type === "online" ?
-                    <a target='_blank' href={user.role === 'applicant' ? course.joinMeetingUrl : course.startMeetingUrl}> <button className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> </a> :
-                    <button className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
-                    : <button onClick={() => {
-                      course.fee === 0 ? enroll() : handleFlutterPayment({
-                        callback: (response) => {
-                          enroll()
-                          console.log(response);
-                          closePaymentModal() // this will close the modal programmatically
-                        },
-                        onClose: () => {
-                          console.log("closed")
-                        },
-                      })
-                    }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : "Enroll Now"}</button>
-                }
-              </div>
+    <>
 
-            </div>
-            <div className='w-[58%]'>
-              <p className='text-lg font-bold'>{course.title}</p>
-              {/* <p className='my-2 text-sm font-medium'>This great online course will equip you with the knowledge and basic skills
+      {open && <div>
+        {contextHolder}
+        <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
+
+
+        <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 w-[80%] mx-auto z-20 bg-[#F8F7F4]'>
+          <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 px-12 flex justify-between'>
+            <p className='font-medium'>Course Details</p>
+            <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
+          </div>
+          <div className='py-4 px-10'>
+            <div className='flex justify-between'>
+              <div className='w-[40%]'>
+                <img src={course.thumbnail} className='w-full h-52 object-cover' alt="" />
+                <div className='p-4'>
+                  <p className='font-medium text-base'>{course.title}</p>
+                  <div className='my-4'>
+                    <p className='font-medium'>The course includes</p>
+                    <div className='flex my-1'>
+                      <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
+                      <p className='text-sm'>Learning hours</p>
+                    </div>
+                    <div className='flex my-1'>
+                      <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
+                      <p className='text-sm'>Course modules/assesments</p>
+                    </div>
+                    <div className='flex my-1'>
+                      <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
+                      <p className='text-sm'>Certificate of completion</p>
+                    </div>
+                  </div>
+                  {
+                    type === "view" ? course.type === "online" ?
+                      <button onClick={() => setJoinMeeting(true)} className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> :
+                      <button className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
+                      : <button onClick={() => {
+                        course.fee === 0 ? enroll() : handleFlutterPayment({
+                          callback: (response) => {
+                            enroll()
+                            console.log(response);
+                            closePaymentModal() // this will close the modal programmatically
+                          },
+                          onClose: () => {
+                            console.log("closed")
+                          },
+                        })
+                      }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : "Enroll Now"}</button>
+                  }
+                </div>
+
+              </div>
+              <div className='w-[58%]'>
+                <p className='text-lg font-bold'>{course.title}</p>
+                {/* <p className='my-2 text-sm font-medium'>This great online course will equip you with the knowledge and basic skills
                 needed to design vector graphics using Figma.</p> */}
-              <p className='text-sm'>{course.about}</p>
-              <div className='text-center'>
-                {type === "view" && course.type === 'pdf' ? <button className='bg-primary p-1 mx-auto my-3 rounded-md px-8'>Download/Read</button> : null}
+                <p className='text-sm'>{course.about}</p>
+                <div className='text-center'>
+                  {type === "view" && course.type === 'pdf' ? <button className='bg-primary p-1 mx-auto my-3 rounded-md px-8'>Download/Read</button> : null}
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+
       </div>
-    </div>
+      }
+      {
+        joinMeeting && <ZoomMeeting setJoinMeeting={setJoinMeeting} closeDetail={handleClick} course={course} />
+      }
+    </>
+
   );
 };
 

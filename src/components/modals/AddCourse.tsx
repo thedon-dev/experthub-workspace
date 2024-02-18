@@ -61,7 +61,7 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
       formData.append("strikedFee", striked.toString())
       formData.append("scholarship", "students")
 
-      axios.post(`courses/add-course/${user.id}`,
+      axios.post(`http://127.0.0.1:3002/courses/add-course/${user.id}`,
         formData
       )
         .then(function (response) {
