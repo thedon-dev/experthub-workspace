@@ -12,12 +12,16 @@ import AddResources from '@/components/modals/AddResources';
 import AddCourse from '@/components/modals/AddCourse';
 import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
+import { ResourceType } from '@/types/ResourceType';
+import { CourseType } from '@/types/CourseType';
 
 
 const courses = () => {
   const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
+  const [materials, setMaterials] = useState<ResourceType | []>([])
+
   var settings = {
     dots: true,
     infinite: false,
@@ -76,7 +80,7 @@ const courses = () => {
     },
 
   ];
-  const [courses, setCourses] = useState([])
+  const [courses, setCourses] = useState<CourseType | []>([])
 
   const getCourses = async () => {
     axios.get(`courses/category/${user.assignedCourse}`)
@@ -86,8 +90,18 @@ const courses = () => {
       })
   }
 
+  const getResources = async () => {
+    axios.get(`resources/all`)
+      .then(function (response) {
+        setMaterials(response.data.resource)
+        console.log(response.data)
+      })
+  }
+
+
   useEffect(() => {
     getCourses()
+    getResources()
   }, [])
 
   return (
@@ -140,7 +154,7 @@ const courses = () => {
       <section className='m-2 p-3'>
         <p className='font-bold text-sm my-2'>{user.assignedCourse}</p>
         <div className='flex flex-wrap justify-between'>
-          {courses.map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard course={course} /></div>)}
+          {courses.map((course: CourseType) => <div key={course._id} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>)}
 
         </div>
       </section>
@@ -149,7 +163,21 @@ const courses = () => {
         <div className='flex justify-between'>
           <div className='w-[62%]'>
             <Slider {...settings}>
-              <div className='p-1'>
+              {
+                materials.map((material: ResourceType) => <div key={material._id} className='p-1'>
+                  <div className=''>
+                    <div className='p-3 rounded-md bg-white'>
+                      <img className='rounded-md h-40 object-cover w-full' src={material.image} alt="" />
+                    </div>
+                    <div className='p-1'>
+                      {/* <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p> */}
+                      <h4 className='text-xl my-3'>{material.title}</h4>
+                      <p className='text-sm'>{material.aboutCourse}</p>
+                    </div>
+                  </div>
+                </div>)
+              }
+              {/* <div className='p-1'>
                 <div className=''>
                   <div className='p-3 rounded-md bg-white'>
                     <img className='rounded-md w-full' src="/images/card.png" alt="" />
@@ -162,8 +190,8 @@ const courses = () => {
                       using Figma...</p>
                   </div>
                 </div>
-              </div>
-              <div className='p-1'>
+              </div> */}
+              {/* <div className='p-1'>
                 <div className=''>
                   <div className='p-3 rounded-md bg-white'>
                     <img className='rounded-md w-full' src="/images/card.png" alt="" />
@@ -176,21 +204,7 @@ const courses = () => {
                       using Figma...</p>
                   </div>
                 </div>
-              </div>
-              <div className='p-1'>
-                <div className=''>
-                  <div className='p-3 rounded-md bg-white'>
-                    <img className='rounded-md w-full' src="/images/card.png" alt="" />
-                  </div>
-                  <div className='p-1'>
-                    <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p>
-                    <h4 className='text-xl my-3'>Design Systems for Websites
-                      with Figma</h4>
-                    <p className='text-sm'>Learn how to build and design websites
-                      using Figma...</p>
-                  </div>
-                </div>
-              </div>
+              </div> */}
             </Slider>
           </div>
           <div className='w-[35%] p-4 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
@@ -239,7 +253,7 @@ const courses = () => {
 
       </section>
 
-      <AddCourse open={open} handleClick={() => setOpen(!open)} />
+      <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
     </DashboardLayout>
   );

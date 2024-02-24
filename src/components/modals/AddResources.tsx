@@ -1,6 +1,58 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useRef, useState } from 'react';
 
 const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }) => {
+  const uploadRef = useRef<HTMLInputElement>(null)
+  const [image, setImage] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [file, setFile] = useState<FileList | null>()
+  const [title, setTitle] = useState("")
+  const [about, setAbout] = useState("")
+  const [privacy, setPrivacy] = useState("")
+  const [websiteUrl, setWebsiteUrl] = useState("")
+
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    const files = e.target.files
+    setFile(e.target.files)
+
+    const reader = new FileReader()
+    if (files && files.length > 0) {
+
+      reader.readAsDataURL(files[0])
+      reader.onloadend = () => {
+        if (reader.result) {
+          // const type = files[0].name.substr(files[0].name.length - 3)
+          setImage(reader.result as string)
+        }
+      }
+    }
+  }
+
+  const add = () => {
+    try {
+      setLoading(true)
+      const formData = new FormData()
+      file && formData.append("image", file[0])
+      formData.append("title", title)
+      formData.append("aboutCourse", about)
+      formData.append("privacy", privacy)
+      formData.append("websiteUrl", websiteUrl)
+
+      axios.post(`resources/add-new`,
+        formData
+      )
+        .then(function (response) {
+          console.log(response.data)
+          setLoading(false)
+          handleClick()
+        })
+    } catch (e) {
+      setLoading(false)
+      console.log(e)
+    }
+  }
+
   return (
     open && <div>
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
@@ -10,31 +62,50 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
           <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
         </div>
         <div className='p-10'>
+          <div>
+            <p className='text-sm font-medium my-1'>Resource Image</p>
+            {image ? <img onClick={() => uploadRef.current?.click()} src={image} className='w-full h-40' alt="" /> :
+              <button className='border border-[#1E1E1ED9] p-2 my-1 rounded-md font-medium w-full' onClick={() => uploadRef.current?.click()}>
+                <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
+                <p> Add course</p></button>}
+          </div>
+          <div className='flex my-1'>
+          </div>
+          <input
+            onChange={handleImage}
+            type="file"
+            name="identification"
+            accept="image/*"
+            ref={uploadRef}
+            hidden
+            multiple={false}
+          />
+
           <div className='flex justify-between my-1'>
             <div className='w-[48%]'>
               <label className='text-sm font-medium my-1'>Title of Resources</label>
-              <input type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+              <input onChange={e => setTitle(e.target.value)} value={title} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
             </div>
             <div className='w-[48%]'>
               <label className='text-sm font-medium my-1'>Privacy</label>
-              <select className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+              <select onChange={e => setPrivacy(e.target.value)} value={privacy} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                 <option value=""></option>
               </select>
             </div>
           </div>
           <div className='my-1'>
             <label className='text-sm font-medium my-1'>Website Url/link</label>
-            <input type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+            <input onChange={e => setWebsiteUrl(e.target.value)} value={websiteUrl} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
           </div>
           <div className='my-1'>
             <label className='text-sm font-medium my-1'>About course</label>
-            <textarea className='border rounded-md border-[#1E1E1ED9] w-full h-32 p-2 bg-transparent'></textarea>
+            <textarea onChange={e => setAbout(e.target.value)} value={about} className='border rounded-md border-[#1E1E1ED9] w-full h-32 p-2 bg-transparent'></textarea>
           </div>
           <div>
             <p className='text-sm my-4'>By uploading you agree that this course is a product of you
               and not being forged<input className='ml-2' type="checkbox" /></p>
             <div className='flex'>
-              <button className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Add Course</button>
+              <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? 'loading...' : 'Add Resource'}</button>
               <button onClick={() => handleClick()} className='mx-4'>Cancel</button>
             </div>
           </div>

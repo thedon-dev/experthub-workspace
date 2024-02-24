@@ -15,12 +15,13 @@ const applicant = () => {
   const [reccomended, setReccomended] = useState<CourseType | []>([])
   const [courses, setCourses] = useState<CourseType | []>([])
   const [view, setView] = useState(3)
+  const [instructors, setInstructors] = useState([])
 
   const getRecommended = async () => {
     await axios.get(`courses/recommended-courses/${user.id}`)
       .then(function (response) {
         setReccomended(response.data.courses)
-        console.log(response.data)
+        // console.log(response.data)
       })
   }
   const getCourses = async () => {
@@ -30,10 +31,20 @@ const applicant = () => {
         // console.log(response.data.enrolledCourses)
       })
   }
+  const getTutors = () => {
+    axios.put('user/myinstructors', {
+      course: user.assignedCourse
+    })
+      .then(function (response) {
+        setInstructors(response.data.instructors)
+        // console.log(response.data)
+      })
+  }
 
   useEffect(() => {
     getRecommended()
     getCourses()
+    getTutors()
   }, [])
 
   return (
@@ -52,7 +63,7 @@ const applicant = () => {
             <div className='p-3 h-10 w-10 my-auto rounded-full shadow-md'>
               <img src="/images/icons/notification.svg" alt="" />
             </div>
-            <img className='h-10 w-10 my-auto' src="/images/user.png" alt="" />
+            <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture} alt="" />
           </div>
         </div>
       </section>
@@ -60,7 +71,7 @@ const applicant = () => {
         <StatCard title='Total Learning Hours' count={"0 hrs 0 mins"} bg='#27C2D6' img='clock-line' />
         <StatCard title='Module Assessments' count={"0"} bg='#DC9F08' img='ic_outline-assessment' />
         <StatCard title='Progress' count={"0%"} bg='#53C48C' img='game-icons_progression' />
-        <StatCard title='Training Providers' count={"0"} bg='#7E34C9' img='ph_chalkboard-teacher' />
+        <StatCard title='Training Providers' count={instructors.length} bg='#7E34C9' img='ph_chalkboard-teacher' />
       </section>
       <section className='m-3 p-3 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
         <div className='text-sm flex justify-between'>

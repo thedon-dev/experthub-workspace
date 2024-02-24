@@ -2,10 +2,28 @@
 
 
 import DashboardLayout from '@/components/DashboardLayout';
-import React from 'react';
+import { ResourceType } from '@/types/ResourceType';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 
 const archive = () => {
+  const [materials, setMaterials] = useState<ResourceType | []>([])
+
+  const getResources = async () => {
+    axios.get(`resources/all`)
+      .then(function (response) {
+        setMaterials(response.data.resource)
+        console.log(response.data)
+      })
+  }
+
+
+  useEffect(() => {
+    getResources()
+  }, [])
+
+
   var settings = {
     dots: true,
     infinite: false,
@@ -92,7 +110,21 @@ const archive = () => {
         <div className='flex justify-between'>
           <div className='w-[62%]'>
             <Slider {...settings}>
-              <div className=''>
+              {
+                materials.map((material: ResourceType) => <div key={material._id} className='p-1'>
+                  <div className=''>
+                    <div className='p-3 rounded-md bg-white'>
+                      <img className='rounded-md h-40 object-cover w-full' src={material.image} alt="" />
+                    </div>
+                    <div className='p-1'>
+                      {/* <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p> */}
+                      <h4 className='text-xl my-3'>{material.title}</h4>
+                      <p className='text-sm'>{material.aboutCourse}</p>
+                    </div>
+                  </div>
+                </div>)
+              }
+              {/* <div className=''>
                 <div className='p-3 rounded-md bg-white'>
                   <img className='rounded-md w-full' src="/images/card.png" alt="" />
                 </div>
@@ -103,8 +135,8 @@ const archive = () => {
                   <p className='text-sm'>Learn how to build and design websites
                     using Figma...</p>
                 </div>
-              </div>
-              <div className=''>
+              </div> */}
+              {/* <div className=''>
                 <div className='p-3 rounded-md bg-white'>
                   <img className='rounded-md w-full' src="/images/card.png" alt="" />
                 </div>
@@ -115,8 +147,8 @@ const archive = () => {
                   <p className='text-sm'>Learn how to build and design websites
                     using Figma...</p>
                 </div>
-              </div>
-              <div className=''>
+              </div> */}
+              {/* <div className=''>
                 <div className='p-3 rounded-md bg-white'>
                   <img className='rounded-md w-full' src="/images/card.png" alt="" />
                 </div>
@@ -127,7 +159,7 @@ const archive = () => {
                   <p className='text-sm'>Learn how to build and design websites
                     using Figma...</p>
                 </div>
-              </div>
+              </div> */}
             </Slider>
           </div>
           <div className='w-[35%] p-4 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
