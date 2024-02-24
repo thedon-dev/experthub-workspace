@@ -1,26 +1,27 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
+import { CourseType } from '@/types/CourseType';
 
 
-const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) => {
+const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
   const user = useAppSelector((state) => state.value);
   const uploadRef = useRef<HTMLInputElement>(null)
   const [active, setActive] = useState(0)
   const [author, setAuthor] = useState("")
-  const [about, setAbout] = useState("")
-  const [startDate, setStartDate] = useState("")
-  const [endDate, setEndDate] = useState("")
-  const [startTime, setStartTime] = useState("")
-  const [endTime, setEndTime] = useState("")
-  const [striked, setStriked] = useState<number>(0)
-  const [fee, setFee] = useState<number>(0)
-  const [duration, setDuration] = useState<number>(0)
-  const [category, setCategory] = useState("")
-  const [privacy, setPrivacy] = useState("")
-  const [type, setType] = useState("")
-  const [title, setTitle] = useState("")
-  const [image, setImage] = useState("")
+  const [about, setAbout] = useState(course?.about || "")
+  const [startDate, setStartDate] = useState(course?.startDate || "")
+  const [endDate, setEndDate] = useState(course?.endDate.toString() || "")
+  const [startTime, setStartTime] = useState(course?.startTime || "")
+  const [endTime, setEndTime] = useState(course?.endTime || "")
+  const [striked, setStriked] = useState<number>(course?.strikedFee || 0)
+  const [fee, setFee] = useState<number>(course?.fee || 0)
+  const [duration, setDuration] = useState<number>(course?.duration || 0)
+  const [category, setCategory] = useState(course?.category || "")
+  const [privacy, setPrivacy] = useState(course?.privacy || "")
+  const [type, setType] = useState(course?.type || "")
+  const [title, setTitle] = useState(course?.title || "")
+  const [image, setImage] = useState(course?.thumbnail || "")
   const [loading, setLoading] = useState(false)
   const [file, setFile] = useState<FileList | null>()
 
@@ -39,6 +40,39 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
           setImage(reader.result as string)
         }
       }
+    }
+  }
+
+  const edit = () => {
+    try {
+      setLoading(true)
+      const formData = new FormData()
+      file && formData.append("image", file[0])
+      formData.append("title", title)
+      formData.append("about", about)
+      formData.append("duration", duration.toString())
+      formData.append("type", type)
+      formData.append("startDate", startDate)
+      formData.append("endDate", endDate)
+      formData.append("startTime", startTime)
+      formData.append("endTime", endTime)
+      formData.append("category", category)
+      formData.append("privacy", privacy)
+      formData.append("fee", fee.toString())
+      formData.append("strikedFee", striked.toString())
+      formData.append("scholarship", "students")
+
+      axios.put(`courses/edit/${course?._id}`,
+        formData
+      )
+        .then(function (response) {
+          console.log(response.data)
+          setLoading(false)
+          handleClick()
+        })
+    } catch (e) {
+      console.log(e)
+
     }
   }
 
@@ -234,7 +268,7 @@ const AddCourse = ({ open, handleClick }: { open: boolean, handleClick: any }) =
                 <p className='text-sm my-4'>By uploading you agree that this course is a product of you
                   and not being forged<input className='ml-2' type="checkbox" /></p>
                 <div className='flex'>
-                  {active === 2 ? <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? "Loading..." : "Add Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
+                  {course === null ? active === 2 ? <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? "Loading..." : "Add Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button> : active === 2 ? <button onClick={() => edit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? "Loading..." : "Edit Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
                   <button onClick={() => handleClick()} className='mx-4'>Cancel</button>
                 </div>
               </div>
