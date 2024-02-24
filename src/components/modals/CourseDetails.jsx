@@ -50,6 +50,10 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
 
   const handleFlutterPayment = useFlutterwave(config);
 
+  function insertAtIndex(str, index) {
+    // console.log(str.slice(0, index) + `f_auto/fl_attachment:${course.title}/` + str.slice(index))
+    return str.slice(0, index) + `fl_attachment/` + str.slice(index);
+  }
 
   return (
     <>
@@ -111,7 +115,7 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
                 needed to design vector graphics using Figma.</p> */}
                 <p className='text-sm'>{course.about}</p>
                 <div className='text-center'>
-                  {type === "view" && course.type === 'pdf' ? <button className='bg-primary p-1 mx-auto my-3 rounded-md px-8'>Download/Read</button> : null}
+                  {type === "view" && course.type === 'pdf' ? <a href={insertAtIndex(course.file, 65)} download target='_blank'> <button className='bg-primary p-1 mx-auto my-3 rounded-md px-8'>Download/Read</button></a> : null}
                 </div>
               </div>
             </div>

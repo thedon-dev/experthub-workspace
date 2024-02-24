@@ -7,6 +7,8 @@ import { CourseType } from '@/types/CourseType';
 const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
   const user = useAppSelector((state) => state.value);
   const uploadRef = useRef<HTMLInputElement>(null)
+  const pdfUploadRef = useRef<HTMLInputElement>(null)
+
   const [active, setActive] = useState(0)
   const [author, setAuthor] = useState("")
   const [about, setAbout] = useState(course?.about || "")
@@ -24,6 +26,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [image, setImage] = useState(course?.thumbnail || "")
   const [loading, setLoading] = useState(false)
   const [file, setFile] = useState<FileList | null>()
+  const [pdf, setPdf] = useState<FileList | null>()
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -41,6 +44,10 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         }
       }
     }
+  }
+
+  const handlePdf = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPdf(e.target.files)
   }
 
   const edit = () => {
@@ -81,6 +88,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
       setLoading(true)
       const formData = new FormData()
       file && formData.append("image", file[0])
+      pdf && formData.append("pdf", pdf[0])
       formData.append("title", title)
       formData.append("about", about)
       formData.append("duration", duration.toString())
@@ -141,11 +149,20 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
             {
               type === 'pdf' && <div>
                 <p className='text-sm font-medium my-1'>Course Content</p>
-                <button className='border border-[#1E1E1ED9] h-32 p-2 my-1 rounded-md font-medium w-full' onClick={() => uploadRef.current?.click()}>
+                <button className='border border-[#1E1E1ED9] h-32 p-2 my-1 rounded-md font-medium w-full' onClick={() => pdfUploadRef.current?.click()}>
                   <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
                   <p> Click to upload</p></button>
               </div>
             }
+            <input
+              onChange={handlePdf}
+              type="file"
+              name="identification"
+              accept=".pdf"
+              ref={pdfUploadRef}
+              hidden
+              multiple={false}
+            />
             {/* <Dragger {...props}>
               <div className=''>
                 <img src="/images/icons/upload.svg" className='mx-auto' alt="" />

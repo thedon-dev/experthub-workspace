@@ -6,7 +6,7 @@ import AddCourse from '../modals/AddCourse';
 import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
 
-const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: Promise<void> }) => {
+const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () => Promise<void> }) => {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [edit, setEdit] = useState(false)
@@ -35,7 +35,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: Pro
   const deleteCourse = async () => {
     axios.delete(`/courses/delete/${course._id}`)
       .then(function (response) {
-        getCourse
+        getCourse()
         console.log(response)
       })
   }

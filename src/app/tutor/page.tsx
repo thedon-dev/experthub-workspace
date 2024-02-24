@@ -95,11 +95,11 @@ const tutor = () => {
         <div className='flex flex-wrap justify-between'>
           {
             courses.length >= 1 ?
-              courses.slice(0, 6).map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard course={course} /></div>) : <div>No Assigned course!</div>
+              courses.slice(0, 6).map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>) : <div>No Assigned course!</div>
           }
         </div>
       </section>
-      <AddCourse open={open} handleClick={() => setOpen(!open)} />
+      <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
     </DashboardLayout>
   );

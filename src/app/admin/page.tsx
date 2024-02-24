@@ -114,7 +114,7 @@ const adminDashboard = () => {
         <div className='flex flex-wrap justify-between'>
           {
             courses.length >= 1 ?
-              courses.slice(0, 6).map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={getCourses()} course={course} /></div>) : <div>No course yet!</div>
+              courses.slice(0, 6).map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>) : <div>No course yet!</div>
           }
         </div>
       </section>
