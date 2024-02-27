@@ -57,7 +57,7 @@ export default function ZoomMeeting({ course, closeDetail }) {
 
     async function getSignature(meetingNumber, role) {
         try {
-            const res = await axios.post(`http://127.0.0.1:3002/courses/get-zoom-signature`,
+            const res = await axios.post(`courses/get-zoom-signature`,
                 {
                     meetingNumber,
                     role
