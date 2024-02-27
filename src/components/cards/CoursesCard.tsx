@@ -5,6 +5,7 @@ import CourseDetails from '../modals/CourseDetails';
 import AddCourse from '../modals/AddCourse';
 import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
+import Share from '../Share';
 
 const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () => Promise<void> }) => {
   const pathname = usePathname()
@@ -27,7 +28,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
     {
       key: '3',
       label: (
-        <p>Share Course</p>
+        <Share course={course} />
       ),
     },
   ];

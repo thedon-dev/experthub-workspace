@@ -80,7 +80,7 @@ const tutor = () => {
             <div className='p-3 h-10 w-10 my-auto rounded-full shadow-md'>
               <img src="/images/icons/notification.svg" alt="" />
             </div>
-            <img className='h-10 w-10 my-auto' src="/images/user.png" alt="" />
+            <img className='h-10 w-10 my-auto rounded-full' src={user.profilePicture} alt="" />
           </div>
         </div>
       </section>

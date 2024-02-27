@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CourseDetails from '../modals/CourseDetails';
 import { CourseType } from '@/types/CourseType';
+import Link from 'next/link';
 
 const ApplicantCourses = ({ course }: { course: CourseType }) => {
   const [open, setOpen] = useState(false)
@@ -9,10 +10,12 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
     <div className=" lg:w-[32%] my-3 ">
       <div className='flex my-2'>
         <img className='w-6 h-6' src="/images/user.png" alt="" />
-        <p className='font-medium ml-3 text-sm'>A course by Evans. D</p>
+        <p className='font-medium ml-3 text-sm'>A course by {course.instructorName}</p>
       </div>
       <div className='bg-white p-2 rounded-md'>
-        <img className="rounded-md object-cover h-40 w-full" src={course.thumbnail} alt="" />
+        <Link href={`/applicant/course?page=${course._id}`}>
+          <img className="rounded-md object-cover h-40 w-full" src={course.thumbnail} alt="" />
+        </Link>
       </div>
       <div className='p-2'>
         <div className='flex justify-between my-2 '>

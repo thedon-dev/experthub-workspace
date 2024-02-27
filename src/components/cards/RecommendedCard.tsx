@@ -11,7 +11,7 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
         <img className='w-full h-20 object-cover rounded-md' src={course.thumbnail} alt="" />
       </div>
       <div className='mx-4 w-full'>
-        <p className='text-primary text-sm'>{course.category}. <span className='text-black'> Evans D</span></p>
+        <p className='text-primary text-sm'>{course.category}. <span className='text-black'> {course.instructorName}</span></p>
         <p className='font-medium'>{course.title}</p>
         <p className='text-sm'>{course.startDate}</p>
       </div>
