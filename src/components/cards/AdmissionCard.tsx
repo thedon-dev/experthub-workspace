@@ -5,14 +5,19 @@ import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import { usePathname } from 'next/navigation';
 import AssignCourse from '../modals/AssignCourse';
+import SendAssesment from '../modals/SendAssesment';
 
 
 const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
   const [assign, setAssign] = useState(false)
+  const [assesment, setAssesment] = useState(false)
   const pathname = usePathname()
+
   const items: MenuProps['items'] = [
     ...(role === 'students' ? [{
-      label: 'Send Assessment',
+      label: (
+        <p onClick={() => setAssesment(true)}>Send Assessment</p>
+      ),
       key: '1',
     },
     {
@@ -91,6 +96,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
 
       </div>
       <AssignCourse open={assign} handleClick={() => setAssign(false)} studentId={tutor.studentId || tutor.id} />
+      <SendAssesment open={assesment} handleClick={() => setAssesment(false)} studentId={tutor.studentId} />
     </div>
   );
 };
