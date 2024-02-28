@@ -2,7 +2,8 @@
 
 import DashboardLayout from '@/components/DashboardLayout';
 import axios from 'axios';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const newAssesment = () => {
   let layout = {
@@ -15,11 +16,13 @@ const newAssesment = () => {
   const [questions, setQuestions] = useState([
     layout
   ])
+  const router = useRouter()
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
   const [file, setFile] = useState<FileList | null>(null)
   const [loading, setLoading] = useState(false)
   const uploadRef = useRef<HTMLInputElement>(null)
+  const page = useSearchParams().get("page")
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -39,19 +42,26 @@ const newAssesment = () => {
     }
   }
 
-
   const handleInputChange = (index: number, field: string, value: string | number) => {
     const updatedObjects = [...questions];
     updatedObjects[index] = { ...updatedObjects[index], [field]: value };
     setQuestions(updatedObjects);
   };
+
+  const getAssesment = async () => {
+    await axios.get(`assessment/single/${page}`)
+      .then(function (response) {
+        // setRepo(response.data.course)
+        // console.log(response.data.myAssesment[0])
+        setTitle(response.data.myAssesment[0].title)
+        setImage(response.data.myAssesment[0].image)
+        setQuestions(response.data.myAssesment[0].assesment)
+      })
+  }
+
   const submit = () => {
     try {
       setLoading(true)
-      // const formData = new FormData()
-      // file && formData.append("image", file[0])
-      // formData.append("title", title)
-      // formData.append("assesment", questions)
       axios.post('assessment/create-assessment',
         {
           title,
@@ -62,12 +72,41 @@ const newAssesment = () => {
         .then(function (response) {
           console.log(response.data)
           setLoading(false)
+          router.push("/tutor/assesment")          
         })
     } catch (e) {
       setLoading(false)
       console.log(e)
     }
   }
+
+  const update = async () => {
+    try {
+      setLoading(true)
+      axios.put(`assessment/edit/${page}`,
+        {
+          title,
+          image,
+          assesment: questions
+        }
+      )
+        .then(function (response) {
+          console.log(response.data)
+          setLoading(false)
+          router.push("/tutor/assesment")
+        })
+    } catch (e) {
+      setLoading(false)
+      console.log(e)
+    }
+  }
+
+  useEffect(() => {
+    if (page !== null) {
+      getAssesment()
+    }
+  }, [])
+
   return (
     <DashboardLayout>
       <div className=''>
@@ -138,7 +177,10 @@ const newAssesment = () => {
             <button onClick={() => setQuestions([...questions, layout])} className='p-2 px-4 bg-[#D9D9D9]'>+ Add</button>
           </div>
           <div className='text-center'>
-            <button onClick={() => submit()} className='p-2 px-10 bg-[#FDC332]'>{loading ? 'loading...' : 'Save'}</button>
+            {
+              page === null ? <button onClick={() => submit()} className='p-2 px-10 bg-[#FDC332]'>{loading ? 'loading...' : 'Save'}</button> : <button onClick={() => update()} className='p-2 px-10 bg-[#FDC332]'>{loading ? 'loading...' : 'Update'}</button>
+
+            }
           </div>
         </div>
       </div>

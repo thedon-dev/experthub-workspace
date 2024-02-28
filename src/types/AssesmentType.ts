@@ -13,7 +13,9 @@ export interface Assessments {
 
 export interface AssesmentElement {
   question:           string;
-  answers:            string[];
+  answerA:            string;
+  answerB:            string;
+  answerC:            string;
   correctAnswerIndex: number;
   _id:                string;
 }

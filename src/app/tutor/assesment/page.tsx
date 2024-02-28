@@ -13,7 +13,7 @@ const assesment = () => {
   const getAssesment = async () => {
     await axios.get(`assessment/get-assessment-questions`)
       .then(function (response) {
-        setAssesment(response.data.assessmentQuestions)
+        setAssesment(response.data.assessmentQuestions.reverse())
         console.log(response.data.assessmentQuestions)
       })
   }
