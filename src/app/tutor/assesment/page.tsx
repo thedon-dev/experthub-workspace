@@ -2,7 +2,7 @@
 
 import AssesmentCard from '@/components/cards/AssesmentCard';
 import DashboardLayout from '@/components/DashboardLayout';
-import { AssesmentType } from '@/types/Assesmentype';
+import { AssesmentType } from '@/types/AssesmentType';
 import axios from 'axios';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
