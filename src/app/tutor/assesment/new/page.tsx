@@ -2,7 +2,7 @@
 
 import DashboardLayout from '@/components/DashboardLayout';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 const newAssesment = () => {
   let layout = {
@@ -19,6 +19,7 @@ const newAssesment = () => {
   const [image, setImage] = useState("")
   const [file, setFile] = useState<FileList | null>(null)
   const [loading, setLoading] = useState(false)
+  const uploadRef = useRef<HTMLInputElement>(null)
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -75,6 +76,25 @@ const newAssesment = () => {
         </div>
         <div className='p-3'>
           <input value={title} onChange={e => setTitle(e.target.value)} placeholder='Enter Assesment Title' type="text" className='p-2 bg-[#D9D9D94D] w-full' />
+          <div>
+            <p className='text-sm font-medium my-1'>Assesment Cover Image </p>
+            {image ? <img onClick={() => uploadRef.current?.click()} src={image} className='w-full h-40' alt="" /> :
+              <button className='border border-[#1E1E1ED9] p-2 my-1 rounded-md font-medium w-full' onClick={() => uploadRef.current?.click()}>
+                <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
+                {/* <p> Add course</p> */}
+              </button>}
+          </div>
+          <div className='flex my-1'>
+          </div>
+          <input
+            onChange={handleImage}
+            type="file"
+            name="identification"
+            accept="image/*"
+            ref={uploadRef}
+            hidden
+            multiple={false}
+          />
         </div>
         <div className='p-3'>
           {questions.map((question, index) => <div key={index} className='bg-[#FFFFFFCC] p-4 my-3 rounded-md'>
