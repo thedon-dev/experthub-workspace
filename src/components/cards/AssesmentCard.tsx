@@ -10,7 +10,7 @@ const AssesmentCard = ({ assesment }: { assesment: any }) => {
         {/* <p className='text-xs my-3'>Gain the basic skills user
           needs, study the basic
           experience</p> */}
-        <Link href={`/tutor/assesment/new?page=${assesment._id}`}>
+        <Link href={`assesment/new?page=${assesment._id}`}>
           <button className='p-2 px-6 rounded-sm bg-primary'>Edit</button>
         </Link>
       </div>
