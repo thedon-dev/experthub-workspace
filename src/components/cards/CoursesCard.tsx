@@ -66,10 +66,10 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
               </button>
             </Dropdown>
           </div>
-          <div className='flex my-auto'>
+          {/* <div className='flex my-auto'>
             <p className='text-xs font-medium w-full'>Overall progress</p>
             <Progress percent={30} size="small" />
-          </div>
+          </div> */}
         </div>
       </div>
       <CourseDetails course={course} open={open} call={null} type='view' handleClick={() => setOpen(false)} />

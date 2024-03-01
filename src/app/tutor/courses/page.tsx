@@ -85,7 +85,7 @@ const courses = () => {
   const getCourses = async () => {
     axios.get(`courses/category/${user.assignedCourse}`)
       .then(function (response) {
-        setCourses(response.data.courses)
+        setCourses(response.data.courses.reverse())
         console.log(response.data)
       })
   }

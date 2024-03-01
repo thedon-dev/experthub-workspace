@@ -86,7 +86,7 @@ const newAssesment = () => {
       axios.put(`assessment/edit/${page}`,
         {
           title,
-          image,
+          // image,
           assesment: questions
         }
       )
