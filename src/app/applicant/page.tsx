@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
+import { AssesmentType } from '@/types/AssesmentType';
 
 const applicant = () => {
   const user = useAppSelector((state) => state.value);
@@ -17,6 +18,15 @@ const applicant = () => {
   const [view, setView] = useState(3)
   const [instructors, setInstructors] = useState([])
 
+  const [assesments, setAssesment] = useState<AssesmentType | []>([])
+
+  const getAssesment = async () => {
+    await axios.get(`assessment/my-assessment/${user.id}`)
+      .then(function (response) {
+        setAssesment(response.data.myAssesment.reverse())
+        // console.log(response.data)
+      })
+  }
   const getRecommended = async () => {
     await axios.get(`courses/recommended-courses/${user.id}`)
       .then(function (response) {
@@ -27,7 +37,7 @@ const applicant = () => {
   const getCourses = async () => {
     await axios.get(`courses/enrolled-courses/${user.id}`)
       .then(function (response) {
-        setCourses(response.data.enrolledCourses)
+        setCourses(response.data.enrolledCourses.reverse())
         // console.log(response.data.enrolledCourses)
       })
   }
@@ -45,6 +55,7 @@ const applicant = () => {
     getRecommended()
     getCourses()
     getTutors()
+    getAssesment()
   }, [])
 
   return (
@@ -69,7 +80,7 @@ const applicant = () => {
       </section>
       <section className='p-4 flex justify-between'>
         <StatCard title='Total Learning Hours' count={"0 hrs 0 mins"} bg='#27C2D6' img='clock-line' />
-        <StatCard title='Module Assessments' count={"0"} bg='#DC9F08' img='ic_outline-assessment' />
+        <StatCard title='Module Assessments' count={assesments.length} bg='#DC9F08' img='ic_outline-assessment' />
         <StatCard title='Progress' count={"0%"} bg='#53C48C' img='game-icons_progression' />
         <StatCard title='Training Providers' count={instructors.length} bg='#7E34C9' img='ph_chalkboard-teacher' />
       </section>

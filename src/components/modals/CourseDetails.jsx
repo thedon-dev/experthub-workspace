@@ -1,15 +1,18 @@
 import { CourseType } from '@/types/CourseType';
 import ZoomMeeting from '../ZoomMeeting';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import { useAppSelector } from '@/store/hooks';
 import { notification } from 'antd';
 import axios from 'axios';
 import { useState } from "react"
+
 const CourseDetails = ({ open, handleClick, course, type, call }) => {
   const user = useAppSelector((state) => state.value);
   const [joinMeeting, setJoinMeeting] = useState(false)
   const [api, contextHolder] = notification.useNotification();
+  const router = useRouter()
 
   const enroll = () => {
     try {
@@ -92,7 +95,7 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
                   {
                     type === "view" ? course.type === "online" ?
                       <button onClick={() => setJoinMeeting(true)} className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> :
-                      <button className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
+                      <button onClick={() => router.push(`/applicant/${course.type}?page=${course._id}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
                       : <button onClick={() => {
                         course.fee === 0 ? enroll() : handleFlutterPayment({
                           callback: (response) => {

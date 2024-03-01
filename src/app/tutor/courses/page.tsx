@@ -86,7 +86,7 @@ const courses = () => {
     axios.get(`courses/category/${user.assignedCourse}`)
       .then(function (response) {
         setCourses(response.data.courses.reverse())
-        console.log(response.data)
+        // console.log(response.data)
       })
   }
 
@@ -94,7 +94,7 @@ const courses = () => {
     axios.get(`resources/all`)
       .then(function (response) {
         setMaterials(response.data.resource)
-        console.log(response.data)
+        // console.log(response.data)
       })
   }
 
