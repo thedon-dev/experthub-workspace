@@ -32,11 +32,10 @@ const assesment = () => {
             <button className='p-2 bg-[#D9D9D9] font-medium px-10'>+ Add Assesmment</button>
           </Link>
         </div>
-        <div className='flex mt-10 justify-between flex-wrap'>
+        <div className='lg:flex mt-10 justify-between flex-wrap'>
           {assesments.map((assesment: AssesmentType) => <AssesmentCard key={assesment._id} assesment={assesment} />)}
           {/* <AssesmentCard />
           <AssesmentCard /> */}
-
         </div>
       </section>
     </DashboardLayout>

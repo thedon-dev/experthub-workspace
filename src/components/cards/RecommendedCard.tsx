@@ -6,7 +6,7 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
   const [open, setOpen] = useState(false)
 
   return (
-    <div className='flex justify-between border p-3 my-3 w-[49%] rounded-md border-[#1E1E1E75]'>
+    <div className='flex justify-between border p-3 my-3 lg:w-[49%] rounded-md border-[#1E1E1E75]'>
       <div className='w-52'>
         <img className='w-full h-20 object-cover rounded-md' src={course.thumbnail} alt="" />
       </div>

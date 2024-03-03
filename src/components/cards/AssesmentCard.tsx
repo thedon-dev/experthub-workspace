@@ -6,7 +6,7 @@ const AssesmentCard = ({ assesment }: { assesment: any }) => {
   const pathname = usePathname()
 
   return (
-    <div className='border w-[48%] my-4 border-[#1E1E1E59] p-4 rounded-md flex justify-between'>
+    <div className='border lg:w-[48%] my-4 border-[#1E1E1E59] p-4 rounded-md flex justify-between'>
       <img className='rounded-md w-1/2 shadow-[26px_0px_32.099998474121094px_0px_#FDC3324D]' src={assesment.image} alt="" />
       <div className='pl-10 w-full'>
         <h4 className='text-xl my-2 font-medium'>{assesment.title}</h4>

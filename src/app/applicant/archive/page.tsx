@@ -107,8 +107,8 @@ const archive = () => {
       </section>
       <section className='m-4 w-[90%]'>
         <p className='font-medium text-lg my-2'>Training Materials</p>
-        <div className='flex justify-between'>
-          <div className='w-[62%]'>
+        <div className='lg:flex justify-between'>
+          <div className='lg:w-[62%]'>
             <Slider {...settings}>
               {
                 materials.map((material: ResourceType) => <div key={material._id} className='p-1'>
@@ -162,7 +162,7 @@ const archive = () => {
               </div> */}
             </Slider>
           </div>
-          <div className='w-[35%] p-4 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
+          <div className='lg:w-[35%] p-4 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
             <div className='flex'>
               <img src="/images/icons/ic_outline-event.svg" alt="" />
               <p className='font-medium ml-2 text-lg text-[#DC9F08]'>Events</p>

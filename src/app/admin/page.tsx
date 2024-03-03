@@ -92,15 +92,15 @@ const adminDashboard = () => {
           </div>
         </div>
       </section>
-      <section className='p-4 flex justify-between'>
+      <section className='p-4 lg:flex justify-between'>
         <StatCard title='Total No. of Courses' count={courses.length} bg='#27C2D6' img='clock-line' />
         <StatCard title='Total No. of Admissions' count={students.length} bg='#DC9F08' img='ic_outline-assessment' />
         <StatCard title='Graduates/Experts' count={"40"} bg='#53C48C' img='game-icons_progression' />
         <StatCard title='Training Providers' count={tutors.length} bg='#7E34C9' img='ph_chalkboard-teacher' />
       </section>
       <section className='m-2 p-3 shadow-md'>
-        <div className='text-sm flex justify-between'>
-          <div className='flex justify-between w-[40%]'>
+        <div className='text-sm lg:flex justify-between'>
+          <div className='flex justify-between lg:w-[40%]'>
             <p className='my-auto'>All Courses</p>
             <Dropdown menu={{ items }} trigger={["click"]}>
               <button className='bg-primary p-2 font-medium text-sm rounded-md'>
@@ -111,7 +111,7 @@ const adminDashboard = () => {
           </div>
           <Link href={'/admin/courses'}><p className='text-[#DC9F08]'>VIEW ALL</p></Link>
         </div>
-        <div className='flex flex-wrap justify-between'>
+        <div className='lg:flex flex-wrap justify-between'>
           {
             courses.length >= 1 ?
               courses.slice(0, 6).map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>) : <div>No course yet!</div>

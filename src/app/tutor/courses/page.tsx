@@ -135,13 +135,13 @@ const courses = () => {
         </div>
       </section>
       <section>
-        <div className='flex p-4'>
+        <div className='lg:flex p-4'>
           <div>
             <p className='font-medium'>Assigned Courses</p>
             <p className='text-sm'>This is the list of courses and modules you
               are taking</p>
           </div>
-          <div className='ml-10'>
+          <div className='lg:ml-10 sm:my-3'>
             <Dropdown menu={{ items }} trigger={["click"]}>
               <button className='bg-primary p-2 font-medium text-sm rounded-md'>
                 + Add training resources
@@ -153,15 +153,15 @@ const courses = () => {
       </section>
       <section className='m-2 p-3'>
         <p className='font-bold text-sm my-2'>{user.assignedCourse}</p>
-        <div className='flex flex-wrap justify-between'>
+        <div className='lg:flex flex-wrap justify-between'>
           {courses.map((course: CourseType) => <div key={course._id} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>)}
 
         </div>
       </section>
       <section className='m-4 w-[90%]'>
         <p className='font-bold text-sm my-2'>Training Materials</p>
-        <div className='flex justify-between'>
-          <div className='w-[62%]'>
+        <div className='lg:flex justify-between'>
+          <div className='lg:w-[62%]'>
             <Slider {...settings}>
               {
                 materials.map((material: ResourceType) => <div key={material._id} className='p-1'>
@@ -207,7 +207,7 @@ const courses = () => {
               </div> */}
             </Slider>
           </div>
-          <div className='w-[35%] p-4 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
+          <div className='lg:w-[35%] p-4 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
             <div className='flex'>
               <img src="/images/icons/ic_outline-event.svg" alt="" />
               <p className='font-medium ml-2 text-lg text-[#DC9F08]'>Events</p>

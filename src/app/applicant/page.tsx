@@ -66,7 +66,7 @@ const applicant = () => {
             <p className='font-medium'>Welcome</p>
             <p className='font-bold capitalize'>{user.fullName}</p>
           </div>
-          <div className='w-1/2 relative'>
+          <div className='sm:hidden w-1/2 relative'>
             <input type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
             <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
           </div>
@@ -78,7 +78,7 @@ const applicant = () => {
           </div>
         </div>
       </section>
-      <section className='p-4 flex justify-between'>
+      <section className='p-4 lg:flex justify-between'>
         <StatCard title='Total Learning Hours' count={"0 hrs 0 mins"} bg='#27C2D6' img='clock-line' />
         <StatCard title='Module Assessments' count={assesments.length} bg='#DC9F08' img='ic_outline-assessment' />
         <StatCard title='Progress' count={"0%"} bg='#53C48C' img='game-icons_progression' />
@@ -86,7 +86,7 @@ const applicant = () => {
       </section>
       <section className='m-3 p-3 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
         <div className='text-sm flex justify-between'>
-          <div className=' w-[40%]'>
+          <div className=' lg:w-[40%]'>
             <h4 className='text-lg font-medium'>Continue learning</h4>
             <p className='my-2 text-base'>{user.assignedCourse}</p>
 

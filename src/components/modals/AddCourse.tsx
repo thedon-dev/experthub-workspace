@@ -170,13 +170,13 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   return (
     open && <div>
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
-      <div className='fixed top-10 bottom-10 left-0 overflow-y-auto rounded-md right-0 w-[70%] mx-auto z-20 bg-[#F8F7F4]'>
-        <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 px-12 flex justify-between'>
+      <div className='fixed top-10 bottom-10 left-0 overflow-y-auto rounded-md right-0 lg:w-[70%] w-[95%] mx-auto z-20 bg-[#F8F7F4]'>
+        <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between'>
           <p className='font-medium'>Add Thumbnail</p>
           <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
         </div>
-        <div className='flex justify-between mx-12 my-4'>
-          <div className='w-[48%]'>
+        <div className='lg:flex justify-between lg:mx-12 mx-4 my-4'>
+          <div className='lg:w-[48%]'>
             <div>
               <p className='text-sm font-medium my-1'>Course Image</p>
               {image ? <img onClick={() => uploadRef.current?.click()} src={image} className='w-full h-40' alt="" /> :
@@ -221,7 +221,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
               </div>
             </Dragger> */}
           </div>
-          <div className='w-[48%]'>
+          <div className='lg:w-[48%]'>
             <div className='border-b font-medium flex justify-between border-[#1E1E1E12]'>
               <div className={active === 0 ? 'border-b border-primary p-2' : 'p-2 cursor-pointer'}>
                 <p onClick={() => setActive(0)}>Course Details</p>

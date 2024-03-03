@@ -9,7 +9,7 @@ import { useAppDispatch } from '@/store/hooks';
 import { notification } from 'antd';
 
 const profile = () => {
-  const user = useAppSelector((state) => state.value);
+  const user = useAppSelector((state: { value: any; }) => state.value);
   const uploadRef = useRef<HTMLInputElement>(null)
   const dispatch = useAppDispatch();
   const [api, contextHolder] = notification.useNotification();
@@ -105,7 +105,7 @@ const profile = () => {
   }, [])
   return (
     <DashboardLayout>
-      <section className='w-[25%] mt-4 mx-auto'>
+      <section className='lg:w-[25%] mt-4 mx-auto'>
         {contextHolder}
         <div className='shadow-[0px_2px_4px_0px_#1E1E1E21] p-3 text-center rounded-md'>
           <p className='font-medium text-lg'>Personal Details</p>

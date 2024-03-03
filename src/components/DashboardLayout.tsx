@@ -8,12 +8,12 @@ const DashboardLayout = ({ children }: { children: any }) => {
   // axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
 
   return (
-    <main className='flex'>
+    <main className='lg:flex'>
       <ChatWidget />
-      <div className='w-[20%]'>
+      <div className='sm:hidden w-[20%]'>
         <SideNav />
       </div>
-      <section className='w-[80%]'>
+      <section className='lg:w-[80%]'>
         {children}
       </section>
     </main>

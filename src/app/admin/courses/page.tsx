@@ -115,7 +115,7 @@ const courses = () => {
           </div>
           <div></div>
         </div>
-        <div className='w-[98%] mx-auto'>
+        <div className='lg:w-[98%] mx-auto'>
           {
             courses.map((course: { category: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; courses: any[]; }, index: React.Key | null | undefined) => <div key={index}>
               <p className='font-bold mt-4'>{course.category}</p>
