@@ -6,11 +6,13 @@ import AdmissionCard from '@/components/cards/AdmissionCard';
 import SearchNav from '@/components/SearchNav';
 import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
+import { UserType } from '@/types/UserType';
 
 const addmissions = () => {
   const [active, setActive] = useState("students")
   const user = useAppSelector((state) => state.value);
-  const [students, setStudents] = useState([])
+  const [students, setStudents] = useState<UserType | []>([])
+  const [all, setAll] = useState<UserType | []>([])
 
   const getStudents = () => {
     axios.put('user/mystudents', {
@@ -18,9 +20,16 @@ const addmissions = () => {
     })
       .then(function (response) {
         setStudents(response.data.students)
+        setAll(response.data.students)
         console.log(response.data)
       })
   }
+
+  const search = (value: string) => {
+    const results = all.filter((obj: UserType) => obj.fullname.toLowerCase().includes(value.toLowerCase()));
+    setStudents(results)
+  }
+
 
   useEffect(() => {
     getStudents()
@@ -28,6 +37,10 @@ const addmissions = () => {
   return (
     <DashboardLayout>
       {/* <SearchNav /> */}
+      <div className='w-1/2 relative m-4'>
+        <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
+        <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
+      </div>
       <section className='m-4'>
         <div className='flex justify-between lg:w-1/2'>
           <div onClick={() => setActive("students")} className={active === "students" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
@@ -45,7 +58,7 @@ const addmissions = () => {
             case 'students':
               return <div>
                 {
-                  students.map((student, index) => <AdmissionCard role={active} tutor={student} key={index} />)
+                  students.map((student: UserType, index: any) => <AdmissionCard role={active} tutor={student} key={index} />)
                 }
               </div>
             case 'mentees':

@@ -81,11 +81,13 @@ const courses = () => {
 
   ];
   const [courses, setCourses] = useState<CourseType | []>([])
+  const [all, setAll] = useState<CourseType | []>([])
 
   const getCourses = async () => {
     axios.get(`courses/category/${user.assignedCourse}`)
       .then(function (response) {
         setCourses(response.data.courses.reverse())
+        setAll(response.data.courses.reverse())
         // console.log(response.data)
       })
   }
@@ -98,6 +100,10 @@ const courses = () => {
       })
   }
 
+  const search = (value: string) => {
+    const results = all.filter((obj: CourseType) => obj.fullname.toLowerCase().includes(value.toLowerCase()));
+    setCourses(results)
+  }
 
   useEffect(() => {
     getCourses()
@@ -132,6 +138,10 @@ const courses = () => {
           </div>
         </div>
       </section> */}
+      <div className='w-1/2 relative m-4'>
+        <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
+        <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
+      </div>
       <section>
         <div className='lg:flex p-4'>
           <div>
@@ -152,8 +162,7 @@ const courses = () => {
       <section className='m-2 p-3'>
         <p className='font-bold text-sm my-2'>{user.assignedCourse}</p>
         <div className='lg:flex flex-wrap justify-between'>
-          {courses.map((course: CourseType) => <div key={course._id} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>)}
-
+          {courses.length > 0 ? courses.map((course: CourseType) => <div key={course._id} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>) : <div>No courses available</div>}
         </div>
       </section>
       <section className='m-4 w-[90%]'>
