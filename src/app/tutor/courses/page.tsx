@@ -117,7 +117,7 @@ const courses = () => {
         type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
       />
-      <section>
+      {/* <section>
         <div className='p-4 flex justify-between w-full shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38]'>
           <div className='my-auto'>
             <p className='font-bold'>Assigned Courses</p>
@@ -127,13 +127,11 @@ const courses = () => {
             <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
           </div>
           <div className='flex'>
-            {/* <div className='p-3 h-10 w-10 my-auto rounded-full shadow-md'>
-              <img src="/images/icons/notification.svg" alt="" />
-            </div> */}
+          
             <img className='h-10 w-10 my-auto' src="/images/user.png" alt="" />
           </div>
         </div>
-      </section>
+      </section> */}
       <section>
         <div className='lg:flex p-4'>
           <div>

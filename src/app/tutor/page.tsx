@@ -66,7 +66,7 @@ const tutor = () => {
   }, [])
   return (
     <DashboardLayout>
-      <section>
+      {/* <section>
         <div className='p-4 flex justify-between w-full shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38]'>
           <div>
             <p className='font-medium'>Welcome</p>
@@ -83,7 +83,7 @@ const tutor = () => {
             <img className='h-10 w-10 my-auto rounded-full' src={user.profilePicture} alt="" />
           </div>
         </div>
-      </section>
+      </section> */}
       <section className='p-4 lg:flex justify-between'>
         <StatCard title='Total No. of Courses' count={courses.length} bg='#27C2D6' img='clock-line' />
         <StatCard title='My Students' count={students.length} bg='#DC9F08' img='ic_outline-assessment' />

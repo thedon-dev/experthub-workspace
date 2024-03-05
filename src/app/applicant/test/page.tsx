@@ -24,9 +24,9 @@ const Assesment = () => {
 
   return (
     <DashboardLayout>
-      <section className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-6 text-center'>
+      {/* <section className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-6 text-center'>
         <p className='text-lg font-medium'>My Assessment</p>
-      </section>
+      </section> */}
       <div className='p-4 flex flex-wrap justify-between'>
         {assesments.map((assesment: AssesmentType) => <AssesmentCard key={assesment._id} assesment={assesment} />)}
       </div>

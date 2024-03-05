@@ -23,9 +23,9 @@ const assesment = () => {
 
   return (
     <DashboardLayout>
-      <section className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-6 text-center'>
+      {/* <section className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-6 text-center'>
         <p className='text-lg font-medium'>Assessment Templates</p>
-      </section>
+      </section> */}
       <section className='p-10'>
         <div className='text-center'>
           <Link href={"assesment/new"}>

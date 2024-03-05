@@ -154,7 +154,7 @@ const SideNav = () => {
       })
   }
   return (
-    <aside className='h-screen fixed w-[20%] shadow-md p-6'>
+    <aside className='h-screen fixed lg:w-[20%] w-full bg-[#F8F7F4] sm:mt-4 shadow-md p-6'>
       {contextHolder}
       <h3 className='font-bold text-lg text-[#DC9F08]'>UNIVERSITY</h3>
       <div className="flex-1 flex flex-col h-full my-6 overflow-auto">

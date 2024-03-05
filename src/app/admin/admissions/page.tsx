@@ -33,7 +33,7 @@ const addmissions = () => {
   }, [])
   return (
     <DashboardLayout>
-      <SearchNav />
+      {/* <SearchNav /> */}
       <section className='m-4'>
         <div className='flex justify-between lg:w-[40%]'>
           <div onClick={() => setActive("students")} className={active === "students" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
