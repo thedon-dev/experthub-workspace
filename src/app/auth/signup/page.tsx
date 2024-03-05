@@ -19,6 +19,45 @@ const signup = () => {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const params = useSearchParams().get("role")
+  const states_in_nigeria = [
+    "Abia",
+    "Adamawa",
+    "Akwa Ibom",
+    "Anambra",
+    "Bauchi",
+    "Bayelsa",
+    "Benue",
+    "Borno",
+    "Cross River",
+    "Delta",
+    "Ebonyi",
+    "Edo",
+    "Ekiti",
+    "Enugu",
+    "Gombe",
+    "Imo",
+    "Jigawa",
+    "Kaduna",
+    "Kano",
+    "Katsina",
+    "Kebbi",
+    "Kogi",
+    "Kwara",
+    "Lagos",
+    "Nasarawa",
+    "Niger",
+    "Ogun",
+    "Ondo",
+    "Osun",
+    "Oyo",
+    "Plateau",
+    "Rivers",
+    "Sokoto",
+    "Taraba",
+    "Yobe",
+    "Zamfara",
+    "Federal Capital Territory"
+  ]
 
 
   useEffect(() => {
@@ -85,7 +124,7 @@ const signup = () => {
               <div className='my-2 text-xs w-[48%]'>
                 <label className='font-medium'>State</label>
                 <select onChange={e => setState(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm'>
-                  <option value="lagos">lagos</option>
+                  {states_in_nigeria.map(value => <option key={value} value={value}>{value}</option>)}
                 </select>
               </div>
               <div className='my-2 text-xs w-[48%]'>
