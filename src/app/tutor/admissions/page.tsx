@@ -63,11 +63,15 @@ const addmissions = () => {
               </div>
             case 'mentees':
               return <div>
-
+                {
+                  students.map((student: UserType, index: any) => <AdmissionCard role={active} tutor={student} key={index} />)
+                }
               </div>
             case 'graduates':
               return <div>
-
+                {
+                  students.map((student: UserType, index: any) => student.graduate && <AdmissionCard role={active} tutor={student} key={index} />)
+                }
               </div>
             default:
               return null

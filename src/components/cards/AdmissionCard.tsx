@@ -6,12 +6,15 @@ import { Dropdown } from 'antd';
 import { usePathname } from 'next/navigation';
 import AssignCourse from '../modals/AssignCourse';
 import SendAssesment from '../modals/SendAssesment';
+import axios from 'axios';
+import { notification } from 'antd';
 
 
 const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
   const [assign, setAssign] = useState(false)
   const [assesment, setAssesment] = useState(false)
   const pathname = usePathname()
+  const [api, contextHolder] = notification.useNotification();
 
   const items: MenuProps['items'] = [
     ...(role === 'students' ? [{
@@ -19,6 +22,12 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         <p onClick={() => setAssesment(true)}>Send Assessment</p>
       ),
       key: '1',
+    },
+    {
+      label: (
+        <p onClick={() => makeGraduate()}>Make Graduate</p>
+      ),
+      key: '8',
     },
     {
       label: 'Send Message',
@@ -72,8 +81,27 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
 
   ];
 
+  const makeGraduate = () => {
+    try {
+      axios.put(`user/updateProfile/${tutor.studentId}`, {
+        graduate: true
+      })
+        .then(function (response) {
+          // console.log(response.data)
+          api.open({
+            message: 'Student made a graduate Successfully!'
+          });
+        })
+    } catch (e) {
+      console.log(e)
+      api.open({
+        message: 'Something went wrong'
+      });
+    }
+  }
   return (
     <div>
+      {contextHolder}
       <div className='border border-[#1E1E1E80] p-3 rounded-md my-3 flex justify-between'>
         <img src={tutor.profilePicture ? tutor.profilePicture : "/images/user.png"} className='w-10 sm:mr-2 h-10 rounded-full object-cover' alt="" />
         <div className='w-52'>
