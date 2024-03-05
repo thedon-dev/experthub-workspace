@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 type UserState = {
   value: {
+    role: string;
     fullName: String
     id: string
     email: string
