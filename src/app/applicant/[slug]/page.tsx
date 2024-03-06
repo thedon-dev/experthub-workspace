@@ -72,9 +72,13 @@ const SingleCourse = () => {
 
                       <button onClick={() => setNext()} className='text-[#DC9F08] sm:my-3 border border-[#DC9F08] rounded-sm p-1 px-4'>Next Chapter</button>
                     </div>
+                    <div>
+                      <p className='text-lg lg:hidden sm:block font-medium mb-2'>Title: {repo?.title}</p>
+                      <p className='my-2'>{repo?.about}</p>
+                    </div>
                   </div>
                   <div className=' lg:w-[40%] lg:px-4 '>
-                    <p className='text-lg font-medium mb-2'>Title: {repo?.title}</p>
+                    <p className='text-lg sm:hidden lg:block font-medium mb-2'>Title: {repo?.title}</p>
                     <div className='p-2 border border-[#1E1E1E82] rounded-md'>
                       {repo?.videos.map((video, index) => <div key={video._id} className='flex my-3'>
                         {

@@ -112,7 +112,7 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
                 </div>
 
               </div>
-              <div className='w-[58%]'>
+              <div className='lg:w-[58%]'>
                 <p className='text-lg font-bold'>{course.title}</p>
                 {/* <p className='my-2 text-sm font-medium'>This great online course will equip you with the knowledge and basic skills
                 needed to design vector graphics using Figma.</p> */}
