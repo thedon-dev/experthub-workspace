@@ -57,23 +57,23 @@ const SingleCourse = () => {
           {(() => {
             switch (pathname) {
               case 'video':
-                return <div className='p-6 flex'>
+                return <div className='p-6 lg:flex'>
                   <div className='w-full'>
                     {
                       repo !== null && <video controls autoPlay className="w-full">
                         <source src={repo?.videos[indexCount].videoUrl} type="video/mp4" />
                       </video>
                     }
-                    <div className='flex my-4 justify-between'>
+                    <div className='lg:flex my-4 justify-between'>
                       <div className='flex'>
                         <img className='w-6 h-6 my-auto' src="/images/user.png" alt="" />
                         <p className='my-auto ml-3'>A course by {repo?.instructorName}</p>
                       </div>
 
-                      <button onClick={() => setNext()} className='text-[#DC9F08] border border-[#DC9F08] rounded-sm p-1 px-4'>Next Chapter</button>
+                      <button onClick={() => setNext()} className='text-[#DC9F08] sm:my-3 border border-[#DC9F08] rounded-sm p-1 px-4'>Next Chapter</button>
                     </div>
                   </div>
-                  <div className='w-[40%] px-4 '>
+                  <div className=' lg:w-[40%] lg:px-4 '>
                     <p className='text-lg font-medium mb-2'>Title: {repo?.title}</p>
                     <div className='p-2 border border-[#1E1E1E82] rounded-md'>
                       {repo?.videos.map((video, index) => <div key={video._id} className='flex my-3'>
