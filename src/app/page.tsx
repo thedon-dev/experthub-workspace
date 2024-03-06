@@ -107,8 +107,8 @@ export default function Home() {
               <h3 className="font-medium my-3">{course.title}</h3>
               <div className="flex justify-between">
                 <div className="flex">
-                  <img className="w-6 h-6 rounded-full" src="/images/user.png" alt="" />
-                  <p className="text-sm font-medium ml-3">{course.instructor}</p>
+                  <img className="w-6 h-6 rounded-full" src={course.instructorImage || "/images/user.png"} alt="" />
+                  <p className="text-sm font-medium ml-3">{course.instructorName}</p>
                 </div>
                 <p className="text-sm font-medium">45 Lessons</p>
               </div>
@@ -238,7 +238,7 @@ export default function Home() {
           </div>
           <div className="lg:flex justify-between">
             <div className="lg:w-[32%] my-3 relative">
-              <img src="/images/network_1.png"  className="w-full"  alt="" />
+              <img src="/images/network_1.png" className="w-full" alt="" />
               <div className="absolute p-3 left-0 right-0 top-0">
                 <div className="flex mb-3 text-white justify-between">
                   <p className="text-xl font-medium uppercase">Mentorship Beyond <br />
@@ -249,7 +249,7 @@ export default function Home() {
               </div>
             </div>
             <div className="lg:w-[32%] my-3 relative">
-              <img src="/images/network_2.png"  className="w-full"  alt="" />
+              <img src="/images/network_2.png" className="w-full" alt="" />
               <div className="absolute p-3 left-0 right-0 top-0">
                 <div className="flex mb-3 text-white justify-between">
                   <p className="text-xl font-medium uppercase w-[60%]">Opportunities to Make Money</p>

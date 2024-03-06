@@ -66,7 +66,7 @@ const SingleCourse = () => {
                     }
                     <div className='lg:flex my-4 justify-between'>
                       <div className='flex'>
-                        <img className='w-6 h-6 my-auto' src="/images/user.png" alt="" />
+                        <img className='w-6 h-6 my-auto rounded-full' src={repo?.instructorImage || "/images/user.png"} alt="" />
                         <p className='my-auto ml-3'>A course by {repo?.instructorName}</p>
                       </div>
 

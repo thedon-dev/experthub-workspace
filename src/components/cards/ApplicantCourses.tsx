@@ -9,7 +9,7 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
   return (
     <div className=" lg:w-[32%] my-3 ">
       <div className='flex my-2'>
-        <img className='w-6 h-6' src="/images/user.png" alt="" />
+        <img className='w-6 h-6' src={course.instructorImage || "/images/user.png"} alt="" />
         <p className='font-medium ml-3 text-sm'>A course by {course.instructorName}</p>
       </div>
       <div className='bg-white p-2 rounded-md'>
