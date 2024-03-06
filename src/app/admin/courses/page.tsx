@@ -10,9 +10,11 @@ import AddResources from '@/components/modals/AddResources';
 import axios from 'axios';
 import CoursesCard from '@/components/cards/CoursesCard';
 import Slider from 'react-slick';
+import { CourseType } from '@/types/CourseType';
 
 const courses = () => {
-  const [courses, setCourses] = useState<any | []>([])
+  const [courses, setCourses] = useState<CourseType | []>([])
+  const [pending, setPending] = useState<CourseType | []>([])
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
 
@@ -79,11 +81,30 @@ const courses = () => {
     axios.get("courses/all/category")
       .then(function (response) {
         setCourses(response.data.allCourse)
+        // console.log(response.data)
+      })
+  }
+
+  const getPendngCourses = () => {
+    axios.get("courses/unapproved")
+      .then(function (response) {
+        setPending(response.data.courses)
+        // console.log(response.data)
+      })
+  }
+
+  const approve = (id: string) => {
+    axios.put(`courses/approve/${id}`)
+      .then(function (response) {
+        getPendngCourses()
         console.log(response.data)
+      }).catch(function (error) {
+        console.log(error);
       })
   }
 
   useEffect(() => {
+    getPendngCourses()
     getCourses()
   }, [])
   return (
@@ -129,7 +150,24 @@ const courses = () => {
             </div>)
           }
         </div>
-        <AddCourse course={null}  open={open} handleClick={() => setOpen(!open)} />
+        <div className='my-3'>
+          <p className='text-xl'>Courses Under Review</p>
+          {pending.length > 1 ? <div>
+            <Slider {...settings}>
+              {pending.map((item: CourseType, index: React.Key | null | undefined) => <div key={index} className='p-1 w-full'>
+                <div className='border lg:w-[48%] my-4 border-[#1E1E1E59] p-4 rounded-md flex justify-between'>
+                  <img className='rounded-md w-1/2 shadow-[26px_0px_32.099998474121094px_0px_#FDC3324D]' src={item.thumbnail} alt="" />
+                  <div className='pl-10 w-full'>
+                    <h4 className='text-xl my-2 font-medium'>{item.title}</h4>
+                    <p className='text-xs my-3'>{item.about.substring(0, 30)}</p>
+                    <button onClick={() => approve(item._id)} className='p-2 px-6 rounded-sm bg-primary'>Publish</button>
+                  </div>
+                </div>
+              </div>)}
+            </Slider>
+          </div> : <div>No courses to review</div>}
+        </div>
+        <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
         <AddResources open={resources} handleClick={() => setResources(!resources)} />
       </section>
     </DashboardLayout>

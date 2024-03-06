@@ -112,7 +112,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
           <p className='text-xs'>Course</p>
           <p className=' text-sm'>{tutor.course}</p>
         </div>
-        <p className='text-sm sm:hidden text-[#0BC01E] my-auto font-medium'>Completed</p>
+        {tutor.isVerified ? <p className='text-sm sm:hidden text-[#0BC01E] my-auto font-medium'>Completed</p> : <p className='text-sm sm:hidden text-[#DC9F08] my-auto font-medium'>Pending</p>}
         {pathname.includes("applicant") ? <button className='text-primary text-sm'>Send Message</button> : <div className='my-auto'>
           <Dropdown
             menu={{ items }}
