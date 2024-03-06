@@ -12,6 +12,7 @@ const SingleCourse = () => {
   const [repo, setRepo] = useState<CourseType | null>(null)
   const page = useSearchParams().get("page")
   const pathname = usePathname().slice(11)
+  const [indexCount, setIndexCount] = useState(0)
 
   const getData = async () => {
     await axios.get(`courses/single-course/${page}`)
@@ -19,6 +20,15 @@ const SingleCourse = () => {
         setRepo(response.data.course)
         console.log(response.data)
       })
+  }
+
+  const setNext = () => {
+    if (repo) {
+      if (repo?.videos.length - 1 === indexCount) {
+        return
+      }
+      setIndexCount(indexCount + 1)
+    }
   }
 
   useEffect(() => {
@@ -43,7 +53,7 @@ const SingleCourse = () => {
 
       </Head>
       <DashboardLayout>
-        <section className=' mt-10'>
+        <section className=''>
           {(() => {
             switch (pathname) {
               case 'video':
@@ -51,20 +61,32 @@ const SingleCourse = () => {
                   <div className='w-full'>
                     {
                       repo !== null && <video controls autoPlay className="w-full">
-                        <source src={repo?.videos[0].videoUrl} type="video/mp4" />
+                        <source src={repo?.videos[indexCount].videoUrl} type="video/mp4" />
                       </video>
                     }
+                    <div className='flex my-4 justify-between'>
+                      <div className='flex'>
+                        <img className='w-6 h-6 my-auto' src="/images/user.png" alt="" />
+                        <p className='my-auto ml-3'>A course by {repo?.instructorName}</p>
+                      </div>
+
+                      <button onClick={() => setNext()} className='text-[#DC9F08] border border-[#DC9F08] rounded-sm p-1 px-4'>Next Chapter</button>
+                    </div>
                   </div>
                   <div className='w-[40%] px-4 '>
-                    <p className='text-lg font-medium mb-2'>Title:{repo?.title}</p>
+                    <p className='text-lg font-medium mb-2'>Title: {repo?.title}</p>
                     <div className='p-2 border border-[#1E1E1E82] rounded-md'>
-                      {repo?.videos.map(video => <div key={video._id}>
-                        <p className='font-medium'>{video.title}</p>
+                      {repo?.videos.map((video, index) => <div key={video._id} className='flex my-3'>
+                        {
+                          indexCount === index ? <img src="/images/icon-2.png" alt="" /> : indexCount > index ?
+                            <img src="/images/icon-1.png" alt="" /> : <img className='cursor-pointer' onClick={() => setIndexCount(index)} src="/images/icon-3.png" alt="" />
+                        }
+                        <p className='font-medium my-auto ml-3'>{video.title}</p>
                       </div>)}
                     </div>
                   </div>
                 </div>;
-              case 'user':
+              case 'pdf':
                 return <div>Error: Invalid User Role</div>;
               default:
                 return <div>Error: Invalid User Role</div>;

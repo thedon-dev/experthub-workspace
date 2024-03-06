@@ -49,7 +49,7 @@ const adminDashboard = () => {
     axios.get("courses/all")
       .then(function (response) {
         setCourses(response.data.courses)
-        // console.log(response.data)
+        console.log(response.data)
       })
   }
   const getStudents = () => {

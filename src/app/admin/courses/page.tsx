@@ -89,7 +89,7 @@ const courses = () => {
     axios.get("courses/unapproved")
       .then(function (response) {
         setPending(response.data.courses)
-        // console.log(response.data)
+        console.log(response.data)
       })
   }
 
@@ -150,12 +150,12 @@ const courses = () => {
             </div>)
           }
         </div>
-        <div className='my-3'>
+        <div className='my-6'>
           <p className='text-xl'>Courses Under Review</p>
-          {pending.length > 1 ? <div>
+          {pending.length >= 1 ? <div>
             <Slider {...settings}>
               {pending.map((item: CourseType, index: React.Key | null | undefined) => <div key={index} className='p-1 w-full'>
-                <div className='border lg:w-[48%] my-4 border-[#1E1E1E59] p-4 rounded-md flex justify-between'>
+                <div className='border my-4 border-[#1E1E1E59] p-4 rounded-md flex justify-between'>
                   <img className='rounded-md w-1/2 shadow-[26px_0px_32.099998474121094px_0px_#FDC3324D]' src={item.thumbnail} alt="" />
                   <div className='pl-10 w-full'>
                     <h4 className='text-xl my-2 font-medium'>{item.title}</h4>
