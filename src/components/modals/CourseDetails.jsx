@@ -109,7 +109,10 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
                       }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : "Enroll Now"}</button>
                   }
                 </div>
-
+                {course.type === "offline" ? <div className='text-sm'>
+                  <p><span className='font-bold'>Location:</span> {course.location}</p>
+                  <p> <span className='font-bold'>Room:</span> {course.room}</p>
+                </div> : null}
               </div>
               <div className='lg:w-[58%]'>
                 <p className='text-lg font-bold'>{course.title}</p>

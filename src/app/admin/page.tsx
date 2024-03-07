@@ -13,11 +13,13 @@ import AddResources from '@/components/modals/AddResources';
 import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
 import Link from 'next/link';
+import { UserType } from '@/types/UserType';
 
 const adminDashboard = () => {
   const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
+  const [graduates, setGraduates] = useState<UserType[]>([])
   const items: MenuProps['items'] = [
     {
       key: '1',
@@ -49,7 +51,7 @@ const adminDashboard = () => {
     axios.get("courses/all")
       .then(function (response) {
         setCourses(response.data.courses)
-        console.log(response.data)
+        // console.log(response.data)
       })
   }
   const getStudents = () => {
@@ -59,6 +61,15 @@ const adminDashboard = () => {
         // console.log(response.data)
       })
   }
+
+  const getGraduates = () => {
+    axios.put('user/graduate')
+      .then(function (response) {
+        setGraduates(response.data.students)
+        // console.log(response.data)
+      })
+  }
+
   const getTutors = () => {
     axios.get('user/instructors')
       .then(function (response) {
@@ -71,14 +82,15 @@ const adminDashboard = () => {
     getCourses()
     getStudents()
     getTutors()
+    getGraduates()
   }, [])
   return (
     <DashboardLayout>
-      
+
       <section className='p-4 lg:flex justify-between'>
         <StatCard title='Total No. of Courses' count={courses.length} bg='#27C2D6' img='clock-line' />
         <StatCard title='Total No. of Admissions' count={students.length} bg='#DC9F08' img='ic_outline-assessment' />
-        <StatCard title='Graduates/Experts' count={"40"} bg='#53C48C' img='game-icons_progression' />
+        <StatCard title='Graduates/Experts' count={graduates.length} bg='#53C48C' img='game-icons_progression' />
         <StatCard title='Training Providers' count={tutors.length} bg='#7E34C9' img='ph_chalkboard-teacher' />
       </section>
       <section className='m-2 p-3 shadow-md'>

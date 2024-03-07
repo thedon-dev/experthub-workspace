@@ -60,7 +60,7 @@ const SingleCourse = () => {
                 return <div className='p-6 lg:flex'>
                   <div className='w-full'>
                     {
-                      repo !== null && <video controls autoPlay className="w-full">
+                      repo !== null && <video controls className="w-full">
                         <source src={repo?.videos[indexCount].videoUrl} type="video/mp4" />
                       </video>
                     }
@@ -91,9 +91,13 @@ const SingleCourse = () => {
                   </div>
                 </div>;
               case 'pdf':
-                return <div>Error: Invalid User Role</div>;
+                return <div className='p-6'>pdf</div>;
+              case 'offline':
+                return <div className='p-6'>offline</div>;
+              case 'online':
+                return <div className='p-6'>online</div>;
               default:
-                return <div>Error: Invalid User Role</div>;
+                return <div></div>;
             }
           })()}
         </section>

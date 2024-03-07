@@ -39,43 +39,37 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       ),
       key: '3',
     },
-    {
-      label: 'View Account',
-      key: '4',
-    },
-    ...(pathname.includes('admin') ? [{
-      label: 'Delete user',
-      key: '5',
-    },
+    // {
+    //   label: 'View Account',
+    //   key: '4',
+    // },
+    ...(pathname.includes('admin') ? [
     {
       label: 'Block Student',
-      key: '6',
+      key: '4',
     },
-    {
-      label: 'Pay Fee',
-      key: '7',
-    }] : [])] : [
-      {
-        label: 'View Account',
-        key: '1',
-      },
+      // {
+      //   label: 'Pay Fee',
+      //   key: '7',
+      // }
+    ] : [])] : [
+      // {
+      //   label: 'View Account',
+      //   key: '1',
+      // },
       {
         label: 'Make an Expert',
-        key: '2',
+        key: '1',
       },
       {
         label: (
           <p onClick={() => setAssign(true)} >Assign Course</p>
         ),
-        key: '3',
-      },
-      {
-        label: 'Delete user',
-        key: '4',
+        key: '2',
       },
       {
         label: 'Block Tutor',
-        key: '5',
+        key: '3',
       },
     ])
 

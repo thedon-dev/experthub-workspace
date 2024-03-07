@@ -5,8 +5,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { notification } from 'antd';
 
 const signup = () => {
+  const [api, contextHolder] = notification.useNotification();
   const [active, setActive] = useState(false)
   const [role, setRole] = useState("student")
   const [fullname, setName] = useState("")
@@ -66,28 +68,32 @@ const signup = () => {
 
   const signupApplicant = async () => {
     setLoading(true)
-    try {
-      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/register`, {
-        fullname,
-        email,
-        phone,
-        country,
-        state,
-        address,
-        password,
-        userType: role
+    axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/register`, {
+      fullname,
+      email,
+      phone,
+      country,
+      state,
+      address,
+      password,
+      userType: role
+    })
+      .then(function (response) {
+        console.log(response.data)
+        setLoading(false)
+        router.push(`/auth/verify`)
       })
-        .then(function (response) {
-          console.log(response.data)
-          setLoading(false)
-          router.push(`/auth/verify`)
-        })
-    } catch (e) {
-      setLoading(false)
-    }
+      .catch(error => {
+        setLoading(false)
+        api.open({
+          message: error.response.data.message
+        });
+        // console.log(error.response.data.message)
+      })
   }
   return (
     <main >
+      {contextHolder}
       <img src="/images/auth-bg.png" className='h-[100vh] w-full' alt="" />
       <section className='absolute top-10 left-0 right-0 mx-auto lg:w-[30%] w-[95%]'>
         <section className='rounded-md bg-white border border-[#FDC3327D] p-6 '>

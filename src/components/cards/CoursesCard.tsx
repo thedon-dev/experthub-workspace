@@ -11,6 +11,9 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [edit, setEdit] = useState(false)
+  const [deletec, setDelete] = useState(false)
+  const [enrolled, setEnrolled] = useState(false)
+  const [enroll, setEnroll] = useState(false)
 
   const items: MenuProps['items'] = [
     {
@@ -20,9 +23,15 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       ),
     },
     {
+      key: '1',
+      label: (
+        <p onClick={() => setEnroll(true)} >Enroll Student</p>
+      ),
+    },
+    {
       key: '2',
       label: (
-        <p onClick={() => deleteCourse()}>Delete course</p>
+        <p onClick={() => course.enrolledStudents.length >= 1 ? setEnrolled(true) : setDelete(true)}>Delete course</p>
       ),
     },
     {
@@ -74,6 +83,46 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       </div>
       <CourseDetails course={course} open={open} call={null} type='view' handleClick={() => setOpen(false)} />
       <AddCourse course={course} open={edit} handleClick={() => setEdit(false)} />
+      {
+        deletec && <div>
+          <div onClick={() => setDelete(false)} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
+          <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 lg:w-[30%] w-[90%] h-[50%] mx-auto z-20 bg-[#F8F7F4]'>
+            <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between'>
+              <p className='font-medium'></p>
+              <img onClick={() => setDelete(false)} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
+            </div>
+            <div className='lg:p-10 p-4 text-center'>
+              <h1 className='text-2xl'>Are you sure you want to delete this course?</h1>
+              <div>
+                <div className='flex my-4 justify-center'>
+                  <button onClick={() => deleteCourse()} className='mx-4 bg-primary p-2 rounded-md'>Delete</button>
+                  <button onClick={() => setDelete(false)} className='mx-4'>Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      {
+        enrolled && <div>
+          <div onClick={() => setEnrolled(false)} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
+          <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 lg:w-[30%] w-[90%] h-[50%] mx-auto z-20 bg-[#F8F7F4]'>
+            <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between'>
+              <p className='font-medium'></p>
+              <img onClick={() => setEnrolled(false)} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
+            </div>
+            <div className='lg:p-10 p-4 text-center'>
+              <h1 className='text-2xl'>You can't delete this course because someone has already enrolled!</h1>
+              <div>
+                <div className='flex my-4 justify-center'>
+                  <button onClick={() => setEnrolled(false)} className='mx-4 bg-primary p-2 rounded-md'>Go back</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   );
 };

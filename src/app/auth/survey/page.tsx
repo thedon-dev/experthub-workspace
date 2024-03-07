@@ -51,10 +51,11 @@ const test = () => {
   }
   return (
     <main >
-      <img src="/images/auth-bg.png" className='h-[100vh] w-full' alt="" />
+      <img src="/images/auth-bg.png" className='h-screen w-full' alt="" />
       <section className='absolute top-28 left-0 right-0 mx-auto lg:w-[30%] w-[95%]'>
         <h3 className='font-bold text-base text-center my-6'>Kindly Fill the Form Below</h3>
         <section className=' bg-white rounded-md border border-[#FDC3327D] p-6 '>
+          
           {(() => {
             switch (steps) {
               case 0:
@@ -195,13 +196,15 @@ const test = () => {
           })()}
 
           <div className='border-t border-[#DCDCDC36] mt-10 p-2 flex justify-between'>
-            <p className='text-sm'>{steps + 1}/08</p>
+            <p className='text-sm'>{steps + 1}/07</p>
             <div className='flex'>
-              <button onClick={() => setSteps(steps >= 1 ? steps - 1 : 0)} className='bg-gray p-2 rounded-sm'>
-                <img src="/images/icons/arrow-left.svg" alt="" />
+              <button onClick={() => setSteps(steps >= 1 ? steps - 1 : 0)} className='bg-primary p-2 rounded-sm'>
+                {/* <img src="/images/icons/arrow-left.svg" alt="" /> */}
+                Prev
               </button>
-              <button onClick={() => setSteps(steps <= 6 ? steps + 1 : 0)} className='bg-primary p-2 rounded-sm ml-2'>
-                <img src="/images/icons/arrow-right.svg" alt="" />
+              <button onClick={() => setSteps(steps <= 6 ? steps + 1 : 0)} className='bg-gray p-2 rounded-sm ml-2'>
+                {/* <img src="/images/icons/arrow-right.svg" alt="" /> */}
+                Next
               </button>
             </div>
           </div>
@@ -211,8 +214,7 @@ const test = () => {
           <p>Thanks for your interest in Experthub trainings. Note, you need to own a laptop & have access to internet to be part of our trainings.</p>
         </div>
         <div className='text-center'>
-          {steps < 6 ? <button onClick={() => setSteps(steps + 1)} className='w-44  p-3 my-3 rounded-sm bg-primary text-white'>Next</button> : <button onClick={() => submit()} disabled={steps < 6} className='w-44  p-3 my-3 rounded-sm bg-gray text-white'>{loading ? "Loading..." : "Sumbit"}</button>}
-
+          {steps < 6 ? null : <button onClick={() => submit()} disabled={steps < 6} className='w-44  p-3 my-3 rounded-sm bg-primary text-white'>{loading ? "Loading..." : "Sumbit"}</button>}
         </div>
       </section>
     </main>

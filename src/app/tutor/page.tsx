@@ -13,12 +13,14 @@ import AddResources from '@/components/modals/AddResources';
 import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
 import Link from 'next/link';
+import { UserType } from '@/types/UserType';
 
 const tutor = () => {
   const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
   const [students, setStudents] = useState([])
+  const [graduates, setGraduates] = useState<UserType[]>([])
 
   const items: MenuProps['items'] = [
     {
@@ -43,6 +45,7 @@ const tutor = () => {
 
   ];
   const [courses, setCourses] = useState([])
+
   const getStudents = () => {
     axios.put('user/mystudents', {
       course: user.assignedCourse
@@ -52,6 +55,17 @@ const tutor = () => {
         // console.log(response.data)
       })
   }
+
+  const getGraduates = () => {
+    axios.put('user/mygraduate', {
+      course: user.assignedCourse
+    })
+      .then(function (response) {
+        setGraduates(response.data.students)
+        // console.log(response.data)
+      })
+  }
+
   const getCourses = async () => {
     axios.get(`courses/category/${user.assignedCourse}`)
       .then(function (response) {
@@ -62,6 +76,7 @@ const tutor = () => {
 
   useEffect(() => {
     getCourses()
+    getGraduates()
     getStudents()
   }, [])
   return (
@@ -87,8 +102,8 @@ const tutor = () => {
       <section className='p-4 lg:flex justify-between'>
         <StatCard title='Total No. of Courses' count={courses.length} bg='#27C2D6' img='clock-line' />
         <StatCard title='My Students' count={students.length} bg='#DC9F08' img='ic_outline-assessment' />
-        <StatCard title='My Graduates' count={"40"} bg='#53C48C' img='game-icons_progression' />
-        <StatCard title='My Mentees' count={"40"} bg='#7E34C9' img='ph_chalkboard-teacher' />
+        <StatCard title='My Graduates' count={graduates.length} bg='#53C48C' img='game-icons_progression' />
+        <StatCard title='My Mentees' count={students.length} bg='#7E34C9' img='ph_chalkboard-teacher' />
       </section>
       <section className='m-2 p-3 shadow-md'>
         <div className='text-sm lg:flex justify-between'>

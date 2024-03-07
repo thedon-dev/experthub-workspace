@@ -22,7 +22,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [duration, setDuration] = useState<number>(course?.duration || 0)
   const [category, setCategory] = useState(course?.category || "")
   const [privacy, setPrivacy] = useState(course?.privacy || "")
-  const [type, setType] = useState(course?.type || "online")
+  const [type, setType] = useState(course?.type || "offline")
   const [title, setTitle] = useState(course?.title || "")
   const [image, setImage] = useState(course?.thumbnail || "")
   const [location, setLocation] = useState(course?.loaction || "")
@@ -97,7 +97,6 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     try {
       setLoading(true)
 
-
       axios.put(`courses/edit/${course?._id}`,
         {
           // image,
@@ -160,6 +159,9 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           console.log(response.data)
           setLoading(false)
           handleClick()
+        }).catch(error => {
+          setLoading(false)
+          console.log(error)
         })
     } catch (e) {
       setLoading(false)
@@ -203,6 +205,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                 <button className='border border-[#1E1E1ED9] h-32 p-2 my-1 rounded-md font-medium w-full' onClick={() => pdfUploadRef.current?.click()}>
                   <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
                   <p> Click to upload</p></button>
+                <p className='text-sm'>{pdf === "" ? "" : pdf.slice(0, 20)}</p>
               </div>
             }
             <input
@@ -282,18 +285,20 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                       </div> */}
                       <div className='flex justify-between mt-6 my-1'>
                         <div className='w-[48%]'>
-                          <label className='text-sm font-medium my-1'>Duration</label>
-                          <input onChange={e => setDuration(parseInt(e.target.value))} value={duration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
-                        </div>
-                        <div className='w-[48%]'>
                           <label className='text-sm font-medium my-1'>Course type</label>
                           <select onChange={e => setType(e.target.value)} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-                            <option value="online">Online</option>
                             <option value="offline">Offline</option>
+                            <option value="online">Online</option>
                             <option value="video">Video</option>
                             <option value="pdf">PDF</option>
                           </select>
                         </div>
+
+                        <div className='w-[48%]'>
+                          <label className='text-sm font-medium my-1'>Duration</label>
+                          <input onChange={e => setDuration(parseInt(e.target.value))} value={duration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                        </div>
+
                       </div>
                       {type === 'online' ? <>
                         <div className='flex justify-between my-1'>

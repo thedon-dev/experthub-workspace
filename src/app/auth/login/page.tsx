@@ -20,26 +20,27 @@ const login = () => {
 
   const loginUser = async () => {
     setLoading(true)
-    try {
-      await axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/login`, {
-        email,
-        password
-      },)
-        .then(function (response) {
-          console.log(response.data)
-          setLoading(false)
-          dispatch(setUser(response.data.user))
-          api.open({
-            message: 'Logged in Successfully!'
-          });
-          router.push(response.data.user.role === "student" ? "/applicant" : response.data.user.role === "admin" ? '/admin' : "/tutor")
-        })
-    } catch (e) {
-      setLoading(false)
-      api.open({
-        message: 'Oops an error occured!'
-      });
-    }
+    await axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/login`, {
+      email,
+      password
+    },)
+      .then(function (response) {
+        console.log(response.data)
+        setLoading(false)
+        dispatch(setUser(response.data.user))
+        api.open({
+          message: 'Logged in Successfully!'
+        });
+        router.push(response.data.user.role === "student" ? "/applicant" : response.data.user.role === "admin" ? '/admin' : "/tutor")
+      })
+      .catch(error => {
+        setLoading(false)
+        // console.log(error.response.data.message)
+        api.open({
+          message: error.response.data.message
+        });
+      })
+
   }
   return (
     <main >
