@@ -11,6 +11,7 @@ import axios from 'axios';
 import CoursesCard from '@/components/cards/CoursesCard';
 import Slider from 'react-slick';
 import { CourseType } from '@/types/CourseType';
+import Link from 'next/link';
 
 const courses = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
@@ -93,16 +94,7 @@ const courses = () => {
       })
   }
 
-  const approve = (id: string) => {
-    axios.put(`courses/approve/${id}`)
-      .then(function (response) {
-        getPendngCourses()
-        console.log(response.data)
-      }).catch(function (error) {
-        console.log(error);
-      })
-  }
-
+  
   useEffect(() => {
     getPendngCourses()
     getCourses()
@@ -160,7 +152,9 @@ const courses = () => {
                   <div className='pl-10 w-full'>
                     <h4 className='text-xl my-2 font-medium'>{item.title}</h4>
                     <p className='text-xs my-3'>{item.about.substring(0, 30)}</p>
-                    <button onClick={() => approve(item._id)} className='p-2 px-6 rounded-sm bg-primary'>Publish</button>
+                    <Link href={`/admin/${item.type}?page=${item._id}`}>
+                      <button className='p-2 px-6 rounded-sm bg-primary'>Publish</button>
+                    </Link>
                   </div>
                 </div>
               </div>)}

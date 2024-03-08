@@ -12,6 +12,9 @@ const config: Config = {
         primary: '#FDC332',
         gray: "#D9D9D9",
       },
+      zIndex: {
+        '100': '100',
+      }
     },
     screens: {
       sm: { max: "700px" },

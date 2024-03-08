@@ -6,7 +6,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
 
   return (
     <section className='fixed lg:w-[80%] w-full bg-[#F8F7F4]'>
-      <div className='p-4 z-10 flex justify-between shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38]'>
+      <div className='p-4 z-50 flex justify-between shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38]'>
         <div className='lg:hidden block my-auto'>
           <img onClick={() => setToggle()} src="/images/hamburger.png" className='w-8 h-8 my-auto' alt="" />
         </div>

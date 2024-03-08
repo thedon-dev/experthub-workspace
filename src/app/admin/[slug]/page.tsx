@@ -5,15 +5,18 @@ import axios from 'axios';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import React, { Fragment, useEffect, useState } from 'react';
-import { useSearchParams, usePathname } from 'next/navigation'
+import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import DashboardLayout from '@/components/DashboardLayout';
 import FileDownload from '@/components/FileDownload'
+
 
 const SingleCourse = () => {
   const [repo, setRepo] = useState<CourseType | null>(null)
   const page = useSearchParams().get("page")
-  const pathname = usePathname().slice(11)
+  const view = useSearchParams().get("view")
+  const pathname = usePathname().slice(7)
   const [indexCount, setIndexCount] = useState(0)
+  const router = useRouter()
 
   const getData = async () => {
     await axios.get(`courses/single-course/${page}`)
@@ -37,6 +40,16 @@ const SingleCourse = () => {
     getData()
   }, [])
 
+  const approve = () => {
+    axios.put(`courses/approve/${page}`)
+      .then(function (response) {
+        // getPendngCourses()
+        router.back()
+        console.log(response.data)
+      }).catch(function (error) {
+        console.log(error);
+      })
+  }
 
 
   return (
@@ -58,6 +71,7 @@ const SingleCourse = () => {
       </Head>
       <DashboardLayout>
         <section className=''>
+          {view ? null : <button className='p-4 bg-primary m-6' onClick={() => approve()}>Publish</button>}
           {(() => {
             switch (pathname) {
               case 'video':
@@ -96,14 +110,14 @@ const SingleCourse = () => {
                 </div>;
               case 'pdf':
                 return <div className='p-6 lg:w-[60%] mx-auto'>
-                  <img className='' src={repo?.thumbnail} alt="" />
+                  <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
                   <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
                   <p>{repo?.about}</p>
                   <FileDownload file={repo?.file} />
                 </div>;
               case 'offline':
                 return <div className='p-6 lg:w-[60%] mx-auto'>
-                  <img className='' src={repo?.thumbnail} alt="" />
+                  <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
                   <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
                   <p>{repo?.about}</p>
                   <p><span className='font-bold'>Location:</span> {repo?.location}</p>
@@ -111,7 +125,7 @@ const SingleCourse = () => {
                 </div>;
               case 'online':
                 return <div className='p-6 lg:w-[60%] mx-auto'>
-                  <img className='' src={repo?.thumbnail} alt="" />
+                  <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
                   <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
                   <p>{repo?.about}</p>
                 </div>;
