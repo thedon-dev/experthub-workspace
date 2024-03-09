@@ -10,12 +10,13 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: stri
   const [videos, setVideos] = useState(repo.videos)
 
   const setNext = () => {
-    if (repo) {
-      if (videos.length - 1 === indexCount) {
-        return
-      }
-      setIndexCount(indexCount + 1)
+
+    if (videos.length - 1 === indexCount) {
+      return
     }
+    const count = indexCount
+    setIndexCount(count + 1)
+
   }
 
   return (

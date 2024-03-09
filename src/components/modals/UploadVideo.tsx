@@ -37,13 +37,17 @@ const UploadVideo = ({ id }: { id: string }) => {
 
   const uploadVid = async () => {
     setLoading(true)
-    await axios.post(`http://localhost:3001/courses/upload/${id}`, {
+    await axios.post(`courses/upload/${id}`, {
       videos
     })
       .then(function (response) {
         console.log(response.data)
         setLoading(false)
         router.refresh()
+      }).catch(error => {
+        console.log(error)
+        setLoading(false)
+        setLoading(false)
       })
   }
 

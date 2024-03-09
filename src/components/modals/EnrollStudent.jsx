@@ -4,11 +4,14 @@ import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
 import { UserType } from '@/types/UserType';
 import { notification } from 'antd';
+import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 
-const EnrollStudent = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType }) => {
-  const [user, setUser] = useState("")
+const EnrollStudent = ({ open, handleClick, course }) => {
+  const user = useAppSelector((state) => state.value);
+
+  const [student, setUser] = useState("")
   const [loading, setLoading] = useState(false)
-  const [students, setStudents] = useState<UserType[]>([])
+  const [students, setStudents] = useState([])
   const [api, contextHolder] = notification.useNotification();
 
   const getStudents = () => {
@@ -18,12 +21,26 @@ const EnrollStudent = ({ open, handleClick, course }: { open: boolean, handleCli
         // console.log(response.data)
       })
   }
+  const config = {
+    public_key: 'FLWPUBK_TEST-6330f5c973d7919b3b553f52d5a82098-X',
+    tx_ref: Date.now(),
+    amount: 100,
+    currency: 'NGN',
+    payment_options: 'card,mobilemoney,ussd',
+    customer: {
+      email: user.email,
+      // phone_number: '070********',
+      name: user.fullName,
+    },
+  };
+
+  const handleFlutterPayment = useFlutterwave(config);
 
 
   const enroll = () => {
     setLoading(true)
     axios.post(`courses/enroll/${course._id}`, {
-      id: user
+      id: student
     })
       .then(function (response) {
         console.log(response.data)
@@ -64,7 +81,16 @@ const EnrollStudent = ({ open, handleClick, course }: { open: boolean, handleCli
           </div>
           <div>
             <div className='flex'>
-              <button onClick={() => enroll()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'> {loading ? "loading..." : "Enroll"}</button>
+              <button onClick={() => handleFlutterPayment({
+                callback: (response) => {
+                  enroll()
+                  console.log(response);
+                  closePaymentModal() // this will close the modal programmatically
+                },
+                onClose: () => {
+                  console.log("closed")
+                },
+              })} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'> {loading ? "loading..." : "Enroll"}</button>
               <button onClick={() => handleClick()} className='mx-4'>Cancel</button>
             </div>
           </div>
