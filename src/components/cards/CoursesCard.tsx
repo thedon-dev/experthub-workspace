@@ -7,6 +7,7 @@ import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
 import Share from '../Share';
 import Link from 'next/link';
+import EnrollStudent from '../modals/EnrollStudent';
 
 const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () => Promise<void> }) => {
   const pathname = usePathname()
@@ -24,12 +25,6 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       ),
     },
     {
-      key: '1',
-      label: (
-        <p onClick={() => setEnroll(true)} >Enroll Student</p>
-      ),
-    },
-    {
       key: '2',
       label: (
         <p onClick={() => course.enrolledStudents.length >= 1 ? setEnrolled(true) : setDelete(true)}>Delete course</p>
@@ -41,6 +36,15 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
         <Share course={course} />
       ),
     },
+    ...(pathname.includes('admin') ? [
+      {
+        key: '4',
+        label: (
+          <p onClick={() => setEnroll(true)} >Enroll Student</p>
+        ),
+      },
+    ] : [])
+
   ];
 
   const deleteCourse = async () => {
@@ -89,6 +93,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       </div>
       <CourseDetails course={course} open={open} call={null} type='view' handleClick={() => setOpen(false)} />
       <AddCourse course={course} open={edit} handleClick={() => setEdit(false)} />
+      <EnrollStudent open={enroll} handleClick={() => setEnroll(false)} course={course} />
       {
         deletec && <div>
           <div onClick={() => setDelete(false)} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>

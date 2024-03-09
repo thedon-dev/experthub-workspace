@@ -8,6 +8,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import DashboardLayout from '@/components/DashboardLayout';
 import FileDownload from '@/components/FileDownload'
+import AddCourse from '@/components/modals/AddCourse';
 
 
 const SingleCourse = () => {
@@ -17,6 +18,7 @@ const SingleCourse = () => {
   const pathname = usePathname().slice(7)
   const [indexCount, setIndexCount] = useState(0)
   const router = useRouter()
+  const [edit, setEdit] = useState(false)
 
   const getData = async () => {
     await axios.get(`courses/single-course/${page}`)
@@ -71,7 +73,10 @@ const SingleCourse = () => {
       </Head>
       <DashboardLayout>
         <section className=''>
-          {view ? null : <button className='p-4 bg-primary m-6' onClick={() => approve()}>Publish</button>}
+          <div className='flex justify-between'>
+            {view ? null : <button className='p-4 bg-primary m-6' onClick={() => approve()}>Publish</button>}
+            <button className='p-4 bg-primary m-6' onClick={() => setEdit(true)}>Edit</button>
+          </div>
           {(() => {
             switch (pathname) {
               case 'video':
@@ -133,6 +138,7 @@ const SingleCourse = () => {
                 return <div></div>;
             }
           })()}
+          {repo && <AddCourse course={repo} open={edit} handleClick={() => setEdit(false)} />}
         </section>
       </DashboardLayout>
     </Fragment>

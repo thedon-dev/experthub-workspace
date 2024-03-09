@@ -87,7 +87,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         .then(function (response) {
           // console.log(response.data)
           api.open({
-            message: 'User Blocked Successfully!'
+            message: tutor.blocked ? "User Unblocked Successfully! " : 'User Blocked Successfully!'
           });
         })
     } catch (e) {
