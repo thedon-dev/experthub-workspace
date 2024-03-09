@@ -133,7 +133,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   }
 
   const add = () => {
-    if (title && about && duration && type && category && privacy && image) {
+    if (title && about && duration && category && privacy && image && type === "offline" ? startDate && endDate && startTime && endTime && room && location : type === "online" ? startDate && endDate && startTime && endTime : type === "video" ? videos : pdf) {
       setLoading(true)
       axios.post(`courses/add-course/${user.id}`,
         {
