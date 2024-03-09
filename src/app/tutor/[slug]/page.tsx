@@ -12,7 +12,7 @@ import SinglePage from '@/components/SinglePage';
 const SingleCourse = () => {
   const [repo, setRepo] = useState<CourseType | null>(null)
   const page = useSearchParams().get("page")
-  const pathname = usePathname().slice(11)
+  const pathname = usePathname().slice(7)
 
   const getData = async () => {
     await axios.get(`courses/single-course/${page}`)
@@ -47,7 +47,7 @@ const SingleCourse = () => {
       </Head>
       <DashboardLayout>
         <section className=''>
-          {repo && page && <SinglePage pathname={pathname} repo={repo} page={null} />}
+          {repo && page && <SinglePage pathname={pathname} repo={repo} page={page} />}
         </section>
       </DashboardLayout>
     </Fragment>

@@ -4,7 +4,7 @@ import FileDownload from '@/components/FileDownload'
 import { useAppSelector } from '@/store/hooks';
 import UploadVideo from './modals/UploadVideo';
 
-const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: string, page: string }) => {
+const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: string, page: any }) => {
   const [indexCount, setIndexCount] = useState(0)
   const [videos, setVideos] = useState(repo.videos)
   const setNext = () => {
@@ -56,7 +56,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: stri
                   </div>)}
                 </div>
                 {/* {user.role !== "student" && <button className='bg-primary px-4 p-2 rounded-md my-4'>Add Videos</button>} */}
-                <UploadVideo id={page} />
+                {page !== null && <UploadVideo id={page} />}
               </div>
             </div>;
           case 'pdf':
