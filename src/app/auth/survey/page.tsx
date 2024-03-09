@@ -3,12 +3,14 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { notification } from 'antd';
 
 const test = () => {
   const [steps, setSteps] = useState(0)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const role = useSearchParams().get("role")
+  const [api, contextHolder] = notification.useNotification();
 
   const [computer, setComputer] = useState("")
   const [internet, setInternet] = useState("")
@@ -22,8 +24,8 @@ const test = () => {
   const [accomplishment, setAccomplishment] = useState("")
 
   const submit = async () => {
-    setLoading(true)
-    try {
+    if (computer && internet && gender && status && time && age && course && experience && education && accomplishment) {
+      setLoading(true)
       axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/user/survey`, {
         computerAccess: computer,
         internetAccess: internet,
@@ -43,19 +45,24 @@ const test = () => {
         })
         .catch(err => {
           setLoading(false)
-          // console.log(err.response.data.message)
+          api.open({
+            message: err.response.data.message
+          });
         })
-    } catch (e) {
-      setLoading(false)
-    }
+    } else {
+      api.open({
+        message: "Please fill all fields!"
+      })
+    };
   }
   return (
     <main >
+      {contextHolder}
       <img src="/images/auth-bg.png" className='h-screen w-full' alt="" />
       <section className='absolute top-28 left-0 right-0 mx-auto lg:w-[30%] w-[95%]'>
         <h3 className='font-bold text-base text-center my-6'>Kindly Fill the Form Below</h3>
         <section className=' bg-white rounded-md border border-[#FDC3327D] p-6 '>
-          
+
           {(() => {
             switch (steps) {
               case 0:

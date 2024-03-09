@@ -1,4 +1,6 @@
+import { notification } from 'antd';
 import axios from 'axios';
+import { error } from 'console';
 import React, { useRef, useState } from 'react';
 
 const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }) => {
@@ -10,6 +12,7 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
   const [about, setAbout] = useState("")
   const [privacy, setPrivacy] = useState("")
   const [websiteUrl, setWebsiteUrl] = useState("")
+  const [api, contextHolder] = notification.useNotification();
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -30,7 +33,7 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
   }
 
   const add = () => {
-    try {
+    if (title && about && privacy && websiteUrl) {
       setLoading(true)
       const formData = new FormData()
       file && formData.append("image", file[0])
@@ -46,10 +49,16 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
           console.log(response.data)
           setLoading(false)
           handleClick()
+        }).catch(error => {
+          api.open({
+            message: error.response.data.message
+          });
+          setLoading(false)
         })
-    } catch (e) {
-      setLoading(false)
-      console.log(e)
+    } else {
+      api.open({
+        message: "Please fill all fields!"
+      });
     }
   }
 
@@ -62,6 +71,7 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
           <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
         </div>
         <div className='lg:p-10 p-4'>
+          {contextHolder}
           <div>
             <p className='text-sm font-medium my-1'>Resource Image</p>
             {image ? <img onClick={() => uploadRef.current?.click()} src={image} className='w-full h-40' alt="" /> :

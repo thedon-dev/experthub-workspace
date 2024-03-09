@@ -93,7 +93,7 @@ const signup = () => {
         })
     } else {
       api.open({
-        message: "Fill all fields!"
+        message: "Please fill all fields!"
       });
     }
   }
