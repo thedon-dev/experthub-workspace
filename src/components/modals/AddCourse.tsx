@@ -181,7 +181,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           <div className='lg:w-[48%]'>
             <div>
               <p className='text-sm font-medium my-1'>Course Image</p>
-              {image ? <img onClick={() => uploadRef.current?.click()} src={image} className='w-full h-40' alt="" /> :
+              {image ? <img onClick={() => uploadRef.current?.click()} src={image} className='w-full object-cover h-52' alt="" /> :
                 <button className='border border-[#1E1E1ED9] p-2 my-1 rounded-md font-medium w-full' onClick={() => uploadRef.current?.click()}>
                   <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
                   <p> Add course</p>

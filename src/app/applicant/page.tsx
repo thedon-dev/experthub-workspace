@@ -38,7 +38,7 @@ const applicant = () => {
     await axios.get(`courses/enrolled-courses/${user.id}`)
       .then(function (response) {
         setCourses(response.data.enrolledCourses.reverse())
-        console.log(response.data.enrolledCourses)
+        // console.log(response.data.enrolledCourses)
       })
   }
   const getTutors = () => {
@@ -60,7 +60,7 @@ const applicant = () => {
 
   return (
     <DashboardLayout>
-     
+
       <section className='p-4 lg:flex justify-between'>
         <StatCard title='Total No of Courses' count={courses.length} bg='#27C2D6' img='clock-line' />
         <StatCard title='Module Assessments' count={assesments.length} bg='#DC9F08' img='ic_outline-assessment' />
