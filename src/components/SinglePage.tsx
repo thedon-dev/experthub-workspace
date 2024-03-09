@@ -6,11 +6,8 @@ import UploadVideo from './modals/UploadVideo';
 
 const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: string, page: string }) => {
   const [indexCount, setIndexCount] = useState(0)
-  // const user = useAppSelector((state) => state.value);
   const [videos, setVideos] = useState(repo.videos)
-
   const setNext = () => {
-
     if (videos.length - 1 === indexCount) {
       return
     }
@@ -27,9 +24,12 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: stri
             return <div className='p-6 lg:flex'>
               <div className='w-full'>
 
-                <video controls className="w-full">
-                  <source src={repo.videos[indexCount].videoUrl} type="video/mp4" />
-                </video>
+                {videos.map((video, index) => <div>
+                  {index === indexCount ? <video controls className="w-full">
+                    <source src={video.videoUrl} type="video/mp4" />
+                  </video> : null}
+                </div>)}
+
 
                 <div className='lg:flex my-4 justify-between'>
                   <div className='flex'>
