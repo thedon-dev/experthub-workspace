@@ -44,10 +44,12 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
     //   key: '4',
     // },
     ...(pathname.includes('admin') ? [
-    {
-      label: 'Block Student',
-      key: '4',
-    },
+      {
+        label: (
+          <p onClick={() => blockUser()}>{tutor.blocked ? "Unblock Student" : "Block Student"}</p>
+        ),
+        key: '4',
+      },
       // {
       //   label: 'Pay Fee',
       //   key: '7',
@@ -68,12 +70,33 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         key: '2',
       },
       {
-        label: 'Block Tutor',
+        label: (
+          <p onClick={() => blockUser()}>{tutor.blocked ? "Unblock Tutor" : "Block Tutor"}</p>
+        ),
         key: '3',
       },
     ])
 
   ];
+
+  const blockUser = () => {
+    try {
+      axios.put(`user/block/${tutor.studentId || tutor.id}`, {
+        graduate: true
+      })
+        .then(function (response) {
+          // console.log(response.data)
+          api.open({
+            message: 'User Blocked Successfully!'
+          });
+        })
+    } catch (e) {
+      console.log(e)
+      api.open({
+        message: 'Something went wrong'
+      });
+    }
+  }
 
   const makeGraduate = () => {
     try {

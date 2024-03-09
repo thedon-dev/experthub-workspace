@@ -27,7 +27,7 @@ const addmissions = () => {
       .then(function (response) {
         setTutors(response.data.instructors)
         setAllTutor(response.data.instructors)
-        // console.log(response.data)
+        console.log(response.data)
       })
   }
 
