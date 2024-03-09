@@ -60,11 +60,8 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
     <div className="p-2 w-full shadow-md my-3 rounded-md bg-white">
       <img className="rounded-md w-full h-44 object-cover" src={course.thumbnail} alt="" />
       <h3 className="font-medium my-3">{course.title}
-        {pathname.includes("courses") ? <Link href={`/admin/${course.type}?page=${course._id}&view=true`}>
-          <button className='bg-primary p-2 rounded-md'>
-            {course.type === 'online' ? 'Join Live' : course.type}</button>
-        </Link> : <button onClick={() => setOpen(true)} className='bg-primary p-2 rounded-md'>
-          {course.type === 'online' ? 'Join Live' : course.type}</button>}  </h3>
+        {pathname.includes("courses") ? <button onClick={() => setOpen(true)} className='bg-primary p-2 rounded-md'>
+          {course.type === 'online' ? 'Join Live' : course.type}</button> : null}  </h3>
       <p className='text-xs'>{course.about.substring(0, 50)}...</p>
 
       <div className='flex justify-between my-3'>
