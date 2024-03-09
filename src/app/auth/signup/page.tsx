@@ -67,29 +67,35 @@ const signup = () => {
   }, [])
 
   const signupApplicant = async () => {
-    setLoading(true)
-    axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/register`, {
-      fullname,
-      email,
-      phone,
-      country,
-      state,
-      address,
-      password,
-      userType: role
-    })
-      .then(function (response) {
-        console.log(response.data)
-        setLoading(false)
-        router.push(`/auth/verify`)
+    if (fullname && email && phone && country && state && address && password) {
+      setLoading(true)
+      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/register`, {
+        fullname,
+        email,
+        phone,
+        country,
+        state,
+        address,
+        password,
+        userType: role
       })
-      .catch(error => {
-        setLoading(false)
-        api.open({
-          message: error.response.data.message
-        });
-        // console.log(error.response.data.message)
-      })
+        .then(function (response) {
+          console.log(response.data)
+          setLoading(false)
+          router.push(`/auth/verify`)
+        })
+        .catch(error => {
+          setLoading(false)
+          api.open({
+            message: error.response.data.message
+          });
+          console.log(error.response.data.message)
+        })
+    } else {
+      api.open({
+        message: "Fill all fields!"
+      });
+    }
   }
   return (
     <main >

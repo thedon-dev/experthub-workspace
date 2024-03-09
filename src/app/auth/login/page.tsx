@@ -7,41 +7,62 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '@/store/hooks';
 import { setUser } from '@/store/slices/userSlice'
 import { notification } from 'antd';
+import { useFormik } from 'formik';
 
 const login = () => {
   const [active, setActive] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const dispatch = useAppDispatch();
   const [api, contextHolder] = notification.useNotification();
 
-
-  const loginUser = async () => {
-    setLoading(true)
-    await axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/login`, {
-      email,
-      password
-    },)
-      .then(function (response) {
-        console.log(response.data)
-        setLoading(false)
-        dispatch(setUser(response.data.user))
-        api.open({
-          message: 'Logged in Successfully!'
-        });
-        router.push(response.data.user.role === "student" ? "/applicant" : response.data.user.role === "admin" ? '/admin' : "/tutor")
-      })
-      .catch(error => {
-        setLoading(false)
-        // console.log(error.response.data.message)
-        api.open({
-          message: error.response.data.message
-        });
-      })
-
+  interface LoginTypes {
+    email: string;
+    password: string;
   }
+  const formik = useFormik({
+    initialValues: {
+      password: '',
+      email: '',
+    },
+    onSubmit: values => {
+      setLoading(true)
+      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/login`, values,)
+        .then(function (response) {
+          console.log(response.data)
+          setLoading(false)
+          dispatch(setUser(response.data.user))
+          api.open({
+            message: 'Logged in Successfully!'
+          });
+          router.push(response.data.user.role === "student" ? "/applicant" : response.data.user.role === "admin" ? '/admin' : "/tutor")
+        })
+        .catch(error => {
+          setLoading(false)
+          // console.log(error.response.data.message)
+          api.open({
+            message: error.response.data.message
+          });
+        })
+    },
+    validate: values => {
+      let errors: LoginTypes | any = {}
+
+      if (!values.email) {
+        errors.email = "Email Required!"
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Invalid email address';
+      }
+      if (!values.password) {
+        errors.password = "Password Required!"
+      }
+
+
+      return errors
+    }
+  });
+
+
   return (
     <main >
       {contextHolder}
@@ -50,21 +71,30 @@ const login = () => {
         <section className='rounded-md bg-white border border-[#FDC3327D] p-6 '>
           <h3 className='font-bold text-base text-center'>Login</h3>
 
-          <div>
+          <form onSubmit={formik.handleSubmit}>
             <div className='my-2 text-xs'>
-              <label className='font-medium'>Email</label>
-              <input onChange={e => setEmail(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type="text" placeholder='Sample@gmail.com' />
+              <label htmlFor="email" className='font-medium'>Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                onChange={formik.handleChange} value={formik.values.email} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' placeholder='Sample@gmail.com' />
+              {formik.errors.email ? <div className='text-[#FF0000] text-xs'>{formik.errors.email}</div> : null}
             </div>
 
             <div className='my-2 text-xs relative'>
-              <label className='font-medium'> Password</label>
-              <input onChange={e => setPassword(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type={active ? "text" : "password"} placeholder='************' />
+              <label htmlFor="password" className='font-medium'> Password</label>
+              <input id="password"
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type={active ? "text" : "password"} placeholder='************' />
               <img onClick={() => setActive(!active)} className='absolute top-7 right-2 cursor-pointer' src="/images/icons/eyes.svg" alt="" />
+              {formik.errors.password ? <div className='text-[#FF0000] text-xs'>{formik.errors.password}</div> : null}
             </div>
             <div className='my-2 text-xs'>
-              <button onClick={() => loginUser()} className='w-full bg-primary p-2 rounded-sm font-medium'>{loading ? "Loading..." : "Login"}</button>
+              <button type='submit' className='w-full bg-primary p-2 rounded-sm font-medium'>{loading ? "Loading..." : "Login"}</button>
             </div>
-          </div>
+          </form>
         </section>
         <div className='text-xs flex justify-center mt-2'>
           <p className='text-[#052126] mr-2'>Don't have an account? </p>
