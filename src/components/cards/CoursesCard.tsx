@@ -67,12 +67,12 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       <div className='flex justify-between my-3'>
         <div>
           <p className='text-xs my-1'>Students {course.enrolledStudents.length}</p>
-          {/* <div className='flex'>
-            <img src="/images/user.png" className='w-5 h-5' alt="" />
+          <div className='flex ml-1'>
+            {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+            {/* <img src="/images/user.png" className='w-5 h-5' alt="" />
             <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" />
-            <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" />
-            <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" />
-          </div> */}
+            <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" /> */}
+          </div>
         </div>
         <div className='w-[70%] '>
           <div className='ml-auto text-right'>

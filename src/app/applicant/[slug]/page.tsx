@@ -96,14 +96,14 @@ const SingleCourse = () => {
                 </div>;
               case 'pdf':
                 return <div className='p-6 lg:w-[60%] mx-auto'>
-                  <img className='' src={repo?.thumbnail} alt="" />
+                  <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
                   <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
                   <p>{repo?.about}</p>
                   <FileDownload file={repo?.file} />
                 </div>;
               case 'offline':
                 return <div className='p-6 lg:w-[60%] mx-auto'>
-                  <img className='' src={repo?.thumbnail} alt="" />
+                  <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
                   <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
                   <p>{repo?.about}</p>
                   <p><span className='font-bold'>Location:</span> {repo?.location}</p>
@@ -111,7 +111,7 @@ const SingleCourse = () => {
                 </div>;
               case 'online':
                 return <div className='p-6 lg:w-[60%] mx-auto'>
-                  <img className='' src={repo?.thumbnail} alt="" />
+                  <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
                   <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
                   <p>{repo?.about}</p>
                 </div>;

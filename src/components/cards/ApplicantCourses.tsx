@@ -13,7 +13,7 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
         <p className='font-medium ml-3 text-sm'>A course by {course.instructorName}</p>
       </div>
       <div className='bg-white p-2 rounded-md'>
-        <Link href={`/applicant/course?page=${course._id}`}>
+        <Link href={`/applicant/${course.type}?page=${course._id}`}>
           <img className="rounded-md object-cover h-40 w-full" src={course.thumbnail} alt="" />
         </Link>
       </div>

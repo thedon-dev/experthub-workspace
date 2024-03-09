@@ -127,7 +127,7 @@ export default function Home() {
                   <img className="w-6 h-6 rounded-full" src={course.instructorImage || "/images/user.png"} alt="" />
                   <p className="text-sm font-medium ml-3">{course.instructorName}</p>
                 </div>
-                <p className="text-sm font-medium">45 Lessons</p>
+                {/* <p className="text-sm font-medium">45 Lessons</p> */}
               </div>
             </div>)}
           </div>
