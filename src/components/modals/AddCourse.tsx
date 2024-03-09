@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
 import { CourseType } from '@/types/CourseType';
+import { notification } from 'antd';
 
 
 const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
@@ -9,6 +10,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const uploadRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLInputElement>(null)
   const pdfUploadRef = useRef<HTMLInputElement>(null)
+  const [api, contextHolder] = notification.useNotification();
 
   const [active, setActive] = useState(0)
   const [author, setAuthor] = useState("")
@@ -131,7 +133,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   }
 
   const add = () => {
-    try {
+    if (title && about && duration && type && category && privacy && image) {
       setLoading(true)
       axios.post(`courses/add-course/${user.id}`,
         {
@@ -156,16 +158,18 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         }
       )
         .then(function (response) {
-          console.log(response.data)
+          // console.log(response.data)
           setLoading(false)
           handleClick()
         }).catch(error => {
-          setLoading(false)
-          console.log(error)
+          api.open({
+            message: error.response.data.message
+          });
         })
-    } catch (e) {
-      setLoading(false)
-      console.log(e)
+    } else {
+      api.open({
+        message: "Please fill all fields!"
+      });
     }
   }
 
@@ -177,6 +181,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           <p className='font-medium'>Add Course</p>
           <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
         </div>
+        {contextHolder}
         <div className='lg:flex justify-between lg:mx-12 mx-4 my-4'>
           <div className='lg:w-[48%]'>
             <div>

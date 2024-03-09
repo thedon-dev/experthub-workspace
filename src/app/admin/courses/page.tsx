@@ -65,7 +65,7 @@ const courses = () => {
     {
       key: '2',
       label: (
-        <p>Materials</p>
+        <p>Events</p>
 
       ),
     },
