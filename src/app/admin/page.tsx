@@ -14,6 +14,7 @@ import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
 import Link from 'next/link';
 import { UserType } from '@/types/UserType';
+import { CourseType } from '@/types/CourseType';
 
 const adminDashboard = () => {
   const user = useAppSelector((state) => state.value);
@@ -51,7 +52,7 @@ const adminDashboard = () => {
     axios.get("courses/all")
       .then(function (response) {
         setCourses(response.data.courses)
-        console.log(response.data)
+        // console.log(response.data)
       })
   }
   const getStudents = () => {
@@ -76,6 +77,21 @@ const adminDashboard = () => {
         setTutors(response.data.instructors)
         // console.log(response.data)
       })
+  }
+
+  function hasDatePassed(course: CourseType) {
+    if (course.type === "online" || course.type === "offline") {
+      const currentDate = new Date();
+      const compareDate = new Date(course.startDate);
+      // console.log(currentDate, compareDate)
+
+      // Compare the target date with the current date
+      if (currentDate <= compareDate) {
+        return true
+      }
+      return false;
+    }
+    return true
   }
 
   useEffect(() => {
@@ -109,7 +125,8 @@ const adminDashboard = () => {
         <div className='lg:flex flex-wrap justify-between'>
           {
             courses.length >= 1 ?
-              courses.slice(0, 6).map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>) : <div>No course yet!</div>
+              courses.slice(0, 6).map((course: CourseType, index) => hasDatePassed(course) ? <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div> : null
+              ) : <div>No course yet!</div>
           }
         </div>
       </section>

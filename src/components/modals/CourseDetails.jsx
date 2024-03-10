@@ -58,14 +58,21 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
     return str.slice(0, index) + `fl_attachment/` + str.slice(index);
   }
 
-  // function hasDatePassed(targetDate) {
-  //   // Get the current date and time
-  //   const currentDate = new Date();
+  const isToday = () => {
+    let currentDate = new Date();
 
-  //   // Compare the target date with the current date
-  //   return targetDate < currentDate;
-  // }
-  // const targetDate = new Date(course.startDate + 'T' + course.startTime); // Replace with your target date
+    var desiredDateString = course.startDate;
+    var desiredDate = new Date(desiredDateString);
+    if (
+      currentDate.getFullYear() === desiredDate.getFullYear() &&
+      currentDate.getMonth() === desiredDate.getMonth() &&
+      currentDate.getDate() === desiredDate.getDate()
+    ) {
+      return true
+    }
+    return false
+  }
+
 
   return (
     <>
@@ -100,8 +107,7 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
                     </div>
                   </div>
                   {
-                    type === "view" ? course.type === "online" ?
-                      <button onClick={() => setJoinMeeting(true)} className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : user.role !== 'student' ? <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> : <button onClick={() => router.push(`/applicant/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
+                    type === "view" ? course.type === "online" ? isToday() ? <button onClick={() => setJoinMeeting(true)} className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : null : user.role !== 'student' ? <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> : <button onClick={() => router.push(`/applicant/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
                       : <button onClick={() => {
                         course.fee === 0 ? enroll() : handleFlutterPayment({
                           callback: (response) => {

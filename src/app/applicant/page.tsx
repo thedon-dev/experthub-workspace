@@ -58,6 +58,22 @@ const applicant = () => {
     getAssesment()
   }, [])
 
+  function hasDatePassed(course: CourseType) {
+    if (course.type === "online" || course.type === "offline") {
+      const currentDate = new Date();
+      const compareDate = new Date(course.startDate);
+      // console.log(currentDate, compareDate)
+
+      // Compare the target date with the current date
+      if (currentDate <= compareDate) {
+        return true
+      }
+      return false;
+    }
+    return true
+  }
+
+
   return (
     <DashboardLayout>
 
@@ -77,7 +93,7 @@ const applicant = () => {
           <p onClick={() => setView(view === 3 ? courses.length : 3)} className='text-[#DC9F08] cursor-pointer mt-auto'>VIEW {view === 3 ? "ALL" : "LESS"}</p>
         </div>
         <div className='flex flex-wrap justify-between'>
-          {courses.slice(0, view).map((course: CourseType) => <ApplicantCourses key={course._id} course={course} />)}
+          {courses.slice(0, view).map((course: CourseType) => hasDatePassed(course) ? <ApplicantCourses key={course._id} course={course} /> : null)}
           {/* <ApplicantCourses />
           <ApplicantCourses />
           <ApplicantCourses /> */}
