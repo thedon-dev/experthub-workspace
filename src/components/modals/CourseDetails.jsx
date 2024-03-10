@@ -101,7 +101,7 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
                   </div>
                   {
                     type === "view" ? course.type === "online" ?
-                      <button onClick={() => setJoinMeeting(true)} className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : user.role !== 'student' ? <button onClick={() => router.push(`/${user.role}/${course.type}?page=${course._id}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> : <button onClick={() => router.push(`/applicant/${course.type}?page=${course._id}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
+                      <button onClick={() => setJoinMeeting(true)} className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : user.role !== 'student' ? <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> : <button onClick={() => router.push(`/applicant/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
                       : <button onClick={() => {
                         course.fee === 0 ? enroll() : handleFlutterPayment({
                           callback: (response) => {

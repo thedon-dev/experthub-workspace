@@ -4,7 +4,7 @@ import FileDownload from '@/components/FileDownload'
 import { useAppSelector } from '@/store/hooks';
 import UploadVideo from './modals/UploadVideo';
 
-const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: string, page: any }) => {
+const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any, page: any }) => {
   const [indexCount, setIndexCount] = useState(0)
   const [videos, setVideos] = useState(repo.videos)
   const setNext = () => {

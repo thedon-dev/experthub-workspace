@@ -11,8 +11,8 @@ import SinglePage from '@/components/SinglePage';
 
 const SingleCourse = () => {
   const [repo, setRepo] = useState<CourseType | null>(null)
-  const page = useSearchParams().get("page")
-  const pathname = usePathname().slice(7)
+  const pathname = useSearchParams().get("page")
+  const page = usePathname().slice(7)
 
   const getData = async () => {
     await axios.get(`courses/single-course/${page}`)

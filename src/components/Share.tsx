@@ -14,7 +14,7 @@ const Share = ({ course }: { course: CourseType }) => {
     {
       key: '1',
       label: (
-        <FacebookShareButton url={`https://trainings.experthubllc.com/applicant/${course.type}?page=${course._id}`}>
+        <FacebookShareButton url={`https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
           <button className='bg-transparent'>
             Facebook
           </button>
@@ -24,7 +24,7 @@ const Share = ({ course }: { course: CourseType }) => {
     {
       key: '2',
       label: (
-        <WhatsappShareButton url={`https://trainings.experthubllc.com/applicant/${course.type}?page=${course._id}`}>
+        <WhatsappShareButton url={`https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
           <button className='bg-transparent'>
             Whatsapp
           </button>
@@ -34,7 +34,7 @@ const Share = ({ course }: { course: CourseType }) => {
     {
       key: '3',
       label: (
-        <LinkedinShareButton url={`https://trainings.experthubllc.com/applicant/${course.type}?page=${course._id}`}>
+        <LinkedinShareButton url={`https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
           <button className='bg-transparent'>
             Linkedln
           </button>
@@ -44,7 +44,7 @@ const Share = ({ course }: { course: CourseType }) => {
     {
       key: '4',
       label: (
-        <TwitterShareButton url={`https://trainings.experthubllc.com/applicant/${course.type}?page=${course._id}`}>
+        <TwitterShareButton url={`https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
           <button className='bg-transparent'>
             Twitter
           </button>
@@ -54,7 +54,7 @@ const Share = ({ course }: { course: CourseType }) => {
     {
       key: '5',
       label: (
-        <EmailShareButton url={`https://trainings.experthubllc.com/applicant/${course.type}?page=${course._id}`}>
+        <EmailShareButton url={`https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
           <button className='bg-transparent'>
             Email
           </button>

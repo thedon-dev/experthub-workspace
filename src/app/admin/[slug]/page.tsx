@@ -13,9 +13,9 @@ import SinglePage from '@/components/SinglePage';
 
 const SingleCourse = () => {
   const [repo, setRepo] = useState<CourseType | null>(null)
-  const page = useSearchParams().get("page")
+  const pathname = useSearchParams().get("page")
   const view = useSearchParams().get("view")
-  const pathname = usePathname().slice(7)
+  const page = usePathname().slice(7)
   const router = useRouter()
   const [edit, setEdit] = useState(false)
 
