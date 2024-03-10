@@ -79,21 +79,6 @@ const adminDashboard = () => {
       })
   }
 
-  function hasDatePassed(course: CourseType) {
-    if (course.type === "online" || course.type === "offline") {
-      const currentDate = new Date();
-      const compareDate = new Date(course.startDate);
-      // console.log(currentDate, compareDate)
-
-      // Compare the target date with the current date
-      if (currentDate <= compareDate) {
-        return true
-      }
-      return false;
-    }
-    return true
-  }
-
   useEffect(() => {
     getCourses()
     getStudents()
@@ -125,7 +110,7 @@ const adminDashboard = () => {
         <div className='lg:flex flex-wrap justify-between'>
           {
             courses.length >= 1 ?
-              courses.slice(0, 6).map((course: CourseType, index) => hasDatePassed(course) ? <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div> : null
+              courses.slice(0, 6).map((course: CourseType, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>
               ) : <div>No course yet!</div>
           }
         </div>

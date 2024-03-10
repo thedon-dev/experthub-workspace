@@ -105,21 +105,6 @@ const courses = () => {
     setCourses(results)
   }
 
-  function hasDatePassed(course: CourseType) {
-    if (course.type === "online" || course.type === "offline") {
-      const currentDate = new Date();
-      const compareDate = new Date(course.startDate);
-      // console.log(currentDate, compareDate)
-
-      // Compare the target date with the current date
-      if (currentDate <= compareDate) {
-        return true
-      }
-      return false;
-    }
-    return true
-  }
-
   useEffect(() => {
     getCourses()
     getResources()
@@ -177,7 +162,7 @@ const courses = () => {
       <section className='m-2 p-3'>
         <p className='font-bold text-sm my-2'>{user.assignedCourse}</p>
         <div className='lg:flex flex-wrap justify-between'>
-          {courses.length > 0 ? courses.map((course: CourseType) => hasDatePassed(course) ? <div key={course._id} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div> : null) : <div>No courses available</div>}
+          {courses.length > 0 ? courses.map((course: CourseType) => <div key={course._id} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>) : <div>No courses available</div>}
         </div>
       </section>
       <section className='m-4 w-[90%]'>

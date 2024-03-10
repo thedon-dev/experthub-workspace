@@ -14,7 +14,6 @@ import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
 import Link from 'next/link';
 import { UserType } from '@/types/UserType';
-import { CourseType } from '@/types/CourseType';
 
 const tutor = () => {
   const user = useAppSelector((state) => state.value);
@@ -75,21 +74,7 @@ const tutor = () => {
       })
   }
 
-  function hasDatePassed(course: CourseType) {
-    if (course.type === "online" || course.type === "offline") {
-      const currentDate = new Date();
-      const compareDate = new Date(course.startDate);
-      // console.log(currentDate, compareDate)
-
-      // Compare the target date with the current date
-      if (currentDate <= compareDate) {
-        return true
-      }
-      return false;
-    }
-    return true
-  }
-
+  
 
   useEffect(() => {
     getCourses()
@@ -138,7 +123,7 @@ const tutor = () => {
         <div className='lg:flex flex-wrap justify-between'>
           {
             courses.length >= 1 ?
-              courses.slice(0, 6).map((course, index) => hasDatePassed(course) ? <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div> : null) : <div>No Assigned course!</div>
+              courses.slice(0, 6).map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>) : <div>No Assigned course!</div>
           }
         </div>
       </section>
