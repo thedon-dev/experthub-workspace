@@ -15,7 +15,7 @@ const applicant = () => {
   const user = useAppSelector((state) => state.value);
   const [reccomended, setReccomended] = useState<CourseType | []>([])
   const [courses, setCourses] = useState<CourseType | []>([])
-  const [view, setView] = useState(3)
+  const [view, setView] = useState(10)
   const [instructors, setInstructors] = useState([])
 
   const [assesments, setAssesment] = useState<AssesmentType | []>([])
@@ -38,7 +38,7 @@ const applicant = () => {
     await axios.get(`courses/enrolled-courses/${user.id}`)
       .then(function (response) {
         setCourses(response.data.enrolledCourses.reverse())
-        // console.log(response.data.enrolledCourses)
+        console.log(response.data.enrolledCourses)
       })
   }
   const getTutors = () => {
