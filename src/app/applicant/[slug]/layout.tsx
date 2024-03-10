@@ -7,7 +7,6 @@ type Props = {
     slug: string,
   }
   searchParams: { [page: string]: string | string[] | undefined }
-  children: React.ReactNode
 
 }
 
@@ -35,9 +34,12 @@ export const generateMetadata = async ({ params, searchParams }: Props): Promise
   }
 }
 
-const layout = ({
+export default function singleLayout({
   children, params, searchParams
-}: Props) => {
+}: {
+  children: React.ReactNode
+  params: Props, searchParams: Props
+}) {
   return (
     <div>
       {children}
@@ -45,4 +47,3 @@ const layout = ({
   );
 };
 
-export default layout;
