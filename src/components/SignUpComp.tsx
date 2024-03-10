@@ -9,10 +9,11 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
   const [fullname, setName] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
-  const [country, setCountry] = useState("")
+  const [country, setCountry] = useState("nigeria")
   const [state, setState] = useState("")
   const [address, setAddress] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const states_in_nigeria = [
@@ -56,33 +57,39 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
   ]
   const signupApplicant = async () => {
     if (fullname && email && phone && country && state && address && password) {
-      setLoading(true)
-      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/register`, {
-        fullname,
-        email,
-        phone,
-        country,
-        state,
-        address,
-        password,
-        userType: role
-      })
-        .then(function (response) {
-          console.log(response.data)
-          setLoading(false)
-          if (action) {
-            action()
-          } else {
-            router.push(`/auth/verify`)
-          }
+      if (password === confirmPassword) {
+        setLoading(true)
+        axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/register`, {
+          fullname,
+          email,
+          phone,
+          country,
+          state,
+          address,
+          password,
+          userType: role
         })
-        .catch(error => {
-          setLoading(false)
-          api.open({
-            message: error.response.data.message
-          });
-          console.log(error.response.data.message)
-        })
+          .then(function (response) {
+            console.log(response.data)
+            setLoading(false)
+            if (action) {
+              action()
+            } else {
+              router.push(`/auth/verify`)
+            }
+          })
+          .catch(error => {
+            setLoading(false)
+            api.open({
+              message: error.response.data.message
+            });
+            console.log(error.response.data.message)
+          })
+      } else {
+        api.open({
+          message: "Password don't match confirm password"
+        });
+      }
     } else {
       api.open({
         message: "Please fill all fields!"
@@ -116,7 +123,7 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
         <div className='flex justify-between'>
           <div className='my-2 text-xs w-[48%]'>
             <label className='font-medium'>State</label>
-            <select onChange={e => setState(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm'>
+            <select onChange={e => setState(e.target.value)} value={state} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm'>
               {states_in_nigeria.map(value => <option key={value} value={value}>{value}</option>)}
             </select>
           </div>
@@ -132,7 +139,7 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
           </div>
           <div className='my-2 text-xs w-[48%] relative'>
             <label className='font-medium'>Confirm Password</label>
-            <input className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type={active ? "text" : "password"} placeholder='************' />
+            <input onChange={(e) => setConfirmPassword(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type={active ? "text" : "password"} placeholder='************' />
             <img onClick={() => setActive(!active)} className='absolute top-7 right-2 cursor-pointer' src="/images/icons/eyes.svg" alt="" />
           </div>
         </div>
