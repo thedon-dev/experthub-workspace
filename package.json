@@ -21,6 +21,7 @@
     "react-dom": "^18",
     "react-paystack": "^5.0.0",
     "react-redux": "^9.0.4",
+    "react-select": "^5.8.0",
     "react-share": "^5.1.0",
     "react-slick": "^0.29.0",
     "redux-persist": "^6.0.0"

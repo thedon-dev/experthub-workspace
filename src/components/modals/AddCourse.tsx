@@ -1,8 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
 import { CourseType } from '@/types/CourseType';
 import { notification } from 'antd';
+import Select from 'react-select';
+import { UserType } from '@/types/UserType';
 
 
 const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
@@ -13,7 +15,6 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [api, contextHolder] = notification.useNotification();
 
   const [active, setActive] = useState(0)
-  const [author, setAuthor] = useState("")
   const [about, setAbout] = useState(course?.about || "")
   const [startDate, setStartDate] = useState(course?.startDate || "")
   const [endDate, setEndDate] = useState(course?.endDate.toString() || "")
@@ -31,6 +32,17 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [room, setRoom] = useState(course?.room || "")
   const [loading, setLoading] = useState(false)
   const [file, setFile] = useState<FileList | null>()
+  const [students, setStudents] = useState([])
+  const [scholarship, setScholarship] = useState([])
+
+  const getStudents = () => {
+    axios.get('user/students')
+      .then(function (response) {
+        setStudents(response.data.students)
+        // console.log(response.data)
+      })
+  }
+
   const [pdf, setPdf] = useState("")
   let layout = {
     title: "",
@@ -132,7 +144,13 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     }
   }
 
+  const getScholarship = () => {
+    const arrayOfIds = scholarship.map((object: any) => object.value)
+    return arrayOfIds
+  }
+
   const add = () => {
+    console.log(getScholarship())
     if (title && about && duration && category && privacy && image && type === "offline" ? startDate && endDate && startTime && endTime && room && location : type === "online" ? startDate && endDate && startTime && endTime : type === "video" ? videos : pdf) {
       setLoading(true)
       axios.post(`courses/add-course/${user.id}`,
@@ -150,11 +168,11 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           privacy,
           fee: fee.toString(),
           strikedFee: striked.toString(),
-          scholarship: "students",
           room,
           location,
           videos,
-          pdf
+          pdf,
+          scholarship: getScholarship()
         }
       )
         .then(function (response) {
@@ -172,6 +190,13 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
       });
     }
   }
+
+  useEffect(() => {
+    getStudents()
+  }, [])
+
+  const formattedOptions = students.map((option: UserType) => ({ value: option.studentId, label: option.fullname }));
+
 
   return (
     open && <div>
@@ -392,6 +417,16 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         <label className='text-sm font-medium my-1'>Course Fee</label>
                         <input onChange={e => setFee(parseInt(e.target.value))} value={fee} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                         <p className='text-xs'>Set course fee to 0 for a free course</p>
+                      </div>
+                      <div className='my-1'>
+                        <label className='text-sm font-medium my-1'>Who gets this course for free (Scholarship)</label>
+                        <Select
+                          isMulti
+                          options={formattedOptions}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          onChange={(e: any) => { setScholarship(e) }}
+                        />
                       </div>
                       <div className='my-5'>
                         <label className='text-sm font-medium my-1'>Show striked out original cost fee</label>
