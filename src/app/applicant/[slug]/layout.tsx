@@ -19,7 +19,9 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
     title: `Course || ${course.course.title}`,
     description: course.course.about,
     openGraph: {
-      images: course.course.thumbnail,
+      images: {
+        url: course.course.thumbnail,
+      },
       title: course.title,
       type: "website",
       description: course.course.about,

@@ -45,21 +45,6 @@ const SingleCourse = () => {
 
   return (
     <Fragment>
-      <Head>
-        <title>{repo?.title}</title>
-
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={repo?.title} />
-        <meta property="og:description" content={repo?.body} />
-        <meta property="og:image" content={repo?.thumbnail} />
-        <meta property="og:url" content={`https://trainings.experthubllc.com/applicant/course?page=${repo?._id}`} />
-        <meta property="og:site_name" content={repo?.title} />
-
-        <meta name="twitter:title" content={repo?.title} />
-        <meta name="twitter:description" content={repo?.about} />
-        <meta name="twitter:image" content={repo?.thumbnail} />
-
-      </Head>
       <DashboardLayout>
         <section className=''>
           <div className='flex'>
