@@ -6,11 +6,11 @@ type Props = {
   params: {
     slug: string,
   }
-  searchParams: { [page: string]: string | string[] | undefined }
+  children: React.ReactNode
 
 }
 
-export const generateMetadata = async ({ params, searchParams }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const id = params.slug
   // // fetch data
   const course = await fetch(`https://shark-app-2-k9okk.ondigitalocean.app/courses/single-course/${id}`).then((res) => res.json())
@@ -35,11 +35,8 @@ export const generateMetadata = async ({ params, searchParams }: Props): Promise
 }
 
 export default function singleLayout({
-  children, params, searchParams
-}: {
-  children: React.ReactNode
-  params: Props, searchParams: Props
-}) {
+  children, params
+}: Props) {
   return (
     <div>
       {children}
