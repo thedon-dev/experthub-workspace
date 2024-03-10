@@ -19,7 +19,7 @@ const ChatWidget = () => {
       // console.log(user)
       const identifierHash = crypto
         .createHmac("sha256", key)
-        .update(user.id)
+        .update(user?.id)
         .digest("hex");
 
       window.chatwootSettings = {

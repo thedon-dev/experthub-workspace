@@ -26,7 +26,8 @@ const DashboardLayout = ({ children }: { children: any }) => {
 
   return (
     <main className='lg:flex'>
-      <ChatWidget />
+      {user.fullName ? <ChatWidget /> : null}
+      {/* <ChatWidget /> */}
       {
         toggle ? <div className='lg:w-[20%]'>
           <SideNav />

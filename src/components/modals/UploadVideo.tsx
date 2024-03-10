@@ -43,7 +43,7 @@ const UploadVideo = ({ id }: { id: string }) => {
       .then(function (response) {
         console.log(response.data)
         setLoading(false)
-        router.refresh()
+        window.location.reload();
       }).catch(error => {
         console.log(error)
         setLoading(false)
