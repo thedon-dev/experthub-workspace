@@ -42,7 +42,6 @@ const SingleCourse = () => {
       })
   }
 
-
   return (
     <Fragment>
       <DashboardLayout>

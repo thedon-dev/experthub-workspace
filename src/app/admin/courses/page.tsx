@@ -94,7 +94,7 @@ const courses = () => {
       })
   }
 
-  
+
   useEffect(() => {
     getPendngCourses()
     getCourses()
@@ -152,7 +152,7 @@ const courses = () => {
                   <div className='pl-10 w-full'>
                     <h4 className='text-xl my-2 font-medium'>{item.title}</h4>
                     <p className='text-xs my-3'>{item.about.substring(0, 30)}</p>
-                    <Link href={`/admin/${item.type}?page=${item._id}`}>
+                    <Link href={`/admin/${item._id}?page=${item.type}`}>
                       <button className='p-2 px-6 rounded-sm bg-primary'>Publish</button>
                     </Link>
                   </div>
