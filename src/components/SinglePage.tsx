@@ -23,9 +23,8 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: stri
           case 'video':
             return <div className='p-6 lg:flex'>
               <div className='w-full'>
-
                 {videos.map((video, index) => <div>
-                  {index === indexCount ? <video controls className="w-full">
+                  {index === indexCount ? <video key={index} controls className="w-full">
                     <source src={video.videoUrl} type="video/mp4" />
                   </video> : null}
                 </div>)}
