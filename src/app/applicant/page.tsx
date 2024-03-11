@@ -14,8 +14,8 @@ import { AssesmentType } from '@/types/AssesmentType';
 const applicant = () => {
   const user = useAppSelector((state) => state.value);
   const [reccomended, setReccomended] = useState<CourseType | []>([])
-  const [courses, setCourses] = useState<CourseType | []>([])
-  const [view, setView] = useState(10)
+  const [courses, setCourses] = useState<CourseType[]>([])
+  const [view, setView] = useState(3)
   const [instructors, setInstructors] = useState([])
 
   const [assesments, setAssesment] = useState<AssesmentType | []>([])
@@ -34,10 +34,32 @@ const applicant = () => {
         // console.log(response.data)
       })
   }
+
+  function hasDatePassed(course: CourseType) {
+    if (course.type === "online" || course.type === "offline") {
+      const currentDate = new Date();
+      const compareDate = new Date(course.startDate);
+      // console.log(currentDate, compareDate)
+
+      // Compare the target date with the current date
+      if (currentDate <= compareDate) {
+        return true
+      }
+      return false;
+    }
+    return true
+  }
+
   const getCourses = async () => {
     await axios.get(`courses/enrolled-courses/${user.id}`)
       .then(function (response) {
-        setCourses(response.data.enrolledCourses.reverse())
+        const all: CourseType[] = []
+        response.data.enrolledCourses.map((course: CourseType) => {
+          if (hasDatePassed(course)) {
+            all.push(course)
+          }
+        })
+        setCourses(all)
         console.log(response.data.enrolledCourses)
       })
   }
@@ -58,20 +80,7 @@ const applicant = () => {
     getAssesment()
   }, [])
 
-  function hasDatePassed(course: CourseType) {
-    if (course.type === "online" || course.type === "offline") {
-      const currentDate = new Date();
-      const compareDate = new Date(course.startDate);
-      // console.log(currentDate, compareDate)
 
-      // Compare the target date with the current date
-      if (currentDate <= compareDate) {
-        return true
-      }
-      return false;
-    }
-    return true
-  }
 
 
   return (
@@ -93,7 +102,7 @@ const applicant = () => {
           <p onClick={() => setView(view === 3 ? courses.length : 3)} className='text-[#DC9F08] cursor-pointer mt-auto'>VIEW {view === 3 ? "ALL" : "LESS"}</p>
         </div>
         <div className='flex flex-wrap justify-between'>
-          {courses.slice(0, view).map((course: CourseType) => hasDatePassed(course) ? <ApplicantCourses key={course._id} course={course} /> : null)}
+          {courses.slice(0, view).map((course: CourseType) => <ApplicantCourses key={course._id} course={course} />)}
           {/* <ApplicantCourses />
           <ApplicantCourses />
           <ApplicantCourses /> */}
