@@ -16,13 +16,16 @@ const Events = () => {
         console.log(response.data)
       })
   }
-  
+
   useEffect(() => {
     getAllEvents()
   }, [])
 
   return (
     <DashboardLayout>
+      <div className='p-6'>
+        <p className='text-xl'>Events</p>
+      </div>
       <EventsComp events={events} />
     </DashboardLayout>
   );

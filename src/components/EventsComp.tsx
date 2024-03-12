@@ -4,8 +4,6 @@ import React from 'react';
 const EventsComp = ({ events }: { events: any }) => {
   return (
     <div className='p-6'>
-      <p className='text-xl'>Events</p>
-
       <div className='flex flex-wrap justify-between mt-3'>
         {events.map((event: CourseType) => <div className='w-[33%] my-3' key={event._id}>
           <div className='p-2 rounded-md bg-white'>
