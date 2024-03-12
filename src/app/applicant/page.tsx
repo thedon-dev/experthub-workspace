@@ -81,8 +81,6 @@ const applicant = () => {
   }, [])
 
 
-
-
   return (
     <DashboardLayout>
 

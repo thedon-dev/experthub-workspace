@@ -15,10 +15,12 @@ import axios from 'axios';
 import Link from 'next/link';
 import { UserType } from '@/types/UserType';
 import { CourseType } from '@/types/CourseType';
+import AddEvents from '@/components/modals/AddEvents';
 
 const adminDashboard = () => {
   const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
+  const [event, setEvent] = useState(false)
   const [resources, setResources] = useState(false)
   const [graduates, setGraduates] = useState<UserType[]>([])
   const items: MenuProps['items'] = [
@@ -31,8 +33,7 @@ const adminDashboard = () => {
     {
       key: '2',
       label: (
-        <p>Events</p>
-
+        <p onClick={() => setEvent(true)}>Events</p>
       ),
     },
     {
@@ -117,6 +118,7 @@ const adminDashboard = () => {
       </section>
       <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
+      <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
     </DashboardLayout>
   );
 };
