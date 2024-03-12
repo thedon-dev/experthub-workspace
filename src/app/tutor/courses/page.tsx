@@ -14,6 +14,7 @@ import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
 import { ResourceType } from '@/types/ResourceType';
 import { CourseType } from '@/types/CourseType';
+import AddEvents from '@/components/modals/AddEvents';
 
 
 const courses = () => {
@@ -21,6 +22,7 @@ const courses = () => {
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
   const [materials, setMaterials] = useState<ResourceType | []>([])
+  const [event, setEvent] = useState(false)
 
   var settings = {
     dots: true,
@@ -68,8 +70,7 @@ const courses = () => {
     {
       key: '2',
       label: (
-        <p>Events</p>
-
+        <p onClick={() => setEvent(true)}>Events</p>
       ),
     },
     {
@@ -262,6 +263,8 @@ const courses = () => {
 
       <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
+      <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
+
     </DashboardLayout>
   );
 };

@@ -12,12 +12,14 @@ import CoursesCard from '@/components/cards/CoursesCard';
 import Slider from 'react-slick';
 import { CourseType } from '@/types/CourseType';
 import Link from 'next/link';
+import AddEvents from '@/components/modals/AddEvents';
 
 const courses = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
   const [pending, setPending] = useState<CourseType | []>([])
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
+  const [event, setEvent] = useState(false)
 
   var settings = {
     dots: false,
@@ -65,8 +67,7 @@ const courses = () => {
     {
       key: '2',
       label: (
-        <p>Events</p>
-
+        <p onClick={() => setEvent(true)}>Events</p>
       ),
     },
     {
@@ -163,6 +164,8 @@ const courses = () => {
         </div>
         <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
         <AddResources open={resources} handleClick={() => setResources(!resources)} />
+        <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
+
       </section>
     </DashboardLayout>
   );

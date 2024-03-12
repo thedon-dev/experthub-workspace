@@ -14,6 +14,7 @@ import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
 import Link from 'next/link';
 import { UserType } from '@/types/UserType';
+import AddEvents from '@/components/modals/AddEvents';
 
 const tutor = () => {
   const user = useAppSelector((state) => state.value);
@@ -21,6 +22,7 @@ const tutor = () => {
   const [resources, setResources] = useState(false)
   const [students, setStudents] = useState([])
   const [graduates, setGraduates] = useState<UserType[]>([])
+  const [event, setEvent] = useState(false)
 
   const items: MenuProps['items'] = [
     {
@@ -32,8 +34,7 @@ const tutor = () => {
     {
       key: '2',
       label: (
-        <p>Events</p>
-
+        <p onClick={() => setEvent(true)}>Events</p>
       ),
     },
     {
@@ -74,7 +75,7 @@ const tutor = () => {
       })
   }
 
-  
+
 
   useEffect(() => {
     getCourses()
@@ -129,6 +130,8 @@ const tutor = () => {
       </section>
       <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
+      <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
+
     </DashboardLayout>
   );
 };
