@@ -8,7 +8,7 @@ import { notification } from 'antd';
 import axios from 'axios';
 import { useState } from "react"
 
-const CourseDetails = ({ open, handleClick, course, type, call }) => {
+const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   const user = useAppSelector((state) => state.value);
   const [joinMeeting, setJoinMeeting] = useState(false)
   const [api, contextHolder] = notification.useNotification();
@@ -82,7 +82,7 @@ const CourseDetails = ({ open, handleClick, course, type, call }) => {
 
         <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 lg:w-[80%] overflow-y-auto w-[95%] mx-auto z-50 bg-[#F8F7F4]'>
           <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38]  p-4 lg:px-12 flex justify-between'>
-            <p className='font-medium'>Course Details</p>
+            <p className='font-medium capitalize'>{action} Details</p>
             <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
           </div>
           <div className='py-4 lg:px-10 px-4'>

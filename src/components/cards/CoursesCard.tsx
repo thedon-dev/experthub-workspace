@@ -27,7 +27,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
     {
       key: '2',
       label: (
-        <p onClick={() => course.enrolledStudents.length >= 1 ? setEnrolled(true) : setDelete(true)}>Delete course</p>
+        <p onClick={() => setDelete(true)}>Delete course</p>
       ),
     },
     {
@@ -87,7 +87,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
           </div> */}
         </div>
       </div>
-      <CourseDetails course={course} open={open} call={null} type='view' handleClick={() => setOpen(false)} />
+      <CourseDetails course={course} action={"Course"} open={open} call={null} type='view' handleClick={() => setOpen(false)} />
       <AddCourse course={course} open={edit} handleClick={() => setEdit(false)} />
       <EnrollStudent open={enroll} handleClick={() => setEnroll(false)} course={course} />
       {

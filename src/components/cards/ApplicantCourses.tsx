@@ -25,7 +25,7 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
         <h3 className="font-medium text-xl my-2">{course.title} <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>{course.type}</button></h3>
         <p className='text-xs'>{course.about.substring(0, 70)}...</p>
       </div>
-      <CourseDetails course={course} open={open} call={null} type='view' handleClick={() => setOpen(false)} />
+      <CourseDetails course={course} open={open} action={"Course"} call={null} type='view' handleClick={() => setOpen(false)} />
     </div>
   );
 };

@@ -16,8 +16,7 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
         {course.fee - course.strikedFee === 0 ? <p className='text-sm text-[#0BC01E]'>Free</p> : <p className='text-sm'><span>₦ {course.fee - course.strikedFee}</span> <span className='line-through	text-gray'>{course.fee}</span></p>}
       </div>
       <button onClick={() => setOpen(true)} className='p-2 w-52 bg-primary my-auto rounded-sm'>Enrol Now</button>
-      <CourseDetails course={course} open={open} type='enroll' call={call} handleClick={() => setOpen(false)} />
-
+      <CourseDetails course={course} open={open} action={"Course"} type='enroll' call={call} handleClick={() => setOpen(false)} />
     </div>
   );
 };
