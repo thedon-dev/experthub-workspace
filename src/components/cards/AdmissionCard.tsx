@@ -123,7 +123,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         <img src={tutor.profilePicture ? tutor.profilePicture : "/images/user.png"} className='w-10 sm:mr-2 h-10 rounded-full object-cover' alt="" />
         <div className='w-52'>
           <p className='font-medium text-sm capitalize text-clip overflow-hidden'>{tutor.fullname}</p>
-          <p className='text-xs text-clip overflow-hidden'>{tutor.email}</p>
+          {pathname.includes("admin") && <p className='text-xs text-clip overflow-hidden'>{tutor.email}</p>}
         </div>
         <div className='w-52'>
           <p className='text-xs'>Course</p>

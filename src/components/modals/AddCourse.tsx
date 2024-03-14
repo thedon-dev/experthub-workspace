@@ -5,6 +5,7 @@ import { CourseType } from '@/types/CourseType';
 import { notification } from 'antd';
 import Select from 'react-select';
 import { UserType } from '@/types/UserType';
+import { Spin } from 'antd';
 
 
 const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
@@ -48,7 +49,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     title: "",
     videoUrl: ""
   }
-  const [videos, setVideos] = useState([layout])
+  const [videos, setVideos] = useState(course?.videos || [layout])
 
   const handleInputChange = (index: number, field: string, value: string | number) => {
     const updatedObjects = [...videos];
@@ -176,6 +177,10 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         }
       )
         .then(function (response) {
+          api.open({
+            message: "Course succesfully created!",
+            duration: 10,
+          });
           // console.log(response.data)
           setLoading(false)
           handleClick()
@@ -318,7 +323,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                           <label className='text-sm font-medium my-1'>Course type</label>
                           <select onChange={e => setType(e.target.value)} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                             <option value="offline">Offline</option>
-                            <option value="online">Online</option>
+                            <option value="online">Live</option>
                             <option value="video">Video</option>
                             <option value="pdf">PDF</option>
                           </select>
@@ -441,7 +446,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                 <p className='text-sm my-4'>By uploading you agree that this course is a product of you
                   and not being forged<input className='ml-2' type="checkbox" /></p>
                 <div className='flex'>
-                  {course === null ? active === 2 ? <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? "Loading..." : "Add Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button> : active === 2 ? <button onClick={() => edit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? "Loading..." : "Edit Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
+                  {course === null ? active === 2 ? <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Add Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button> : active === 2 ? <button onClick={() => edit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Edit Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
                   <button onClick={() => handleClick()} className='mx-4'>Cancel</button>
                 </div>
               </div>

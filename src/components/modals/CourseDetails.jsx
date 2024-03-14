@@ -38,6 +38,30 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
     }
   }
 
+  const enrollEvent = () => {
+    try {
+      axios.put(`events/enroll/${course._id}`, {
+        id: user.id
+      })
+        .then(function (response) {
+          console.log()
+          api.open({
+            message: response.data.message,
+            duration: 8
+          });
+          handleClick()
+        })
+        .catch(err => {
+          api.open({
+            message: err.response.data.message
+          });
+          // console.log(err.response.data.message)
+        })
+    } catch (e) {
+      // console.log(e.response.data.message)
+    }
+  }
+
   const config = {
     public_key: 'FLWPUBK_TEST-6330f5c973d7919b3b553f52d5a82098-X',
     tx_ref: Date.now(),
@@ -111,7 +135,11 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                       : <button onClick={() => {
                         course.fee === 0 ? enroll() : handleFlutterPayment({
                           callback: (response) => {
-                            enroll()
+                            if (action === "Event") {
+                              enrollEvent()
+                            } else {
+                              enroll()
+                            }
                             console.log(response);
                             closePaymentModal() // this will close the modal programmatically
                           },

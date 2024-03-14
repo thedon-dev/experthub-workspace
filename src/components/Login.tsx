@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useAppDispatch } from '@/store/hooks';
 import { setUser } from '@/store/slices/userSlice'
-import { notification } from 'antd';
+import { Spin, notification } from 'antd';
 import { useFormik } from 'formik';
 
 const Login = ({ type }: { type?: string }) => {
@@ -91,7 +91,7 @@ const Login = ({ type }: { type?: string }) => {
           {formik.errors.password ? <div className='text-[#FF0000] text-xs'>{formik.errors.password}</div> : null}
         </div>
         <div className='my-2 text-xs'>
-          <button type='submit' className='w-full bg-primary p-2 rounded-sm font-medium'>{loading ? "Loading..." : "Login"}</button>
+          <button type='submit' className='w-full bg-primary p-2 rounded-sm font-medium'>{loading ? <Spin /> : "Login"}</button>
         </div>
       </form>
     </div>

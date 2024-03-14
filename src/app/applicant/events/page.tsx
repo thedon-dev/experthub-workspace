@@ -2,6 +2,7 @@
 
 import DashboardLayout from '@/components/DashboardLayout';
 import EventsComp from '@/components/EventsComp';
+import UserEvent from '@/components/cards/UserEvent';
 import { useAppSelector } from '@/store/hooks';
 import { CourseType } from '@/types/CourseType';
 import axios from 'axios';
@@ -18,41 +19,41 @@ const Events = () => {
     axios.put(`events/category/${user.assignedCourse}`)
       .then(function (response) {
         setEvents(response.data.events)
-        console.log(response.data)
+        const all: CourseType[] = []
+        const enrolled: CourseType[] = []
+
+        response.data.events.map((course: CourseType) => {
+          if (hasDatePassed(course)) {
+            all.push(course)
+          }
+          if (course.enrolledStudents.includes(user.id)) {
+            enrolled.push(course)
+          }
+        })
+        setPastEvent(all)
+        setMyEvent(enrolled)
+        // console.log(response.data)
       })
   }
 
-  const getMyEvents = () => {
-    const all: CourseType[] = []
-    events.map((event) => {
-      if (event.enrolledStudents.includes(user.id)) {
-        all.push(event)
-      }
-    })
-    setMyEvent(all)
-  }
 
-
-
-  const getPastEvent = () => {
-    const all: CourseType[] = []
-
-    events.map((event) => {
+  function hasDatePassed(course: CourseType) {
+    if (course.type === "online" || course.type === "offline") {
       const currentDate = new Date();
-      const compareDate = new Date(event.startDate);
+      const compareDate = new Date(course.startDate);
+      // console.log(currentDate, compareDate)
 
       // Compare the target date with the current date
       if (currentDate > compareDate) {
-        all.push(event)
+        return true
       }
-    })
-    setPastEvent(all)
+      return false;
+    }
+    return true
   }
 
   useEffect(() => {
     getAllEvents()
-    getMyEvents()
-    getPastEvent()
   }, [])
   return (
     <DashboardLayout>
@@ -69,51 +70,15 @@ const Events = () => {
           switch (active) {
             case 'all':
               return <div className='flex flex-wrap justify-between mt-3'>
-                {events.map((event: CourseType) => <div className='w-[33%] my-3' key={event._id}>
-                  <div className='p-2 rounded-md bg-white'>
-                    <img className='rounded-md' src={event.thumbnail} alt="" />
-                  </div>
-                  <div>
-                    <p className='text-primary'>Course by {event.author}</p>
-                    <p className='text-xl font-medium'>{event.title}</p>
-                    <p className='text-sm'>{event.about.substring(0, 100)}</p>
-                    <div className='text-center my-3'>
-                      {event.type === "online" ? <button className='bg-primary p-2 w-44 text-white'>Join Live </button> : <button className='border border-[#1E1E1E] text-[#DC9F08] p-2 w-44 mx-auto'>View Details</button>}
-                    </div>
-                  </div>
-                </div>)}
+                {events.map((event: CourseType) => <UserEvent key={event._id} event={event} />)}
               </div>
             case 'my':
               return <div className='flex flex-wrap justify-between mt-3'>
-                {myEvent.map((event: CourseType) => <div className='w-[33%] my-3' key={event._id}>
-                  <div className='p-2 rounded-md bg-white'>
-                    <img className='rounded-md' src={event.thumbnail} alt="" />
-                  </div>
-                  <div>
-                    <p className='text-primary'>Course by {event.author}</p>
-                    <p className='text-xl font-medium'>{event.title}</p>
-                    <p className='text-sm'>{event.about.substring(0, 100)}</p>
-                    <div className='text-center my-3'>
-                      {event.type === "online" ? <button className='bg-primary p-2 w-44 text-white'>Join Live </button> : <button className='border border-[#1E1E1E] text-[#DC9F08] p-2 w-44 mx-auto'>View Details</button>}
-                    </div>
-                  </div>
-                </div>)}
+                {myEvent.map((event: CourseType) => <UserEvent key={event._id} event={event} />)}
               </div>
             case 'past':
               return <div className='flex flex-wrap justify-between mt-3'>
-                {pastEvent.map((event: CourseType) => <div className='w-[33%] my-3' key={event._id}>
-                  <div className='p-2 rounded-md bg-white'>
-                    <img className='rounded-md' src={event.thumbnail} alt="" />
-                  </div>
-                  <div>
-                    <p className='text-primary'>Course by {event.author}</p>
-                    <p className='text-xl font-medium'>{event.title}</p>
-                    <p className='text-sm'>{event.about.substring(0, 100)}</p>
-                    <div className='text-center my-3'>
-                      {event.type === "online" ? <button className='bg-primary p-2 w-44 text-white'>Join Live </button> : <button className='border border-[#1E1E1E] text-[#DC9F08] p-2 w-44 mx-auto'>View Details</button>}
-                    </div>
-                  </div>
-                </div>)}
+                {pastEvent.map((event: CourseType) => <UserEvent key={event._id} event={event} />)}
               </div>
             case 'lost':
               return <div></div>

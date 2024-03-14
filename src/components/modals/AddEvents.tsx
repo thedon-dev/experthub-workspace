@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
 import { CourseType } from '@/types/CourseType';
-import { notification } from 'antd';
+import { Spin, notification } from 'antd';
 import Select from 'react-select';
 import { UserType } from '@/types/UserType';
 
@@ -125,6 +125,9 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
       )
         .then(function (response) {
           // console.log(response.data)
+          api.open({
+            message: "Events Created Successfully!"
+          });
           setLoading(false)
           handleClick()
         }).catch(error => {
@@ -339,7 +342,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                 <p className='text-sm my-4'>By uploading you agree that this course is a product of you
                   and not being forged<input className='ml-2' type="checkbox" /></p>
                 <div className='flex'>
-                  {course === null ? active === 2 ? <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? "Loading..." : "Create Event"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button> : active === 2 ? <button onClick={() => edit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? "Loading..." : "Edit Event"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
+                  {course === null ? active === 2 ? <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Create Event"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button> : active === 2 ? <button onClick={() => edit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Edit Event"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
                   <button onClick={() => handleClick()} className='mx-4'>Cancel</button>
                 </div>
               </div>

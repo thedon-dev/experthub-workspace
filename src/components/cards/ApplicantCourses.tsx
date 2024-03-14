@@ -22,7 +22,7 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
           {course.startDate && <p className='text-xs text-[#DC9F08]'>Starts: {course.startDate}</p>}
           {course.startTime && <p className='text-xs text-[#0ACF83]'>Time: {course.startTime}</p>}
         </div>
-        <h3 className="font-medium text-xl my-2">{course.title} <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>{course.type}</button></h3>
+        <h3 className="font-medium text-xl my-2">{course.title} {course.type === "onlibe" ? <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>Join Live</button> : <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>{course.type}</button>} </h3>
         <p className='text-xs'>{course.about.substring(0, 70)}...</p>
       </div>
       <CourseDetails course={course} open={open} action={"Course"} call={null} type='view' handleClick={() => setOpen(false)} />
