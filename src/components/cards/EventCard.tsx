@@ -8,7 +8,7 @@ const EventCard = ({ event }: { event: CourseType }) => {
   return (
     <div className='lg:w-[33%] my-3'>
       <div className='p-2 rounded-md bg-white'>
-        <img className='rounded-md' src={event.thumbnail} alt="" />
+        <img className='rounded-md h-44 object-cover w-full' src={event.thumbnail} alt="" />
       </div>
       <div>
         <p className='text-primary'>Course by {event.author}</p>

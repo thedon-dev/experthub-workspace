@@ -151,7 +151,6 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   }
 
   const add = () => {
-    console.log(getScholarship())
     if (title && about && duration && category && image && type === "offline" ? startDate && endDate && startTime && endTime && room && location : type === "online" ? startDate && endDate && startTime && endTime : type === "video" ? videos : pdf) {
       setLoading(true)
       axios.post(`courses/add-course/${user.id}`,
@@ -179,12 +178,12 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         .then(function (response) {
           api.open({
             message: "Course succesfully created!",
-            duration: 10,
           });
           // console.log(response.data)
           setLoading(false)
           handleClick()
         }).catch(error => {
+          // console.log(error)
           api.open({
             message: error.response.data.message
           });
