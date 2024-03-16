@@ -10,7 +10,9 @@ const Events = () => {
   const user = useAppSelector((state) => state.value);
   const [events, setEvents] = useState([])
   const getAllEvents = () => {
-    axios.put(`events/category/${user.assignedCourse}`)
+    axios.put(`events/category`, {
+      category: user.assignedCourse
+    })
       .then(function (response) {
         setEvents(response.data.events)
         console.log(response.data)

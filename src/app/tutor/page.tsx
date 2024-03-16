@@ -68,7 +68,9 @@ const tutor = () => {
   }
 
   const getCourses = async () => {
-    axios.get(`courses/category/${user.assignedCourse}`)
+    axios.put(`courses/category`, {
+      category: user.assignedCourse
+    })
       .then(function (response) {
         setCourses(response.data.courses)
         // console.log(response.data)

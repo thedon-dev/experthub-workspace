@@ -12,7 +12,7 @@ const Events = () => {
   const getAllEvents = () => {
     axios.get("events/all")
       .then(function (response) {
-        setEvents(response.data.events)
+        setEvents(response.data.events.reverse())
         console.log(response.data)
       })
   }
