@@ -12,7 +12,7 @@ const Events = () => {
   const user = useAppSelector((state) => state.value);
   const [active, setActive] = useState("all")
   const [events, setEvents] = useState<CourseType[]>([])
-  const [all, setAll] = useState<CourseType[]>([])
+  const [allEvents, setAll] = useState<CourseType[]>([])
   const [myEvent, setMyEvent] = useState<CourseType[]>([])
   const [pastEvent, setPastEvent] = useState<CourseType[]>([])
 
@@ -76,7 +76,7 @@ const Events = () => {
           switch (active) {
             case 'all':
               return <div className='flex flex-wrap justify-between mt-3'>
-                {all.length > 0 ? all.map((event: CourseType) => <UserEvent type="enroll" key={event._id} event={event} />) : <div className=''>No recommended events!</div>}
+                {allEvents.length > 0 ? allEvents.map((event: CourseType) => <UserEvent type="enroll" key={event._id} event={event} />) : <div className=''>No recommended events!</div>}
               </div>
             case 'my':
               return <div className='flex flex-wrap justify-between mt-3'>

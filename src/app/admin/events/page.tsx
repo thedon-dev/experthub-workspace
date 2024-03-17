@@ -41,9 +41,9 @@ const Events = () => {
   ];
 
   const getAllEvents = () => {
-    axios.put(`events/all`)
+    axios.get(`events/all`)
       .then(function (response) {
-        setEvents(response.data.events)
+        setEvents(response.data.events.reverse())
         console.log(response.data)
       })
   }
@@ -54,7 +54,7 @@ const Events = () => {
   return (
     <DashboardLayout>
       <div className='p-6'>
-        <p className='text-xl'>Events</p>
+        <p className='text-xl mb-3'>Events</p>
         <Dropdown menu={{ items }} trigger={["click"]}>
           <button className='bg-primary p-2 font-medium text-sm rounded-md'>
             + Add training resources

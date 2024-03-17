@@ -56,7 +56,7 @@ const Events = () => {
   return (
     <DashboardLayout>
       <div className='p-6'>
-        <p className='text-xl'>Events</p>
+        <p className='text-xl mb-3'>Events</p>
         <Dropdown menu={{ items }} trigger={["click"]}>
           <button className='bg-primary p-2 font-medium text-sm rounded-md'>
             + Add training resources
