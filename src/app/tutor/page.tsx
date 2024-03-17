@@ -20,9 +20,10 @@ const tutor = () => {
   const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
+  const [event, setEvent] = useState(false)
+
   const [students, setStudents] = useState([])
   const [graduates, setGraduates] = useState<UserType[]>([])
-  const [event, setEvent] = useState(false)
 
   const items: MenuProps['items'] = [
     {
