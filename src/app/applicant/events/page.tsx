@@ -36,8 +36,8 @@ const Events = () => {
           }
         })
         setPastEvent(all)
-        setMyEvent(enrolled)
-        setAll(notEnrolled)
+        setMyEvent(enrolled.reverse())
+        setAll(notEnrolled.reverse())
         // console.log(response.data)
       })
   }
