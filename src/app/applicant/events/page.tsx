@@ -12,6 +12,7 @@ const Events = () => {
   const user = useAppSelector((state) => state.value);
   const [active, setActive] = useState("all")
   const [events, setEvents] = useState<CourseType[]>([])
+  const [all, setAll] = useState<CourseType[]>([])
   const [myEvent, setMyEvent] = useState<CourseType[]>([])
   const [pastEvent, setPastEvent] = useState<CourseType[]>([])
 
@@ -23,17 +24,20 @@ const Events = () => {
         setEvents(response.data.events)
         const all: CourseType[] = []
         const enrolled: CourseType[] = []
-
+        const notEnrolled: React.SetStateAction<CourseType[]> = []
         response.data.events.map((course: CourseType) => {
           if (hasDatePassed(course)) {
             all.push(course)
           }
           if (course.enrolledStudents.includes(user.id)) {
             enrolled.push(course)
+          } else {
+            notEnrolled.push(course)
           }
         })
         setPastEvent(all)
         setMyEvent(enrolled)
+        setAll(notEnrolled)
         // console.log(response.data)
       })
   }
@@ -59,10 +63,10 @@ const Events = () => {
   }, [])
   return (
     <DashboardLayout>
-      <div className='flex px-4 justify-between w-[50%] text-lg'>
+      <div className='flex px-4 justify-between w-[40%] text-lg'>
         <div onClick={() => setActive("all")} className={active === "all" ? 'border-b-2 border-primary' : 'cursor-pointer'}>Recommended for you</div>
         <div onClick={() => setActive("my")} className={active === 'my' ? "border-b-2 border-primary" : "cursor-pointer"}>My Events</div>
-        <div onClick={() => setActive("past")} className={active === 'past' ? "border-b-2 border-primary" : "cursor-pointer"}>Past Events</div>
+        {/* <div onClick={() => setActive("past")} className={active === 'past' ? "border-b-2 border-primary" : "cursor-pointer"}>Past Events</div> */}
         {/* <div>ALl</div> */}
 
       </div>
@@ -72,7 +76,7 @@ const Events = () => {
           switch (active) {
             case 'all':
               return <div className='flex flex-wrap justify-between mt-3'>
-                {events.map((event: CourseType) => <UserEvent key={event._id} event={event} />)}
+                {all.map((event: CourseType) => <UserEvent type="enroll" key={event._id} event={event} />)}
               </div>
             case 'my':
               return <div className='flex flex-wrap justify-between mt-3'>
