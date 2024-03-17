@@ -124,22 +124,27 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                 <div className='p-4'>
                   <p className='font-medium text-base'>{course.title}</p>
                   <div className='my-4'>
-                    <p className='font-medium'>The course includes</p>
+                    <p className='font-medium'>The {action} includes</p>
                     <div className='flex my-1'>
                       <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
                       <p className='text-sm'>Learning hours</p>
                     </div>
-                    <div className='flex my-1'>
+                    {action !== "Event" && <div className='flex my-1'>
                       <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
                       <p className='text-sm'>Course modules/assesments</p>
-                    </div>
-                    <div className='flex my-1'>
+                    </div>}
+                    {action === "Event" ? <div className='flex my-1'>
+                      <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
+                      <p className='text-sm'>Certificate of participation</p>
+                    </div> : <div className='flex my-1'>
                       <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
                       <p className='text-sm'>Certificate of completion</p>
-                    </div>
+                    </div>}
                   </div>
                   {
-                    type === "view" ? course.type === "online" ? isToday() ? <button onClick={() => setJoinMeeting(true)} className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : null : user.role !== 'student' ? <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> : <button onClick={() => router.push(`/applicant/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
+                    type === "view" ? course.type === "online" ? isToday() ? <button onClick={() => setJoinMeeting(true)} className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : null : user.role !== 'student' ?
+                      <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> :
+                      action === "Event" ? null : <button onClick={() => router.push(`/applicant/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
                       : <button onClick={() => {
                         course.fee === 0 ? checkTyoe() : handleFlutterPayment({
                           callback: (response) => {
@@ -155,7 +160,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                             console.log("closed")
                           },
                         })
-                      }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : "Enroll Now"}</button>
+                      }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : action === "Event" ? "Book Now" : "Enroll Now"}</button>
                   }
                 </div>
                 {course.type === "offline" ? <div className='text-sm'>

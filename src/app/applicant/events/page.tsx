@@ -76,11 +76,11 @@ const Events = () => {
           switch (active) {
             case 'all':
               return <div className='flex flex-wrap justify-between mt-3'>
-                {all.map((event: CourseType) => <UserEvent type="enroll" key={event._id} event={event} />)}
+                {all.length > 0 ? all.map((event: CourseType) => <UserEvent type="enroll" key={event._id} event={event} />) : <div className=''>No recommended events!</div>}
               </div>
             case 'my':
               return <div className='flex flex-wrap justify-between mt-3'>
-                {myEvent.map((event: CourseType) => <UserEvent key={event._id} event={event} />)}
+                {myEvent.map((event: CourseType) => <UserEvent type='view' key={event._id} event={event} />)}
               </div>
             case 'past':
               return <div className='flex flex-wrap justify-between mt-3'>
