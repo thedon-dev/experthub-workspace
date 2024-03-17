@@ -38,16 +38,16 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
     }
   }
 
+
   const enrollEvent = () => {
     try {
       axios.put(`events/enroll/${course._id}`, {
         id: user.id
       })
         .then(function (response) {
-          console.log()
+          console.log(response)
           api.open({
             message: response.data.message,
-            duration: 8
           });
           handleClick()
         })
@@ -55,11 +55,19 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
           api.open({
             message: err.response.data.message
           });
-          // console.log(err.response.data.message)
+          console.log(err.response.data.message)
         })
     } catch (e) {
       // console.log(e.response.data.message)
     }
+  }
+
+  const checkTyoe = () => {
+    if (action === "Event") {
+      enrollEvent()
+    } else (
+      enroll()
+    )
   }
 
   const config = {
@@ -133,7 +141,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                   {
                     type === "view" ? course.type === "online" ? isToday() ? <button onClick={() => setJoinMeeting(true)} className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : null : user.role !== 'student' ? <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> : <button onClick={() => router.push(`/applicant/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
                       : <button onClick={() => {
-                        course.fee === 0 ? enroll() : handleFlutterPayment({
+                        course.fee === 0 ? checkTyoe() : handleFlutterPayment({
                           callback: (response) => {
                             if (action === "Event") {
                               enrollEvent()

@@ -113,7 +113,7 @@ const applicant = () => {
           you will have companions on your learning journey through connections with other learners in your cohort learning similar skills and the support
           of a dedicated mentor and our Admin to guide you along the way.
           <br /> <br />
-          Your Learning Community journey will begin on the 12th of January, 2024. You can begin your learning journey with some introductory
+          Your Learning Community journey will begin soon. You can begin your learning journey with some introductory
           courses in your skill area in the resources section in your archive. We are excited to support your learning journey. Thank you for your cooperation,
           and enjoy your journey to becoming an expert and a digital nomad.</p>
       </section>
