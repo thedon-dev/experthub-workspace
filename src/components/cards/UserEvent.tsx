@@ -18,7 +18,7 @@ const UserEvent = ({ event, type }: { event: CourseType, type?: string }) => {
           <Link href={`/applicant/${event._id}?page=event`}><button className='bg-primary ml-3 text-sm p-1 px-3 rounded-md'>{event.type} {event.mode}</button></Link>
         </div>
         <p className='text-sm'>{event.about.substring(0, 100)}</p>
-        <div className='flex justify-between'>
+        <div className='flex justify-between my-1'>
           <div>
             <p className='text-xs my-1'>Students {event.enrolledStudents.length}</p>
             <div className='flex ml-1'>
@@ -28,8 +28,10 @@ const UserEvent = ({ event, type }: { event: CourseType, type?: string }) => {
             <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" /> */}
             </div>
           </div>
+          {type === 'enroll' && event.fee - event.strikedFee === 0 ? <p className='text-sm text-[#0BC01E]'>Free</p> : <p className='text-sm'><span>₦ {event.fee - event.strikedFee}</span> <span className='line-through	text-gray'>{event.fee}</span></p>}
           <Share type='event' course={event} />
         </div>
+
         <div className='text-center my-3'>
           {type === "enroll" ? <button onClick={() => setOpen(true)} className='bg-primary p-2 w-44 text-white'>Book a seat </button> : event.type === "online" ? <button onClick={() => setOpen(true)} className='bg-primary p-2 w-44 text-white'>Join Live </button> : <button onClick={() => setOpen(true)} className='border border-[#1E1E1E] text-[#DC9F08] p-2 w-44 mx-auto'>View Details</button>}
           {/* <button onClick={() => setOpen(true)} className='bg-primary p-2 w-44 text-white'>Book a seat </button> */}

@@ -21,24 +21,16 @@ const Events = () => {
       category: user.assignedCourse
     })
       .then(function (response) {
-        setEvents(response.data.events)
-        const all: CourseType[] = []
-        const enrolled: CourseType[] = []
-        const notEnrolled: React.SetStateAction<CourseType[]> = []
-        response.data.events.map((course: CourseType) => {
-          if (hasDatePassed(course)) {
-            all.push(course)
-          }
-          if (course.enrolledStudents.includes(user.id)) {
-            enrolled.push(course)
-          } else {
-            notEnrolled.push(course)
-          }
-        })
-        setPastEvent(all)
-        setMyEvent(enrolled.reverse())
-        setAll(notEnrolled.reverse())
         // console.log(response.data)
+        setEvents(response.data.events)
+      })
+  }
+
+  const getMyEvents = () => {
+    axios.get(`events/my-events/${user.id}`)
+      .then(function (response) {
+        // console.log(response.data)
+        setMyEvent(response.data.enrolledCourses)
       })
   }
 
@@ -60,6 +52,7 @@ const Events = () => {
 
   useEffect(() => {
     getAllEvents()
+    getMyEvents()
   }, [])
   return (
     <DashboardLayout>
