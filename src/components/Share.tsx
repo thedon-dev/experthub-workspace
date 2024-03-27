@@ -9,12 +9,12 @@ import {
   EmailShareButton,
 } from "react-share";
 
-const Share = ({ course }: { course: CourseType }) => {
+const Share = ({ course, type }: { course: CourseType, type?: string }) => {
   const items: MenuProps['items'] = [
     {
       key: '1',
       label: (
-        <FacebookShareButton url={`https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
+        <FacebookShareButton url={type ? `https://trainings.experthubllc.com/applicant/${course._id}?page=${type}` : `https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
           <button className='bg-transparent'>
             Facebook
           </button>
@@ -24,7 +24,7 @@ const Share = ({ course }: { course: CourseType }) => {
     {
       key: '2',
       label: (
-        <WhatsappShareButton url={`https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
+        <WhatsappShareButton url={type ? `https://trainings.experthubllc.com/applicant/${course._id}?page=${type}` : `https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
           <button className='bg-transparent'>
             Whatsapp
           </button>
@@ -34,7 +34,7 @@ const Share = ({ course }: { course: CourseType }) => {
     {
       key: '3',
       label: (
-        <LinkedinShareButton url={`https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
+        <LinkedinShareButton url={type ? `https://trainings.experthubllc.com/applicant/${course._id}?page=${type}` : `https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
           <button className='bg-transparent'>
             Linkedln
           </button>
@@ -44,7 +44,7 @@ const Share = ({ course }: { course: CourseType }) => {
     {
       key: '4',
       label: (
-        <TwitterShareButton url={`https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
+        <TwitterShareButton url={type ? `https://trainings.experthubllc.com/applicant/${course._id}?page=${type}` : `https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
           <button className='bg-transparent'>
             Twitter
           </button>
@@ -54,7 +54,7 @@ const Share = ({ course }: { course: CourseType }) => {
     {
       key: '5',
       label: (
-        <EmailShareButton url={`https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
+        <EmailShareButton url={type ? `https://trainings.experthubllc.com/applicant/${course._id}?page=${type}` : `https://trainings.experthubllc.com/applicant/${course._id}?page=${course.type}`}>
           <button className='bg-transparent'>
             Email
           </button>
@@ -66,7 +66,8 @@ const Share = ({ course }: { course: CourseType }) => {
     <div>
       <Dropdown menu={{ items }}>
         <button className='bg-transparent'>
-          <p>Share Course</p>
+          {type === 'event' ? <div className='flex mr-3'><img src="/images/share.png" alt="" />
+            <p className='ml-2'>share</p></div> : <p>Share Course</p>}
         </button>
       </Dropdown>
     </div>

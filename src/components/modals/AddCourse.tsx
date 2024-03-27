@@ -30,6 +30,8 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [title, setTitle] = useState(course?.title || "")
   const [image, setImage] = useState(course?.thumbnail || "")
   const [location, setLocation] = useState(course?.loaction || "")
+  const [target, setTarget] = useState(course?.target || 0)
+
   const [room, setRoom] = useState(course?.room || "")
   const [loading, setLoading] = useState(false)
   const [file, setFile] = useState<FileList | null>()
@@ -120,6 +122,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           duration: duration.toString(),
           type,
           startDate,
+          target,
           endDate,
           startTime,
           endTime,
@@ -157,6 +160,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         {
           image,
           title,
+          target,
           about,
           duration: duration.toString(),
           type,
@@ -276,7 +280,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                   case 0:
                     return <div>
                       <div className='flex justify-between my-1'>
-                        <div className='w-full'>
+                        <div className='w-[48%]'>
                           <label className='text-sm font-medium my-1'>Course Category</label>
                           <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                             <option value="Virtual Assistant">Virtual Assistant</option>
@@ -297,10 +301,10 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                             <option value="Advocacy">Advocacy</option>
                           </select>
                         </div>
-                        {/* <div className='w-[48%]'>
-                          <label className='text-sm font-medium my-1'>Privacy</label>
-                          <input onChange={e => setPrivacy(e.target.value)} value={privacy} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
-                        </div> */}
+                        <div className='w-[48%]'>
+                          <label className='text-sm font-medium my-1'>Target</label>
+                          <input onChange={e => setTarget(e.target.value)} value={target} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                        </div>
                       </div>
                       <div className='my-1'>
                         <label className='text-sm font-medium my-1'>Course title</label>

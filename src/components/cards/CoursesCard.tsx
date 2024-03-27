@@ -73,6 +73,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
             <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" /> */}
           </div>
         </div>
+
         <div className='w-[70%] '>
           <div className='ml-auto text-right'>
             <Dropdown menu={{ items }} trigger={["click"]}>
@@ -81,10 +82,10 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
               </button>
             </Dropdown>
           </div>
-          {/* <div className='flex my-auto'>
+          <div className='flex my-auto'>
             <p className='text-xs font-medium w-full'>Overall progress</p>
-            <Progress percent={30} size="small" />
-          </div> */}
+            <Progress percent={course.target - course.enrolledStudents.length} size="small" />
+          </div>
         </div>
       </div>
       <CourseDetails course={course} action={"Course"} open={open} call={null} type='view' handleClick={() => setOpen(false)} />

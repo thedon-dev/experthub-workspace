@@ -26,6 +26,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [title, setTitle] = useState(course?.title || "")
   const [image, setImage] = useState(course?.thumbnail || "")
   const [location, setLocation] = useState(course?.loaction || "")
+  const [target, setTarget] = useState(course?.target || 0)
   const [room, setRoom] = useState(course?.room || "")
   const [loading, setLoading] = useState(false)
   const [scholarship, setScholarship] = useState([])
@@ -67,6 +68,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
           // image,
           title,
           about,
+          target,
           duration: duration.toString(),
           type,
           startDate,
@@ -111,6 +113,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
           duration: duration.toString(),
           mode,
           type,
+          target,
           startDate,
           endDate,
           startTime,
@@ -217,7 +220,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         </div>
                       </div>
                       <div className='flex justify-between my-1'>
-                        <div className='w-full'>
+                        <div className='w-[48%]'>
                           <label className='text-sm font-medium my-1'>Event Category</label>
                           <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                             <option value="Virtual Assistant">Virtual Assistant</option>
@@ -237,6 +240,10 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                             <option value="Digital Marketing">Digital Marketing</option>
                             <option value="Advocacy">Advocacy</option>
                           </select>
+                        </div>
+                        <div className='w-[48%]'>
+                          <label className='text-sm font-medium my-1'>Target</label>
+                          <input onChange={e => setTarget(e.target.value)} value={target} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                         </div>
                       </div>
                       <div className='my-1'>
