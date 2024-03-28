@@ -10,11 +10,12 @@ import { DownOutlined } from '@ant-design/icons';
 import AddCourse from '@/components/modals/AddCourse';
 import AddEvents from '@/components/modals/AddEvents';
 import AddResources from '@/components/modals/AddResources';
+import CategoryModal from '@/components/modals/CategoryModal';
 
 const Events = () => {
   const user = useAppSelector((state) => state.value);
   const [events, setEvents] = useState([])
-
+  const [category, setCategory] = useState(false)
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
   const [event, setEvent] = useState(false)
@@ -37,7 +38,12 @@ const Events = () => {
         <p onClick={() => setResources(true)}>Resources</p>
       ),
     },
-
+    {
+      key: '4',
+      label: (
+        <p onClick={() => setCategory(true)}>Add Category</p>
+      ),
+    },
   ];
 
   const getAllEvents = () => {
@@ -67,6 +73,8 @@ const Events = () => {
       <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
       <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
+      <CategoryModal open={category} handleClick={() => setCategory(false)} />
+
     </DashboardLayout>
   );
 };

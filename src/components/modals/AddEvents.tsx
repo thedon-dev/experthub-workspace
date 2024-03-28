@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
-import { CourseType } from '@/types/CourseType';
+import { CategoryType, CourseType } from '@/types/CourseType';
 import { Spin, notification } from 'antd';
 import Select from 'react-select';
 import { UserType } from '@/types/UserType';
@@ -145,8 +145,20 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
     }
   }
 
+  const [categories, setCategories] = useState<CategoryType[]>([])
+
+  const getCategories = () => {
+    axios.get('category/all').then(function (response) {
+      console.log(response.data)
+      setCategories(response.data.category)
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
   useEffect(() => {
     getStudents()
+    getCategories()
   }, [])
 
   const formattedOptions = students.map((option: UserType) => ({ value: option.studentId, label: option.fullname }));
@@ -223,7 +235,8 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         <div className='w-[48%]'>
                           <label className='text-sm font-medium my-1'>Event Category</label>
                           <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-                            <option value="Virtual Assistant">Virtual Assistant</option>
+                            {categories.map(single => <option value={single.category}>{single.category}</option>)}
+                            {/* <option value="Virtual Assistant">Virtual Assistant</option>
                             <option value="Product Management">Product Management</option>
                             <option value="Cybersecurity">Cybersecurity </option>
                             <option value="Software Development">Software Development</option>
@@ -238,7 +251,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                             <option value="Game development">Game development</option>
                             <option value="Data Science">Data Science</option>
                             <option value="Digital Marketing">Digital Marketing</option>
-                            <option value="Advocacy">Advocacy</option>
+                            <option value="Advocacy">Advocacy</option> */}
                           </select>
                         </div>
                         <div className='w-[48%]'>
