@@ -25,7 +25,8 @@ const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleC
     setLoading(true)
     try {
       axios.put(`user/updateProfile/${studentId}`, {
-        course: category
+        course: category,
+        assignerId:user.id,
       })
         .then(function (response) {
           setLoading(false)

@@ -193,11 +193,11 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           api.open({
             message: "Course succesfully created!",
           });
-          // console.log(response.data)
+          console.log(response.data)
           setLoading(false)
           handleClick()
         }).catch(error => {
-          // console.log(error)
+          console.log(error)
           api.open({
             message: error.response.data.message
           });

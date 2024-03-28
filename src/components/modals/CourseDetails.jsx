@@ -1,19 +1,21 @@
 import { CourseType } from '@/types/CourseType';
-import ZoomMeeting from '../ZoomMeeting';
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import { useAppSelector } from '@/store/hooks';
-import { notification } from 'antd';
+import { Spin, notification } from 'antd';
 import axios from 'axios';
-import { useState } from "react"
 
 const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   const user = useAppSelector((state) => state.value);
-  const [joinMeeting, setJoinMeeting] = useState(false)
+
+  const [loading, setLoading] = useState(false)
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter()
-
+  useEffect(() => {
+    console.log(course);
+  })
   const enroll = () => {
     try {
       axios.post(`courses/enroll/${course._id}`, {
@@ -39,6 +41,89 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   }
 
 
+
+  async function initClient() {
+    const ZoomMtgEmbedded = (await import('@zoom/meetingsdk/embedded')).default;
+
+    const client = ZoomMtgEmbedded.createClient();
+
+    const { signature } = await getSignature(course.meetingId, (user.role === "applicant" ? 0 : 1));
+    const meetingSDKElement = document.getElementById('meetingSDKElement');
+
+    client.init({
+      leaveUrl: `${window.location.origin}/${user.role}`,
+      debug: true,
+      zoomAppRoot: meetingSDKElement,
+      language: 'en-US',
+      customize: {
+        video: {
+          isResizable: true,
+          viewSizes: {
+            default: {
+              width: (window.innerWidth > 700) ? 900 : 300,
+              height: 500,
+            },
+            ribbon: {
+              width: 300,
+              height: 500,
+            },
+          },
+        },
+      },
+
+    });
+
+    return { client, signature };
+  }
+  async function getSignature(meetingNumber, role) {
+    try {
+      const res = await axios.post(`courses/get-zoom-signature`,
+        {
+          meetingNumber,
+          role
+        })
+      return res.data
+    } catch (e) {
+      console.log(e);
+
+    }
+
+
+  }
+
+  async function startMeeting() {
+    setLoading(true)
+    const { client, signature } = await initClient();
+    console.log(signature, user);
+    client.join({
+      sdkKey: process.env.NEXT_PUBLIC_CLIENT_ID,
+      signature,
+      meetingNumber: course.meetingId,
+      password: course.meetingPassword,
+      userName: user.fullName,
+      ...(user.role !== "applicant" && user.role !== "student" ? {
+        zak: course.zakToken
+      } : {}),
+    }).then((res) => {
+      if (user.role !== "applicant" && user.role !== "student") {
+        console.log(user);
+        notifyStudents()
+      }
+      handleClick()
+      setLoading(false)
+
+
+    }).catch((e) => {
+      handleClick()
+      setLoading(false)
+      console.log(e);;
+    })
+
+
+
+
+
+  }
   const enrollEvent = () => {
     try {
       axios.put(`events/enroll/${course._id}`, {
@@ -69,7 +154,16 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
       enroll()
     )
   }
-
+  const notifyStudents = async () => {
+    try {
+      await axios.get(`${action.toLowerCase()}s/notify-live/${course._id}`)
+    } catch (e) {
+      console.log(e)
+      api.open({
+        message: 'Something went wrong'
+      });
+    }
+  }
   const config = {
     public_key: 'FLWPUBK_TEST-6330f5c973d7919b3b553f52d5a82098-X',
     tx_ref: Date.now(),
@@ -90,20 +184,29 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
     return str.slice(0, index) + `fl_attachment/` + str.slice(index);
   }
 
-  const isToday = () => {
-    let currentDate = new Date();
 
-    var desiredDateString = course.startDate;
-    var desiredDate = new Date(desiredDateString);
-    if (
-      currentDate.getFullYear() === desiredDate.getFullYear() &&
-      currentDate.getMonth() === desiredDate.getMonth() &&
-      currentDate.getDate() === desiredDate.getDate()
-    ) {
-      return true
+  const isOn = () => {
+    let currentDate = new Date();
+    let startTime = new Date(`${course.startDate} ${course.startTime}`);
+    let endTime = new Date(`${course.endDate} ${course.endTime}`);
+
+    let isStarted = currentDate >= startTime;
+    let isEnded = currentDate > endTime;
+    let on = false
+    let msg
+    if (isStarted && !isEnded) {
+      on = true
+      msg = "ongoing"
+    } else if (!isStarted) {
+
+      msg = "notStarted"
+
+    } else {
+      msg = "ended"
     }
-    return false
+    return { on, msg }
   }
+
 
 
   return (
@@ -142,7 +245,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                     </div>}
                   </div>
                   {
-                    type === "view" ? course.type === "online" ? isToday() ? <button onClick={() => setJoinMeeting(true)} className='bg-primary p-2 my-3 rounded-md px-8'>Join Live</button> : null : user.role !== 'student' ?
+                    type === "view" ? course.type === "online" ? isOn().on ? <button onClick={() => startMeeting()} className='bg-primary p-2 my-3 rounded-md px-8 w-[150px]'>{loading ? <Spin /> : "Join Live"}</button> : null : user.role !== 'student' ?
                       <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> :
                       action === "Event" ? null : <button onClick={() => router.push(`/applicant/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
                       : <button onClick={() => {
@@ -173,6 +276,29 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                 {/* <p className='my-2 text-sm font-medium'>This great online course will equip you with the knowledge and basic skills
                 needed to design vector graphics using Figma.</p> */}
                 <p className='text-sm'>{course.about}</p>
+                {
+                  course.type === "online" &&
+                  <>
+                    <p className='text-sm mt-4 mb-1 '>Course Info</p>
+                    <p className='text-sm'>
+                      <span>This meeting {isOn().msg === "ended" ? "was" : "is"} scheduled for {new Date(course?.startDate).toLocaleString('en-US', {
+                        day: "numeric",
+                        month: "short",
+                        weekday: "long",
+                      })} {"at " + course.startTime}
+                      </span>
+                    </p>
+                    <div className='flex mt-1 items-center text-sm   text-[#a1a1a1] gap-3'>
+                      {isOn().on ? "Meeting is ongoing" : isOn().msg === "ended" ? "This meeting has ended" : <>
+                        <span>Starts at {course.startTime}</span>
+                        <span className='loader'></span>
+                      </>}
+
+
+                    </div>
+                  </>
+                }
+
                 <div className='text-center'>
                   {type === "view" && course.type === 'pdf' ? <a href={insertAtIndex(course.file, 65)} download target='_blank'> <button className='bg-primary p-1 mx-auto my-3 rounded-md px-8'>Download/Read</button></a> : null}
                 </div>
@@ -182,9 +308,14 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
         </div>
       </div>
       }
-      {
-        joinMeeting && <ZoomMeeting setJoinMeeting={setJoinMeeting} closeDetail={handleClick} course={course} />
-      }
+      {/* {
+        joinMeeting && <ZoomMeeting setJoinMeeting={setJoinMeeting} joinMeeting={joinMeeting} closeDetail={handleClick} course={course} />
+      } */}
+
+      <div className='fixed top-1/2 left-1/2   -translate-x-1/2 -translate-y-1/2 '>
+        <div id="meetingSDKElement"></div>
+
+      </div>
     </>
 
   );

@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/store/hooks';
 import React from 'react';
-
+import Notification from "./modals/Notification"
 const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   const user = useAppSelector((state) => state.value);
 
@@ -19,9 +19,8 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
           <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
         </div> */}
         <div className='flex lg:w-28 w-24 justify-between'>
-          <div className='p-3 h-10 w-10 my-auto rounded-full shadow-md'>
-            <img src="/images/icons/notification.svg" alt="" />
-          </div>
+        <Notification/>
+       
           <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture} alt="" />
         </div>
       </div>

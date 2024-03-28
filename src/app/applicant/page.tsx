@@ -38,11 +38,12 @@ const applicant = () => {
   function hasDatePassed(course: CourseType) {
     if (course.type === "online" || course.type === "offline") {
       const currentDate = new Date();
-      const compareDate = new Date(course.endDate);
+      const endTime = new Date(`${course.endDate} ${course.endTime}`);
+
       // console.log(currentDate, compareDate)
 
       // Compare the target date with the current date
-      if (currentDate <= compareDate) {
+      if (currentDate <= endTime) {
         return true
       }
       return false;
