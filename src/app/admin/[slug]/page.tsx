@@ -19,6 +19,8 @@ const SingleCourse = () => {
   const router = useRouter()
   const [edit, setEdit] = useState(false)
 
+  // console.log(pathname)
+
   const getData = async () => {
     await axios.get(`courses/single-course/${page}`)
       .then(function (response) {
@@ -27,8 +29,20 @@ const SingleCourse = () => {
       })
   }
 
+  const getEvent = async () => {
+    await axios.get(`events/${page}`)
+      .then(function (response) {
+        setRepo(response.data.course)
+        console.log(response.data)
+      })
+  }
+
   useEffect(() => {
-    getData()
+    if (pathname === 'event') {
+      getEvent()
+    } else {
+      getData()
+    }
   }, [])
 
   const approve = () => {
@@ -46,11 +60,12 @@ const SingleCourse = () => {
     <Fragment>
       <DashboardLayout>
         <section className=''>
-          <div className='flex'>
+          {pathname !== 'event' && <div className='flex'>
             {view ? null : <button className='p-4 bg-primary m-6' onClick={() => approve()}>Publish</button>}
             <button className=' m-6' onClick={() => setEdit(true)}>Edit</button>
-          </div>
-          {repo && page && <SinglePage pathname={pathname} repo={repo} page={page} />}
+          </div>}
+
+          {repo && <SinglePage pathname={pathname} repo={repo} page={page} />}
           {repo && <AddCourse course={repo} open={edit} handleClick={() => setEdit(false)} />}
         </section>
       </DashboardLayout>

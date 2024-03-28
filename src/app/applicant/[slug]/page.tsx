@@ -26,13 +26,23 @@ export default function SingleCourse() {
         // console.log(response.data)
       })
   }
+  const getEvent = async () => {
+    await axios.get(`events/${page}`)
+      .then(function (response) {
+        setRepo(response.data.course)
+        console.log(response.data)
+      })
+  }
 
   useEffect(() => {
     if (!user.fullName) {
       setAuth(true)
     }
-    getData()
-
+    if (pathname === 'event') {
+      getEvent()
+    } else {
+      getData()
+    }
 
   }, [])
 

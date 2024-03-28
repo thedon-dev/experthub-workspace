@@ -79,6 +79,18 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
               <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
               <p>{repo?.about}</p>
             </div>;
+          case 'event':
+            return <div className='p-6 lg:w-[60%] mx-auto'>
+              <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
+              <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
+              <p>{repo?.about}</p>
+              {
+                repo.room && <>
+                  <p><span className='font-bold'>Location:</span> {repo?.location}</p>
+                  <p> <span className='font-bold'>Room:</span> {repo?.room}</p>
+                </>
+              }
+            </div>;
           default:
             return <div></div>;
         }

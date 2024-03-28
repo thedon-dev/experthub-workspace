@@ -13,25 +13,29 @@ type Props = {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const id = params.slug
   // // fetch data
-  const course = await fetch(`https://shark-app-2-k9okk.ondigitalocean.app/courses/single-course/${id}`).then((res) => res.json())
+  let course = await fetch(`https://shark-app-2-k9okk.ondigitalocean.app/courses/single-course/${id}`).then((res) => res.json())
+
+  if (course.course === undefined) {
+    course = await fetch(`https://shark-app-2-k9okk.ondigitalocean.app/events/${id}`).then((res) => res.json())
+  }
 
   return {
-    title: `Course || ${course.course.title}`,
-    description: course.course.about,
+    title: `${course.course?.title}`,
+    description: course.course?.about,
     openGraph: {
       images: {
-        url: course.course.thumbnail,
+        url: course.course?.thumbnail,
       },
-      title: course.title,
+      title: course.course?.title,
       type: "website",
-      description: course.course.about,
-      siteName: course.course.title,
+      description: course.course?.about,
+      siteName: course.course?.title,
       url: `https://trainings.experthubllc.com/applicant/${params.slug}?page=${id}`
     },
     twitter: {
-      title: course.course.title,
-      description: course.course.about,
-      images: course.course.thumbnail,
+      title: course.course?.title,
+      description: course.course?.about,
+      images: course.course?.thumbnail,
     }
   }
 }

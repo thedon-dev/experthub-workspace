@@ -249,7 +249,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                       <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> :
                       action === "Event" ? null : <button onClick={() => router.push(`/applicant/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
                       : <button onClick={() => {
-                        course.fee === 0 ? checkTyoe() : handleFlutterPayment({
+                        course.fee - course.strikedFee === 0 ? checkTyoe() : handleFlutterPayment({
                           callback: (response) => {
                             if (action === "Event") {
                               enrollEvent()

@@ -22,10 +22,21 @@ const SingleCourse = () => {
       })
   }
 
-  useEffect(() => {
-    getData()
-  }, [])
+  const getEvent = async () => {
+    await axios.get(`events/${page}`)
+      .then(function (response) {
+        setRepo(response.data.course)
+        console.log(response.data)
+      })
+  }
 
+  useEffect(() => {
+    if (pathname === 'event') {
+      getEvent()
+    } else {
+      getData()
+    }
+  }, [])
 
 
   return (
