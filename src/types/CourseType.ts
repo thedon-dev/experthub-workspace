@@ -17,3 +17,10 @@ export interface CourseType {
   videos:           any[];
   [key: string]: any;
 }
+
+export interface CategoryType {
+  _id:              string;
+  category:            string;
+  subCategory: string[];
+  [key: string]: any;
+}

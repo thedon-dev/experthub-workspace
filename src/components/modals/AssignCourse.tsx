@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
+import { CategoryType } from '@/types/CourseType';
 
 const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleClick: any, studentId: string }) => {
   const user = useAppSelector((state) => state.value);
   const [category, setCategory] = useState("")
   const [loading, setLoading] = useState(false)
 
+  const [categories, setCategories] = useState<CategoryType[]>([])
+
+  const getCategories = () => {
+    axios.get('category/all').then(function (response) {
+      console.log(response.data)
+      setCategories(response.data.category)
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+  useEffect(() => {
+    getCategories()
+  }, [])
   const assign = () => {
     setLoading(true)
     try {
@@ -38,7 +52,8 @@ const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleC
             <div className='w-full'>
               <label className='text-sm font-medium my-2'>Course Category</label>
               <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-                <option value="Virtual Assistant">Virtual Assistant</option>
+                {categories.map(single => <option value={single.category}>{single.category}</option>)}
+                {/* <option value="Virtual Assistant">Virtual Assistant</option>
                 <option value="Product Management">Product Management</option>
                 <option value="Cybersecurity">Cybersecurity </option>
                 <option value="Software Development">Software Development</option>
@@ -53,7 +68,7 @@ const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleC
                 <option value="Game development">Game development</option>
                 <option value="Data Science">Data Science</option>
                 <option value="Digital Marketing">Digital Marketing</option>
-                <option value="Advocacy">Advocacy</option>
+                <option value="Advocacy">Advocacy</option> */}
               </select>
             </div>
           </div>

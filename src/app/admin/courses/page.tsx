@@ -13,6 +13,7 @@ import Slider from 'react-slick';
 import { CourseType } from '@/types/CourseType';
 import Link from 'next/link';
 import AddEvents from '@/components/modals/AddEvents';
+import CategoryModal from '@/components/modals/CategoryModal';
 
 const courses = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
@@ -20,6 +21,7 @@ const courses = () => {
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
   const [event, setEvent] = useState(false)
+  const [category, setCategory] = useState(false)
 
   var settings = {
     dots: false,
@@ -76,7 +78,12 @@ const courses = () => {
         <p onClick={() => setResources(true)}>Resources</p>
       ),
     },
-
+    {
+      key: '4',
+      label: (
+        <p onClick={() => setCategory(true)}>Add Category</p>
+      ),
+    },
   ];
 
   const getCourses = async () => {
@@ -165,6 +172,7 @@ const courses = () => {
         <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
         <AddResources open={resources} handleClick={() => setResources(!resources)} />
         <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
+        <CategoryModal open={category} handleClick={() => setCategory(false)} />
 
       </section>
     </DashboardLayout>
