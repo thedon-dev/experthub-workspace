@@ -12,7 +12,7 @@ const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleC
 
   const getCategories = () => {
     axios.get('category/all').then(function (response) {
-      console.log(response.data)
+      // console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {
       console.log(error)
