@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Popover from '@mui/material/Popover';
 import Link from 'next/link';
 import axios from 'axios';
+import Image from 'next/image';
+import CourseDetails from './CourseDetails';
 export function formatDate(date) {
     var now = new Date();
     var difference = now - date;
@@ -39,6 +41,9 @@ export function formatDate(date) {
 export default function Notifications() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [notifications, setNotifications] = useState()
+    const [course, setCourse] = useState({})
+    const [openDet, setOpenDet] = useState(false)
+    const [action, setAction] = useState("Course")
     const user = useAppSelector((state) => state.value);
     useEffect(() => {
         if (!notifications) {
@@ -51,12 +56,22 @@ export default function Notifications() {
         try {
             axios.get(`notifications/all/${user.id}`)
                 .then(function (response) {
+                    console.log(response.data);
                     setNotifications(response.data)
                 })
         } catch (e) {
             console.log(e)
 
         }
+    }
+
+    const openCourseDetail = (course) => {
+        setCourse(course)
+
+        setAnchorEl(null);
+        setOpenDet(true)
+
+
     }
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -71,8 +86,9 @@ export default function Notifications() {
 
     return (
         <>
-            <button aria-describedby={id} className="text-[20px] shadow-md rounded-full px-3" onClick={handleClick}>
+            <button aria-describedby={id} className="text-[20px] shadow-md rounded-full px-3 relative" onClick={handleClick}>
                 <img src="/images/icons/notification.svg" className='w-[20px] h-[20px]' alt="" />
+                <div className='absolute text-white text-[11px] -bottom-0.5 -right-0.5 flex items-center justify-center w-[15px] h-[15px] rounded-full bg-primary'>{notifications?.length || 0}</div>
             </button>
             <Popover
                 id={id}
@@ -93,26 +109,41 @@ export default function Notifications() {
                     }
                 }}
             >
-                <div className="mt-2 bg-white  xs:w-[250px] sm:w-[350px] h-[80vh] mainer overflow-y-auto  md:w-[500px] rounded-[15px]  shadow-[0px_0px_14px_6px_#E2E2E240]">
+                <div className="mt-2 bg-white  xs:w-[250px] sm:w-[350px] h-[80vh] mainer overflow-y-auto  md:w-[600px] rounded-[15px]  shadow-[0px_0px_14px_6px_#E2E2E240]">
                     <div className="flex items-center p-3 border-b border-[#d9d9d9]">
                         <h2 className="font-bold text-[18px]">Notifications</h2>
                     </div>
                     <div className="flex flex-col ">
                         {
-                            (notifications && notifications?.length !== 0) ? notifications?.map(data => <div key={data.id} className="border-b flex items-center  px-3 py-6 gap-4 border-[#d9d9d9] ">
+                            (notifications && notifications?.length !== 0) ? notifications?.map(data => <div key={data.id} className="border-b flex flex-row sm:flex-col items-center   px-3 py-6 gap-4 border-[#d9d9d9] ">
 
-
+                                <Image src={data?.userId.profilePicture || "/images/user.png"} width={100} height={100} className='w-[50px] object-cover object-center h-[50px] mr-auto border border-[#adadad] rounded-full' alt="tester" />
                                 <div className="text-darktext flex text-left flex-1">
                                     {data.content}
                                 </div>
-                                <Link href={'/'} className='text-[#FDC332]'>View</Link>
-                                <span className=" text-right text-[#adadad]">{formatDate(new Date(data.createdAt))}</span>
+                                <div className='flex items-center gap-2 w-full md:w-fit'>
+                                    <Link onClick={(e) => {
+                                        if (data.contentType !== "assessment" && data.contentInfo) {
+                                            e.preventDefault()
+                                            if (data.title.startsWith("Event")) {
+                                                setAction("Event")
+                                            }
+                                            openCourseDetail(data.contentInfo)
+                                        }
+                                        setAnchorEl(null)
+
+                                    }} href={data.contentType === "assessment" ? "/applicant/test/" + data.contentId : data.title === "Course assigned" ? user.role === "student" ? "/applicant" : "/courses" : data.title.endsWith("live") && data.contentInfo ? "/join-live" : user.role === "student" ? "/applicant" : `/${user.role}/courses`} className='text-primary'>{data.title === "Course live" ? "Join Live" : "View"}</Link>
+                                    <span className=" text-right text-[#adadad]">{formatDate(new Date(data.createdAt))}</span>
+                                </div>
+
 
 
                             </div>) : <div className="text-[#adadad] text-center block w-full py-3">No notifications</div>
                         }  </div>
                 </div>
             </Popover>
+            <CourseDetails course={course} open={openDet} action={action} call={null} type='view' handleClick={() => setOpenDet(false)} />
+
         </>
     );
 }
