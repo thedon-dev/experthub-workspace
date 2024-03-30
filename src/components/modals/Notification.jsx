@@ -64,6 +64,19 @@ export default function Notifications() {
 
         }
     }
+    const markAsRead = (id) => {
+
+        try {
+            axios.get(`notifications/mark-as-read/${id}`)
+                .then(function (response) {
+                    console.log(response.data);
+                   getNotifcations()
+                })
+        } catch (e) {
+            console.log(e)
+
+        }
+    }
 
     const openCourseDetail = (course) => {
         setCourse(course)
@@ -88,7 +101,7 @@ export default function Notifications() {
         <>
             <button aria-describedby={id} className="text-[20px] shadow-md rounded-full px-3 relative" onClick={handleClick}>
                 <img src="/images/icons/notification.svg" className='w-[20px] h-[20px]' alt="" />
-                <div className='absolute text-white text-[11px] -bottom-0.5 -right-0.5 flex items-center justify-center w-[15px] h-[15px] rounded-full bg-primary'>{notifications?.length || 0}</div>
+                <div className='absolute text-white text-[11px] top-0.5 -right-0.5 flex items-center justify-center w-[15px] h-[15px] rounded-full bg-red-500'>{notifications?.filter(data=>!data.read).length || 0}</div>
             </button>
             <Popover
                 id={id}
@@ -115,13 +128,11 @@ export default function Notifications() {
                     </div>
                     <div className="flex flex-col ">
                         {
-                            (notifications && notifications?.length !== 0) ? notifications?.map(data => <div key={data.id} className="border-b flex flex-row sm:flex-col items-center   px-3 py-6 gap-4 border-[#d9d9d9] ">
+                            (notifications && notifications?.length !== 0) ? notifications?.map(data => <div key={data.id} className={`border-b flex flex-row sm:flex-col items-center   px-3 py-6 gap-4 border-[#d9d9d9] ${!data.read? "bg-[#f5f5f5]":""}`}>
 
                                 <Image src={data?.userId.profilePicture || "/images/user.png"} width={100} height={100} className='w-[50px] object-cover object-center h-[50px] mr-auto border border-[#adadad] rounded-full' alt="tester" />
-                                <div className="text-darktext flex text-left flex-1">
-                                    {data.content}
-                                </div>
-                                <div className='flex items-center gap-2 w-full md:w-fit'>
+                                <div className="text-darktext text-left flex-1 gap-2">
+                                    <span>{data.content} </span>
                                     <Link onClick={(e) => {
                                         if (data.contentType !== "assessment" && data.contentInfo) {
                                             e.preventDefault()
@@ -130,11 +141,15 @@ export default function Notifications() {
                                             }
                                             openCourseDetail(data.contentInfo)
                                         }
+                                        markAsRead(data._id)
                                         setAnchorEl(null)
 
                                     }} href={data.contentType === "assessment" ? "/applicant/test/" + data.contentId : data.title === "Course assigned" ? user.role === "student" ? "/applicant" : "/courses" : data.title.endsWith("live") && data.contentInfo ? "/join-live" : user.role === "student" ? "/applicant" : `/${user.role}/courses`} className='text-primary'>{data.title === "Course live" ? "Join Live" : "View"}</Link>
-                                    <span className=" text-right text-[#adadad]">{formatDate(new Date(data.createdAt))}</span>
                                 </div>
+
+
+                                <span className=" text-right text-[#adadad]">{formatDate(new Date(data.createdAt))}</span>
+
 
 
 
