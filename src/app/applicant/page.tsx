@@ -61,7 +61,7 @@ const applicant = () => {
           }
         })
         setCourses(all)
-        console.log(response.data.enrolledCourses)
+        // console.log(response.data.enrolledCourses)
       })
   }
   const getTutors = () => {

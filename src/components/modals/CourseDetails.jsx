@@ -14,16 +14,14 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   const [loading, setLoading] = useState(false)
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter()
-  useEffect(() => {
-    console.log(course);
-  })
+
   const enroll = () => {
     try {
       axios.post(`courses/enroll/${course._id}`, {
         id: user.id
       })
         .then(function (response) {
-          console.log(response.data)
+          // console.log(response.data)
           call()
           api.open({
             message: 'Enrolled Successfully'

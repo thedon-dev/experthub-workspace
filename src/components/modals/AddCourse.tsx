@@ -56,7 +56,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
   const getCategories = () => {
     axios.get('category/all').then(function (response) {
-      console.log(response.data)
+      // console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {
       console.log(error)
