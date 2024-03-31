@@ -30,7 +30,7 @@ const Events = () => {
     axios.get(`events/my-events/${user.id}`)
       .then(function (response) {
         // console.log(response.data)
-        setMyEvent(response.data.enrolledCourses)
+        setMyEvent(response.data.enrolledCourses.reverse())
       })
   }
 
