@@ -133,8 +133,16 @@ const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
             </div>
             <div className='lg:p-10 p-4'>
               <input type="text" className='border w-full mb-3 p-2 rounded-md' placeholder='Search' />
+              <div className='flex mb-6'>
+                <div className='flex text-[#F7A60F]'>
+                  <input type="radio" className='mr-2' />
+                  <p className='text-xl'>Select all</p>
+                </div>
+                <p className='text-[#F7A60F] text-xl ml-10 '>Send Reminder</p>
+              </div>
               {event.enrolledStudents.map(student => <div className='flex my-3 justify-between'>
                 <div className='flex'>
+                  <input type="radio" className='mr-2' />
                   <img src={student.profilePicture} className='w-12 h-12 rounded-full' alt="" />
                   <p className='ml-4 my-auto text-xl font-medium capitalize'>{student.fullname}</p>
                 </div>
