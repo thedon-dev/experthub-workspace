@@ -21,8 +21,8 @@ const Events = () => {
       category: user.assignedCourse
     })
       .then(function (response) {
-        // console.log(response.data)
-        setEvents(response.data.events)
+        console.log(response.data)
+        setAll(response.data.events)
       })
   }
 

@@ -18,7 +18,6 @@ const archive = () => {
       })
   }
 
-
   useEffect(() => {
     getResources()
   }, [])
