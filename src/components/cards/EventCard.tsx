@@ -1,19 +1,20 @@
 import { CourseType } from '@/types/CourseType';
 import React, { useState } from 'react';
 import CourseDetails from '../modals/CourseDetails';
-import { Dropdown, MenuProps, Progress } from 'antd';
+import { Dropdown, MenuProps, Progress, notification } from 'antd';
 import Share from '../Share';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import AddEvents from '../modals/AddEvents';
 import axios from 'axios';
 
-const EventCard = ({ event }: { event: CourseType }) => {
+const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
   const [open, setOpen] = useState(false)
   const [edit, setEdit] = useState(false)
   const [deletec, setDelete] = useState(false)
   const [view, setView] = useState(false)
   const pathname = usePathname()
+  const [api, contextHolder] = notification.useNotification();
 
   const items: MenuProps['items'] = [
     {
@@ -46,14 +47,23 @@ const EventCard = ({ event }: { event: CourseType }) => {
     axios.delete(`/events/delete/${event._id}`)
       .then(function (response) {
         // getCourse()
+        action()
+        api.open({
+          message: 'Event Deleted Successfully!'
+        });
         setDelete(false)
         console.log(response)
       })
   }
 
+  function calculateProgress(enrolled: number, target: number) {
+    return (enrolled / target) * 100;
+  }
+
 
   return (
     <div className='lg:w-[32%] my-3'>
+      {contextHolder}
       <div className='p-2 rounded-md bg-white'>
         <img className='rounded-md h-44 object-cover w-full' src={event.thumbnail} alt="" />
       </div>
@@ -83,7 +93,7 @@ const EventCard = ({ event }: { event: CourseType }) => {
             </div>
             <div className='flex my-auto'>
               <p className='text-xs font-medium w-full'>Overall progress</p>
-              <Progress percent={event.target - event.enrolledStudents.length} size="small" />
+              <Progress percent={calculateProgress(event.enrolledStudents.length, event.target)} size="small" />
             </div>
           </div>
         </div>
