@@ -135,7 +135,7 @@ const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
               <input type="text" className='border w-full mb-3 p-2 rounded-md' placeholder='Search' />
               {event.enrolledStudents.map(student => <div className='flex my-3 justify-between'>
                 <div className='flex'>
-                  <img src={student.profilePicture} className='w-24 h-24 rounded-full' alt="" />
+                  <img src={student.profilePicture} className='w-12 h-12 rounded-full' alt="" />
                   <p className='ml-4 my-auto text-xl font-medium capitalize'>{student.fullname}</p>
                 </div>
                 <button className='border my-auto w-44 rounded-full text-primary p-2 px-3'>Send Reminder</button>
