@@ -23,7 +23,7 @@ const HeaderNav = () => {
         <Link href={"/auth/signup"} className='my-auto'><button className=' bg-primary text-black p-1 my-auto'>REGISTER</button></Link>
       </div>
       <button onClick={() => setOpen(!open)} className='bg-primary h-10 w-10 my-auto lg:hidden block'>
-        <img src="/images/icons/menu.png" className='w-8 h-8 mx-auto' alt="" />
+        <img src="/images/hamburger.png" className='w-8 h-8 mx-auto' alt="" />
       </button>
       {open &&
         <div className='fixed z-50 top-24 left-0 right-0 p-6 bg-primary text-white w-[90%] mx-auto rounded-md'>

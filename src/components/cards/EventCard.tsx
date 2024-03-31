@@ -93,7 +93,7 @@ const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
             </div>
             <div className='flex my-auto'>
               <p className='text-xs font-medium w-full'>Overall progress</p>
-              <Progress percent={calculateProgress(event.enrolledStudents.length, event.target)} size="small" />
+              <Progress percent={parseInt(calculateProgress(event.enrolledStudents.length, event.target).toFixed())} size="small" />
             </div>
           </div>
         </div>

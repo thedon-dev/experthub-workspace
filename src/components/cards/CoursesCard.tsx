@@ -89,7 +89,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
           </div>
           <div className='flex my-auto'>
             <p className='text-xs font-medium w-full'>Overall progress</p>
-            <Progress percent={calculateProgress(course.enrolledStudents.length, course.target)} size="small" />
+            <Progress percent={parseInt(calculateProgress(course.enrolledStudents.length, course.target).toFixed())} size="small" />
           </div>
         </div>
       </div>
