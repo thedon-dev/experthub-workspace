@@ -17,12 +17,12 @@ const Events = () => {
   const [pastEvent, setPastEvent] = useState<CourseType[]>([])
 
   const getAllEvents = () => {
-    axios.put(`events/category`, {
+    axios.put(`events/recommend/${user.id}`, {
       category: user.assignedCourse
     })
       .then(function (response) {
-        // console.log(response.data)
-        setEvents(response.data.events)
+        console.log(response.data)
+        setAll(response.data.recommendedEvent)
       })
   }
 
@@ -30,8 +30,15 @@ const Events = () => {
     axios.get(`events/my-events/${user.id}`)
       .then(function (response) {
         // console.log(response.data)
-        setMyEvent(response.data.enrolledCourses)
+        setMyEvent(response.data.enrolledCourses.reverse())
       })
+  }
+
+  const isEnrolled = (enroll: any) => {
+    if (enroll.id === user.id) {
+      return true
+    }
+    return false
   }
 
 
@@ -69,7 +76,7 @@ const Events = () => {
           switch (active) {
             case 'all':
               return <div className='flex flex-wrap justify-between mt-3'>
-                {allEvents.length > 0 ? allEvents.map((event: CourseType) => <UserEvent type="enroll" key={event._id} event={event} />) : <div className=''>No recommended events!</div>}
+                {allEvents.length > 0 ? allEvents.map((event: CourseType) => event.enrolledStudents.map(single => (single)) ? <UserEvent type="enroll" key={event._id} event={event} /> : null) : <div className=''>No recommended events!</div>}
               </div>
             case 'my':
               return <div className='flex flex-wrap justify-between mt-3'>

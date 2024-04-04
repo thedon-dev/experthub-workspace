@@ -1,19 +1,20 @@
 import { CourseType } from '@/types/CourseType';
 import React, { useState } from 'react';
 import CourseDetails from '../modals/CourseDetails';
-import { Dropdown, MenuProps, Progress } from 'antd';
+import { Dropdown, MenuProps, Progress, notification } from 'antd';
 import Share from '../Share';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import AddEvents from '../modals/AddEvents';
 import axios from 'axios';
 
-const EventCard = ({ event }: { event: CourseType }) => {
+const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
   const [open, setOpen] = useState(false)
   const [edit, setEdit] = useState(false)
   const [deletec, setDelete] = useState(false)
   const [view, setView] = useState(false)
   const pathname = usePathname()
+  const [api, contextHolder] = notification.useNotification();
 
   const items: MenuProps['items'] = [
     {
@@ -46,14 +47,23 @@ const EventCard = ({ event }: { event: CourseType }) => {
     axios.delete(`/events/delete/${event._id}`)
       .then(function (response) {
         // getCourse()
+        action()
+        api.open({
+          message: 'Event Deleted Successfully!'
+        });
         setDelete(false)
         console.log(response)
       })
   }
 
+  function calculateProgress(enrolled: number, target: number) {
+    return (enrolled / target) * 100;
+  }
+
 
   return (
     <div className='lg:w-[32%] my-3'>
+      {contextHolder}
       <div className='p-2 rounded-md bg-white'>
         <img className='rounded-md h-44 object-cover w-full' src={event.thumbnail} alt="" />
       </div>
@@ -83,7 +93,7 @@ const EventCard = ({ event }: { event: CourseType }) => {
             </div>
             <div className='flex my-auto'>
               <p className='text-xs font-medium w-full'>Overall progress</p>
-              <Progress percent={event.target - event.enrolledStudents.length} size="small" />
+              <Progress percent={parseInt(calculateProgress(event.enrolledStudents.length, event.target).toFixed())} size="small" />
             </div>
           </div>
         </div>
@@ -123,9 +133,17 @@ const EventCard = ({ event }: { event: CourseType }) => {
             </div>
             <div className='lg:p-10 p-4'>
               <input type="text" className='border w-full mb-3 p-2 rounded-md' placeholder='Search' />
+              <div className='flex mb-6'>
+                <div className='flex text-[#F7A60F]'>
+                  <input type="radio" className='mr-2' />
+                  <p className='text-xl'>Select all</p>
+                </div>
+                <p className='text-[#F7A60F] text-xl ml-10 '>Send Reminder</p>
+              </div>
               {event.enrolledStudents.map(student => <div className='flex my-3 justify-between'>
                 <div className='flex'>
-                  <img src={student.profilePicture} className='w-24 h-24 rounded-full' alt="" />
+                  <input type="radio" className='mr-2' />
+                  <img src={student.profilePicture} className='w-12 h-12 rounded-full' alt="" />
                   <p className='ml-4 my-auto text-xl font-medium capitalize'>{student.fullname}</p>
                 </div>
                 <button className='border my-auto w-44 rounded-full text-primary p-2 px-3'>Send Reminder</button>

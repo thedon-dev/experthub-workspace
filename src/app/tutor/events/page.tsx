@@ -64,7 +64,7 @@ const Events = () => {
           </button>
         </Dropdown>
       </div>
-      <EventsComp events={events} />
+      <EventsComp action={() => getAllEvents()} events={events} />
 
       <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />

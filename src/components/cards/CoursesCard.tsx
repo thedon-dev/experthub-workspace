@@ -56,6 +56,11 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       })
   }
 
+  function calculateProgress(enrolled: number, target: number) {
+    return (enrolled / target) * 100;
+  }
+
+
   return (
     <div className="p-2 w-full shadow-md my-3 rounded-md bg-white">
       <img className="rounded-md w-full h-44 object-cover" src={course.thumbnail} alt="" />
@@ -84,7 +89,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
           </div>
           <div className='flex my-auto'>
             <p className='text-xs font-medium w-full'>Overall progress</p>
-            <Progress percent={course.target - course.enrolledStudents.length} size="small" />
+            <Progress percent={parseInt(calculateProgress(course.enrolledStudents.length, course.target).toFixed())} size="small" />
           </div>
         </div>
       </div>

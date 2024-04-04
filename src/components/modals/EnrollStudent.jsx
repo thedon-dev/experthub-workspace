@@ -9,7 +9,7 @@ import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 const EnrollStudent = ({ open, handleClick, course }) => {
   const user = useAppSelector((state) => state.value);
 
-  const [student, setUser] = useState("")
+  const [enrollStudent, setEnrollStudent] = useState("")
   const [loading, setLoading] = useState(false)
   const [students, setStudents] = useState([])
   const [api, contextHolder] = notification.useNotification();
@@ -40,7 +40,7 @@ const EnrollStudent = ({ open, handleClick, course }) => {
   const enroll = () => {
     setLoading(true)
     axios.post(`courses/enroll/${course._id}`, {
-      id: student
+      id: enrollStudent
     })
       .then(function (response) {
         console.log(response.data)
@@ -74,7 +74,7 @@ const EnrollStudent = ({ open, handleClick, course }) => {
           <div className='flex justify-between my-3'>
             <div className='w-full'>
               <label className='text-sm font-medium my-2'>Select Student</label>
-              <select onChange={e => setUser(e.target.value)} value={user} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+              <select onChange={e => setEnrollStudent(e.target.value)} value={enrollStudent} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                 {students.map(student => <option key={student.studentId} value={student.studentId}>{student.fullname}</option>)}
               </select>
             </div>
