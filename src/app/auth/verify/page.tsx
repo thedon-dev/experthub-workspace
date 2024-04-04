@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import Link from 'next/link';
+import router from 'next/router';
 import React, { useState } from 'react';
 
 const verify = () => {
@@ -18,12 +19,15 @@ const verify = () => {
         .then(function (response) {
           console.log(response.data)
           setLoading(false)
-          setSuccess(true)
+          router.push(`/auth/survey`)
+
+          // setSuccess(true)
         })
     } catch (e) {
       setLoading(false)
     }
   }
+  
   return (
     <main >
       <img src="/images/auth-bg.png" className='h-[100vh] w-full' alt="" />
