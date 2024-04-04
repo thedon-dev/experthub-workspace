@@ -137,7 +137,7 @@ export default function Notifications() {
                                 <div className="text-darktext text-left flex-1 gap-2">
                                     <span>{data.content} </span>
                                     <Link onClick={(e) => {
-                                        if (data.contentType !== "assessment" && data.contentInfo) {
+                                        if (data.contentType === "course" && data.contentInfo) {
                                             e.preventDefault()
                                             if (data.title.startsWith("Event")) {
                                                 setAction("Event")
@@ -147,7 +147,7 @@ export default function Notifications() {
                                         markAsRead(data._id)
                                         setAnchorEl(null)
 
-                                    }} href={data.contentType === "assessment" ? "/applicant/test/" + data.contentId : data.title === "Course assigned" ? user.role === "student" ? "/applicant" : "/courses" : data.title.endsWith("live") && data.contentInfo ? "/join-live" : user.role === "student" ? "/applicant" : `/${user.role}/courses`} className='text-primary'>{data.title === "Course live" ? "Join Live" : "View"}</Link>
+                                    }} href={data.contentType !== "course" ? "/applicant/test/" + data.contentId : data.title === "Course assigned" ? user.role === "student" ? "/applicant" : "/courses" : data.title.endsWith("live") && data.contentInfo ? "/join-live" : user.role === "student" ? "/applicant" : `/${user.role}/courses`} className='text-primary'>{data.title === "Course live" ? "Join Live" : "View"}</Link>
                                 </div>
 
 
