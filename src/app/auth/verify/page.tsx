@@ -1,7 +1,9 @@
 "use client"
 
+import { Spin } from 'antd';
 import axios from 'axios';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import router from 'next/router';
 import React, { useState } from 'react';
 
@@ -9,25 +11,26 @@ const verify = () => {
   const [success, setSuccess] = useState(false)
   const [code, setCode] = useState("")
   const [loading, setLoading] = useState(false)
+  const user = useSearchParams().get("user")
 
   const submit = async () => {
     setLoading(true)
-    try {
-      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/verify`, {
-        verifyCode: code
-      })
-        .then(function (response) {
-          console.log(response.data)
-          setLoading(false)
-          router.push(`/auth/survey`)
+    axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/verify/${user}`, {
+      verifyCode: code
+    })
+      .then(function (response) {
+        console.log(response.data)
+        setLoading(false)
+        router.push(`/auth/survey?user=${user}`)
 
-          // setSuccess(true)
-        })
-    } catch (e) {
-      setLoading(false)
-    }
+        // setSuccess(true)
+      })
+      .catch(e => {
+        console.log(e)
+        setLoading(false)
+      })
   }
-  
+
   return (
     <main >
       <img src="/images/auth-bg.png" className='h-[100vh] w-full' alt="" />
@@ -43,7 +46,7 @@ const verify = () => {
               <label className="text-xs my-1">Code</label>
               <input onChange={e => setCode(e.target.value)} type="number" className='border border-[#FDC33263] rounded-md p-2 w-full' placeholder='******' />
             </div>
-            <button onClick={() => submit()} className='w-full bg-primary p-2 text-sm rounded-md'>{loading ? "Loading..." : "Verify"}</button>
+            <button onClick={() => submit()} className='w-full bg-primary p-2 text-sm rounded-md'>{loading ? <Spin /> : "Verify"}</button>
           </div> : <div>
             <div className='text-center'>
               <img src="/images/done.png" className='mx-auto' alt="" />

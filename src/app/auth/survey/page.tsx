@@ -22,11 +22,12 @@ const test = () => {
   const [experience, setExperience] = useState("")
   const [education, setEducation] = useState("")
   const [accomplishment, setAccomplishment] = useState("")
+  const user = useSearchParams().get("user")
 
   const submit = async () => {
     if (computer && internet && gender && status && time && age && course && experience && education && accomplishment) {
       setLoading(true)
-      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/user/survey`, {
+      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/assessment/survey/${user}`, {
         computerAccess: computer,
         internetAccess: internet,
         gender,
@@ -36,12 +37,12 @@ const test = () => {
         preferedCourse: course,
         yearsOfExperience: experience,
         currentEducation: education,
-        joiningAccomplishment: accomplishment
+        joiningAccomplishment: accomplishment 
       })
         .then(function (response) {
           console.log(response.data)
           setLoading(false)
-          router.push(`/auth/verify`)
+          router.push(`/auth/login`)
         })
         .catch(err => {
           setLoading(false)

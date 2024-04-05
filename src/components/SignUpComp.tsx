@@ -75,7 +75,7 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
             if (action) {
               action()
             } else {
-              router.push(`/auth/verify`)
+              router.push(`/auth/verify?user=${response.data.id}`)
             }
           })
           .catch(error => {
