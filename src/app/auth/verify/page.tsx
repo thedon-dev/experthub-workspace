@@ -3,12 +3,13 @@
 import { Spin } from 'antd';
 import axios from 'axios';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import router from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 const verify = () => {
   const [success, setSuccess] = useState(false)
+  const router = useRouter()
+
   const [code, setCode] = useState("")
   const [loading, setLoading] = useState(false)
   const user = useSearchParams().get("user")
