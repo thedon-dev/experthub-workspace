@@ -9,7 +9,6 @@ import React, { useState } from 'react';
 const verify = () => {
   const [success, setSuccess] = useState(false)
   const router = useRouter()
-
   const [code, setCode] = useState("")
   const [loading, setLoading] = useState(false)
   const user = useSearchParams().get("user")

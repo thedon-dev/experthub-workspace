@@ -13,11 +13,24 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
       <div className='mx-4 w-full'>
         <p className='text-primary text-sm'>{course.category}. <span className='text-black'> by {course.instructorName}</span></p>
         <p className='font-medium text-base'>{course.title}</p>
-        {course.fee - course.strikedFee === 0 ? <p className='text-sm text-[#0BC01E]'>Free</p> : <p className='text-sm'><span>₦ {course.fee - course.strikedFee}</span> <span className='line-through	text-gray'>{course.fee}</span></p>}
+        <div>
+          <div>
+          </div>
+          {course.fee - course.strikedFee === 0 ? <p className='text-sm text-[#0BC01E]'>Free</p> : <p className='text-sm'><span>₦ {course.fee - course.strikedFee}</span> <span className='line-through	text-gray'>{course.fee}</span></p>}
+        </div>
+        <div className='flex'>
+          <p className='text-xs my-1'>Students {course.enrolledStudents.length}</p>
+          <div className='flex ml-1'>
+            {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+          </div>
+        </div>
+
       </div>
+
       <button onClick={() => setOpen(true)} className='p-2 w-52 bg-primary my-auto rounded-sm'>Enrol Now</button>
       <CourseDetails course={course} open={open} action={"Course"} type='enroll' call={call} handleClick={() => setOpen(false)} />
     </div>
+
   );
 };
 

@@ -25,6 +25,12 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
         <h3 className="font-medium text-xl my-2">{course.title} {course.type === "onlibe" ? <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>Join Live</button> : <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>{course.type}</button>} </h3>
         <p className='text-xs'>{course.about.substring(0, 70)}...</p>
       </div>
+      <div>
+        <p className='text-xs my-1'>Students {course.enrolledStudents.length}</p>
+        <div className='flex ml-1'>
+          {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+        </div>
+      </div>
       <CourseDetails course={course} open={open} action={"Course"} call={null} type='view' handleClick={() => setOpen(false)} />
     </div>
   );

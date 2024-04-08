@@ -3,7 +3,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { notification } from 'antd';
+import { Spin, notification } from 'antd';
 
 const test = () => {
   const [steps, setSteps] = useState(0)
@@ -37,7 +37,7 @@ const test = () => {
         preferedCourse: course,
         yearsOfExperience: experience,
         currentEducation: education,
-        joiningAccomplishment: accomplishment 
+        joiningAccomplishment: accomplishment
       })
         .then(function (response) {
           console.log(response.data)
@@ -46,6 +46,7 @@ const test = () => {
         })
         .catch(err => {
           setLoading(false)
+          // router.push(`/auth/login`)
           api.open({
             message: err.response.data.message
           });
@@ -210,10 +211,10 @@ const test = () => {
                 {/* <img src="/images/icons/arrow-left.svg" alt="" /> */}
                 Prev
               </button>
-              <button onClick={() => setSteps(steps <= 6 ? steps + 1 : 0)} className='bg-gray p-2 rounded-sm ml-2'>
+              {steps <= 5 && <button onClick={() => setSteps(steps <= 6 ? steps + 1 : 0)} className='bg-gray p-2 rounded-sm ml-2'>
                 {/* <img src="/images/icons/arrow-right.svg" alt="" /> */}
                 Next
-              </button>
+              </button>}
             </div>
           </div>
 
@@ -222,7 +223,7 @@ const test = () => {
           <p>Thanks for your interest in Experthub trainings. Note, you need to own a laptop & have access to internet to be part of our trainings.</p>
         </div>
         <div className='text-center'>
-          {steps < 6 ? null : <button onClick={() => submit()} disabled={steps < 6} className='w-44  p-3 my-3 rounded-sm bg-primary text-white'>{loading ? "Loading..." : "Sumbit"}</button>}
+          {steps < 6 ? null : <button onClick={() => submit()} disabled={steps < 6} className='w-44  p-3 my-3 rounded-sm bg-primary text-white'>{loading ? <Spin /> : "Sumbit"}</button>}
         </div>
       </section>
     </main>
