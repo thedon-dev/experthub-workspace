@@ -13,10 +13,10 @@ type Props = {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const id = params.slug
   // // fetch data
-  let course = await fetch(`https://shark-app-2-k9okk.ondigitalocean.app/courses/single-course/${id}`).then((res) => res.json())
+  let course = await fetch(`https://api.experthubllc.com/courses/single-course/${id}`).then((res) => res.json())
 
   if (course.course === undefined) {
-    course = await fetch(`https://shark-app-2-k9okk.ondigitalocean.app/events/${id}`).then((res) => res.json())
+    course = await fetch(`https://api.experthubllc.com/events/${id}`).then((res) => res.json())
   }
 
   return {

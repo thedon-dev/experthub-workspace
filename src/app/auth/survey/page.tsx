@@ -27,7 +27,7 @@ const test = () => {
   const submit = async () => {
     if (computer && internet && gender && status && time && age && course && experience && education && accomplishment) {
       setLoading(true)
-      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/assessment/survey/${user}`, {
+      axios.post(`https://api.experthubllc.com/assessment/survey/${user}`, {
         computerAccess: computer,
         internetAccess: internet,
         gender,

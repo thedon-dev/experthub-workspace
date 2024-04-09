@@ -25,7 +25,7 @@ const Login = ({ type }: { type?: string }) => {
     },
     onSubmit: values => {
       setLoading(true)
-      axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/login`, values,)
+      axios.post(`https://api.experthubllc.com/auth/login`, values,)
         .then(function (response) {
           console.log(response.data)
           setLoading(false)

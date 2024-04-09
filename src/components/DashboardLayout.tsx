@@ -11,7 +11,7 @@ const DashboardLayout = ({ children }: { children: any }) => {
   const pathname = usePathname()
   const router = useRouter()
   const [toggle, setToggle] = useState(false)
-  axios.defaults.baseURL = "https://shark-app-2-k9okk.ondigitalocean.app/"
+  axios.defaults.baseURL = "https://api.experthubllc.com/"
   // axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
 
   useEffect(() => {

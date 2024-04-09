@@ -18,7 +18,7 @@ const page = () => {
       return
     }
     setLoading(true)
-    axios.put('https://shark-app-2-k9okk.ondigitalocean.app/auth/reset-passowrd', {
+    axios.put('https://api.experthubllc.com/auth/reset-passowrd', {
       verificationCode: email,
       password
     }).then(function (response) {

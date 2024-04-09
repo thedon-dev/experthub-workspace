@@ -59,7 +59,7 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
     if (fullname && email && phone && country && state && address && password) {
       if (password === confirmPassword) {
         setLoading(true)
-        axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/register`, {
+        axios.post(`https://api.experthubllc.com/auth/register`, {
           fullname,
           email,
           phone,

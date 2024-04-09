@@ -15,7 +15,7 @@ const verify = () => {
 
   const submit = async () => {
     setLoading(true)
-    axios.post(`https://shark-app-2-k9okk.ondigitalocean.app/auth/verify/${user}`, {
+    axios.post(`https://api.experthubllc.com/auth/verify/${user}`, {
       verifyCode: code
     })
       .then(function (response) {
