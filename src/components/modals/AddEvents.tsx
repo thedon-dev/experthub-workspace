@@ -22,6 +22,8 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [fee, setFee] = useState<number>(course?.fee || 0)
   const [duration, setDuration] = useState<number>(course?.duration || 0)
   const [category, setCategory] = useState(course?.category || "")
+  const [categoryIndex, setCategoryIndex] = useState("")
+
   const [type, setType] = useState(course?.type || "offline")
   const [title, setTitle] = useState(course?.title || "")
   const [image, setImage] = useState(course?.thumbnail || "")
@@ -118,7 +120,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
           endDate,
           startTime,
           endTime,
-          category,
+          category: category === "" ? categoryIndex : category,
           fee: fee.toString(),
           strikedFee: striked.toString(),
           room,
@@ -232,32 +234,23 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         </div>
                       </div>
                       <div className='flex justify-between my-1'>
-                        <div className='w-[48%]'>
-                          <label className='text-sm font-medium my-1'>Event Category</label>
-                          <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-                            {/* {categories.map(single => <option value={single.category}>{single.category}</option>)} */}
-                            <option value="Virtual Assistant">Virtual Assistant</option>
-                            <option value="Product Management">Product Management</option>
-                            <option value="Cybersecurity">Cybersecurity </option>
-                            <option value="Software Development">Software Development</option>
-                            <option value="AI / Machine Learning">AI / Machine Learning</option>
-                            <option value="Data Analysis & Visualisation">Data Analysis & Visualisation</option>
-                            <option value="Story Telling">Story Telling</option>
-                            <option value="Animation">Animation</option>
-                            <option value="Cloud Computing">Cloud Computing</option>
-                            <option value="Dev Ops">Dev Ops</option>
-                            <option value="UI/UX Design">UI/UX Design</option>
-                            <option value="Journalism">Journalism</option>
-                            <option value="Game development">Game development</option>
-                            <option value="Data Science">Data Science</option>
-                            <option value="Digital Marketing">Digital Marketing</option>
-                            <option value="Advocacy">Advocacy</option>
+                        <div className='w-full'>
+                          <label className='text-sm font-medium my-1'>Course Category</label>
+                          <select onChange={e => setCategoryIndex(e.target.value)} value={categoryIndex} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                            <option className='hidden' value="">Select Category</option>
+                            {categories.map((single, index) => <option key={index} value={single.category}>{single.category}</option>)}
                           </select>
                         </div>
-                        <div className='w-[48%]'>
-                          <label className='text-sm font-medium my-1'>Target</label>
-                          <input onChange={e => setTarget(e.target.value)} value={target} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
-                        </div>
+                        {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full ml-3'>
+                          <label className='text-sm font-medium my-1'>Sub Category</label>
+                          <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                            {single.subCategory.map((sub, index) => <option key={index} value={sub}>{sub}</option>)}
+                          </select>
+                        </div>)}
+                      </div>
+                      <div className='my-1'>
+                        <label className='text-sm font-medium my-1'>Target</label>
+                        <input onChange={e => setTarget(e.target.value)} value={target} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                       </div>
                       <div className='my-1'>
                         <label className='text-sm font-medium my-1'>Event title</label>
