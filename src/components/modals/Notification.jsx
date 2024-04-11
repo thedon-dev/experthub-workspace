@@ -56,7 +56,7 @@ export default function Notifications() {
         try {
             axios.get(`notifications/all/${user.id}`)
                 .then(function (response) {
-                    console.log(response.data);
+                    // console.log(response.data);
                     setNotifications(response.data)
                 })
         } catch (e) {
@@ -131,7 +131,7 @@ export default function Notifications() {
                     </div>
                     <div className="flex flex-col ">
                         {
-                            (notifications && notifications?.length !== 0) ? notifications?.map(data => <div key={data.id} className={`border-b flex flex-row sm:flex-col items-center   px-3 py-6 gap-4 border-[#d9d9d9] ${!data.read ? "bg-[#f5f5f5]" : ""}`}>
+                            (notifications && notifications?.length !== 0) ? notifications?.map(data => <div key={data._id} className={`border-b flex flex-row sm:flex-col items-center   px-3 py-6 gap-4 border-[#d9d9d9] ${!data.read ? "bg-[#f5f5f5]" : ""}`}>
 
                                 <Image src={data?.userId.profilePicture || "/images/user.png"} width={100} height={100} className='w-[50px] object-cover object-center h-[50px] mr-auto border border-[#adadad] rounded-full' alt="tester" />
                                 <div className="text-darktext text-left flex-1 gap-2">

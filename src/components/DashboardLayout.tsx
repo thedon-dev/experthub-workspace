@@ -1,3 +1,6 @@
+"use client"
+
+
 import React, { useEffect, useState } from 'react';
 import SideNav from './SideNav';
 import axios from 'axios';

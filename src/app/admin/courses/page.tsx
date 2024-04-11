@@ -172,7 +172,7 @@ const courses = () => {
         <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
         <AddResources open={resources} handleClick={() => setResources(!resources)} />
         <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
-        <CategoryModal open={category} handleClick={() => setCategory(false)} />
+        <CategoryModal open={category} category={null} handleClick={() => setCategory(false)} />
 
       </section>
     </DashboardLayout>

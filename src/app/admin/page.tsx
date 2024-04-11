@@ -96,7 +96,6 @@ const adminDashboard = () => {
   }, [])
   return (
     <DashboardLayout>
-
       <section className='p-4 lg:flex justify-between'>
         <StatCard title='Total No. of Courses' count={courses.length} bg='#27C2D6' img='clock-line' />
         <StatCard title='Total No. of Admissions' count={students.length} bg='#DC9F08' img='ic_outline-assessment' />
@@ -127,7 +126,7 @@ const adminDashboard = () => {
       <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
       <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
-      <CategoryModal open={category} handleClick={() => setCategory(false)} />
+      <CategoryModal open={category} category={null} handleClick={() => setCategory(false)} />
     </DashboardLayout>
   );
 };
