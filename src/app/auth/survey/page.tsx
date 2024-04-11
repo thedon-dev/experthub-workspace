@@ -30,7 +30,7 @@ const test = () => {
   const [categories, setCategories] = useState<CategoryType[]>([])
 
   const getCategories = () => {
-    axios.get('https://api.experthubllc.com/category/all').then(function (response) {
+    axios.get('https://expexthub-trainings.onrender.com/category/all').then(function (response) {
       console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {
@@ -45,7 +45,7 @@ const test = () => {
   const submit = async () => {
     if (computer && internet && gender && status && time && age && experience && education && accomplishment) {
       setLoading(true)
-      axios.post(`https://api.experthubllc.com/assessment/survey/${user}`, {
+      axios.post(`https://expexthub-trainings.onrender.com/assessment/survey/${user}`, {
         computerAccess: computer,
         internetAccess: internet,
         gender,

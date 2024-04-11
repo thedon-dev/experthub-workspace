@@ -17,7 +17,7 @@ const page = () => {
       return
     }
     setLoading(true)
-    axios.put('https://api.experthubllc.com/auth/forgot-passowrd', {
+    axios.put('https://expexthub-trainings.onrender.com/auth/forgot-passowrd', {
       email
     }).then(function (response) {
       console.log(response.data)

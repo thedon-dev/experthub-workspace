@@ -14,8 +14,9 @@ const DashboardLayout = ({ children }: { children: any }) => {
   const pathname = usePathname()
   const router = useRouter()
   const [toggle, setToggle] = useState(false)
-  axios.defaults.baseURL = "https://api.experthubllc.com/"
+  axios.defaults.baseURL = "https://expexthub-trainings.onrender.com/"
   // axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
+  // https://api.experthubllc.com/
 
   useEffect(() => {
     if (user.role === "student" && !pathname.includes('applicant')) {

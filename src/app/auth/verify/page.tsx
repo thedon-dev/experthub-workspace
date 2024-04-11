@@ -15,7 +15,7 @@ const verify = () => {
 
   const submit = async () => {
     setLoading(true)
-    axios.post(`https://api.experthubllc.com/auth/verify/${user}`, {
+    axios.post(`https://expexthub-trainings.onrender.com/auth/verify/${user}`, {
       verifyCode: code
     })
       .then(function (response) {

@@ -57,7 +57,7 @@ export default function Home() {
   const [courses, setCourses] = useState<CourseType | []>([])
 
   const getCourses = async () => {
-    axios.get("https://api.experthubllc.com/courses/all")
+    axios.get("https://expexthub-trainings.onrender.com/courses/all")
       .then(function (response) {
         console.log(response.data)
         setCourses(response.data.courses)

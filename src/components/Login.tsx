@@ -25,7 +25,7 @@ const Login = ({ type }: { type?: string }) => {
     },
     onSubmit: values => {
       setLoading(true)
-      axios.post(`https://api.experthubllc.com/auth/login`, values,)
+      axios.post(`https://expexthub-trainings.onrender.com/auth/login`, values,)
         .then(function (response) {
           console.log(response.data)
           setLoading(false)

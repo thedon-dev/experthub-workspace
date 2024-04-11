@@ -60,7 +60,7 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
     if (fullname && email && phone && country && state && address && password) {
       if (password === confirmPassword) {
         setLoading(true)
-        axios.post(`https://api.experthubllc.com/auth/register`, {
+        axios.post(`https://expexthub-trainings.onrender.com/auth/register`, {
           fullname,
           email,
           phone,

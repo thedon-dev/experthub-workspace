@@ -17,7 +17,7 @@ const aptitudeTest = () => {
   const submit = async () => {
     setLoading(true)
     try {
-      axios.post(`https://api.experthubllc.com/student/aptitude-test`, {
+      axios.post(`https://expexthub-trainings.onrender.com/student/aptitude-test`, {
         willDadicate6Hours: time,
         describeSelf: description,
         personality: personality,
