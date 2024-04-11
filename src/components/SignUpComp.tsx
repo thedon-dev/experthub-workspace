@@ -55,7 +55,7 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
     "Zamfara",
     "Federal Capital Territory"
   ]
-  
+
   const signupApplicant = async () => {
     if (fullname && email && phone && country && state && address && password) {
       if (password === confirmPassword) {
@@ -110,21 +110,22 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
           <input onChange={e => setEmail(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type="email" placeholder='Sample@gmail.com' />
         </div>
         <div className='flex justify-between'>
-          <div className='my-2 text-xs w-[48%]'>
+          <div className='my-2 text-xs w-full'>
             <label className='font-medium'>Phone number</label>
             <input onChange={e => setPhone(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm' type="number" placeholder='eg: 0122 222 000' />
           </div>
-          <div className='my-2 text-xs w-[48%]'>
+          {/* <div className='my-2 text-xs w-[48%]'>
             <label className='font-medium'>Country</label>
             <select onChange={e => setCountry(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm'>
               <option value="nigeria">nigeria</option>
             </select>
-          </div>
+          </div> */}
         </div>
         <div className='flex justify-between'>
           <div className='my-2 text-xs w-[48%]'>
             <label className='font-medium'>State</label>
             <select onChange={e => setState(e.target.value)} value={state} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm'>
+              <option className='hidden' value="">Select your state</option>
               {states_in_nigeria.map(value => <option key={value} value={value}>{value}</option>)}
             </select>
           </div>

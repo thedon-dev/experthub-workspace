@@ -6,11 +6,11 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
   const [open, setOpen] = useState(false)
 
   return (
-    <div className='flex justify-between border p-3 my-3 lg:w-[49%] rounded-md border-[#1E1E1E75]'>
-      <div className='w-52'>
+    <div className='lg:flex justify-between border p-3 my-3 lg:w-[49%] rounded-md border-[#1E1E1E75]'>
+      <div className='lg:w-52'>
         <img className='w-full h-full object-cover rounded-md' src={course.thumbnail} alt="" />
       </div>
-      <div className='mx-4 w-full'>
+      <div className='lg:mx-4 sm:my-2 w-full'>
         <p className='text-primary text-sm'>{course.category}. <span className='text-black'> by {course.instructorName}</span></p>
         <p className='font-medium text-base'>{course.title}</p>
         <div>
@@ -27,7 +27,7 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
 
       </div>
 
-      <button onClick={() => setOpen(true)} className='p-2 w-52 bg-primary my-auto rounded-sm'>Enrol Now</button>
+      <button onClick={() => setOpen(true)} className='p-2 lg:w-52 w-full bg-primary my-auto rounded-sm'>Enrol Now</button>
       <CourseDetails course={course} open={open} action={"Course"} type='enroll' call={call} handleClick={() => setOpen(false)} />
     </div>
 
