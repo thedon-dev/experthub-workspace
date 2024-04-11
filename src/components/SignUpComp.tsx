@@ -55,6 +55,7 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
     "Zamfara",
     "Federal Capital Territory"
   ]
+  
   const signupApplicant = async () => {
     if (fullname && email && phone && country && state && address && password) {
       if (password === confirmPassword) {

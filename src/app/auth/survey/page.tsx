@@ -1,9 +1,11 @@
 "use client"
 
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Spin, notification } from 'antd';
+import category from '@/app/admin/category/page';
+import { CategoryType } from '@/types/CourseType';
 
 const test = () => {
   const [steps, setSteps] = useState(0)
@@ -18,14 +20,30 @@ const test = () => {
   const [status, setStatus] = useState("")
   const [time, setTime] = useState("")
   const [age, setAge] = useState("")
-  const [course, setCourse] = useState("")
+  const [category, setCategory] = useState("")
+  const [categoryIndex, setCategoryIndex] = useState("")
   const [experience, setExperience] = useState("")
   const [education, setEducation] = useState("")
   const [accomplishment, setAccomplishment] = useState("")
   const user = useSearchParams().get("user")
 
+  const [categories, setCategories] = useState<CategoryType[]>([])
+
+  const getCategories = () => {
+    axios.get('https://api.experthubllc.com/category/all').then(function (response) {
+      console.log(response.data)
+      setCategories(response.data.category)
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
+  useEffect(() => {
+    getCategories()
+  }, [])
+
   const submit = async () => {
-    if (computer && internet && gender && status && time && age && course && experience && education && accomplishment) {
+    if (computer && internet && gender && status && time && age && experience && education && accomplishment) {
       setLoading(true)
       axios.post(`https://api.experthubllc.com/assessment/survey/${user}`, {
         computerAccess: computer,
@@ -34,7 +52,7 @@ const test = () => {
         employmentStatus: status,
         trainingHours: time,
         age,
-        preferedCourse: course,
+        preferedCourse: category === "" ? categoryIndex : category,
         yearsOfExperience: experience,
         currentEducation: education,
         joiningAccomplishment: accomplishment
@@ -165,26 +183,20 @@ const test = () => {
                 </div>
               case 6:
                 return <div>
-                  <div className='my-2 text-sm'>
-                    <label className='font-medium'>Prefred course</label>
-                    <select onChange={e => setCourse(e.target.value)} className='w-full border my-1 border-[#FA815136] p-2 rounded-sm'>
-                      <option value="Virtual Assistant">Virtual Assistant</option>
-                      <option value="Product Management">Product Management</option>
-                      <option value="Cybersecurity">Cybersecurity </option>
-                      <option value="Software Development">Software Development</option>
-                      <option value="AI / Machine Learning">AI / Machine Learning</option>
-                      <option value="Data Analysis & Visualisation">Data Analysis & Visualisation</option>
-                      <option value="Story Telling">Story Telling</option>
-                      <option value="Animation">Animation</option>
-                      <option value="Cloud Computing">Cloud Computing</option>
-                      <option value="Dev Ops">Dev Ops</option>
-                      <option value="UI/UX Design">UI/UX Design</option>
-                      <option value="Journalism">Journalism</option>
-                      <option value="Game development">Game development</option>
-                      <option value="Data Science">Data Science</option>
-                      <option value="Digital Marketing">Digital Marketing</option>
-                      <option value="Advocacy">Advocacy</option>
-                    </select>
+                  <div className='flex justify-between my-2'>
+                    <div className='w-full'>
+                      <label className='text-sm font-medium my-1'>Course Category</label>
+                      <select onChange={e => setCategoryIndex(e.target.value)} value={categoryIndex} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                        <option className='hidden' value="">Select Category</option>
+                        {categories.map((single, index) => <option key={index} value={single.category}>{single.category}</option>)}
+                      </select>
+                    </div>
+                    {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full ml-3'>
+                      <label className='text-sm font-medium my-1'>Sub Category</label>
+                      <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                        {single.subCategory.map((sub, index) => <option key={index} value={sub}>{sub}</option>)}
+                      </select>
+                    </div>)}
                   </div>
                   <div className='my-2 text-sm'>
                     <label className='font-medium'>Years of experience</label>
