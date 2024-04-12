@@ -266,7 +266,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                           }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : action === "Event" ? "Book Now" : "Enroll Now"}</button>
                       }
                     </div>
-                    {course.type === "offline" ? <div className='text-sm'>
+                    {course.type === "offline" && type === "view" ? <div className='text-sm'>
                       <p><span className='font-bold'>Location:</span> {course.location}</p>
                       <p> <span className='font-bold'>Room:</span> {course.room}</p>
                     </div> : null}
