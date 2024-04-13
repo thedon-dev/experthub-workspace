@@ -303,6 +303,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full ml-3'>
                           <label className='text-sm font-medium my-1'>Sub Category</label>
                           <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                          <option className='hidden' value="">Select Sub-Category</option>
                             {single.subCategory.map((sub, index) => <option key={index} value={sub}>{sub}</option>)}
                           </select>
                         </div>)}

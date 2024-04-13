@@ -28,7 +28,7 @@ const UserEvent = ({ event, type }: { event: CourseType, type?: string }) => {
             <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" /> */}
             </div>
           </div>
-          {type === 'enroll' ? event.fee - event.strikedFee === 0 ? <p className='text-sm text-[#0BC01E]'>Free</p> : <p className='text-sm'><span>₦ {event.fee - event.strikedFee}</span> <span className='line-through	text-gray'>{event.fee}</span></p> : null}
+          {type === 'enroll' ? event.fee === 0 ? <p className='text-sm text-[#0BC01E]'>Free</p> : <p className='text-sm'><span>₦ {event.fee}</span> <span className='line-through	text-gray'>{event.strikedFee}</span></p> : null}
           <Share type='event' course={event} />
         </div>
 

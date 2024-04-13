@@ -16,7 +16,7 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
         <div>
           <div>
           </div>
-          {course.fee - course.strikedFee === 0 ? <p className='text-sm text-[#0BC01E]'>Free</p> : <p className='text-sm'><span>₦ {course.fee - course.strikedFee}</span> <span className='line-through	text-gray'>{course.fee}</span></p>}
+          {course.fee=== 0 ? <p className='text-sm text-[#0BC01E]'>Free</p> : <p className='text-sm'><span>₦ {course.fee}</span> <span className='line-through	text-gray'>{course.strikedFee}</span></p>}
         </div>
         <div className='flex'>
           <p className='text-xs my-1'>Students {course.enrolledStudents.length}</p>

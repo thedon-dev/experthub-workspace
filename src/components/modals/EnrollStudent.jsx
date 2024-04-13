@@ -22,9 +22,9 @@ const EnrollStudent = ({ open, handleClick, course }) => {
       })
   }
   const config = {
-    public_key: 'FLWPUBK_TEST-6330f5c973d7919b3b553f52d5a82098-X',
+    public_key: 'FLWPUBK-8f804b3f0312ef8a78fea192bdb4a5b4-X',
     tx_ref: Date.now(),
-    amount: 100,
+    amount: course.fee,
     currency: 'NGN',
     payment_options: 'card,mobilemoney,ussd',
     customer: {
