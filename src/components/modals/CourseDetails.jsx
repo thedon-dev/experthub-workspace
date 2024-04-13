@@ -166,7 +166,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   const config = {
     public_key: 'FLWPUBK-8f804b3f0312ef8a78fea192bdb4a5b4-X',
     tx_ref: Date.now(),
-    amount: course.fee - course.strikedFee,
+    amount: course.fee,
     currency: 'NGN',
     payment_options: 'card,mobilemoney,ussd',
     customer: {
