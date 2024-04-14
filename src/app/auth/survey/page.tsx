@@ -52,7 +52,7 @@ const test = () => {
         employmentStatus: status,
         trainingHours: time,
         age,
-        preferedCourse: category === "" ? categoryIndex : category,
+        preferedCourse: category,
         yearsOfExperience: experience,
         currentEducation: education,
         joiningAccomplishment: accomplishment
@@ -186,18 +186,18 @@ const test = () => {
                   <div className='flex justify-between my-2'>
                     <div className='w-full'>
                       <label className='text-sm font-medium my-1'>Course Category</label>
-                      <select onChange={e => setCategoryIndex(e.target.value)} value={categoryIndex} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                      <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                         <option className='hidden' value="">Select Category</option>
-                        {categories.map((single, index) => <option key={index} value={single.category}>{single.category}</option>)}
+                        {categories[6].subCategory.map((single, index) => <option key={index} value={single}>{single}</option>)}
                       </select>
                     </div>
-                    {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full ml-3'>
+                    {/* {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full ml-3'>
                       <label className='text-sm font-medium my-1'>Sub Category</label>
                       <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                         <option className='hidden' value="">Select Sub-Category</option>
                         {single.subCategory.map((sub, index) => <option key={index} value={sub}>{sub}</option>)}
                       </select>
-                    </div>)}
+                    </div>)} */}
                   </div>
                   <div className='my-2 text-sm'>
                     <label className='font-medium'>Years of experience</label>
