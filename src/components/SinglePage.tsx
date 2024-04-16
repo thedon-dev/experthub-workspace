@@ -72,6 +72,14 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
               <p>{repo?.about}</p>
               <p><span className='font-bold'>Location:</span> {repo?.location}</p>
               <p> <span className='font-bold'>Room:</span> {repo?.room}</p>
+              {repo?.days && <>
+                <div className='my-3 font-bold'>Weekly Hours</div>
+                {repo?.days.map((day: any) => day.checked && <div className='flex w-1/2 justify-between'>
+                  <p>{day.day}</p>
+                  <p>{day.startTime}</p>
+                  <p>-</p>
+                  <p>{day.endTime}</p>
+                </div>)}</>}
             </div>;
           case 'online':
             return <div className='p-6 lg:w-[60%] mx-auto'>

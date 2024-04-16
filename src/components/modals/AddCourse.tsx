@@ -55,6 +55,42 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   }
   const [videos, setVideos] = useState(course?.videos || [layout])
   const [categories, setCategories] = useState<CategoryType[]>([])
+  const [days, setDays] = useState(course?.days || [{
+    day: "Monday",
+    startTime: "",
+    endTime: "",
+    checked: false
+  },
+  {
+    day: "Tuesday",
+    startTime: "",
+    endTime: "",
+    checked: false
+  },
+  {
+    day: "Wednesday",
+    startTime: "",
+    endTime: "",
+    checked: false
+  },
+  {
+    day: "Thursday",
+    startTime: "",
+    endTime: "",
+    checked: false
+  },
+  {
+    day: "Friday",
+    startTime: "",
+    endTime: "",
+    checked: false
+  },
+  {
+    day: "Saturday",
+    startTime: "",
+    endTime: "",
+    checked: false
+  }])
 
   const getCategories = () => {
     axios.get('category/all').then(function (response) {
@@ -64,6 +100,12 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
       console.log(error)
     })
   }
+
+  const handleDaysInputChange = (index: number, field: string, value: string | number | boolean) => {
+    const updatedObjects = [...days];
+    updatedObjects[index] = { ...updatedObjects[index], [field]: value };
+    setDays(updatedObjects);
+  };
 
   const handleInputChange = (index: number, field: string, value: string | number) => {
     const updatedObjects = [...videos];
@@ -130,6 +172,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         {
           // image,
           title,
+          days: days,
           about,
           duration: duration.toString(),
           type,
@@ -168,7 +211,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const add = () => {
     if (title && about && duration && category && image && type === "offline" ? startDate && endDate && startTime && endTime && room && location : type === "online" ? startDate && endDate && startTime && endTime : type === "video" ? videos : pdf) {
       setLoading(true)
-      axios.post(`courses/add-course/${user.id}`,
+      axios.post(`http://localhost:3001/courses/add-course/${user.id}`,
         {
           image,
           title,
@@ -188,6 +231,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           location,
           videos,
           pdf,
+          days: days,
           scholarship: getScholarship()
         }
       )
@@ -303,7 +347,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full ml-3'>
                           <label className='text-sm font-medium my-1'>Sub Category</label>
                           <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-                          <option className='hidden' value="">Select Sub-Category</option>
+                            <option className='hidden' value="">Select Sub-Category</option>
                             {single.subCategory.map((sub, index) => <option key={index} value={sub}>{sub}</option>)}
                           </select>
                         </div>)}
@@ -398,6 +442,52 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                             <input placeholder='Room No.' onChange={e => setRoom(e.target.value)} value={room} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                           </div>
                         </div>
+                      </>}
+
+                      {type === 'offline' && <>
+                        <p className='font-medium'>Set your weekly hours</p>
+                        {days.map((day: { checked: boolean | undefined; day: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; startTime: string | number | readonly string[] | undefined; endTime: string | number | readonly string[] | undefined; }, index:any) => <div key={index} className='flex justify-between my-1'>
+                          <input onChange={e => handleDaysInputChange(index, 'checked', e.target.checked)} checked={day.checked} type="checkbox" />
+                          <p className='w-24 my-auto'>{day.day}</p>
+                          <input value={day.startTime} onChange={e => handleDaysInputChange(index, 'startTime', e.target.value)} className={day.checked === true && day.startTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm' : 'py-1 px-2 rounded-sm'} type="time" />
+                          <p className='my-auto'>-</p>
+                          <input value={day.endTime} onChange={e => handleDaysInputChange(index, 'endTime', e.target.value)} className={day.checked === true && day.endTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm' : 'py-1 px-2 rounded-sm'} type="time" />
+                        </div>)}
+                        {/* <div className='flex justify-between my-1'>
+                          <input type="checkbox" />
+                          <p className='w-24 my-auto'>Tuesday</p>
+                          <input className='py-1 px-2 rounded-sm' type="time" />
+                          <p>-</p>
+                          <input className='py-1 px-2 rounded-sm' type="time" />
+                        </div>
+                        <div className='flex justify-between my-1'>
+                          <input type="checkbox" />
+                          <p className='w-24 my-auto'>Wednesday</p>
+                          <input className='py-1 px-2 rounded-sm' type="time" />
+                          <p>-</p>
+                          <input className='py-1 px-2 rounded-sm' type="time" />
+                        </div>
+                        <div className='flex justify-between my-1'>
+                          <input type="checkbox" />
+                          <p className='w-24 my-auto'>Thursday</p>
+                          <input className='py-1 px-2 rounded-sm' type="time" />
+                          <p>-</p>
+                          <input className='py-1 px-2 rounded-sm' type="time" />
+                        </div>
+                        <div className='flex justify-between my-1'>
+                          <input type="checkbox" />
+                          <p className='w-24 my-auto'>Friday</p>
+                          <input className='py-1 px-2 rounded-sm' type="time" />
+                          <p>-</p>
+                          <input className='py-1 px-2 rounded-sm' type="time" />
+                        </div>
+                        <div className='flex justify-between my-1'>
+                          <input type="checkbox" />
+                          <p className='w-24 my-auto'>Saturday</p>
+                          <input className='py-1 px-2 rounded-sm' type="time" />
+                          <p>-</p>
+                          <input className='py-1 px-2 rounded-sm' type="time" />
+                        </div> */}
                       </>}
                       {
                         type === 'video' && <>

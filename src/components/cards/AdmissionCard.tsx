@@ -33,17 +33,18 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       label: 'Send Message',
       key: '2',
     },
-    {
-      label: (
-        <p onClick={() => setAssign(true)} >Assign Course</p>
-      ),
-      key: '3',
-    },
+    
     // {
     //   label: 'View Account',
     //   key: '4',
     // },
     ...(pathname.includes('admin') ? [
+      {
+        label: (
+          <p onClick={() => setAssign(true)} >Assign Course</p>
+        ),
+        key: '3',
+      },
       {
         label: (
           <p onClick={() => blockUser()}>{tutor.blocked ? "Unblock Student" : "Block Student"}</p>

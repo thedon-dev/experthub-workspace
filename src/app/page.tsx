@@ -132,7 +132,7 @@ export default function Home() {
             </div>)}
           </div>
           <div className="text-center my-10">
-            <button className="bg-primary p-3 rounded-sm px-10">View Less Courses</button>
+            <button className="bg-primary p-3 rounded-sm px-10">View More Courses</button>
           </div>
         </section>
         <section className="">

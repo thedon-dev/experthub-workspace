@@ -269,6 +269,14 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                     {course.type === "offline" && type === "view" ? <div className='text-sm'>
                       <p><span className='font-bold'>Location:</span> {course.location}</p>
                       <p> <span className='font-bold'>Room:</span> {course.room}</p>
+                      {course.days && <>
+                        <div className='my-3 font-bold'>Weekly Hours</div>
+                        {course.days.map(day => day.checked && <div className='flex justify-between'>
+                          <p>{day.day}</p>
+                          <p>{day.startTime}</p>
+                          <p>-</p>
+                          <p>{day.endTime}</p>
+                        </div>)}</>}
                     </div> : null}
                   </div>
                   <div className='lg:w-[58%]'>
