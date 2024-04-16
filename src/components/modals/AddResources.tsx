@@ -1,7 +1,9 @@
+import { CourseType } from '@/types/CourseType';
 import { notification } from 'antd';
 import axios from 'axios';
 import { error } from 'console';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import Select from 'react-select';
 
 const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }) => {
   const uploadRef = useRef<HTMLInputElement>(null)
@@ -12,8 +14,21 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
   const [about, setAbout] = useState("")
   const [privacy, setPrivacy] = useState("")
   const [websiteUrl, setWebsiteUrl] = useState("")
+  const [assignedCourse, setAssignedCourse] = useState("")
   const [api, contextHolder] = notification.useNotification();
+  const [courses, setCourses] = useState([])
 
+  const getCourses = () => {
+    axios.get("courses/all")
+      .then(function (response) {
+        setCourses(response.data.courses)
+        // console.log(response.data)
+      })
+  }
+
+  useEffect(() => {
+    getCourses()
+  }, [])
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     const files = e.target.files
@@ -32,6 +47,9 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
     }
   }
 
+  const formattedOptions = courses.map((option: CourseType) => ({ value: option.studentId, label: option.title }));
+
+
   const add = () => {
     if (title && about && privacy && websiteUrl) {
       setLoading(true)
@@ -41,6 +59,8 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
       formData.append("aboutCourse", about)
       formData.append("privacy", privacy)
       formData.append("websiteUrl", websiteUrl)
+      formData.append("assignedCourse", assignedCourse)
+
 
       axios.post(`resources/add-new`,
         formData
@@ -102,6 +122,16 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
                 <option value=""></option>
               </select>
             </div>
+          </div>
+          <div className='my-1'>
+            <label className='text-sm font-medium my-1'>Assign Course</label>
+            <Select
+              isMulti
+              options={formattedOptions}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              onChange={(e: any) => { setAssignedCourse(e) }}
+            />
           </div>
           <div className='my-1'>
             <label className='text-sm font-medium my-1'>Website Url/link</label>

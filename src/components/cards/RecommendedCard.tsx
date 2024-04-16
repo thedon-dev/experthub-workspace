@@ -16,18 +16,24 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
         <div>
           <div>
           </div>
-          {course.fee=== 0 ? <p className='text-sm text-[#0BC01E]'>Free</p> : <p className='text-sm'><span>₦ {course.fee}</span> <span className='line-through	text-gray'>{course.strikedFee}</span></p>}
+          {course.fee === 0 ? <p className='text-sm text-[#0BC01E]'>Free</p> : <p className='text-sm'><span>₦ {course.fee}</span> <span className='line-through	text-gray'>{course.strikedFee}</span></p>}
         </div>
         <div className='flex'>
-          <p className='text-xs my-1'>Students {course.enrolledStudents.length}</p>
-          <div className='flex ml-1'>
-            {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+          <div>
+            <p className='text-xs my-1'>Students {course.enrolledStudents.length}</p>
+            <div className='flex ml-1'>
+              {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+            </div>
           </div>
+          <div></div>
         </div>
 
       </div>
 
-      <button onClick={() => setOpen(true)} className='p-2 lg:w-52 w-full bg-primary my-auto rounded-sm'>Enrol Now</button>
+      <div className='lg:w-52 my-auto'>
+        <button onClick={() => setOpen(true)} className='p-2 w-full my-1 bg-primary rounded-sm'>Enrol Now</button>
+        <button className='p-2 w-full bg-primary rounded-sm my-1'>Share</button>
+      </div>
       <CourseDetails course={course} open={open} action={"Course"} type='enroll' call={call} handleClick={() => setOpen(false)} />
     </div>
 

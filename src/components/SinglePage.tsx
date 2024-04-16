@@ -1,12 +1,15 @@
 import { CourseType } from '@/types/CourseType';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FileDownload from '@/components/FileDownload'
 import { useAppSelector } from '@/store/hooks';
 import UploadVideo from './modals/UploadVideo';
+import axios from 'axios';
+import { ResourceType } from '@/types/ResourceType';
 
 const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any, page: any }) => {
   const [indexCount, setIndexCount] = useState(0)
   const [videos, setVideos] = useState(repo.videos)
+  const [resources, setResources] = useState([])
   const setNext = () => {
     if (videos.length - 1 === indexCount) {
       return
@@ -15,6 +18,18 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
     setIndexCount(count + 1)
 
   }
+
+  const getAssigned = () => {
+    axios.get(`resources/all/${repo._id}`)
+      .then(function (response) {
+        console.log(response.data)
+        setResources(response.data.resources)
+      })
+  }
+
+  useEffect(() => {
+    getAssigned()
+  }, [])
 
   return (
     <div>
@@ -103,6 +118,28 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
             return <div></div>;
         }
       })()}
+
+      <div>
+        <p className='text-xl font-medium'>Related Learning Resources</p>
+        <div className='flex flex-wrap justify-between'>
+          {
+            resources.map((material: ResourceType) => <div key={material._id} className='p-1 lg:w-[32%] w-full'>
+              <a href={material.websiteUrl} target='_blank'>
+                <div className=''>
+                  <div className='p-3 rounded-md bg-white'>
+                    <img className='rounded-md h-40 object-cover w-full' src={material.image} alt="" />
+                  </div>
+                  <div className='p-1'>
+                    {/* <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p> */}
+                    <h4 className='text-xl my-3'>{material.title}</h4>
+                    <p className='text-sm'>{material.aboutCourse}</p>
+                  </div>
+                </div>
+              </a>
+            </div>)
+          }
+        </div>
+      </div>
     </div>
   );
 };
