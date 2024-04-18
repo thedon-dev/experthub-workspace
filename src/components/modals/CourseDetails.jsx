@@ -228,6 +228,12 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                     <img src={course.thumbnail} className='w-full h-52 object-cover' alt="" />
                     <div className='p-4'>
                       <p className='font-medium text-base'>{course.title}</p>
+                      {course.enrolledStudents?.length > 1 && <div className='flex'>
+                        <div className='flex ml-1'>
+                          {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+                        </div>
+                        <p className='text-xs ml-2 my-1'>{course.enrolledStudents.length}+ students already started</p>
+                      </div>}
                       <div className='my-4'>
                         <p className='font-medium'>The {action} includes</p>
                         <div className='flex my-1'>
@@ -246,6 +252,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                           <p className='text-sm'>Certificate of completion</p>
                         </div>}
                       </div>
+
                       {
                         type === "view" ? course.type === "online" ? isOn().on ? <button onClick={() => startMeeting()} className='bg-primary p-2 my-3 rounded-md px-8 w-[150px]'>{loading ? <Spin /> : "Join Live"}</button> : null : user.role !== 'student' ?
                           <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> :
@@ -303,11 +310,42 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                             <span>Starts at {course.startTime}</span>
                             <span className='loader'></span>
                           </>}
-
-
                         </div>
                       </>
                     }
+
+                    {type === 'enroll' && <div className='flex my-4'>
+                      <div className='flex mr-6'>
+                        <img className='w-10 rounded-full my-auto h-10' src={course.instructorImage} alt="" />
+                        <div className='ml-3 my-auto'>
+                          <p className='text-xs'>Course Tutor</p>
+                          <p className='font-medium'>{course.instructorName}</p>
+                        </div>
+                      </div>
+                      <button onClick={() => {
+                        course.fee === 0 ? checkTyoe() : handleFlutterPayment({
+                          callback: (response) => {
+                            if (action === "Event") {
+                              enrollEvent()
+                            } else {
+                              enroll()
+                            }
+                            console.log(response);
+                            closePaymentModal() // this will close the modal programmatically
+                          },
+                          onClose: () => {
+                            console.log("closed")
+                          },
+                        })
+                      }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : action === "Event" ? "Book Now" : "Enroll Now"}</button>
+                    </div>}
+
+                    {course.benefits && <div className='my-3'>
+                      <p className='font-bold text-lg'>In this course you'll learn how to</p>
+                      <ol className='list-decimal grid grid-cols-2'>
+                        {course.benefits.map((single, index) => <li key={index} className='ml-4'>{single}</li>)}
+                      </ol>
+                    </div>}
 
                     <div className='text-center'>
                       {type === "view" && course.type === 'pdf' ? <a href={insertAtIndex(course.file, 65)} download target='_blank'> <button className='bg-primary p-1 mx-auto my-3 rounded-md px-8'>Download/Read</button></a> : null}

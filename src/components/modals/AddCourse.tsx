@@ -60,6 +60,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [videos, setVideos] = useState(course?.videos || [layout])
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [modules, setModules] = useState(course?.modules || [module])
+  const [benefits, setBenefits] = useState(course?.benefits || [""])
   const [days, setDays] = useState(course?.days || [{
     day: "Monday",
     startTime: "",
@@ -110,6 +111,12 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     const updatedObjects = [...modules];
     updatedObjects[index] = { ...updatedObjects[index], [field]: value };
     setModules(updatedObjects);
+  };
+
+  const handleBenefitsInputChange = (index: number, value: string | number | boolean) => {
+    const updatedObjects = [...benefits];
+    updatedObjects[index] = value;
+    setBenefits(updatedObjects);
   };
 
   const handleDaysInputChange = (index: number, field: string, value: string | number | boolean) => {
@@ -183,6 +190,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         {
           // image,
           title,
+          benefits,
           days: days,
           about,
           modules,
@@ -221,7 +229,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   }
 
   const add = () => {
-    if (title && about && duration && category && image && type === "offline" ? startDate && endDate && startTime && endTime && room && location : type === "online" ? startDate && endDate && startTime && endTime : type === "video" ? videos : pdf) {
+    if (title && about && duration && category && image && benefits.length > 1 && type === "offline" ? startDate && endDate && startTime && endTime && room && location : type === "online" ? startDate && endDate && startTime && endTime : type === "video" ? videos : pdf) {
       setLoading(true)
       axios.post(`courses/add-course/${user.id}`,
         {
@@ -245,6 +253,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           videos,
           pdf,
           days: days,
+          benefits,
           scholarship: getScholarship()
         }
       )
@@ -497,6 +506,12 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                           <button className='px-3 font-medium' onClick={() => setVideos([...videos, layout])}>Add </button>
                         </>
                       }
+
+                      <div className='my-1'>
+                        <label className='text-sm font-medium my-1' >Course Benefits</label>
+                        {benefits.map((single: string, index: any) => <input onChange={e => handleBenefitsInputChange(index, e.target.value)} className='border rounded-md w-full border-[#1E1E1ED9] p-2 my-1 bg-transparent' key={index} value={single} type="text" />)}
+                        <button onClick={() => setBenefits([...benefits, ""])} className='p-2 bg-primary rounded-md mt-2'>Add</button>
+                      </div>
                     </div>
                   case 2:
                     return <div>
