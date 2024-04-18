@@ -53,8 +53,13 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     title: "",
     videoUrl: ""
   }
+  let module = {
+    title: "",
+    description: ""
+  }
   const [videos, setVideos] = useState(course?.videos || [layout])
   const [categories, setCategories] = useState<CategoryType[]>([])
+  const [modules, setModules] = useState(course?.modules || [module])
   const [days, setDays] = useState(course?.days || [{
     day: "Monday",
     startTime: "",
@@ -100,6 +105,12 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
       console.log(error)
     })
   }
+
+  const handleModulesInputChange = (index: number, field: string, value: string | number | boolean) => {
+    const updatedObjects = [...modules];
+    updatedObjects[index] = { ...updatedObjects[index], [field]: value };
+    setModules(updatedObjects);
+  };
 
   const handleDaysInputChange = (index: number, field: string, value: string | number | boolean) => {
     const updatedObjects = [...days];
@@ -174,6 +185,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           title,
           days: days,
           about,
+          modules,
           duration: duration.toString(),
           type,
           startDate,
@@ -211,7 +223,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const add = () => {
     if (title && about && duration && category && image && type === "offline" ? startDate && endDate && startTime && endTime && room && location : type === "online" ? startDate && endDate && startTime && endTime : type === "video" ? videos : pdf) {
       setLoading(true)
-      axios.post(`http://localhost:3001/courses/add-course/${user.id}`,
+      axios.post(`courses/add-course/${user.id}`,
         {
           image,
           title,
@@ -228,6 +240,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           fee: fee.toString(),
           strikedFee: striked.toString(),
           room,
+          modules,
           location,
           videos,
           pdf,
@@ -329,6 +342,9 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
               </div>
               <div className={active === 2 ? 'border-b border-primary p-2' : 'p-2 cursor-pointer'}>
                 <p onClick={() => setActive(2)}>Fee</p>
+              </div>
+              <div className={active === 3 ? 'border-b border-primary p-2' : 'p-2 cursor-pointer'}>
+                <p onClick={() => setActive(3)}>Modules</p>
               </div>
             </div>
             <div>
@@ -444,51 +460,17 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         </div>
                       </>}
 
-                      {type === 'offline' && <>
+                      {type === 'offline' || type === 'online' ? <>
                         <p className='font-medium'>Set your weekly hours</p>
-                        {days.map((day: { checked: boolean | undefined; day: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; startTime: string | number | readonly string[] | undefined; endTime: string | number | readonly string[] | undefined; }, index:any) => <div key={index} className='flex justify-between my-1'>
+                        {days.map((day: { checked: boolean | undefined; day: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; startTime: string | number | readonly string[] | undefined; endTime: string | number | readonly string[] | undefined; }, index: any) => <div key={index} className='flex justify-between my-1'>
                           <input onChange={e => handleDaysInputChange(index, 'checked', e.target.checked)} checked={day.checked} type="checkbox" />
                           <p className='w-24 my-auto'>{day.day}</p>
                           <input value={day.startTime} onChange={e => handleDaysInputChange(index, 'startTime', e.target.value)} className={day.checked === true && day.startTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm' : 'py-1 px-2 rounded-sm'} type="time" />
                           <p className='my-auto'>-</p>
                           <input value={day.endTime} onChange={e => handleDaysInputChange(index, 'endTime', e.target.value)} className={day.checked === true && day.endTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm' : 'py-1 px-2 rounded-sm'} type="time" />
                         </div>)}
-                        {/* <div className='flex justify-between my-1'>
-                          <input type="checkbox" />
-                          <p className='w-24 my-auto'>Tuesday</p>
-                          <input className='py-1 px-2 rounded-sm' type="time" />
-                          <p>-</p>
-                          <input className='py-1 px-2 rounded-sm' type="time" />
-                        </div>
-                        <div className='flex justify-between my-1'>
-                          <input type="checkbox" />
-                          <p className='w-24 my-auto'>Wednesday</p>
-                          <input className='py-1 px-2 rounded-sm' type="time" />
-                          <p>-</p>
-                          <input className='py-1 px-2 rounded-sm' type="time" />
-                        </div>
-                        <div className='flex justify-between my-1'>
-                          <input type="checkbox" />
-                          <p className='w-24 my-auto'>Thursday</p>
-                          <input className='py-1 px-2 rounded-sm' type="time" />
-                          <p>-</p>
-                          <input className='py-1 px-2 rounded-sm' type="time" />
-                        </div>
-                        <div className='flex justify-between my-1'>
-                          <input type="checkbox" />
-                          <p className='w-24 my-auto'>Friday</p>
-                          <input className='py-1 px-2 rounded-sm' type="time" />
-                          <p>-</p>
-                          <input className='py-1 px-2 rounded-sm' type="time" />
-                        </div>
-                        <div className='flex justify-between my-1'>
-                          <input type="checkbox" />
-                          <p className='w-24 my-auto'>Saturday</p>
-                          <input className='py-1 px-2 rounded-sm' type="time" />
-                          <p>-</p>
-                          <input className='py-1 px-2 rounded-sm' type="time" />
-                        </div> */}
-                      </>}
+                      </> : null}
+
                       {
                         type === 'video' && <>
                           {
@@ -538,6 +520,20 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         <input type='number' onChange={e => setStriked(parseInt(e.target.value))} value={striked} className='border rounded-md border-[#1E1E1ED9] w-full h-20 p-2 bg-transparent' />
                       </div>
                     </div>
+                  case 3:
+                    return <div>
+                      {modules.map((single: any, index: number) => <div key={index}>
+                        <div>
+                          <label className='text-sm font-medium my-1'>Module {index + 1} Title</label> <br />
+                          <input onChange={e => handleModulesInputChange(index, 'title', e.target.value)} value={single.title} className=' border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' type="text" />
+                        </div>
+                        <div>
+                          <label className='text-sm font-medium my-1'>Module {index + 1} Description</label> <br />
+                          <textarea onChange={e => handleModulesInputChange(index, 'description', e.target.value)} value={single.description} className='h-18 border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'></textarea>
+                        </div>
+                      </div>)}
+                      <button onClick={() => setModules([...modules, module])} className='bg-primary p-2 rounded-md'>Add</button>
+                    </div>
                   default:
                     return null
                 }
@@ -546,7 +542,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                 <p className='text-sm my-4'>By uploading you agree that this course is a product of you
                   and not being forged<input className='ml-2' type="checkbox" /></p>
                 <div className='flex'>
-                  {course === null ? active === 2 ? <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Add Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button> : active === 2 ? <button onClick={() => edit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Edit Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
+                  {course === null ? active === 3 ? <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Add Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button> : active === 3 ? <button onClick={() => edit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Edit Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
                   <button onClick={() => handleClick()} className='mx-4'>Cancel</button>
                 </div>
               </div>

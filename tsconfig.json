@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/modals/AddCourse.tsx", "src/components/modals/CourseDetails.jsx", "src/components/modals/EnrollStudent.jsx", "src/components/cards/Category.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/modals/AddCourse.tsx", "src/components/modals/CourseDetails.jsx", "src/components/modals/EnrollStudent.jsx", "src/components/cards/Category.jsx", "src/app/[slug]/page.jsx"],
   "exclude": ["node_modules"]
 }

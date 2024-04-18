@@ -14,6 +14,8 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   const [loading, setLoading] = useState(false)
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter()
+  const [active, setActive] = useState(0)
+  // console.log(course)
 
   const enroll = () => {
     try {
@@ -310,6 +312,24 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                     <div className='text-center'>
                       {type === "view" && course.type === 'pdf' ? <a href={insertAtIndex(course.file, 65)} download target='_blank'> <button className='bg-primary p-1 mx-auto my-3 rounded-md px-8'>Download/Read</button></a> : null}
                     </div>
+
+                    {course.modules && <div>
+                      <div className='flex '>
+                        <p onClick={() => setActive(0)} className={active === 0 ? 'font-bold border-b py-1 border-primary cursor-pointer' : 'font-bold py-1 cursor-pointer'}>Course Modules</p>
+                        <p onClick={() => setActive(1)} className={active === 1 ? 'ml-4 font-bold border-b py-1 border-primary cursor-pointer' : 'font-bold py-1 ml-4 cursor-pointer'}>Course Descriptions</p>
+                      </div>
+                      {active === 0 ? <div>
+                        {course.modules.map((module, index) => <div className='my-2'>
+                          <p className='font-medium my-1'>Module {index + 1}</p>
+                          <p>{module.title}</p>
+                        </div>)}
+                      </div> : <div>
+                        {course.modules.map((module, index) => <div className='my-2'>
+                          <p className='font-medium my-1'>Module {index + 1}</p>
+                          <p>{module.description}</p>
+                        </div>)}
+                      </div>}
+                    </div>}
                   </div>
                 </div>
               </div>

@@ -23,7 +23,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
     axios.get(`resources/all/${repo._id}`)
       .then(function (response) {
         console.log(response.data)
-        setResources(response.data.resources)
+        setResources(response.data.resource)
       })
   }
 
@@ -119,7 +119,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
         }
       })()}
 
-      <div>
+      {resources.length >= 1 && <div>
         <p className='text-xl font-medium'>Related Learning Resources</p>
         <div className='flex flex-wrap justify-between'>
           {
@@ -139,7 +139,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
             </div>)
           }
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

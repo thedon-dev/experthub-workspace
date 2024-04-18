@@ -10,8 +10,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const Single = () => {
-  const [course, setCourse] = useState<CourseType | null>(null)
-  const [userDeets, setUserDeets] = useState<UserType | null>(null)
+  const [course, setCourse] = useState(null)
+  const [userDeets, setUserDeets] = useState(null)
   const page = usePathname()
   const user = useSearchParams().get("user")
   const [api, contextHolder] = notification.useNotification();
@@ -19,7 +19,7 @@ const Single = () => {
 
   const enroll = () => {
     try {
-      axios.post(`courses/enroll/${course?._id}`, {
+      axios.post(`https://expexthub-trainings.onrender.com/courses/enroll/${course?._id}`, {
         id: userDeets?.id
       })
         .then(function (response) {
@@ -74,6 +74,7 @@ const Single = () => {
       name: userDeets?.fullName,
     },
   };
+
 
   const handleFlutterPayment = useFlutterwave(config);
 
