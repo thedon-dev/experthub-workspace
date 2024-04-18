@@ -1,9 +1,11 @@
 import { CourseType } from '@/types/CourseType';
 import React, { useState } from 'react';
 import CourseDetails from '../modals/CourseDetails';
+import ShareModal from '../modals/ShareModal';
 
 const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) => {
   const [open, setOpen] = useState(false)
+  const [share, setShare] = useState(false)
 
   return (
     <div className='lg:flex justify-between border p-3 my-3 lg:w-[49%] rounded-md border-[#1E1E1E75]'>
@@ -32,8 +34,9 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
 
       <div className='lg:w-52 my-auto'>
         <button onClick={() => setOpen(true)} className='p-2 w-full my-1 bg-primary rounded-sm'>Enrol Now</button>
-        <button className='p-2 w-full bg-primary rounded-sm my-1'>Share</button>
+        <button onClick={() => setShare(true)} className='p-2 w-full bg-primary rounded-sm my-1'>Share</button>
       </div>
+      <ShareModal open={share} course={course} handleClick={() => setShare(false)} />
       <CourseDetails course={course} open={open} action={"Course"} type='enroll' call={call} handleClick={() => setOpen(false)} />
     </div>
 
