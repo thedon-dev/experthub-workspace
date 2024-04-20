@@ -57,6 +57,7 @@ const CategoryModal = ({ open, fetch, handleClick, category }: { open: boolean, 
     const newArray = subCategory.filter((item, index) => index !== targetIndex);
     setSubCategory(newArray)
   }
+  
   return (
     open && <div>
       {contextHolder}

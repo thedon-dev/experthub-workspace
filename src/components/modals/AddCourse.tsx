@@ -284,6 +284,15 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
   const formattedOptions = students.map((option: UserType) => ({ value: option.studentId, label: option.fullname }));
 
+  const removeBenefits = (targetIndex: any) => {
+    const newArray = benefits.filter((item: any, index: any) => index !== targetIndex);
+    setBenefits(newArray)
+  }
+
+  const removeModules = (targetIndex: any) => {
+    const newArray = modules.filter((item: any, index: any) => index !== targetIndex);
+    setModules(newArray)
+  }
 
   return (
     open && <div>
@@ -389,6 +398,19 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                       <div className='my-1'>
                         <label className='text-sm font-medium my-1'>About course</label>
                         <textarea onChange={e => setAbout(e.target.value)} value={about} className='border rounded-md border-[#1E1E1ED9] w-full h-32 p-2 bg-transparent'></textarea>
+                      </div>
+
+                      <div className='my-1'>
+                        <label className='text-sm font-medium my-1' >Course Benefits</label>
+                        {benefits.map((single: string, index: any) => <div className='flex'>
+                          <input onChange={e => handleBenefitsInputChange(index, e.target.value)} className='border rounded-md w-full border-[#1E1E1ED9] p-2 my-1 bg-transparent' key={index} value={single} type="text" />
+                          <div onClick={() => removeBenefits(index)} className='my-auto ml-5 cursor-pointer'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
+                              <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                            </svg>
+                          </div>
+                        </div>)}
+                        <button onClick={() => setBenefits([...benefits, ""])} className='p-2 bg-primary rounded-md mt-2'>Add</button>
                       </div>
                     </div>
                   case 1:
@@ -507,11 +529,6 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         </>
                       }
 
-                      <div className='my-1'>
-                        <label className='text-sm font-medium my-1' >Course Benefits</label>
-                        {benefits.map((single: string, index: any) => <input onChange={e => handleBenefitsInputChange(index, e.target.value)} className='border rounded-md w-full border-[#1E1E1ED9] p-2 my-1 bg-transparent' key={index} value={single} type="text" />)}
-                        <button onClick={() => setBenefits([...benefits, ""])} className='p-2 bg-primary rounded-md mt-2'>Add</button>
-                      </div>
                     </div>
                   case 2:
                     return <div>
@@ -540,7 +557,14 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                       {modules.map((single: any, index: number) => <div key={index}>
                         <div>
                           <label className='text-sm font-medium my-1'>Module {index + 1} Title</label> <br />
-                          <input onChange={e => handleModulesInputChange(index, 'title', e.target.value)} value={single.title} className=' border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' type="text" />
+                          <div className='flex'>
+                            <input onChange={e => handleModulesInputChange(index, 'title', e.target.value)} value={single.title} className=' border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' type="text" />
+                            <div onClick={() => removeModules(index)} className='my-auto ml-5 cursor-pointer'>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                              </svg>
+                            </div>
+                          </div>
                         </div>
                         <div>
                           <label className='text-sm font-medium my-1'>Module {index + 1} Description</label> <br />
