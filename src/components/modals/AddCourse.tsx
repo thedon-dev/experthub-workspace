@@ -205,7 +205,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           privacy,
           fee: fee.toString(),
           strikedFee: striked.toString(),
-          scholarship: "students",
+          scholarship: getScholarship(),
           room,
           location,
           // videos,

@@ -79,9 +79,9 @@ const Single = () => {
   const handleFlutterPayment = useFlutterwave(config);
 
   return (
-    <div className='w-1/2 mx-auto p-4'>
+    <div className='lg:w-1/2 mx-auto p-4'>
       {contextHolder}
-      <h1 className='text-3xl'><span className='capitalize'>{userDeets?.fullName}</span> has asked you to purchase the course {course?.title} for them.</h1>
+      <h1 className='lg:text-3xl text-xl'><span className='capitalize'>{userDeets?.fullName}</span> has asked you to purchase the course {course?.title} for them.</h1>
       <img className='my-3' src={course?.thumbnail} alt="" />
       <p>{course?.about}</p>
       <div className='flex p-3 justify-between'>

@@ -1,8 +1,29 @@
 import { useAppSelector } from '@/store/hooks';
 import React from 'react';
+import type { MenuProps } from 'antd';
+import { Dropdown } from 'antd';
 import Notification from "./modals/Notification"
+import { useAppDispatch } from '@/store/hooks';
+import { setUser } from '@/store/slices/userSlice'
+
 const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   const user = useAppSelector((state) => state.value);
+  const dispatch = useAppDispatch();
+
+  const changeRole = () => {
+    const person = { ...user, role: "student" }
+    // person.role = "tutor"
+    dispatch(setUser(person))
+    window.location.reload()
+  }
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <p onClick={() => changeRole()}>Switch Roles</p>
+      ),
+    },
+  ]
 
   return (
     <section className='fixed lg:w-[80%] w-full bg-[#F8F7F4]'>
@@ -19,9 +40,10 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
           <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
         </div> */}
         <div className='flex lg:w-28 w-24 justify-between'>
-        <Notification/>
-       
-          <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture} alt="" />
+          <Notification />
+          {user.role === 'tutor' ? <Dropdown menu={{ items }} trigger={["click"]}>
+            <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture} alt="" />
+          </Dropdown> : <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture} alt="" />}
         </div>
       </div>
     </section>
