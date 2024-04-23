@@ -182,6 +182,12 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     }
   }
 
+  const getScholarship = () => {
+    const arrayOfIds = scholarship.map((object: any) => object.value)
+    return arrayOfIds
+  }
+
+
   const edit = () => {
     try {
       setLoading(true)
@@ -205,7 +211,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           privacy,
           fee: fee.toString(),
           strikedFee: striked.toString(),
-          scholarship: getScholarship(),
+          enrolledStudents: [...course?.enrolledStudents, ...getScholarship()],
           room,
           location,
           // videos,
@@ -223,10 +229,6 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     }
   }
 
-  const getScholarship = () => {
-    const arrayOfIds = scholarship.map((object: any) => object.value)
-    return arrayOfIds
-  }
 
   const add = () => {
     if (title && about && duration && category && image && benefits.length > 1 && type === "offline" ? startDate && endDate && startTime && endTime && room && location : type === "online" ? startDate && endDate && startTime && endTime : type === "video" ? videos : pdf) {
