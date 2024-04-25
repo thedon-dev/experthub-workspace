@@ -10,6 +10,7 @@ import { useAppSelector } from '@/store/hooks';
 import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
 import { AssesmentType } from '@/types/AssesmentType';
+import Link from 'next/link';
 
 const applicant = () => {
   const user = useAppSelector((state) => state.value);
@@ -118,6 +119,9 @@ const applicant = () => {
       <section className='m-2 p-3 shadow-md'>
         <div className='text-sm my-3 flex justify-between'>
           <p className='font-bold text-base'>Recommended for you</p>
+          <Link href={'/applicant/feeds'}>
+            <p className='text-sm'>Other Courses</p>
+          </Link>
           <p className='text-[#DC9F08] text-sm'>VIEW ALL</p>
         </div>
         <div className='flex flex-wrap justify-between'>
