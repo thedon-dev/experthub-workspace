@@ -17,6 +17,7 @@ import { UserType } from '@/types/UserType';
 import { CourseType } from '@/types/CourseType';
 import AddEvents from '@/components/modals/AddEvents';
 import CategoryModal from '@/components/modals/CategoryModal';
+import Notice from '@/components/modals/Notice';
 
 const adminDashboard = () => {
   const user = useAppSelector((state) => state.value);
@@ -24,6 +25,7 @@ const adminDashboard = () => {
   const [event, setEvent] = useState(false)
   const [resources, setResources] = useState(false)
   const [category, setCategory] = useState(false)
+  const [notice, setNotice] = useState(false)
   const [graduates, setGraduates] = useState<UserType[]>([])
 
   const items: MenuProps['items'] = [
@@ -49,6 +51,12 @@ const adminDashboard = () => {
       key: '4',
       label: (
         <p onClick={() => setCategory(true)}>Add Category</p>
+      ),
+    },
+    {
+      key: '4',
+      label: (
+        <p onClick={() => setNotice(true)}>Send Notice</p>
       ),
     },
   ];
@@ -127,6 +135,7 @@ const adminDashboard = () => {
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
       <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
       <CategoryModal open={category} category={null} handleClick={() => setCategory(false)} />
+      <Notice open={notice} handleClick={() => setNotice(false)} />
     </DashboardLayout>
   );
 };

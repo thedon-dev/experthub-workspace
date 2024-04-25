@@ -19,7 +19,7 @@ const addmissions = () => {
       .then(function (response) {
         setStudents(response.data.students)
         setAll(response.data.students)
-        // console.log(response.data)
+        console.log(response.data)
       })
   }
   const getTutors = () => {
@@ -27,7 +27,7 @@ const addmissions = () => {
       .then(function (response) {
         setTutors(response.data.instructors)
         setAllTutor(response.data.instructors)
-        console.log(response.data)
+        // console.log(response.data)
       })
   }
 

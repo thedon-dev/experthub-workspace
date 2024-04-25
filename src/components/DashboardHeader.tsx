@@ -1,14 +1,53 @@
 import { useAppSelector } from '@/store/hooks';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import Notification from "./modals/Notification"
 import { useAppDispatch } from '@/store/hooks';
 import { setUser } from '@/store/slices/userSlice'
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { NoticeType } from '@/types/ResourceType';
 
 const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   const user = useAppSelector((state) => state.value);
   const dispatch = useAppDispatch();
+  const [notice, setNotice] = useState<NoticeType | null>()
+  const [show, setShow] = useState(true)
+  const router = useRouter()
+
+  const getNotice = () => {
+    axios.get(`notice/${user.id}`).then(function (response) {
+      console.log(response.data)
+      setNotice(response.data.notice[0])
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
+  useEffect(() => {
+    getNotice()
+  }, [])
+
+  const markRead = () => {
+    axios.put(`notice//enroll/${notice?._id}`, {
+      id: user.id
+    }).then(function (response) {
+      console.log(response.data)
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
+  const takeAction = () => {
+    if (notice?.page === 'Survey') {
+      router.push(`/auth/survey?user=${user.id}`)
+      markRead()
+    } else {
+      router.push(`/${user.role === 'student' ? 'applicant' : 'tutor'}/${notice?.page.toLowerCase()}`)
+      markRead()
+    }
+  }
 
   const changeRole = () => {
     const person = { ...user, role: "student" }
@@ -45,6 +84,23 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
             <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture} alt="" />
           </Dropdown> : <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture} alt="" />}
         </div>
+
+        {notice && show && <div>
+          <div className='fixed bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
+          <div className='fixed top-10 bottom-10 left-0 overflow-y-auto rounded-md right-0 lg:w-[40%] h-[50vh] w-[95%] mx-auto z-20 bg-[#F8F7F4]'>
+            <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12'>
+              <p className='font-medium text-center'>{notice.title}</p>
+              {/* <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" /> */}
+            </div>
+            <div className='lg:mx-12 mx-4 my-4'>
+              <p>{notice.body}</p>
+              <div className='text-center '>
+                <button onClick={() => takeAction()} className='bg-[#F7A607] text-white p-1 rounded-md my-3 px-6'>{notice.action}</button> <br />
+                {notice.cancel ? <button onClick={() => setShow(false)} className='p-1'>Cancel</button> : null}
+              </div>
+            </div>
+          </div>
+        </div>}
       </div>
     </section>
   );

@@ -211,7 +211,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           privacy,
           fee: fee.toString(),
           strikedFee: striked.toString(),
-          enrolledStudents: [...course?.enrolledStudents, ...getScholarship()],
+          enrolledStudents: course && [...course?.enrolledStudents, ...getScholarship()],
           room,
           location,
           // videos,
@@ -495,7 +495,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
                       {type === 'offline' || type === 'online' ? <>
                         <p className='font-medium'>Set your weekly hours</p>
-                        {days.map((day: { checked: boolean | undefined; day: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; startTime: string | number | readonly string[] | undefined; endTime: string | number | readonly string[] | undefined; }, index: any) => <div key={index} className='flex justify-between my-1'>
+                        {days.map((day: { checked: boolean | undefined; day: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; startTime: string | number | readonly string[] | undefined; endTime: string | number | readonly string[] | undefined; }, index: any) => <div key={index} className='flex justify-between my-1'>
                           <input onChange={e => handleDaysInputChange(index, 'checked', e.target.checked)} checked={day.checked} type="checkbox" />
                           <p className='w-24 my-auto'>{day.day}</p>
                           <input value={day.startTime} onChange={e => handleDaysInputChange(index, 'startTime', e.target.value)} className={day.checked === true && day.startTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm' : 'py-1 px-2 rounded-sm'} type="time" />

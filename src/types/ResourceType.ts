@@ -6,3 +6,13 @@ export interface ResourceType {
   aboutCourse: string;
   [key: string]: any;
 }
+
+export interface NoticeType {
+  _id: string;
+  title: string;
+  body: string;
+  link: string;
+  action: string;
+  page: string;
+  cancel: Boolean;
+}

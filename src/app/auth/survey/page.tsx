@@ -13,7 +13,6 @@ const test = () => {
   const router = useRouter()
   const role = useSearchParams().get("role")
   const [api, contextHolder] = notification.useNotification();
-
   const [computer, setComputer] = useState("")
   const [internet, setInternet] = useState("")
   const [gender, setGender] = useState("")
