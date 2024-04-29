@@ -8,6 +8,7 @@ import AssignCourse from '../modals/AssignCourse';
 import SendAssesment from '../modals/SendAssesment';
 import axios from 'axios';
 import { notification } from 'antd';
+import Notice from '../modals/Notice';
 
 
 const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
@@ -15,6 +16,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
   const [assesment, setAssesment] = useState(false)
   const pathname = usePathname()
   const [api, contextHolder] = notification.useNotification();
+  const [notice, setNotice] = useState(false)
 
   const items: MenuProps['items'] = [
     ...(role === 'students' ? [{
@@ -50,6 +52,12 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
           <p onClick={() => blockUser()}>{tutor.blocked ? "Unblock Student" : "Block Student"}</p>
         ),
         key: '4',
+      },
+      {
+        label: (
+          <p onClick={() => setNotice(true)} >Send Notice</p>
+        ),
+        key: '5',
       },
       // {
       //   label: 'Pay Fee',
@@ -143,6 +151,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       </div>
       <AssignCourse open={assign} handleClick={() => setAssign(false)} studentId={tutor.studentId || tutor.id} />
       <SendAssesment open={assesment} handleClick={() => setAssesment(false)} studentId={tutor.studentId} />
+      <Notice open={notice} handleClick={() => setNotice(false)} recipient={tutor.studentId || tutor.id} />
     </div>
   );
 };

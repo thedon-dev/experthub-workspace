@@ -6,6 +6,7 @@ import AdmissionCard from '@/components/cards/AdmissionCard';
 import SearchNav from '@/components/SearchNav';
 import axios from 'axios';
 import { UserType } from '@/types/UserType';
+import Notice from '@/components/modals/Notice';
 
 const addmissions = () => {
   const [active, setActive] = useState("students")
@@ -13,6 +14,7 @@ const addmissions = () => {
   const [tutors, setTutors] = useState<UserType | []>([])
   const [all, setAll] = useState<UserType | []>([])
   const [allTutor, setAllTutor] = useState<UserType | []>([])
+  const [open, setOpen] = useState(false)
 
   const getStudents = () => {
     axios.get('user/students')
@@ -63,9 +65,10 @@ const addmissions = () => {
           switch (active) {
             case 'students':
               return <div>
-                <div className='w-1/2 relative my-4'>
-                  <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
+                <div className='w-[60%] flex relative my-4'>
+                  <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
                   <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
+                  <button onClick={() => setOpen(true)} className='bg-primary px-4 p-2 ml-6'>Send Notice</button>
                 </div>
                 {
                   students.map((student: UserType, index: any) => <AdmissionCard role={active} tutor={student} key={index} />)
@@ -74,9 +77,11 @@ const addmissions = () => {
               </div>
             case 'mentors':
               return <div>
-                <div className='w-1/2 relative my-4'>
-                  <input onChange={e => searchTutor(e.target.value)} type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
+                <div className='w-[60%] flex relative my-4'>
+                  <input onChange={e => searchTutor(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
                   <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
+                  <button onClick={() => setOpen(true)} className='bg-primary px-4 p-2 ml-6'>Send Notice</button>
+
                 </div>
                 {
                   tutors.map((student: UserType, index: any) => <AdmissionCard role={active} tutor={student} key={index} />)
@@ -86,6 +91,8 @@ const addmissions = () => {
               return null
           }
         })()}
+
+        <Notice open={open} handleClick={() => setOpen(false)} />
       </section>
     </DashboardLayout>
   );

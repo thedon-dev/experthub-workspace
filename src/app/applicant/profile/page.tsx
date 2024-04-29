@@ -102,9 +102,9 @@ const profile = () => {
 
   return (
     <DashboardLayout>
-      <section className='flex justify-evenly'>
+      <section className='lg:flex justify-evenly'>
         {contextHolder}
-        <div className='w-[25%] mt-4'>
+        <div className='lg:w-[25%] sm:p-4 mt-4'>
           <div className='shadow-[0px_2px_4px_0px_#1E1E1E21] p-3 text-center rounded-md'>
             <p className='font-medium text-lg'>Personal Details</p>
             <img onClick={() => uploadRef.current?.click()} src={profilePicture ? profilePicture : "/images/user.png"} className='w-20 object-cover h-20 rounded-full mx-auto my-3 cursor-pointer' alt="" />
@@ -152,14 +152,14 @@ const profile = () => {
             <div className='text-center'><button onClick={updateUser} className='bg-primary p-2 px-6 my-4 font-medium'>{loading ? "updating..." : "Edit highlights"}</button></div>
           </div>
         </div>
-        <div className='mt-4 w-[65%]'>
+        <div className='mt-4 sm:p-4 lg:w-[65%]'>
           <p className='text-xl font-medium my-3'>Courses</p>
           <div className='shadow-[0px_2px_4px_0px_#1E1E1E21] p-3 rounded-md'>
             <p className='text-sm my-3'>Selected courses</p>
-            <div className='flex justify-between border p-3 my-3 w-[80%] rounded-md border-[#1E1E1E75]'>
-              <div className='flex '>
-                <img className='w-32 rounded-md' src="/images/card.png" alt="" />
-                <div className='mx-4'>
+            <div className='lg:flex justify-between border p-3 my-3 lg:w-[80%] rounded-md border-[#1E1E1E75]'>
+              <div className='lg:flex '>
+                <img className='lg:w-32 rounded-md' src="/images/card.png" alt="" />
+                <div className='lg:mx-4 sm:my-4'>
                   <p className='text-primary text-sm'>UI Design . <span className='text-black'> Evans D</span></p>
                   <p className='font-medium'>Get Started with prototyping</p>
                   <p className='text-sm'>Nov 17 2023</p>
@@ -171,7 +171,7 @@ const profile = () => {
           <p className='text-xl font-medium my-4'>Employment Status</p>
           <div className='shadow-[0px_2px_4px_0px_#1E1E1E21] p-6 rounded-md'>
             <div className='flex justify-between'>
-              <div className='w-[80%]'>
+              <div className='lg:w-[80%]'>
                 <p className='font-medium my-3'>Your employment status</p>
                 <p className='text-sm'>Add your past experience here. If you’re just starting out,
                   you can add internships or unemployed</p>
@@ -182,10 +182,10 @@ const profile = () => {
             </div>
             <div className='border-t mt-4 border-[#1E1E1E4F]'>
               <p className='my-3 font-medium'>Employed</p>
-              <div className='flex justify-between'>
-                <div className='flex'>
+              <div className='lg:flex justify-between'>
+                <div className='lg:flex'>
                   <img className='w-12 mr-4 h-10' src="/images/peoples-pow.png" alt="" />
-                  <div>
+                  <div className='sm:my-4'>
                     <p className='text-base font-medium'>UI UX Designer</p>
                     <p className='text-xs my-1'>Peoples power</p>
                     <p className='text-xs'>Oct 2020 - Dec 2020 - 3 months</p>
@@ -201,7 +201,7 @@ const profile = () => {
           <p className='text-xl font-medium my-4'>Education Level</p>
           <div className='shadow-[0px_2px_4px_0px_#1E1E1E21] p-6 rounded-md'>
             <div className='flex justify-between'>
-              <div className='w-[80%]'>
+              <div className='lg:w-[80%]'>
                 <p className='font-medium my-3'>Credentials</p>
                 <p className='text-sm'>Add your school experience here. If you’re just starting out,
                   you can add certificate gotten</p>
@@ -212,10 +212,10 @@ const profile = () => {
             </div>
             <div className='border-t mt-4 border-[#1E1E1E4F]'>
               {/* <p className='my-3 font-medium'>Employed</p> */}
-              <div className='flex pt-4 justify-between'>
-                <div className='flex'>
+              <div className='lg:flex pt-4 justify-between'>
+                <div className='lg:flex'>
                   <img className='w-12 mr-4 h-10' src="/images/peoples-pow.png" alt="" />
-                  <div>
+                  <div className='sm:my-4'>
                     <p className='text-base font-medium'>Bachelors Degree</p>
                     <p className='text-xs my-1'>Rivers State University</p>
                     <p className='text-xs'>Oct 2020 - Dec 2020</p>

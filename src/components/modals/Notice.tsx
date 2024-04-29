@@ -4,7 +4,7 @@ import axios from 'axios';
 import category from '@/app/admin/category/page';
 import { CategoryType } from '@/types/CourseType';
 
-const Notice = ({ open, handleClick }: { open: boolean, handleClick: any }) => {
+const Notice = ({ open, handleClick, recipient }: { open: boolean, handleClick: any, recipient?: String }) => {
   const [api, contextHolder] = notification.useNotification();
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [category, setCategory] = useState("")
@@ -69,7 +69,8 @@ const Notice = ({ open, handleClick }: { open: boolean, handleClick: any }) => {
       link,
       page: referreed,
       cancel: cancel === 'yes' ? true : false,
-      action
+      action,
+      recipient
     }).then(function (response) {
       console.log(response.data)
       api.open({
