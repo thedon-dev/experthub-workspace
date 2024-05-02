@@ -51,7 +51,7 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
 
 
   const add = () => {
-    if (title && about && privacy && websiteUrl) {
+    if (title && about && websiteUrl) {
       setLoading(true)
       const formData = new FormData()
       file && formData.append("image", file[0])
@@ -112,16 +112,16 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
           />
 
           <div className='flex justify-between my-1'>
-            <div className='w-[48%]'>
+            <div className='w-full'>
               <label className='text-sm font-medium my-1'>Title of Resources</label>
               <input onChange={e => setTitle(e.target.value)} value={title} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
             </div>
-            <div className='w-[48%]'>
+            {/* <div className='w-[48%]'>
               <label className='text-sm font-medium my-1'>Privacy</label>
               <select onChange={e => setPrivacy(e.target.value)} value={privacy} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                 <option value=""></option>
               </select>
-            </div>
+            </div> */}
           </div>
           <div className='my-1'>
             <label className='text-sm font-medium my-1'>Assign Course</label>

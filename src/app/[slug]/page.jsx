@@ -84,6 +84,29 @@ const Single = () => {
       <h1 className='lg:text-3xl text-xl'><span className='capitalize'>{userDeets?.fullName}</span> has asked you to purchase the course {course?.title} for them.</h1>
       <img className='my-3' src={course?.thumbnail} alt="" />
       <p>{course?.about}</p>
+      {course.benefits && <div className='my-3'>
+        <p className='font-bold text-lg'>In this course you'll learn how to</p>
+        <ol className='list-decimal grid grid-cols-2'>
+          {course.benefits.map((single, index) => <li key={index} className='ml-4'>{single}</li>)}
+        </ol>
+      </div>}
+      {course.modules && <div>
+        <div className='flex '>
+          <p onClick={() => setActive(0)} className={active === 0 ? 'font-bold border-b py-1 border-primary cursor-pointer' : 'font-bold py-1 cursor-pointer'}>Course Modules</p>
+          <p onClick={() => setActive(1)} className={active === 1 ? 'ml-4 font-bold border-b py-1 border-primary cursor-pointer' : 'font-bold py-1 ml-4 cursor-pointer'}>Course Descriptions</p>
+        </div>
+        {active === 0 ? <div>
+          {course.modules.map((module, index) => <div className='my-2'>
+            <p className='font-medium my-1'>Module {index + 1}</p>
+            <p>{module.title}</p>
+          </div>)}
+        </div> : <div>
+          {course.modules.map((module, index) => <div className='my-2'>
+            <p className='font-medium my-1'>Module {index + 1}</p>
+            <p>{module.description}</p>
+          </div>)}
+        </div>}
+      </div>}
       <div className='flex p-3 justify-between'>
         <Link href={'/'}>
           <button className='p-3 bg-[#D9D9D94D]'>Cancel</button>
