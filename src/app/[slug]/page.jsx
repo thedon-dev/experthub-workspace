@@ -16,6 +16,7 @@ const Single = () => {
   const user = useSearchParams().get("user")
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter()
+  const [active, setActive] = useState(0)
 
   const enroll = () => {
     try {
@@ -44,7 +45,7 @@ const Single = () => {
     await axios.get(`https://expexthub-trainings.onrender.com/courses/single-course${page}`)
       .then(function (response) {
         setCourse(response.data.course)
-        // console.log(response.data)
+        console.log(response.data)
       })
   }
 
@@ -84,24 +85,24 @@ const Single = () => {
       <h1 className='lg:text-3xl text-xl'><span className='capitalize'>{userDeets?.fullName}</span> has asked you to purchase the course {course?.title} for them.</h1>
       <img className='my-3' src={course?.thumbnail} alt="" />
       <p>{course?.about}</p>
-      {course.benefits && <div className='my-3'>
+      {course?.benefits && <div className='my-6'>
         <p className='font-bold text-lg'>In this course you'll learn how to</p>
         <ol className='list-decimal grid grid-cols-2'>
           {course.benefits.map((single, index) => <li key={index} className='ml-4'>{single}</li>)}
         </ol>
       </div>}
-      {course.modules && <div>
+      {course?.modules && <div>
         <div className='flex '>
           <p onClick={() => setActive(0)} className={active === 0 ? 'font-bold border-b py-1 border-primary cursor-pointer' : 'font-bold py-1 cursor-pointer'}>Course Modules</p>
           <p onClick={() => setActive(1)} className={active === 1 ? 'ml-4 font-bold border-b py-1 border-primary cursor-pointer' : 'font-bold py-1 ml-4 cursor-pointer'}>Course Descriptions</p>
         </div>
         {active === 0 ? <div>
-          {course.modules.map((module, index) => <div className='my-2'>
+          {course?.modules.map((module, index) => <div className='my-2'>
             <p className='font-medium my-1'>Module {index + 1}</p>
             <p>{module.title}</p>
           </div>)}
         </div> : <div>
-          {course.modules.map((module, index) => <div className='my-2'>
+          {course?.modules.map((module, index) => <div className='my-2'>
             <p className='font-medium my-1'>Module {index + 1}</p>
             <p>{module.description}</p>
           </div>)}
