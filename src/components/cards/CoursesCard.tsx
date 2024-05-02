@@ -8,6 +8,7 @@ import { CourseType } from '@/types/CourseType';
 import Share from '../Share';
 import Link from 'next/link';
 import EnrollStudent from '../modals/EnrollStudent';
+import { useAppSelector } from '@/store/hooks';
 
 const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () => Promise<void> }) => {
   const pathname = usePathname()
@@ -16,35 +17,39 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
   const [deletec, setDelete] = useState(false)
   const [enrolled, setEnrolled] = useState(false)
   const [enroll, setEnroll] = useState(false)
+  const user = useAppSelector((state) => state.value);
 
   const items: MenuProps['items'] = [
+
+    
     {
       key: '1',
-      label: (
-        <p onClick={() => setEdit(true)} >Edit course</p>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <p onClick={() => { course.enrolledStudents.length >= 1 ? setEnrolled(true) : setDelete(true) }}>Delete course</p>
-      ),
-    },
-    {
-      key: '3',
       label: (
         <Share course={course} />
       ),
     },
     ...(pathname.includes('admin') ? [
       {
-        key: '4',
+        key: '2',
         label: (
           <p onClick={() => setEnroll(true)} >Enroll Student</p>
         ),
       },
+    ] : []),
+    ...(course.instructorId === user.id || user.role === 'admin' ? [
+      {
+        key: '3',
+        label: (
+          <p onClick={() => { course.enrolledStudents.length >= 1 ? setEnrolled(true) : setDelete(true) }}>Delete course</p>
+        ),
+      },
+      {
+        key: '4',
+        label: (
+          <p onClick={() => setEdit(true)} >Edit course</p>
+        ),
+      },
     ] : [])
-
   ];
 
   const deleteCourse = async () => {

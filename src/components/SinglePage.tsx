@@ -119,7 +119,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
         }
       })()}
 
-      {resources.length >= 1 && <div>
+      {resources.length >= 1 && <div className='p-4'>
         <p className='text-xl font-medium'>Related Learning Resources</p>
         <div className='flex flex-wrap justify-between'>
           {
@@ -127,7 +127,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
               <a href={material.websiteUrl} target='_blank'>
                 <div className=''>
                   <div className='p-3 rounded-md bg-white'>
-                    <img className='rounded-md h-40 object-cover w-full' src={material.image} alt="" />
+                    <img className='rounded-md h-44 object-cover w-full' src={material.image} alt="" />
                   </div>
                   <div className='p-1'>
                     {/* <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p> */}

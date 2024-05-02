@@ -47,7 +47,7 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
     }
   }
 
-  const formattedOptions = courses.map((option: CourseType) => ({ value: option.studentId, label: option.title }));
+  const formattedOptions = courses.map((option: CourseType) => ({ value: option._id, label: option.title }));
 
 
   const add = () => {
@@ -126,11 +126,11 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
           <div className='my-1'>
             <label className='text-sm font-medium my-1'>Assign Course</label>
             <Select
-              isMulti
+              isMulti={false}
               options={formattedOptions}
               className="basic-multi-select"
               classNamePrefix="select"
-              onChange={(e: any) => { setAssignedCourse(e) }}
+              onChange={(e: any) => {setAssignedCourse(e.value) }}
             />
           </div>
           <div className='my-1'>
