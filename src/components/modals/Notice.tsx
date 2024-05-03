@@ -59,7 +59,7 @@ const Notice = ({ open, handleClick, recipient }: { open: boolean, handleClick: 
   const [action, setAction] = useState("")
 
   const createNotice = () => {
-    axios.post('http://localhost:3001/notice/new', {
+    axios.post('notice/new', {
       title,
       body: description,
       role,
