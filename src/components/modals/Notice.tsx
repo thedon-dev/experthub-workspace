@@ -59,7 +59,7 @@ const Notice = ({ open, handleClick, recipient }: { open: boolean, handleClick: 
   const [action, setAction] = useState("")
 
   const createNotice = () => {
-    axios.post('notice/new', {
+    axios.post('http://localhost:3001/notice/new', {
       title,
       body: description,
       role,
@@ -87,7 +87,7 @@ const Notice = ({ open, handleClick, recipient }: { open: boolean, handleClick: 
 
   const getCategories = () => {
     axios.get('category/all').then(function (response) {
-      console.log(response.data)
+      // console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {
       console.log(error)
@@ -109,32 +109,34 @@ const Notice = ({ open, handleClick, recipient }: { open: boolean, handleClick: 
         </div>
         {contextHolder}
         <div className='lg:mx-12 mx-4 my-4'>
-          <div className='my-2'>
-            <select onChange={(e) => setRole(e.target.value)} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-              <option value="student">Student</option>
-              <option value="tutor">Tutor</option>
-            </select>
-          </div>
-          <div className='w-full my-2'>
-            {/* <label className='text-sm font-medium my-2'>Course Category</label> */}
-            <select onChange={e => setCategoryIndex(e.target.value)} value={categoryIndex} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-              <option className='hidden' value="">Select Course Category</option>
-              {categories.map((single, index) => <option key={index + single.category} value={single.category}>{single.category}</option>)}
-            </select>
-          </div>
-          {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full my-2'>
-            {/* <label className='text-sm font-medium my-1'>Sub Category</label> */}
-            <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-              <option className='hidden' value="">Select Sub-Category</option>
-              {single.subCategory.map((sub, index) => <option key={index + sub} value={sub}>{sub}</option>)}
-            </select>
-          </div>)}
-          <div className='my-2'>
-            <select onChange={e => setState(e.target.value)} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-              <option className='hidden' value="">Select State</option>
-              {states_in_nigeria.map((state, index) => <option key={index + state} value={state}>{state}</option>)}
-            </select>
-          </div>
+          {recipient ? null : <>
+            <div className='my-2'>
+              <select onChange={(e) => setRole(e.target.value)} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                <option value="student">Student</option>
+                <option value="tutor">Tutor</option>
+              </select>
+            </div>
+            <div className='w-full my-2'>
+              {/* <label className='text-sm font-medium my-2'>Course Category</label> */}
+              <select onChange={e => setCategoryIndex(e.target.value)} value={categoryIndex} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                <option className='hidden' value="">Select Course Category</option>
+                {categories.map((single, index) => <option key={index + single.category} value={single.category}>{single.category}</option>)}
+              </select>
+            </div>
+            {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full my-2'>
+              {/* <label className='text-sm font-medium my-1'>Sub Category</label> */}
+              <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                <option className='hidden' value="">Select Sub-Category</option>
+                {single.subCategory.map((sub, index) => <option key={index + sub} value={sub}>{sub}</option>)}
+              </select>
+            </div>)}
+            <div className='my-2'>
+              <select onChange={e => setState(e.target.value)} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                <option className='hidden' value="">Select State</option>
+                {states_in_nigeria.map((state, index) => <option key={index + state} value={state}>{state}</option>)}
+              </select>
+            </div>
+          </>}
           <div className='my-2'>
             <input onChange={e => setTitle(e.target.value)} value={title} type="text" placeholder='Title' className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
           </div>
