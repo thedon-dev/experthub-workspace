@@ -20,8 +20,6 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
   const user = useAppSelector((state) => state.value);
 
   const items: MenuProps['items'] = [
-
-    
     {
       key: '1',
       label: (

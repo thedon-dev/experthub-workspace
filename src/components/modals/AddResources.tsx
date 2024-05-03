@@ -1,20 +1,21 @@
 import { CourseType } from '@/types/CourseType';
+import { ResourceType } from '@/types/ResourceType';
 import { notification } from 'antd';
 import axios from 'axios';
 import { error } from 'console';
 import React, { useEffect, useRef, useState } from 'react';
 import Select from 'react-select';
 
-const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }) => {
+const AddResources = ({ open, handleClick, material }: { open: boolean, handleClick: any, material?: ResourceType }) => {
   const uploadRef = useRef<HTMLInputElement>(null)
-  const [image, setImage] = useState("")
+  const [image, setImage] = useState(material?.image || "")
   const [loading, setLoading] = useState(false)
   const [file, setFile] = useState<FileList | null>()
-  const [title, setTitle] = useState("")
-  const [about, setAbout] = useState("")
+  const [title, setTitle] = useState(material?.title || "")
+  const [about, setAbout] = useState(material?.aboutCourse || "")
   const [privacy, setPrivacy] = useState("")
-  const [websiteUrl, setWebsiteUrl] = useState("")
-  const [assignedCourse, setAssignedCourse] = useState("")
+  const [websiteUrl, setWebsiteUrl] = useState(material?.websiteUrl || "")
+  const [assignedCourse, setAssignedCourse] = useState(material?.assignedCourse || "")
   const [api, contextHolder] = notification.useNotification();
   const [courses, setCourses] = useState([])
 
@@ -45,6 +46,19 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
         }
       }
     }
+  }
+
+  const setEdit = () => {
+    axios.put(`resources/edit/${material?._id}`, {
+      title,
+      aboutCourse: about,
+      websiteUrl,
+      assignedCourse
+    })
+      .then(function (response) {
+        console.log(response.data)
+        handleClick()
+      })
   }
 
   const formattedOptions = courses.map((option: CourseType) => ({ value: option._id, label: option.title }));
@@ -87,7 +101,8 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
       <div className='fixed top-10 bottom-10 left-0 rounded-md overflow-y-auto right-0 lg:w-[50%] w-[95%] mx-auto z-20 bg-[#F8F7F4]'>
         <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between'>
-          <p className='font-medium'>Add Resources</p>
+          {material ? <p className='font-medium'>Edit Resources</p> : <p className='font-medium'>Add Resources</p>
+          }
           <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
         </div>
         <div className='lg:p-10 p-4'>
@@ -130,7 +145,7 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
               options={formattedOptions}
               className="basic-multi-select"
               classNamePrefix="select"
-              onChange={(e: any) => {setAssignedCourse(e.value) }}
+              onChange={(e: any) => { setAssignedCourse(e.value) }}
             />
           </div>
           <div className='my-1'>
@@ -145,7 +160,8 @@ const AddResources = ({ open, handleClick }: { open: boolean, handleClick: any }
             <p className='text-sm my-4'>By uploading you agree that this course is a product of you
               and not being forged<input className='ml-2' type="checkbox" /></p>
             <div className='flex'>
-              <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? 'loading...' : 'Add Resource'}</button>
+              {material ? <button onClick={() => setEdit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? 'loading...' : 'Edit Resource'}</button> : <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? 'loading...' : 'Add Resource'}</button>
+              }
               <button onClick={() => handleClick()} className='mx-4'>Cancel</button>
             </div>
           </div>
