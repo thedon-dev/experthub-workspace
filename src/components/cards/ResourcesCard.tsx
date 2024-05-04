@@ -10,13 +10,13 @@ const ResourcesCard = ({ material, getAll }: { material: ResourceType, getAll: a
     {
       key: '1',
       label: (
-        <p onClick={() => setEdit(true)} >Edit course</p>
+        <p onClick={() => setEdit(true)} >Edit Resource</p>
       )
     },
     {
       key: '1',
       label: (
-        <p onClick={() => setDelete()} >Delete course</p>
+        <p onClick={() => setDelete()} >Delete Resource</p>
       )
     },
   ]
