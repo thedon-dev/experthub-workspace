@@ -7,6 +7,8 @@ import SearchNav from '@/components/SearchNav';
 import axios from 'axios';
 import { UserType } from '@/types/UserType';
 import Notice from '@/components/modals/Notice';
+import { Modal } from 'antd';
+import SignUpComp from '@/components/SignUpComp';
 
 const addmissions = () => {
   const [active, setActive] = useState("students")
@@ -15,6 +17,7 @@ const addmissions = () => {
   const [all, setAll] = useState<UserType | []>([])
   const [allTutor, setAllTutor] = useState<UserType | []>([])
   const [open, setOpen] = useState(false)
+  const [contact, setContact] = useState(false)
 
   const getStudents = () => {
     axios.get('user/students')
@@ -54,6 +57,9 @@ const addmissions = () => {
 
       <section className='m-4'>
         <div className='flex justify-between lg:w-[40%]'>
+          <div onClick={() => setActive("contact")} className={active === "contact" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
+            <p className='font-medium text-lg'>Contact</p>
+          </div>
           <div onClick={() => setActive("students")} className={active === "students" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
             <p className='font-medium text-lg'>Students</p>
           </div>
@@ -63,12 +69,26 @@ const addmissions = () => {
         </div>
         {(() => {
           switch (active) {
+            case 'contact':
+              return <div>
+                <div className='w-[60%] flex relative my-4'>
+                  <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
+                  <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
+                  <button onClick={() => setOpen(true)} className='bg-primary px-4 p-2 ml-6'>Send Notice</button>
+                  <button onClick={() => setContact(true)} className='bg-primary px-4 p-2 ml-6'>Add Contact</button>
+                </div>
+                {
+                  students.map((student: UserType, index: any) => student.contact ? <AdmissionCard role={active} tutor={student} key={index} /> : null)
+                }
+
+              </div>
             case 'students':
               return <div>
                 <div className='w-[60%] flex relative my-4'>
                   <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
                   <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
                   <button onClick={() => setOpen(true)} className='bg-primary px-4 p-2 ml-6'>Send Notice</button>
+                  <button onClick={() => setContact(true)} className='bg-primary px-4 p-2 ml-6'>Add Contact</button>
                 </div>
                 {
                   students.map((student: UserType, index: any) => <AdmissionCard role={active} tutor={student} key={index} />)
@@ -81,7 +101,7 @@ const addmissions = () => {
                   <input onChange={e => searchTutor(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
                   <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
                   <button onClick={() => setOpen(true)} className='bg-primary px-4 p-2 ml-6'>Send Notice</button>
-
+                  <button onClick={() => setContact(true)} className='bg-primary px-4 p-2 ml-6'>Add Contact</button>
                 </div>
                 {
                   tutors.map((student: UserType, index: any) => <AdmissionCard role={active} tutor={student} key={index} />)
@@ -93,6 +113,9 @@ const addmissions = () => {
         })()}
 
         <Notice open={open} handleClick={() => setOpen(false)} />
+        <Modal title="Add Contact" footer={[]} open={contact} onOk={() => setContact(false)} onCancel={() => setContact(false)}>
+          <SignUpComp role='student' action={() => getStudents()} />
+        </Modal>
       </section>
     </DashboardLayout>
   );

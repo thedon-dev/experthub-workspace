@@ -114,6 +114,7 @@ const Notice = ({ open, handleClick, recipient }: { open: boolean, handleClick: 
               <select onChange={(e) => setRole(e.target.value)} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                 <option value="student">Student</option>
                 <option value="tutor">Tutor</option>
+                <option value="all">All Users</option>
               </select>
             </div>
             <div className='w-full my-2'>

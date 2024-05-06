@@ -41,11 +41,11 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
 
   const takeAction = () => {
     if (notice?.page === 'Survey') {
+      markRead()
       router.push(`/auth/survey?user=${user.id}`)
-      markRead()
     } else {
-      router.push(`/${user.role === 'student' ? 'applicant' : 'tutor'}/${notice?.page.toLowerCase()}`)
       markRead()
+      router.push(`/${user.role === 'student' ? 'applicant' : 'tutor'}/${notice?.page.toLowerCase()}`)
     }
   }
 

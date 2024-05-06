@@ -7,12 +7,15 @@ import SearchNav from '@/components/SearchNav';
 import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
 import { UserType } from '@/types/UserType';
+import SignUpComp from '@/components/SignUpComp';
+import { Modal } from 'antd';
 
 const addmissions = () => {
   const [active, setActive] = useState("students")
   const user = useAppSelector((state) => state.value);
   const [students, setStudents] = useState<UserType | []>([])
   const [all, setAll] = useState<UserType | []>([])
+  const [contact, setContact] = useState(false)
 
   const getStudents = () => {
     axios.put('user/mystudents', {
@@ -37,12 +40,19 @@ const addmissions = () => {
   return (
     <DashboardLayout>
       {/* <SearchNav /> */}
-      <div className='w-1/2 relative m-4'>
-        <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
-        <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
+      <div className='flex m-4'>
+        <div className='w-1/2 relative '>
+          <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
+          <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
+        </div>
+        <button onClick={() => setContact(true)} className='bg-primary px-4 my-auto p-2 ml-6'>Add Contact</button>
       </div>
+
       <section className='m-4'>
         <div className='flex justify-between lg:w-1/2'>
+          <div onClick={() => setActive("contact")} className={active === "contact" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
+            <p className='font-medium text-lg'>Contacts</p>
+          </div>
           <div onClick={() => setActive("students")} className={active === "students" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
             <p className='font-medium text-lg'>My Students</p>
           </div>
@@ -55,6 +65,12 @@ const addmissions = () => {
         </div>
         {(() => {
           switch (active) {
+            case 'contact':
+              return <div>
+                {
+                  students.map((student: UserType, index: any) => student.contact ? <AdmissionCard role={active} tutor={student} key={index} /> : null)
+                }
+              </div>
             case 'students':
               return <div>
                 {
@@ -77,6 +93,9 @@ const addmissions = () => {
               return null
           }
         })()}
+        <Modal title="Add Contact" footer={[]} open={contact} onOk={() => setContact(false)} onCancel={() => setContact(false)}>
+          <SignUpComp role='student' action={() => getStudents()} />
+        </Modal>
       </section>
     </DashboardLayout>
   );
