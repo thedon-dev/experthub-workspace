@@ -20,7 +20,7 @@ const addmissions = () => {
   const [contact, setContact] = useState(false)
 
   const getStudents = () => {
-    axios.get('http://localhost:3001/user/students')
+    axios.get('user/students')
       .then(function (response) {
         setStudents(response.data.students)
         setAll(response.data.students)
