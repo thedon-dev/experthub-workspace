@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import AddEvents from '../modals/AddEvents';
 import axios from 'axios';
+import ImageViewer from '../ImageViewer';
 
 const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
   const [open, setOpen] = useState(false)
@@ -65,7 +66,8 @@ const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
     <div className='lg:w-[32%] my-3'>
       {contextHolder}
       <div className='p-2 rounded-md bg-white'>
-        <img className='rounded-md h-44 object-cover w-full' src={event.thumbnail} alt="" />
+        <ImageViewer image={event.thumbnail} />
+        {/* <img className='rounded-md h-44 object-cover w-full' src={event.thumbnail} alt="" /> */}
       </div>
       <div>
         {/* <p className='text-primary'>Course by {event.author}</p> */}

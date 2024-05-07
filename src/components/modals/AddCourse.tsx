@@ -30,7 +30,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [privacy, setPrivacy] = useState(course?.privacy || "")
   const [type, setType] = useState(course?.type || "offline")
   const [title, setTitle] = useState(course?.title || "")
-  const [image, setImage] = useState(course?.thumbnail || "")
+  const [image, setImage] = useState<any>(course?.thumbnail || null)
   const [location, setLocation] = useState(course?.loaction || "")
   const [target, setTarget] = useState(course?.target || 0)
 
@@ -152,7 +152,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     const files = e.target.files
-    setFile(e.target.files)
+    // setFile(e.target.files)
 
     const reader = new FileReader()
     if (files && files.length > 0) {
@@ -160,8 +160,11 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
       reader.readAsDataURL(files[0])
       reader.onloadend = () => {
         if (reader.result) {
-          // const type = files[0].name.substr(files[0].name.length - 3)
-          setImage(reader.result as string)
+          const type = files[0].name.substr(files[0].name.length - 3)
+          setImage({
+            type: type === "mp4" ? "video" : "image",
+            url: reader.result as string
+          })
         }
       }
     }
@@ -235,7 +238,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
       setLoading(true)
       axios.post(`courses/add-course/${user.id}`,
         {
-          image,
+          asset: image,
           title,
           target,
           about,
@@ -309,7 +312,15 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           <div className='lg:w-[48%]'>
             <div>
               <p className='text-sm font-medium my-1'>Course Image</p>
-              {image ? <img onClick={() => uploadRef.current?.click()} src={image} className='w-full object-cover h-52' alt="" /> :
+              {image ? image.type === 'image' ? <img onClick={() => uploadRef.current?.click()} src={image?.url} className='w-full object-cover h-52' alt="" /> : <video
+                onClick={() => uploadRef.current?.click()}
+                src={image.url}
+                width="500"
+                autoPlay muted
+                className="embed-responsive-item w-full object-cover h-full"
+              >
+                <source src={image.url} type="video/mp4" />
+              </video> :
                 <button className='border border-[#1E1E1ED9] p-2 my-1 rounded-md font-medium w-full' onClick={() => uploadRef.current?.click()}>
                   <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
                   <p> Add course</p>
@@ -321,8 +332,8 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
               onChange={handleImage}
               type="file"
               name="identification"
-              accept="image/*"
               ref={uploadRef}
+              accept='video/*,image/*'
               hidden
               multiple={false}
             />

@@ -8,6 +8,7 @@ import { setUser } from '@/store/slices/userSlice'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { NoticeType } from '@/types/ResourceType';
+import ImageViewer from './ImageViewer';
 
 const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   const user = useAppSelector((state) => state.value);
@@ -19,7 +20,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   const getNotice = () => {
     axios.get(`notice/${user.id}`).then(function (response) {
       console.log(response.data)
-      setNotice(response.data.notice[0])
+      setNotice(response.data.notice.reverse()[0])
     }).catch(error => {
       console.log(error)
     })
@@ -87,10 +88,13 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
 
         {notice && show && <div>
           <div className='fixed bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
-          <div className='fixed top-10 bottom-10 left-0 overflow-y-auto rounded-md right-0 lg:w-[40%] h-[50vh] w-[95%] mx-auto z-20 bg-[#F8F7F4]'>
+          <div className='fixed top-10 bottom-10 left-0 overflow-y-auto rounded-md right-0 lg:w-[40%] h-[70vh] w-[95%] mx-auto z-20 bg-[#F8F7F4]'>
             <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12'>
               <p className='font-medium text-center'>{notice.title}</p>
               {/* <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" /> */}
+            </div>
+            <div className='p-4'>
+              {notice.thumbnail && <ImageViewer image={notice.thumbnail} />}
             </div>
             <div className='lg:mx-12 mx-4 my-4'>
               <p>{notice.body}</p>

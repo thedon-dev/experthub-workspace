@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CourseDetails from '../modals/CourseDetails';
 import { CourseType } from '@/types/CourseType';
 import Link from 'next/link';
+import ImageViewer from '../ImageViewer';
 
 const ApplicantCourses = ({ course }: { course: CourseType }) => {
   const [open, setOpen] = useState(false)
@@ -14,7 +15,8 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
       </div>
       <div className='bg-white p-2 rounded-md'>
         <Link href={`/applicant/${course._id}?page=${course.type}`}>
-          <img className="rounded-md object-cover h-40 w-full" src={course.thumbnail} alt="" />
+          <ImageViewer image={course.thumbnail} />
+          {/* <img className="rounded-md object-cover h-40 w-full" src={course.thumbnail} alt="" /> */}
         </Link>
       </div>
       <div className='p-2'>

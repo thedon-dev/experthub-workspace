@@ -26,7 +26,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
   const [type, setType] = useState(course?.type || "offline")
   const [title, setTitle] = useState(course?.title || "")
-  const [image, setImage] = useState(course?.thumbnail || "")
+  const [image, setImage] = useState<any>(course?.thumbnail || null)
   const [location, setLocation] = useState(course?.loaction || "")
   const [target, setTarget] = useState(course?.target || 0)
   const [room, setRoom] = useState(course?.room || "")
@@ -49,12 +49,14 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
     const files = e.target.files
     const reader = new FileReader()
     if (files && files.length > 0) {
-
       reader.readAsDataURL(files[0])
       reader.onloadend = () => {
         if (reader.result) {
-          // const type = files[0].name.substr(files[0].name.length - 3)
-          setImage(reader.result as string)
+          const type = files[0].name.substr(files[0].name.length - 3)
+          setImage({
+            type: type === "mp4" ? "video" : "image",
+            url: reader.result as string
+          })
         }
       }
     }
@@ -109,7 +111,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
       setLoading(true)
       axios.post(`events/add-event/${user.id}`,
         {
-          image,
+          asset: image,
           title,
           about,
           duration: duration.toString(),
@@ -180,7 +182,15 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
           <div className='lg:w-[48%]'>
             <div>
               <p className='text-sm font-medium my-1'>Event Image</p>
-              {image ? <img onClick={() => uploadRef.current?.click()} src={image} className='w-full object-cover h-52' alt="" /> :
+              {image ? image.type === 'image' ? <img onClick={() => uploadRef.current?.click()} src={image?.url} className='w-full object-cover h-52' alt="" /> : <video
+                onClick={() => uploadRef.current?.click()}
+                src={image.url}
+                width="500"
+                autoPlay muted
+                className="embed-responsive-item w-full object-cover h-full"
+              >
+                <source src={image.url} type="video/mp4" />
+              </video> :
                 <button className='border border-[#1E1E1ED9] p-2 my-1 rounded-md font-medium w-full' onClick={() => uploadRef.current?.click()}>
                   <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
                   <p> Add course</p>
@@ -192,7 +202,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
               onChange={handleImage}
               type="file"
               name="identification"
-              accept="image/*"
+              accept='video/*,image/*'
               ref={uploadRef}
               hidden
               multiple={false}

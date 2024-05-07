@@ -5,6 +5,7 @@ import { useAppSelector } from '@/store/hooks';
 import UploadVideo from './modals/UploadVideo';
 import axios from 'axios';
 import { ResourceType } from '@/types/ResourceType';
+import ImageViewer from './ImageViewer';
 
 const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any, page: any }) => {
   const [indexCount, setIndexCount] = useState(0)
@@ -75,14 +76,14 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
             </div>;
           case 'pdf':
             return <div className='p-6 lg:w-[60%] mx-auto'>
-              <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
+              {repo.thumbnail && <ImageViewer control={true} image={repo.thumbnail} />}
               <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
               <p>{repo?.about}</p>
               <FileDownload file={repo?.file} />
             </div>;
           case 'offline':
             return <div className='p-6 lg:w-[60%] mx-auto'>
-              <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
+              {repo.thumbnail && <ImageViewer control={true} image={repo.thumbnail} />}
               <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
               <p>{repo?.about}</p>
               <p><span className='font-bold'>Location:</span> {repo?.location}</p>
@@ -98,13 +99,13 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
             </div>;
           case 'online':
             return <div className='p-6 lg:w-[60%] mx-auto'>
-              <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
+              {repo.thumbnail && <ImageViewer control={true} image={repo.thumbnail} />}
               <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
               <p>{repo?.about}</p>
             </div>;
           case 'event':
             return <div className='p-6 lg:w-[60%] mx-auto'>
-              <img className='w-full object-cover h-80' src={repo?.thumbnail} alt="" />
+              {repo.thumbnail && <ImageViewer control={true} image={repo.thumbnail} />}
               <h1 className='font-bold text-2xl my-2'>{repo?.title}</h1>
               <p>{repo?.about}</p>
               {

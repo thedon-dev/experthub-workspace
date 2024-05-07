@@ -156,7 +156,17 @@ const courses = () => {
             <Slider {...settings}>
               {pending.map((item: CourseType, index: React.Key | null | undefined) => <div key={index} className='p-1 w-full'>
                 <div className='border my-4 border-[#1E1E1E59] p-4 rounded-md flex justify-between'>
-                  <img className='rounded-md w-1/2 h-32 object-cover shadow-[26px_0px_32.099998474121094px_0px_#FDC3324D]' src={item.thumbnail} alt="" />
+                  {typeof item.thumbnail === 'string' ? '' : item.thumbnail.type === 'image' ? <img className='rounded-md w-1/2 h-32 object-cover shadow-[26px_0px_32.099998474121094px_0px_#FDC3324D]' src={item.thumbnail.url} alt="" /> :
+                    <div className='rounded-md w-1/2 h-32 object-cover shadow-[26px_0px_32.099998474121094px_0px_#FDC3324D]'>
+                      <video
+                        src={item.thumbnail.url}
+                        width="100"
+                        autoPlay muted
+                        className="embed-responsive-item w-full object-cover h-full"
+                      >
+                        <source src={item.thumbnail.url} type="video/mp4" />
+                      </video>
+                    </div>}
                   <div className='pl-10 w-full'>
                     <h4 className='text-xl my-2 font-medium'>{item.title}</h4>
                     <p className='text-xs my-3'>{item.about.substring(0, 30)}</p>
@@ -174,8 +184,8 @@ const courses = () => {
         <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
         <CategoryModal open={category} category={null} handleClick={() => setCategory(false)} />
 
-      </section>
-    </DashboardLayout>
+      </section >
+    </DashboardLayout >
   );
 };
 

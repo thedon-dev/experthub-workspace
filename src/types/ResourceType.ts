@@ -15,4 +15,10 @@ export interface NoticeType {
   action: string;
   page: string;
   cancel: Boolean;
+  thumbnail: ThumbnailType
+}
+export interface ThumbnailType {
+  type: string;
+  url: string;
+  [key: string]: any;
 }

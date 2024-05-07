@@ -7,10 +7,19 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
   const [open, setOpen] = useState(false)
   const [share, setShare] = useState(false)
 
+
   return (
     <div className='lg:flex justify-between border p-3 my-3 lg:w-[49%] rounded-md border-[#1E1E1E75]'>
       <div className='lg:w-52'>
-        <img className='w-full h-full object-cover rounded-md' src={course.thumbnail} alt="" />
+        {typeof course.thumbnail === 'string' ? <img className='w-full h-full object-cover rounded-md' src={course?.thumbnail} alt="" /> : course.thumbnail.type === 'image' ? <img className='w-full h-full object-cover rounded-md' src={course.thumbnail.url} alt="" /> :
+          <video
+            src={course.thumbnail.url}
+            width="100"
+            autoPlay muted
+            className="embed-responsive-item w-full object-cover h-full"
+          >
+            <source src={course.thumbnail.url} type="video/mp4" />
+          </video>}
       </div>
       <div className='lg:mx-4 sm:my-2 w-full'>
         <p className='text-primary text-sm'>{course.category}. <span className='text-black'> by {course.instructorName}</span></p>
