@@ -7,6 +7,7 @@ import { useAppSelector } from '@/store/hooks';
 import { Spin, notification } from 'antd';
 import axios from 'axios';
 import { Fade, Slide } from '@mui/material';
+import ImageViewer from '../ImageViewer';
 
 const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   const user = useAppSelector((state) => state.value);
@@ -225,7 +226,8 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
               <div className='py-4 lg:px-10 px-4'>
                 <div className='lg:flex justify-between'>
                   <div className='lg:w-[40%]'>
-                    <img src={course.thumbnail} className='w-full h-52 object-cover' alt="" />
+                    <ImageViewer image={course.thumbnail} />
+                    {/* <img src={course.thumbnail} className='w-full h-52 object-cover' alt="" /> */}
                     <div className='p-4'>
                       <p className='font-medium text-base'>{course.title}</p>
                       {course.enrolledStudents?.length > 1 && <div className='flex'>
