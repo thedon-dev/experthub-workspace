@@ -170,26 +170,27 @@ const Notice = ({ open, handleClick, recipient }: { open: boolean, handleClick: 
                 <option value="all">All Users</option>
               </select>
             </div>
-            <div className='w-full my-2'>
-              {/* <label className='text-sm font-medium my-2'>Course Category</label> */}
-              <select onChange={e => setCategoryIndex(e.target.value)} value={categoryIndex} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-                <option className='hidden' value="">Select Course Category</option>
-                {categories.map((single, index) => <option key={index + single.category} value={single.category}>{single.category}</option>)}
-              </select>
-            </div>
-            {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full my-2'>
-              {/* <label className='text-sm font-medium my-1'>Sub Category</label> */}
-              <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-                <option className='hidden' value="">Select Sub-Category</option>
-                {single.subCategory.map((sub, index) => <option key={index + sub} value={sub}>{sub}</option>)}
-              </select>
-            </div>)}
-            <div className='my-2'>
-              <select onChange={e => setState(e.target.value)} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-                <option className='hidden' value="">Select State</option>
-                {states_in_nigeria.map((state, index) => <option key={index + state} value={state}>{state}</option>)}
-              </select>
-            </div>
+            {role !== 'all' && <>
+              <div className='w-full my-2'>
+                {/* <label className='text-sm font-medium my-2'>Course Category</label> */}
+                <select onChange={e => setCategoryIndex(e.target.value)} value={categoryIndex} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                  <option className='hidden' value="">Select Course Category</option>
+                  {categories.map((single, index) => <option key={index + single.category} value={single.category}>{single.category}</option>)}
+                </select>
+              </div>
+              {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full my-2'>
+                {/* <label className='text-sm font-medium my-1'>Sub Category</label> */}
+                <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                  <option className='hidden' value="">Select Sub-Category</option>
+                  {single.subCategory.map((sub, index) => <option key={index + sub} value={sub}>{sub}</option>)}
+                </select>
+              </div>)}
+              <div className='my-2'>
+                <select onChange={e => setState(e.target.value)} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                  <option className='hidden' value="">Select State</option>
+                  {states_in_nigeria.map((state, index) => <option key={index + state} value={state}>{state}</option>)}
+                </select>
+              </div></>}
           </>}
           <div className='my-2'>
             <input onChange={e => setTitle(e.target.value)} value={title} type="text" placeholder='Title' className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
