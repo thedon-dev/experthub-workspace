@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import CourseDetails from '../modals/CourseDetails';
 import Link from 'next/link';
 import Share from '../Share';
+import ImageViewer from '../ImageViewer';
 
 const UserEvent = ({ event, type }: { event: CourseType, type?: string }) => {
   const [open, setOpen] = useState(false)
@@ -10,7 +11,8 @@ const UserEvent = ({ event, type }: { event: CourseType, type?: string }) => {
   return (
     <div className='lg:w-[32%] my-3' key={event._id}>
       <div className='p-2 rounded-md bg-white'>
-        <img className='rounded-md h-44 object-cover w-full' src={event.thumbnail} alt="" />
+        <ImageViewer image={event.thumbnail} />
+        {/* <img className='rounded-md h-44 object-cover w-full' src={event.thumbnail} alt="" /> */}
       </div>
       <div>
         {/* <p className='text-primary'>Course by {event.author}</p> */}

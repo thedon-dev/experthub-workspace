@@ -12,7 +12,8 @@ const ImageViewer = ({ image, control }: { image: any, control?: boolean }) => {
           className="embed-responsive-item w-full object-cover h-full"
         >
           <source src={image?.url} type="video/mp4" />
-        </video> : <img className={control ? 'w-full object-cover h-80' : 'w-full object-cover rounded-md h-44'} src={image} alt="" />}
+        </video> :
+          <img className={control ? 'w-full object-cover h-80' : 'w-full object-cover rounded-md h-44'} src={image} alt="" />}
     </div>
   );
 };
