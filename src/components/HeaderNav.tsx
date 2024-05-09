@@ -1,10 +1,25 @@
 "use client"
 
+import { useAppSelector } from '@/store/hooks';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 const HeaderNav = () => {
   const [open, setOpen] = useState(false)
+  const user = useAppSelector((state) => state.value);
+  const router = useRouter()
+  const pathname = usePathname()
+
+  useEffect(() => {
+    if (user.role === "student" && !pathname.includes('applicant')) {
+      router.push('/applicant')
+    } else if (user.role === "admin" && !pathname.includes('admin')) {
+      router.push("/admin")
+    } else if (user.role === "tutor" && !pathname.includes('tutor')) {
+      router.push('/tutor')
+    }
+  }, [])
   return (
     <header className='absolute p-2 top-0 lg:w-[80%] left-0 right-0 mx-auto border-b border-white flex justify-between'>
       <div className='flex'>

@@ -11,7 +11,7 @@ import { Modal } from 'antd';
 import SignUpComp from '@/components/SignUpComp';
 
 const addmissions = () => {
-  const [active, setActive] = useState("students")
+  const [active, setActive] = useState("contact")
   const [students, setStudents] = useState<UserType | []>([])
   const [tutors, setTutors] = useState<UserType | []>([])
   const [all, setAll] = useState<UserType | []>([])
@@ -80,7 +80,6 @@ const addmissions = () => {
                 {
                   students.map((student: UserType, index: any) => student.contact ? <AdmissionCard role={active} tutor={student} key={index} /> : null)
                 }
-
               </div>
             case 'students':
               return <div>
@@ -91,7 +90,7 @@ const addmissions = () => {
                   <button onClick={() => setContact(true)} className='bg-primary px-4 p-2 ml-6'>Add Contact</button>
                 </div>
                 {
-                  students.map((student: UserType, index: any) => <AdmissionCard role={active} tutor={student} key={index} />)
+                  students.map((student: UserType, index: any) => student.contact ? null : <AdmissionCard role={active} tutor={student} key={index} />)
                 }
 
               </div>

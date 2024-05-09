@@ -166,7 +166,7 @@ const courses = () => {
           {courses.length > 0 ? courses.map((course: CourseType) => <div key={course._id} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>) : <div>No courses available</div>}
         </div>
       </section>
-      <section className='m-4 w-[90%]'>
+      {/* <section className='m-4 w-[90%]'>
         <p className='font-bold text-sm my-2'>Training Materials</p>
         <div className='lg:flex justify-between'>
           <div className='lg:w-[62%]'>
@@ -178,41 +178,12 @@ const courses = () => {
                       <img className='rounded-md h-40 object-cover w-full' src={material.image} alt="" />
                     </div>
                     <div className='p-1'>
-                      {/* <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p> */}
                       <h4 className='text-xl my-3'>{material.title}</h4>
                       <p className='text-sm'>{material.aboutCourse}</p>
                     </div>
                   </div>
                 </div>)
               }
-              {/* <div className='p-1'>
-                <div className=''>
-                  <div className='p-3 rounded-md bg-white'>
-                    <img className='rounded-md w-full' src="/images/card.png" alt="" />
-                  </div>
-                  <div className='p-1'>
-                    <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p>
-                    <h4 className='text-xl my-3'>Design Systems for Websites
-                      with Figma</h4>
-                    <p className='text-sm'>Learn how to build and design websites
-                      using Figma...</p>
-                  </div>
-                </div>
-              </div> */}
-              {/* <div className='p-1'>
-                <div className=''>
-                  <div className='p-3 rounded-md bg-white'>
-                    <img className='rounded-md w-full' src="/images/card.png" alt="" />
-                  </div>
-                  <div className='p-1'>
-                    <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p>
-                    <h4 className='text-xl my-3'>Design Systems for Websites
-                      with Figma</h4>
-                    <p className='text-sm'>Learn how to build and design websites
-                      using Figma...</p>
-                  </div>
-                </div>
-              </div> */}
             </Slider>
           </div>
           <div className='lg:w-[35%] p-4 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
@@ -234,7 +205,7 @@ const courses = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       <section className='mx-4 my-8 relative w-[90%]'>
         <img src="/images/resources-bg.png" alt="" />
         <div className='absolute top-0 left-0 right-0'>
@@ -257,7 +228,7 @@ const courses = () => {
             </div>
           </div>
         </div>
-        <img className='w-52 h-52 absolute -right-10 top-10' src="/images/image_19.png" alt="" />
+        {/* <img className='w-52 h-52 absolute -right-10 top-10' src="/images/image_19.png" alt="" /> */}
 
       </section>
 
