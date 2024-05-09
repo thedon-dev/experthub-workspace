@@ -21,7 +21,7 @@ const courses = () => {
   const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
-  const [materials, setMaterials] = useState<ResourceType | []>([])
+  // const [materials, setMaterials] = useState<ResourceType | []>([])
   const [event, setEvent] = useState(false)
 
   var settings = {
@@ -85,21 +85,24 @@ const courses = () => {
   const [all, setAll] = useState<CourseType | []>([])
 
   const getCourses = async () => {
-    axios.get(`courses/category/${user.assignedCourse}`)
+    axios.put(`courses/category/author`, {
+      category: user.assignedCourse,
+      id: user.id
+    })
       .then(function (response) {
-        setCourses(response.data.courses.reverse())
-        setAll(response.data.courses.reverse())
+        setCourses(response.data.courses)
         // console.log(response.data)
       })
   }
 
-  const getResources = async () => {
-    axios.get(`resources/all`)
-      .then(function (response) {
-        setMaterials(response.data.resource)
-        // console.log(response.data)
-      })
-  }
+
+  // const getResources = async () => {
+  //   axios.get(`resources/all`)
+  //     .then(function (response) {
+  //       setMaterials(response.data.resource)
+  //       // console.log(response.data)
+  //     })
+  // }
 
   const search = (value: string) => {
     const results = all.filter((obj: CourseType) => obj.fullname.toLowerCase().includes(value.toLowerCase()));
@@ -108,7 +111,7 @@ const courses = () => {
 
   useEffect(() => {
     getCourses()
-    getResources()
+    // getResources()
   }, [])
 
   return (
