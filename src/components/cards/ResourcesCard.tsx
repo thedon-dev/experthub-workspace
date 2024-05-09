@@ -3,9 +3,12 @@ import { Dropdown, MenuProps } from 'antd';
 import axios from 'axios';
 import { ResourceType } from '@/types/ResourceType';
 import AddResources from '../modals/AddResources';
+import { useAppSelector } from '@/store/hooks';
 
 const ResourcesCard = ({ material, getAll }: { material: ResourceType, getAll: any }) => {
   const [edit, setEdit] = useState(false)
+  const user = useAppSelector((state) => state.value);
+
   const items: MenuProps['items'] = [
     {
       key: '1',
@@ -45,11 +48,12 @@ const ResourcesCard = ({ material, getAll }: { material: ResourceType, getAll: a
             <p className='text-sm'>{material.aboutCourse}</p>
           </div>
           <div>
-            <Dropdown menu={{ items }} trigger={["click"]}>
+            {user.role === 'admin' || user.role === 'tutor' ? <Dropdown menu={{ items }} trigger={["click"]}>
               <button className='bg-transparent'>
                 <img className='w-4 h-4' src="/images/icons/edit.svg" alt="" />
               </button>
-            </Dropdown>
+            </Dropdown> : null}
+
           </div>
         </div>
       </div>

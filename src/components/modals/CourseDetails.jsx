@@ -246,6 +246,10 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                           <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
                           <p className='text-sm'>Course modules/assesments</p>
                         </div>}
+                        {action !== "Event" && <div className='flex my-1'>
+                          <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
+                          <p className='text-sm'>Additional Resources/Materials</p>
+                        </div>}
                         {action === "Event" ? <div className='flex my-1'>
                           <img className='h-2 my-auto mr-2 w-2' src="/images/Ellipse.png" alt="" />
                           <p className='text-sm'>Certificate of participation</p>

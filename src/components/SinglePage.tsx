@@ -6,6 +6,7 @@ import UploadVideo from './modals/UploadVideo';
 import axios from 'axios';
 import { ResourceType } from '@/types/ResourceType';
 import ImageViewer from './ImageViewer';
+import ResourcesCard from './cards/ResourcesCard';
 
 const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any, page: any }) => {
   const [indexCount, setIndexCount] = useState(0)
@@ -124,20 +125,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
         <p className='text-xl font-medium'>Related Learning Resources</p>
         <div className='flex flex-wrap justify-between'>
           {
-            resources.map((material: ResourceType) => <div key={material._id} className='p-1 lg:w-[32%] w-full'>
-              <a href={material.websiteUrl} target='_blank'>
-                <div className=''>
-                  <div className='p-3 rounded-md bg-white'>
-                    <img className='rounded-md h-44 object-cover w-full' src={material.image} alt="" />
-                  </div>
-                  <div className='p-1'>
-                    {/* <p className='text-[#DC9F08] font-medium text-sm'>Course by Peoples power</p> */}
-                    <h4 className='text-xl my-3'>{material.title}</h4>
-                    <p className='text-sm'>{material.aboutCourse}</p>
-                  </div>
-                </div>
-              </a>
-            </div>)
+            resources.map((material: ResourceType) => <ResourcesCard material={material} getAll={() => getAssigned()} />)
           }
         </div>
       </div>}
