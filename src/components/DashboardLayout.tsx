@@ -14,7 +14,7 @@ const DashboardLayout = ({ children }: { children: any }) => {
   const pathname = usePathname()
   const router = useRouter()
   const [toggle, setToggle] = useState(false)
-  axios.defaults.baseURL = "http://localhost:3001/"
+  axios.defaults.baseURL = "https://expexthub-trainings.onrender.com/"
   // axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
   // https://api.experthubllc.com/
 
