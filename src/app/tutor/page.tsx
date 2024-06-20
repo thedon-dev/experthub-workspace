@@ -75,7 +75,7 @@ const tutor = () => {
     })
       .then(function (response) {
         setCourses(response.data.courses)
-        // console.log(response.data)
+        console.log(response.data)
       })
   }
 

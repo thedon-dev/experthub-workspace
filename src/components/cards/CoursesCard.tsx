@@ -7,6 +7,7 @@ import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
 import Share from '../Share';
 import Link from 'next/link';
+import AssignTutor from '../modals/AssignTutor';
 import EnrollStudent from '../modals/EnrollStudent';
 import { useAppSelector } from '@/store/hooks';
 import ImageViewer from '../ImageViewer';
@@ -19,6 +20,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
   const [enrolled, setEnrolled] = useState(false)
   const [enroll, setEnroll] = useState(false)
   const user = useAppSelector((state) => state.value);
+  const [assign, setAssign] = useState(false)
 
   const items: MenuProps['items'] = [
     {
@@ -34,16 +36,22 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
           <p onClick={() => setEnroll(true)} >Enroll Student</p>
         ),
       },
+      {
+        key: '3',
+        label: (
+          <p onClick={() => setAssign(true)} >Asign Tutor</p>
+        ),
+      },
     ] : []),
     ...(course.instructorId === user.id || user.role === 'admin' ? [
       {
-        key: '3',
+        key: '4',
         label: (
           <p onClick={() => { course.enrolledStudents.length >= 1 ? setEnrolled(true) : setDelete(true) }}>Delete course</p>
         ),
       },
       {
-        key: '4',
+        key: '5',
         label: (
           <p onClick={() => setEdit(true)} >Edit course</p>
         ),
@@ -101,6 +109,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       <CourseDetails course={course} action={"Course"} open={open} call={null} type='view' handleClick={() => setOpen(false)} />
       <AddCourse course={course} open={edit} handleClick={() => setEdit(false)} />
       <EnrollStudent open={enroll} handleClick={() => setEnroll(false)} course={course} />
+      <AssignTutor open={assign} handleClick={() => setAssign(false)} course={course} />
       {
         deletec && <div>
           <div onClick={() => setDelete(false)} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
