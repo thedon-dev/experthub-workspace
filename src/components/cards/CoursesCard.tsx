@@ -109,7 +109,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       <CourseDetails course={course} action={"Course"} open={open} call={null} type='view' handleClick={() => setOpen(false)} />
       <AddCourse course={course} open={edit} handleClick={() => setEdit(false)} />
       <EnrollStudent open={enroll} handleClick={() => setEnroll(false)} course={course} />
-      <AssignTutor open={assign} handleClick={() => setAssign(false)} course={course} />
+      <AssignTutor open={assign} handleClick={() => setAssign(false)} course={course} getCourse={() => getCourse()} />
       {
         deletec && <div>
           <div onClick={() => setDelete(false)} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
