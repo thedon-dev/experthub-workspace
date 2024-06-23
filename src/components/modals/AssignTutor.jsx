@@ -78,7 +78,14 @@ const AssignTutor = ({ open, handleClick, course, getCourse }) => {
         </div>
         <div className='lg:p-10 p-4'>
           <div className='my-3'>
-            {course.assignedTutors?.length >= 1 && <div>
+            <div className='w-full'>
+              <label className='text-sm font-medium my-2'>Select Tutor</label>
+              <select onChange={e => setEnrollStudent(e.target.value)} value={enrollStudent} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                <option className='hidden' value="">Select a Tutor</option>
+                {instructors.map(student => <option key={student.id} value={student.id}>{student.fullname}</option>)}
+              </select>
+            </div>
+            {course.assignedTutors?.length >= 1 && <div className='mt-4'>
               <p className='text-sm font-medium'>Assigned Tutors</p>
               <div>
                 {course.assignedTutors.map((single, index) => <div className='flex justify-between w-[40%] my-2' key={index}>
@@ -88,13 +95,6 @@ const AssignTutor = ({ open, handleClick, course, getCourse }) => {
                 </div>)}
               </div>
             </div>}
-            <div className='w-full'>
-              <label className='text-sm font-medium my-2'>Select Tutor</label>
-              <select onChange={e => setEnrollStudent(e.target.value)} value={enrollStudent} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
-                <option className='hidden' value="">Select a Tutor</option>
-                {instructors.map(student => <option key={student.id} value={student.id}>{student.fullname}</option>)}
-              </select>
-            </div>
           </div>
           <div>
             <div className='flex'>
