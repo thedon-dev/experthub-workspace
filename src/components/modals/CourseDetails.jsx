@@ -232,7 +232,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                       <p className='font-medium text-base'>{course.title}</p>
                       {course.enrolledStudents?.length > 1 && <div className='flex'>
                         <div className='flex ml-1'>
-                          {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+                          {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture ? course.profilePicture : '/images/user.png'} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
                         </div>
                         <p className='text-xs ml-2 my-1'>{course.enrolledStudents.length}+ students already started</p>
                       </div>}

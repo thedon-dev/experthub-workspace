@@ -93,7 +93,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
         <div>
           <p className='text-xs my-1'>Students {course.enrolledStudents.length}</p>
           <div className='flex ml-1'>
-            {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+            {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture ? course.profilePicture : '/images/user.png'} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
             {/* <img src="/images/user.png" className='w-5 h-5' alt="" />
             <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" />
             <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" /> */}
@@ -158,8 +158,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
           </div>
         </div>
       }
-      <Participants view={participants} event={course} hndelClick={() => setParticipants(false)} />
-
+      <Participants view={participants} event={course} hndelClick={() => setParticipants(false)} type="Course" />
     </div>
   );
 };

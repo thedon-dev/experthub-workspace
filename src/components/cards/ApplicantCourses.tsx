@@ -30,7 +30,7 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
       <div>
         <p className='text-xs my-1'>Students {course.enrolledStudents.length}</p>
         <div className='flex ml-1'>
-          {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+          {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture ? course.profilePicture : '/images/user.png'} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
         </div>
       </div>
       <CourseDetails course={course} open={open} action={"Course"} call={null} type='view' handleClick={() => setOpen(false)} />

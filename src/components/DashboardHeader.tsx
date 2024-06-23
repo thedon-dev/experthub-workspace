@@ -98,8 +98,8 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
         <div className='flex lg:w-28 w-24 justify-between'>
           <Notification />
           {user.role === 'tutor' ? <Dropdown menu={{ items }} trigger={["click"]}>
-            <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture} alt="" />
-          </Dropdown> : <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture} alt="" />}
+            <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture ? user.profilePicture : '/images/user.png'} alt="" />
+          </Dropdown> : <img className='h-10 w-10 rounded-full my-auto' src={user.profilePicture ? user.profilePicture : '/images/user.png'} alt="" />}
         </div>
 
         {notice && show && <div>

@@ -89,7 +89,7 @@ const AssignTutor = ({ open, handleClick, course, getCourse }) => {
               <p className='text-sm font-medium'>Assigned Tutors</p>
               <div>
                 {course.assignedTutors.map((single, index) => <div className='flex justify-between w-[40%] my-2' key={index}>
-                  <img src={single.profilePicture} className='w-8 h-8 rounded-full' alt="" />
+                  <img src={single.profilePicture  ? single.profilePicture : '/images/user.png'} className='w-8 h-8 rounded-full' alt="" />
                   <p className='capitalize'>{single.fullname}</p>
                   <img onClick={() => unAssign(single._id)} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
                 </div>)}
