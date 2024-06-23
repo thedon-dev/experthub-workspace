@@ -78,7 +78,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
           </div>
 
         </div>
-        <a href="https://experthubllc.com/">
+        <a href="https://experthubllc.com/feeds">
           <div>
             <img src="/images/home.png" className='w-6 mx-auto' alt="" />
             <p>Home</p>

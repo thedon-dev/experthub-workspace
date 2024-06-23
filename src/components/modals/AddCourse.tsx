@@ -311,12 +311,13 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         <div className='lg:flex justify-between lg:mx-12 mx-4 my-4'>
           <div className='lg:w-[48%]'>
             <div>
-              <p className='text-sm font-medium my-1'>Course Image</p>
+              <p className='text-sm font-medium my-1'>Course Image/Video Overview</p>
               {image ? image.type === 'image' ? <img onClick={() => uploadRef.current?.click()} src={image?.url} className='w-full object-cover h-52' alt="" /> : <video
                 onClick={() => uploadRef.current?.click()}
                 src={image.url}
                 width="500"
-                autoPlay muted
+                autoPlay
+                controls
                 className="embed-responsive-item w-full object-cover h-full"
               >
                 <source src={image.url} type="video/mp4" />

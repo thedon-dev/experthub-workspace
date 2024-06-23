@@ -10,7 +10,7 @@ const Wallet = () => {
   const user = useAppSelector((state) => state.value);
   const [balance, setBalance] = useState('')
   const [transactions, setTransactions] = useState<any[]>([])
-  const [recipient, setReicpient] = useState()
+  const [recipient, setReicpient] = useState<any>()
   const [openWithdraw, setOpenWithdraw] = useState(false)
   const [openAccountDetails, setOpenAccountDetails] = useState(false)
   const [banks, setBanks] = useState<any | []>([])
@@ -25,7 +25,7 @@ const Wallet = () => {
   const getBalance = () => {
     axios.get(`transactions/balance/${user.id}`)
       .then(function (response) {
-        // console.log(response.data)
+        console.log(response.data)
         setTransactions(response.data.transactions)
         setReicpient(response.data.user)
         setBalance(response.data.balance)
@@ -33,7 +33,7 @@ const Wallet = () => {
   }
 
   const handleWithdrawal = () => {
-    if (recipient) {
+    if (recipient?.bankCode !== undefined && recipient?.accountNumber !== undefined) {
       setOpenWithdraw(true)
       return
     }
@@ -88,6 +88,7 @@ const Wallet = () => {
           setOpenAccountDetails(false)
         })
         .catch(err => {
+          setLoad(false)
           api.open({
             message: err.response.data
           });
@@ -113,6 +114,7 @@ const Wallet = () => {
           setLoad(false)
         })
         .catch(err => {
+          setLoad(false)
           api.open({
             message: err.response.data
           });
