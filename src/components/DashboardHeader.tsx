@@ -76,17 +76,25 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
             <p className='font-medium'>Welcome</p>
             <p className='font-bold capitalize'>{user.fullName}</p>
           </div>
-          {/* <div className='sm:hidden w-1/2 relative'>
+
+        </div>
+        <a href="https://experthubllc.com/">
+          <div>
+            <img src="/images/home.png" className='w-6 mx-auto' alt="" />
+            <p>Home</p>
+          </div>
+        </a>
+        <a href="https://project.experthubllc.com/" target='_blank'>
+          <div>
+            <img src="/images/project.png" className='w-5 mx-auto' alt="" />
+            <p>Project Manager</p>
+          </div>
+        </a>
+        <div className='sm:hidden w-[30%] relative'>
           <input type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
           <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
-        </div> */}
-          <a href="https://experthubllc.com/" target='_blank'>
-            <div>
-              <img src="/images/home.png" className='w-6 mx-auto' alt="" />
-              <p>Home</p>
-            </div>
-          </a>
         </div>
+
         <div className='flex lg:w-28 w-24 justify-between'>
           <Notification />
           {user.role === 'tutor' ? <Dropdown menu={{ items }} trigger={["click"]}>

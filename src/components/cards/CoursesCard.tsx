@@ -11,6 +11,7 @@ import AssignTutor from '../modals/AssignTutor';
 import EnrollStudent from '../modals/EnrollStudent';
 import { useAppSelector } from '@/store/hooks';
 import ImageViewer from '../ImageViewer';
+import Participants from '../Participants';
 
 const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () => Promise<void> }) => {
   const pathname = usePathname()
@@ -21,6 +22,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
   const [enroll, setEnroll] = useState(false)
   const user = useAppSelector((state) => state.value);
   const [assign, setAssign] = useState(false)
+  const [participants, setParticipants] = useState(false)
 
   const items: MenuProps['items'] = [
     {
@@ -56,6 +58,12 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
           <p onClick={() => setEdit(true)} >Edit course</p>
         ),
       },
+      {
+        key: '6',
+        label: (
+          <p onClick={() => setParticipants(true)} >View Participants</p>
+        ),
+      }
     ] : [])
   ];
 
@@ -150,6 +158,8 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
           </div>
         </div>
       }
+      <Participants view={participants} event={course} hndelClick={() => setParticipants(false)} />
+
     </div>
   );
 };
