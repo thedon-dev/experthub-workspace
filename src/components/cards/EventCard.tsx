@@ -61,6 +61,18 @@ const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
     return (enrolled / target) * 100;
   }
 
+  const sendReminder = (id: any) => {
+    axios.post(`/events/reminder`, {
+      userId: id,
+      event: event.title
+    })
+      .then(function (response) {
+        api.open({
+          message: 'Reminder Sent Successfully!'
+        });
+        console.log(response)
+      })
+  }
 
   return (
     <div className='lg:w-[32%] my-3'>
@@ -146,9 +158,9 @@ const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
                 <div className='flex'>
                   <input type="radio" className='mr-2' />
                   <img src={student.profilePicture} className='w-12 h-12 rounded-full' alt="" />
-                  <p className='ml-4 my-auto text-xl font-medium capitalize'>{student.fullname}</p>
+                  <p className='ml-4 my-auto lg:text-xl  font-medium capitalize'>{student.fullname}</p>
                 </div>
-                <button className='border my-auto w-44 rounded-full text-primary p-2 px-3'>Send Reminder</button>
+                <button onClick={() => sendReminder(student._id)} className='border my-auto lg:w-44 sm:text-xs rounded-full text-primary p-2 px-3'>Send Reminder</button>
               </div>)}
               {/* <div>
                 <div className='flex my-4 justify-center'>
