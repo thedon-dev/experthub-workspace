@@ -129,7 +129,6 @@ const Wallet = () => {
   return (
     <DashboardLayout>
       {contextHolder}
-
       <div className='p-6'>
         <div>
           <p>Balance</p>
