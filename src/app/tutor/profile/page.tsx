@@ -20,9 +20,72 @@ const profile = () => {
   const [profilePicture, setProfilePicture] = useState<string>()
   const [editing, setEditing] = useState(false)
 
+  const [banks, setBanks] = useState<any | []>([])
+  const [bankCode, setCode] = useState('')
+  const [accountNumber, setAccountNumber] = useState('')
+  const [accountName, setAccountName] = useState("")
+  const [load, setLoad] = useState(false)
+
   const [loading, setLoading] = useState(false)
   const [file, setFile] = useState<FileList | null>()
 
+  const getBanks = () => {
+    axios.get(`transactions/banks`)
+      .then(function (response) {
+        // console.log(response.data)
+        setBanks(response.data.data)
+      })
+  }
+
+  const verifyAccount = (code: string) => {
+    try {
+      setLoading(true)
+      axios.put(`transactions/verify-account`, {
+        accountNumber,
+        bankCode: code
+      })
+        .then(function (response) {
+          // console.log(response.data)
+          setCode(code)
+          setAccountName(response.data.data)
+          setLoading(false)
+        })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+
+  useEffect(() => {
+    getBanks()
+  }, [])
+
+  const createRecipient = () => {
+    try {
+      setLoad(true)
+      axios.post(`transactions/create-recipient`, {
+        accountNumber,
+        bankCode,
+        userId: user.id
+      })
+        .then(function (response) {
+          // console.log(response.data)
+          api.open({
+            message: response.data.message
+          });
+          setLoad(false)
+        })
+        .catch(err => {
+          setLoad(false)
+          api.open({
+            message: err.response.data
+          });
+          // console.log(err.response.data.message)
+        })
+    } catch (e) {
+      console.log(e)
+    }
+  }
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     const files = e.target.files
@@ -121,6 +184,34 @@ const profile = () => {
           <p className='text-xs'>{user.email} </p>
           <button onClick={() => addPic()} className='bg-primary p-2 px-6 my-4 font-medium'>{editing ? 'loading...' : 'Edit profile'}</button>
         </div>
+        <div>
+          <div className='my-4 text-center p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md'>
+            <p className='font-medium text-sm'>Bank Account</p>
+          </div>
+          <div className='my-3'>
+            <div className='my-2'>
+              <label htmlFor="accountNumber" className='mb-2'>Account Number</label> <br />
+              <input onChange={e => setAccountNumber(e.target.value)} className='p-3 rounded-md w-full' type="number" name="accountNumber" id="accountNumber" />
+            </div>
+            <div className='my-2'>
+              <label htmlFor="bank" className='mb-2'>Bank</label> <br />
+              <select onChange={e => { verifyAccount(e.target.value) }} name="bank" id="bank" className='p-3 rounded-md w-full'>
+                <option className='hidden' value="">Select your bank</option>
+                {banks.map((bank: { code: string; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; }, index: React.Key | null | undefined) => <option key={index} value={bank.code}>{bank.name}</option>)}
+              </select>
+              {/* <button className='p-2 mt-2 w-18 !ml-auto bg-primary rounded-md text-white' onClick={() => verifyAccount()}>Verify</button> */}
+            </div>
+            <div className='my-2'>
+              <label htmlFor="accountName" className='mb-2'>Account Name</label> <br />
+              <input defaultValue={accountName} className='p-3 rounded-md w-full' type="text" name="accountName" id="accountName" />
+              {loading ? '...' : null}
+            </div>
+          </div>
+          <div className='text-center'>
+            <button onClick={() => createRecipient()} className='bg-primary p-2 px-6 my-4 font-medium'>{load ? 'loading...' : 'Update Account'}</button>
+          </div>
+        </div>
+
         <div className='my-4 text-center p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md'>
           <p className='font-medium text-sm'>Highlights</p>
         </div>
@@ -141,6 +232,7 @@ const profile = () => {
             <label className='text-sm font-medium my-1'>Country of Residence</label>
             <input onChange={e => setCountry(e.target.value)} value={country} className='bg-transparent border-b border-[#1E1E1E66] w-full' type="text" />
           </div>
+
           <div className='my-2'>
             <label className='text-sm font-medium my-1'>State of Residence</label>
             <input onChange={e => setState(e.target.value)} value={state} className='bg-transparent border-b border-[#1E1E1E66] w-full' type="text" />
