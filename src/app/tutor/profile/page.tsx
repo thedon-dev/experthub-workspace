@@ -114,7 +114,8 @@ const profile = () => {
         setState(response.data.user.state)
         setCountry(response.data.user.country)
         setProfilePicture(response.data.user.profilePicture)
-
+        setAccountNumber(response.data.user.accountNumber)
+        setCode(response.data.user.bankCode)
         console.log(response.data)
       })
   }
@@ -191,7 +192,7 @@ const profile = () => {
           <div className='my-3'>
             <div className='my-2'>
               <label htmlFor="accountNumber" className='mb-2'>Account Number</label> <br />
-              <input onChange={e => setAccountNumber(e.target.value)} className='p-3 rounded-md w-full' type="number" name="accountNumber" id="accountNumber" />
+              <input onChange={e => setAccountNumber(e.target.value)} value={accountNumber} className='p-3 rounded-md w-full' type="number" name="accountNumber" id="accountNumber" />
             </div>
             <div className='my-2'>
               <label htmlFor="bank" className='mb-2'>Bank</label> <br />
@@ -203,8 +204,8 @@ const profile = () => {
             </div>
             <div className='my-2'>
               <label htmlFor="accountName" className='mb-2'>Account Name</label> <br />
-              <input defaultValue={accountName} className='p-3 rounded-md w-full' type="text" name="accountName" id="accountName" />
-              {loading ? '...' : null}
+              <input defaultValue={accountName} disabled className='p-3 rounded-md w-full' type="text" name="accountName" id="accountName" />
+              <p className='text-xs'>{loading ? 'confirming account information' : null}    </p>
             </div>
           </div>
           <div className='text-center'>

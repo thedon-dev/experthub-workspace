@@ -112,12 +112,14 @@ const Wallet = () => {
             message: response.data.message
           });
           setLoad(false)
+          setOpenWithdraw(false)
         })
         .catch(err => {
           setLoad(false)
           api.open({
             message: err.response.data
           });
+          setOpenWithdraw(false)
           // console.log(err.response.data.message)
         })
     } catch (e: any) {
@@ -132,29 +134,29 @@ const Wallet = () => {
       <div className='p-6'>
         <div>
           <p>Balance</p>
-          <p className='text-3xl font-bold'># {balance}</p>
+          <p className='text-3xl'>₦ {balance}</p>
           <button onClick={() => handleWithdrawal()} className='bg-primary text-white p-3 rounded-md px-10 my-4'>Withdraw</button>
         </div>
         <div className=''>
           <div className='border-b py-3 border-[#1E1E1E80]'>
-            <p className='font-bold'>Transactions</p>
+            <p className=''>Transactions</p>
           </div>
           <div className='w-full'>
             <table className="table-auto w-full">
               <thead>
                 <tr className='!text-left border-b border-[#1E1E1E80]'>
-                  <th className='py-3'>S/N</th>
-                  <th>Amount</th>
-                  <th>Type</th>
-                  <th>Date</th>
+                  <th className='py-3 font-normal'>S/N</th>
+                  <th className='font-normal'>Amount</th>
+                  <th className='font-normal'>Type</th>
+                  <th className='font-normal'>Date</th>
                 </tr>
               </thead>
               <tbody>
                 {transactions.map((transaction, index) => <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{transaction.amount}</td>
+                  <td>₦{transaction.amount}</td>
                   <td>{transaction.type}</td>
-                  <td>{transaction.date}</td>
+                  <td>{transaction.date.substr(0, 10)}</td>
                 </tr>)}
               </tbody>
             </table>
@@ -185,8 +187,8 @@ const Wallet = () => {
                   </div>
                   <div className='my-2'>
                     <label htmlFor="accountName" className='mb-2'>Account Name</label> <br />
-                    <input defaultValue={accountName} className='p-3 rounded-md w-full' type="text" name="accountName" id="accountName" />
-                    {loading ? '...' : null}
+                    <input defaultValue={accountName} disabled className='p-3 rounded-md w-full' type="text" name="accountName" id="accountName" />
+                    <p className='text-xs'>{loading ? 'confirming account information' : null}    </p>
                   </div>
                 </div>
                 <div>
