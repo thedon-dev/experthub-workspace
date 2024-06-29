@@ -55,6 +55,10 @@ const profile = () => {
     }
   }
 
+  useEffect(() => {
+    verifyAccount(bankCode)
+  }, [bankCode])
+
 
   useEffect(() => {
     getBanks()
@@ -185,7 +189,7 @@ const profile = () => {
           <p className='text-xs'>{user.email} </p>
           <button onClick={() => addPic()} className='bg-primary p-2 px-6 my-4 font-medium'>{editing ? 'loading...' : 'Edit profile'}</button>
         </div>
-        <div>
+        <div className='p-3'>
           <div className='my-4 text-center p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md'>
             <p className='font-medium text-sm'>Bank Account</p>
           </div>
@@ -196,7 +200,7 @@ const profile = () => {
             </div>
             <div className='my-2'>
               <label htmlFor="bank" className='mb-2'>Bank</label> <br />
-              <select onChange={e => { verifyAccount(e.target.value) }} name="bank" id="bank" className='p-3 rounded-md w-full'>
+              <select onChange={e => { verifyAccount(e.target.value) }} name="bank" value={bankCode} id="bank" className='p-3 rounded-md w-full'>
                 <option className='hidden' value="">Select your bank</option>
                 {banks.map((bank: { code: string; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; }, index: React.Key | null | undefined) => <option key={index} value={bank.code}>{bank.name}</option>)}
               </select>

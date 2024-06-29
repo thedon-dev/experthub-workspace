@@ -80,14 +80,14 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
         </div>
         <a href="https://experthubllc.com/feeds">
           <div>
-            <img src="/images/home.png" className='w-6 mx-auto' alt="" />
-            <p>Home</p>
+            <img src="/images/home.png" className='lg:w-6 sm:w-10 sm:h-10 mx-auto' alt="" />
+            <p className='sm:hidden'>Home</p>
           </div>
         </a>
-        <a href="https://project.experthubllc.com/" target='_blank'>
-          <div>
-            <img src="/images/project.png" className='w-5 mx-auto' alt="" />
-            <p>Project Manager</p>
+        <a className='my-auto' href="https://project.experthubllc.com/" target='_blank'>
+          <div className='my-auto'>
+            <img src="/images/project.png" className='lg:w-5 sm:w-8 my-auto sm:h-8 mx-auto' alt="" />
+            <p className='sm:hidden'>Project Manager</p>
           </div>
         </a>
         <div className='sm:hidden w-[30%] relative'>
