@@ -111,10 +111,8 @@ const applicant = () => {
       <section className='m-4'>
         <p className='text-xl font-medium my-3'>Application status</p>
         <p className='text-sm'>You are a part of our Learning Community.
-          The learning community will provide you with self-paced resources that you can leverage on your learning journey. In the learning community,
-          you will have companions on your learning journey.
-          <br /> <br /> You can begin your learning journey with some introductory
-          courses in your skill area in the resources section and enjoy your journey to becoming an expert and a digital nomad.</p>
+          <br /> <br />
+          You can begin your learning journey with some introductory courses in your skill area. Enjoy your journey to becoming an expert and a digital nomad.</p>
       </section>
       <section className='m-2 p-3 shadow-md'>
         <div className='text-sm my-3 flex justify-between'>
