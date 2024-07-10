@@ -83,6 +83,10 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
 
   return (
     <div className="p-2 w-full shadow-md my-3 rounded-md bg-white">
+      <div className='flex my-2'>
+        <img className='w-6 h-6 rounded-full' src={course.instructorImage || "/images/user.png"} alt="" />
+        <p className='font-medium ml-3 text-sm'>A course by {course.instructorName}</p>
+      </div>
       <ImageViewer image={course.thumbnail} />
       {/* <img className="rounded-md w-full h-44 object-cover" src={course.thumbnail} alt="" /> */}
       <h3 className="font-medium my-3">{course.title}

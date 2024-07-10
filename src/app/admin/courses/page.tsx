@@ -104,7 +104,7 @@ const courses = () => {
 
 
   useEffect(() => {
-    getPendngCourses()
+    // getPendngCourses()
     getCourses()
   }, [])
   return (
@@ -150,7 +150,7 @@ const courses = () => {
             </div>)
           }
         </div>
-        <div className='my-6'>
+        {/* <div className='my-6'>
           <p className='text-xl'>Courses Under Review</p>
           {pending.length >= 1 ? <div>
             <Slider {...settings}>
@@ -178,7 +178,7 @@ const courses = () => {
               </div>)}
             </Slider>
           </div> : <div>No courses to review</div>}
-        </div>
+        </div> */}
         <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
         <AddResources open={resources} handleClick={() => setResources(!resources)} />
         <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />

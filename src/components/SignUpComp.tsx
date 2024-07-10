@@ -72,6 +72,9 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
         })
           .then(function (response) {
             console.log(response.data)
+            api.open({
+              message: response.data.message
+            });
             setLoading(false)
             if (action) {
               action()
