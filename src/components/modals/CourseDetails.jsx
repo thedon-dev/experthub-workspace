@@ -8,9 +8,11 @@ import { Spin, notification } from 'antd';
 import axios from 'axios';
 import { Fade, Slide } from '@mui/material';
 import ImageViewer from '../ImageViewer';
+import PaymentModal from '../modals/PaymentModal'
 
 const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   const user = useAppSelector((state) => state.value);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [loading, setLoading] = useState(false)
   const [api, contextHolder] = notification.useNotification();
@@ -41,8 +43,6 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
       // console.log(e.response.data.message)
     }
   }
-
-
 
   async function initClient() {
     const ZoomMtgEmbedded = (await import('@zoom/meetingsdk/embedded')).default;
@@ -156,6 +156,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
       enroll()
     )
   }
+
   const notifyStudents = async () => {
     try {
       await axios.get(`${action.toLowerCase()}s/notify-live/${course._id}`)
@@ -166,6 +167,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
       });
     }
   }
+
   const config = {
     public_key: 'FLWPUBK-56b564d97f4bfe75b37c3f180b6468d5-X',
     tx_ref: Date.now(),
@@ -186,6 +188,32 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
     return str.slice(0, index) + `fl_attachment/` + str.slice(index);
   }
 
+  const payWithWallet = () => {
+    axios.post(`transactions/pay-with`, {
+      amount: course.fee,
+      userId: user.id
+    })
+      .then(function (response) {
+        console.log(response.data)
+        api.open({
+          message: response.data.message
+        });
+        if (response.status == 200) {
+          checkTyoe()
+          setIsModalOpen(false)
+          handleClick()
+        }
+      })
+      .catch(err => {
+        setIsModalOpen(false)
+        console.log(err)
+        // handleClick()
+        api.open({
+          message: err.response.data,
+          placement: 'top'
+        });
+      })
+  }
 
   const isOn = () => {
     let currentDate = new Date();
@@ -209,16 +237,14 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
     return { on, msg }
   }
 
-
-
   return (
     <>
       <Fade mountOnEnter unmountOnExit in={open} timeout={400}>
         <div>
           {contextHolder}
-          <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-[40]'></div>
+          <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-[10]'></div>
           <Slide in={open} mountOnEnter unmountOnExit timeout={300}>
-            <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 lg:w-[80%] overflow-y-auto w-[95%] mx-auto z-[99999] bg-[#F8F7F4]'>
+            <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 lg:w-[80%] overflow-y-auto w-[95%] mx-auto z-[50] bg-[#F8F7F4]'>
               <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38]  p-4 lg:px-12 flex justify-between'>
                 <p className='font-medium capitalize'>{action} Details</p>
                 <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
@@ -264,20 +290,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                           <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> :
                           action === "Event" ? null : <button onClick={() => router.push(`/applicant/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
                           : <button onClick={() => {
-                            course.fee === 0 ? checkTyoe() : handleFlutterPayment({
-                              callback: (response) => {
-                                if (action === "Event") {
-                                  enrollEvent()
-                                } else {
-                                  enroll()
-                                }
-                                console.log(response);
-                                closePaymentModal() // this will close the modal programmatically
-                              },
-                              onClose: () => {
-                                console.log("closed")
-                              },
-                            })
+                            course.fee === 0 ? checkTyoe() : setIsModalOpen(true)
                           }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : action === "Event" ? "Book Now" : "Enroll Now"}</button>
                       }
                     </div>
@@ -329,20 +342,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                         </div>
                       </div>
                       <button onClick={() => {
-                        course.fee === 0 ? checkTyoe() : handleFlutterPayment({
-                          callback: (response) => {
-                            if (action === "Event") {
-                              enrollEvent()
-                            } else {
-                              enroll()
-                            }
-                            console.log(response);
-                            closePaymentModal() // this will close the modal programmatically
-                          },
-                          onClose: () => {
-                            console.log("closed")
-                          },
-                        })
+                        course.fee === 0 ? checkTyoe() : setIsModalOpen(true)
                       }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : action === "Event" ? "Book Now" : "Enroll Now"}</button>
                     </div>}
 
@@ -387,9 +387,20 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
         joinMeeting && <ZoomMeeting setJoinMeeting={setJoinMeeting} joinMeeting={joinMeeting} closeDetail={handleClick} course={course} />
       } */}
 
+      <PaymentModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} wallet={() => payWithWallet()} card={() => handleFlutterPayment({
+        callback: (response) => {
+          checkTyoe()
+          setIsModalOpen(false)
+          console.log(response)
+          closePaymentModal() // this will close the modal programmatically
+        },
+        onClose: () => {
+          console.log("closed")
+        },
+      })} />
+
       <div className='fixed top-1/2 left-1/2   -translate-x-1/2 -translate-y-1/2 '>
         <div id="meetingSDKElement"></div>
-
       </div>
     </>
 
