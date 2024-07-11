@@ -33,7 +33,7 @@ const assesment = () => {
           </Link>
         </div>
         <div className='lg:flex mt-10 justify-between flex-wrap'>
-          {assesments.map((assesment: AssesmentType) => <AssesmentCard key={assesment._id} assesment={assesment} />)}
+          {assesments.map((assesment: AssesmentType) => <AssesmentCard getAssesment={() => getAssesment()} key={assesment._id} assesment={assesment} />)}
           {/* <AssesmentCard />
           <AssesmentCard /> */}
         </div>
