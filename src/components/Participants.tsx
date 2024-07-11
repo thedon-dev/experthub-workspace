@@ -1,22 +1,33 @@
 import { CourseType } from '@/types/CourseType';
-import { notification } from 'antd';
+import { Spin, message, notification } from 'antd';
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 
 const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event: CourseType, hndelClick: any, type: string }) => {
   const [api, contextHolder] = notification.useNotification();
+  const [message, setMessage] = useState("We hope this message finds you well.")
+  const [show, setShow] = useState(false)
+  const [id, setId] = useState()
+  const [loading, setLoading] = useState(false)
 
-  const sendReminder = (id: any) => {
-    axios.post(`/events/reminder`, {
+  const sendReminder = () => {
+    setLoading(true)
+    axios.post(`events/reminder`, {
       userId: id,
-      event: event.title,
+      message,
       type
     })
       .then(function (response) {
         api.open({
           message: 'Reminder Sent Successfully!'
         });
+        setLoading(false)
         console.log(response)
+        setShow(false)
+      })
+      .catch((e) => {
+        setLoading(false)
+        console.log(e)
       })
   }
 
@@ -38,13 +49,16 @@ const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event:
             </div>
             <p className='text-[#F7A60F] text-xl ml-10 '>Send Reminder</p>
           </div>
-          {event.enrolledStudents.map(student => <div className='flex my-3 justify-between'>
+          {show ? <div>
+            <textarea className='w-full p-3 h-44 rounded-md' value={message} onChange={e => setMessage(e.target.value)}></textarea>
+            <button className='bg-primary p-3 mt-2 text-white rounded-md' onClick={() => sendReminder()}>{loading ? <Spin /> : 'Send'}</button>
+          </div> : event.enrolledStudents.map(student => <div className='flex my-3 justify-between'>
             <div className='flex'>
               <input type="radio" className='mr-2' />
               <img src={student.profilePicture ? student.profilePicture : '/images/user.png'} className='w-12 h-12 rounded-full' alt="" />
               <p className='ml-4 my-auto lg:text-xl  font-medium capitalize'>{student.fullname}</p>
             </div>
-            <button onClick={() => sendReminder(student._id)} className='border my-auto lg:w-44 sm:text-xs rounded-full text-primary p-2 px-3'>Send Reminder</button>
+            <button onClick={() => { setShow(true), setId(student._id) }} className='border my-auto lg:w-44 sm:text-xs rounded-full text-primary p-2 px-3'>Send Reminder</button>
           </div>)}
           {/* <div>
           <div className='flex my-4 justify-center'>

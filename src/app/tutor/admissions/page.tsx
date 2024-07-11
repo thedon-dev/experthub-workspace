@@ -94,7 +94,7 @@ const addmissions = () => {
           }
         })()}
         <Modal title="Add Contact" footer={[]} open={contact} onOk={() => setContact(false)} onCancel={() => setContact(false)}>
-          <SignUpComp role='student' action={() => getStudents()} />
+          <SignUpComp role='student' contact={true} action={() => getStudents()} />
         </Modal>
       </section>
     </DashboardLayout>

@@ -13,6 +13,7 @@ import Notice from '../modals/Notice';
 
 const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
   const [assign, setAssign] = useState(false)
+  const [email, setEmail] = useState(false)
   const [assesment, setAssesment] = useState(false)
   const pathname = usePathname()
   const [api, contextHolder] = notification.useNotification();
@@ -32,10 +33,12 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       key: '8',
     },
     {
-      label: 'Send Message',
+      label: (
+        <p onClick={() => setEmail(true)}>Send Email</p>
+      ),
       key: '2',
     },
-    
+
     // {
     //   label: 'View Account',
     //   key: '4',
@@ -147,7 +150,6 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
             <img className='w-4 h-4 my-auto cursor-pointer' src="/images/icons/edit-icon.svg" alt="" />
           </Dropdown>
         </div>}
-
       </div>
       <AssignCourse open={assign} handleClick={() => setAssign(false)} studentId={tutor.studentId || tutor.id} />
       <SendAssesment open={assesment} handleClick={() => setAssesment(false)} studentId={tutor.studentId} />
