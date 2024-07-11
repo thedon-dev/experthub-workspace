@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import type { MenuProps } from 'antd';
-import { Dropdown } from 'antd';
+import { Dropdown, Spin } from 'antd';
 import { usePathname } from 'next/navigation';
 import AssignCourse from '../modals/AssignCourse';
 import SendAssesment from '../modals/SendAssesment';
@@ -18,6 +18,8 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
   const pathname = usePathname()
   const [api, contextHolder] = notification.useNotification();
   const [notice, setNotice] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState("We hope this message finds you well.")
 
   const items: MenuProps['items'] = [
     ...(role === 'students' ? [{
@@ -87,9 +89,36 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         ),
         key: '3',
       },
+      {
+        label: (
+          <p onClick={() => setEmail(true)}>Send Email</p>
+        ),
+        key: '4',
+      },
     ])
 
   ];
+
+  const sendReminder = () => {
+    setLoading(true)
+    axios.post(`events/reminder`, {
+      userId: tutor.studentId || tutor.id,
+      message,
+      type: "Message"
+    })
+      .then(function (response) {
+        api.open({
+          message: 'Reminder Sent Successfully!'
+        });
+        setLoading(false)
+        console.log(response)
+        setEmail(false)
+      })
+      .catch((e) => {
+        setLoading(false)
+        console.log(e)
+      })
+  }
 
   const blockUser = () => {
     try {
@@ -154,7 +183,21 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       <AssignCourse open={assign} handleClick={() => setAssign(false)} studentId={tutor.studentId || tutor.id} />
       <SendAssesment open={assesment} handleClick={() => setAssesment(false)} studentId={tutor.studentId} />
       <Notice open={notice} handleClick={() => setNotice(false)} recipient={tutor.studentId || tutor.id} />
-    </div>
+      {email && <div>
+        {contextHolder}
+        <div onClick={() => setEmail(false)} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
+        <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 lg:w-[60%] w-[90%] h-[60%] overflow-y-auto mx-auto z-20 bg-[#F8F7F4]'>
+          <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between'>
+            <p className='font-medium'>Send Email </p>
+            <img onClick={() => setEmail(false)} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
+          </div>
+          <div className='lg:p-10 p-4'>
+            <textarea className='w-full p-3 h-44 rounded-md' value={message} onChange={e => setMessage(e.target.value)}></textarea>
+            <button className='bg-primary p-3 mt-2 text-white rounded-md' onClick={() => sendReminder()}>{loading ? <Spin /> : 'Send'}</button>
+          </div>
+        </div>
+      </div>}
+    </div >
   );
 };
 
