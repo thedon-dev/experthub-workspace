@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
-const AssesmentCard = ({ assesment, getAssesment }: { assesment: any, getAssesment: any }) => {
+const AssesmentCard = ({ assesment, getAssesment }: { assesment: any, getAssesment?: any }) => {
   const pathname = usePathname()
 
   const deleteAssesment = () => {
