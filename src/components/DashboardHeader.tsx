@@ -14,7 +14,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   const user = useAppSelector((state) => state.value);
   const dispatch = useAppDispatch();
   const [notice, setNotice] = useState<NoticeType | null>()
-  const [show, setShow] = useState(true)
+  const [show, setShow] = useState(false)
   const router = useRouter()
 
   const getNotice = () => {

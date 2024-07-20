@@ -21,7 +21,7 @@ const signup = () => {
 
           {/* {
           role === "applicant" ? */}
-          <SignUpComp contact={false} role={role} />
+          <SignUpComp role={role} />
           {/* : role === "trainer" ? <div></div> : null
         } */}
         </section>
