@@ -120,9 +120,8 @@ const Message: React.FC = () => {
   };
 
   return (
-    <div className='flex'>
-      <div className='w-[35%] p-3 border-r border-[#15121233] h-[80vh] overflow-y-scroll'>
-        {/* <h2>Conversations</h2> */}
+    <div className='flex flex-col lg:flex-row h-screen'>
+      <div className='lg:w-[35%] w-full p-3 border-r border-[#15121233] h-[40vh] lg:h-[80vh] overflow-y-scroll'>
         <ul>
           {conversations.map((conv) => (
             <li
@@ -150,8 +149,7 @@ const Message: React.FC = () => {
           ))}
         </ul>
       </div>
-      <div className='w-[65%] px-4 h-[80vh] overflow-y-scroll'>
-        {/* <h2>Chat</h2> */}
+      <div className='lg:w-[65%] w-full p-4 h-[60vh] lg:h-[80vh] overflow-y-scroll'>
         <div>
           <div className='flex-1'>
             {selectedConversation && (
@@ -160,22 +158,20 @@ const Message: React.FC = () => {
                   <div key={index}>
                     {msg.from === userId ? <li className='w-1/2 my-1 bg-primary p-1 text-white rounded-md ml-auto'>{msg.text}</li> : <li className='w-1/2 my-1'>{msg.text}</li>}
                   </div>
-                  // <li key={index}>
-                  //   <strong>{msg.from === userId ? 'You' : 'Them'}:</strong> 
-                  // </li>
                 ))}
               </ul>
             )}
           </div>
           {toUserId || selectedConversation ? (
-            <div className='p-4 fixed bottom-0 left-[50%] right-0'>
-              <div className=''>
+            <div className='p-4 fixed bottom-0 left-0 right-0 bg-white'>
+              <div className='flex flex-col lg:flex-row'>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className='h-20  p-2 w-full'
+                  className='lg:h-20 h-10 p-2 w-full lg:w-[80%]'
+                  placeholder='Write a message'
                 />
-                <button onClick={handleSendMessage} className='border p-2 bg-primary text-white'>
+                <button onClick={handleSendMessage} className='mt-2 lg:mt-0 lg:ml-2 border lg:p-2 p-1 bg-primary text-white'>
                   Send
                 </button>
               </div>
