@@ -9,6 +9,9 @@ import SendAssesment from '../modals/SendAssesment';
 import axios from 'axios';
 import { notification } from 'antd';
 import Notice from '../modals/Notice';
+import Link from 'next/link';
+import { useAppSelector } from '@/store/hooks';
+import { useRouter } from 'next/navigation';
 
 
 const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
@@ -20,6 +23,13 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
   const [notice, setNotice] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("We hope this message finds you well.")
+  const router = useRouter()
+  const user = useAppSelector((state) => state.value);
+
+  const linkUser = () => {
+    router.push(user.role === "student" ? `/applicant/message?id=${tutor.studentId || tutor.id}` : user.role === "admin" ? `/admin/message?id=${tutor.studentId || tutor.id}` : `/tutor/message?id=${tutor.studentId || tutor.id}`)
+
+  }
 
   const items: MenuProps['items'] = [
     ...(role === 'students' ? [{
@@ -95,8 +105,15 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         ),
         key: '4',
       },
-    ])
-
+    ]),
+    ...[
+      {
+        label: (
+          <p className='curcor-pointer' onClick={() => linkUser()}>Send Message</p>
+        ),
+        key: '2',
+      },
+    ]
   ];
 
   const sendReminder = () => {
@@ -171,7 +188,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
           <p className=' text-sm'>{tutor.course}</p>
         </div>
         {tutor.isVerified ? <p className='text-sm sm:hidden text-[#0BC01E] my-auto font-medium'>Completed</p> : <p className='text-sm sm:hidden text-[#DC9F08] my-auto font-medium'>Pending</p>}
-        {pathname.includes("applicant") ? <button className='text-primary text-sm'>Send Message</button> : <div className='my-auto'>
+        {pathname.includes("applicant") ? <button onClick={() => linkUser()} className='text-primary text-sm'>Send Message</button> : <div className='my-auto'>
           <Dropdown
             menu={{ items }}
             trigger={["click"]}
