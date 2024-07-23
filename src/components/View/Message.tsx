@@ -30,7 +30,7 @@ interface SocketResponse {
   message: Message;
 }
 
-const socket = io('http://localhost:3001');
+const socket = io('https://expexthub-trainings.onrender.com/');
 import { useAppSelector } from '@/store/hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formatDate } from '../modals/Notification';
