@@ -137,11 +137,11 @@ const Message: React.FC = () => {
                       <div className='flex'>
                         <img src={p.profilePicture || '/images/user.png'} alt={p.fullname} className='w-10 h-10 rounded-full mr-2' />
                         <div className='ml-1'>
-                          <p className='capitalize'>{p.fullname}</p>
+                          <p className='capitalize sm:text-sm'>{p.fullname}</p>
                           <p className='text-xs'>{conv.messages[conv.messages.length - 1]?.text.substring(0, 10)}</p>
                         </div>
                       </div>
-                      <p className='text-xs my-auto'>{formatDate(new Date(conv.messages[conv.messages.length - 1]?.created_at))}</p>
+                      {conv.messages.length >= 1 && <p className='text-xs my-auto'>{formatDate(new Date(conv.messages[conv.messages.length - 1]?.created_at))}</p>}
                     </div>
                   </React.Fragment>
                 ))}
@@ -156,22 +156,37 @@ const Message: React.FC = () => {
               <ul>
                 {chatHistory.map((msg, index) => (
                   <div key={index}>
-                    {msg.from === userId ? <li className='w-1/2 my-1 bg-primary p-1 text-white rounded-md ml-auto'>{msg.text}</li> : <li className='w-1/2 my-1'>{msg.text}</li>}
+                    {msg.from === userId ? <li className='w-1/2 my-1 sm:text-sm bg-primary p-1 text-white rounded-md ml-auto'>{msg.text}</li> : <li className='w-1/2 my-1  sm:text-sm'>{msg.text}</li>}
                   </div>
                 ))}
               </ul>
             )}
           </div>
-          {toUserId || selectedConversation ? (
+          {/* {toUserId || selectedConversation ? (
             <div className='p-4 fixed bottom-0 left-0 right-0 bg-white'>
               <div className='flex flex-col lg:flex-row'>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className='lg:h-20 h-10 p-2 w-full lg:w-[80%]'
+                  className='lg:h-20 h-10 p-2 lg:w-[80%]'
                   placeholder='Write a message'
                 />
                 <button onClick={handleSendMessage} className='mt-2 lg:mt-0 lg:ml-2 border lg:p-2 p-1 bg-primary text-white'>
+                  Send
+                </button>
+              </div>
+            </div>
+          ) : null} */}
+          {toUserId || selectedConversation ? (
+            <div className='p-4 fixed bottom-0 lg:left-[50%] left-0 right-0'>
+              <div className='sm:flex sm:flex-col'>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className='lg:h-20 h-10 p-2 w-full'
+                  placeholder='Write a message'
+                />
+                <button onClick={handleSendMessage} className='mt-2 lg:mt-0 border lg:p-2 p-1 bg-primary text-white'>
                   Send
                 </button>
               </div>
