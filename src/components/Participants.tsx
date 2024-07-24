@@ -4,14 +4,20 @@ import { Spin, message, notification } from 'antd';
 import axios from 'axios';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import type { MenuProps } from 'antd';
+import { Dropdown } from 'antd';
+import SendAssesment from './modals/SendAssesment';
 
 const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event: CourseType, hndelClick: any, type: string }) => {
   const [api, contextHolder] = notification.useNotification();
   const [message, setMessage] = useState("We hope this message finds you well.")
   const [show, setShow] = useState(false)
-  const [id, setId] = useState()
+  const [id, setId] = useState("")
   const [loading, setLoading] = useState(false)
   const user = useAppSelector((state) => state.value);
+  const [assesment, setAssesment] = useState(false)
+
+
 
   const sendReminder = () => {
     setLoading(true)
@@ -32,6 +38,55 @@ const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event:
         setLoading(false)
         console.log(e)
       })
+  }
+
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <p onClick={() => setAssesment(true)}>Send Assessment</p>
+      ),
+      key: '1',
+    },
+    {
+      label: (
+        <p onClick={() => makeGraduate()}>Make Graduate</p>
+      ),
+      key: '2',
+    },
+    // {
+    //   label: (
+    //     <p onClick={() => setEmail(true)}>Send Email</p>
+    //   ),
+    //   key: '3',
+    // },
+    {
+      label: (
+        <Link href={`${user.role}/messages?id=${id}`}>
+          <p className='curcor-pointer'>Send Message</p>
+        </Link>
+      ),
+      key: '4',
+    },
+
+  ];
+
+  const makeGraduate = () => {
+    try {
+      axios.put(`user/updateProfile/${id}`, {
+        graduate: true
+      })
+        .then(function (response) {
+          // console.log(response.data)
+          api.open({
+            message: 'Student made a graduate Successfully!'
+          });
+        })
+    } catch (e) {
+      console.log(e)
+      api.open({
+        message: 'Something went wrong'
+      });
+    }
   }
 
   return (
@@ -63,9 +118,18 @@ const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event:
             </div>
             <div className='flex'>
               <button onClick={() => { setShow(true), setId(student._id) }} className='border my-auto lg:w-44 sm:text-xs rounded-full text-primary p-2 px-3'>Send Reminder</button>
-              <Link href={`/${user.role}/message?id=${student._id}`}>
+              <div onClick={() => setId(student._id)} className='my-auto ml-3'>
+                <Dropdown
+                  menu={{ items }}
+                  trigger={["click"]}
+                >
+                  <img className='w-4 h-4 my-auto cursor-pointer' src="/images/icons/edit-icon.svg" alt="" />
+                </Dropdown>
+              </div>
+
+              {/* <Link href={`/${user.role}/message?id=${student._id}`}>
                 <button className='border my-auto lg:w-32 sm:text-xs ml-3 rounded-full text-primary p-2 px-3'>Message</button>
-              </Link>
+              </Link> */}
             </div>
           </div>)}
           {/* <div>
@@ -76,6 +140,8 @@ const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event:
         </div> */}
         </div>
       </div>
+      <SendAssesment open={assesment} handleClick={() => setAssesment(false)} studentId={id} />
+
     </div>
   );
 };
