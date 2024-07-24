@@ -121,7 +121,8 @@ const Message: React.FC = () => {
 
   return (
     <div className='flex flex-col lg:flex-row'>
-      <div className='lg:w-[35%] w-full p-3 border-r border-[#15121233] h-[40vh] lg:h-[80vh] overflow-y-scroll'>
+      <div className='lg:w-[35%] w-full px-3 border-r border-[#15121233] h-[40vh] lg:h-[80vh] overflow-y-scroll'>
+        <p>Instructors</p>
         <ul>
           {conversations.map((conv) => (
             <li
@@ -152,7 +153,7 @@ const Message: React.FC = () => {
       <div className='lg:w-[65%] w-full p-4 h-[60vh] lg:h-[80vh] overflow-y-scroll'>
         <div>
           <div className='flex-1'>
-            {selectedConversation && (
+            {selectedConversation ? (
               <>
                 <div className=''>
                   {
@@ -181,23 +182,12 @@ const Message: React.FC = () => {
                   ))}
                 </ul>
               </>
-            )}
+            ) : <div className='w-1/2 mx-auto text-center'>
+              <img src="/images/unread.jpg" className='w-full mx-auto' alt="" />
+              <p className='lg:text-lg'>Start having a conversation with your instructor.</p>
+            </div>}
           </div>
-          {/* {toUserId || selectedConversation ? (
-            <div className='p-4 fixed bottom-0 left-0 right-0 bg-white'>
-              <div className='flex flex-col lg:flex-row'>
-                <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  className='lg:h-20 h-10 p-2 lg:w-[80%]'
-                  placeholder='Write a message'
-                />
-                <button onClick={handleSendMessage} className='mt-2 lg:mt-0 lg:ml-2 border lg:p-2 p-1 bg-primary text-white'>
-                  Send
-                </button>
-              </div>
-            </div>
-          ) : null} */}
+
           {toUserId || selectedConversation ? (
             <div className='p-4 fixed bottom-0 lg:left-[50%] left-0 right-0'>
               <div className='sm:flex sm:flex-col'>
