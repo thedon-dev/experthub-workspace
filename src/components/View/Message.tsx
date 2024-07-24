@@ -120,7 +120,7 @@ const Message: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col lg:flex-row h-screen'>
+    <div className='flex flex-col lg:flex-row'>
       <div className='lg:w-[35%] w-full p-3 border-r border-[#15121233] h-[40vh] lg:h-[80vh] overflow-y-scroll'>
         <ul>
           {conversations.map((conv) => (
@@ -153,13 +153,34 @@ const Message: React.FC = () => {
         <div>
           <div className='flex-1'>
             {selectedConversation && (
-              <ul>
-                {chatHistory.map((msg, index) => (
-                  <div key={index}>
-                    {msg.from === userId ? <li className='w-1/2 my-1 sm:text-sm bg-primary p-1 text-white rounded-md ml-auto'>{msg.text}</li> : <li className='w-1/2 my-1  sm:text-sm'>{msg.text}</li>}
-                  </div>
-                ))}
-              </ul>
+              <>
+                <div className=''>
+                  {
+                    selectedConversation.participants
+                      .filter((p) => p._id !== userId)
+                      .map((p) => (
+                        <React.Fragment key={p._id}>
+                          <div className='flex justify-between my-1'>
+                            <div className='flex'>
+                              <img src={p.profilePicture || '/images/user.png'} alt={p.fullname} className='w-10 h-10 rounded-full mr-2' />
+                              <div className='ml-1'>
+                                <p className='capitalize my-auto sm:text-sm'>{p.fullname}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </React.Fragment>
+                      ))
+                  }
+                </div>
+
+                <ul>
+                  {chatHistory.map((msg, index) => (
+                    <div key={index}>
+                      {msg.from === userId ? <li className='w-1/2 my-1 sm:text-sm bg-primary p-1 text-white rounded-md ml-auto'>{msg.text}</li> : <li className='w-1/2 my-1  sm:text-sm'>{msg.text}</li>}
+                    </div>
+                  ))}
+                </ul>
+              </>
             )}
           </div>
           {/* {toUserId || selectedConversation ? (
@@ -194,7 +215,7 @@ const Message: React.FC = () => {
           ) : null}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

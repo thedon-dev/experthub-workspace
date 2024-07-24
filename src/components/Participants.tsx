@@ -1,6 +1,8 @@
+import { useAppSelector } from '@/store/hooks';
 import { CourseType } from '@/types/CourseType';
 import { Spin, message, notification } from 'antd';
 import axios from 'axios';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event: CourseType, hndelClick: any, type: string }) => {
@@ -9,6 +11,7 @@ const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event:
   const [show, setShow] = useState(false)
   const [id, setId] = useState()
   const [loading, setLoading] = useState(false)
+  const user = useAppSelector((state) => state.value);
 
   const sendReminder = () => {
     setLoading(true)
@@ -58,7 +61,12 @@ const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event:
               <img src={student.profilePicture ? student.profilePicture : '/images/user.png'} className='w-12 h-12 rounded-full' alt="" />
               <p className='ml-4 my-auto lg:text-xl  font-medium capitalize'>{student.fullname}</p>
             </div>
-            <button onClick={() => { setShow(true), setId(student._id) }} className='border my-auto lg:w-44 sm:text-xs rounded-full text-primary p-2 px-3'>Send Reminder</button>
+            <div className='flex'>
+              <button onClick={() => { setShow(true), setId(student._id) }} className='border my-auto lg:w-44 sm:text-xs rounded-full text-primary p-2 px-3'>Send Reminder</button>
+              <Link href={`/${user.role}/message?id=${student._id}`}>
+                <button className='border my-auto lg:w-32 sm:text-xs ml-3 rounded-full text-primary p-2 px-3'>Message</button>
+              </Link>
+            </div>
           </div>)}
           {/* <div>
           <div className='flex my-4 justify-center'>
