@@ -162,8 +162,8 @@ const Message: React.FC = () => {
                         <React.Fragment key={p._id}>
                           <div className='flex justify-between my-1'>
                             <div className='flex'>
-                              <img src={p.profilePicture || '/images/user.png'} alt={p.fullname} className='w-10 h-10 rounded-full mr-2' />
-                              <div className='ml-1'>
+                              <img src={p.profilePicture || '/images/user.png'} alt={p.fullname} className='lg:w-10 lg:h-10 w-8 h-8 rounded-full mr-2' />
+                              <div className='ml-1 my-auto'>
                                 <p className='capitalize my-auto sm:text-sm'>{p.fullname}</p>
                               </div>
                             </div>
