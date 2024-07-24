@@ -61,7 +61,7 @@ const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event:
     // },
     {
       label: (
-        <Link href={`${user.role}/messages?id=${id}`}>
+        <Link href={`${user.role}/message?id=${id}`}>
           <p className='curcor-pointer'>Send Message</p>
         </Link>
       ),
@@ -141,7 +141,6 @@ const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event:
         </div>
       </div>
       <SendAssesment open={assesment} handleClick={() => setAssesment(false)} studentId={id} />
-
     </div>
   );
 };
