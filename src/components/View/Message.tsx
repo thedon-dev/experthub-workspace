@@ -121,7 +121,7 @@ const Message: React.FC = () => {
 
   return (
     <div className='flex flex-col lg:flex-row'>
-      <div className='lg:w-[35%] w-full px-3 border-r border-[#15121233] h-[40vh] lg:h-[80vh] overflow-y-scroll'>
+      <div className='lg:w-[35%] w-full px-3 border-r border-[#15121233] lg:h-[80vh] overflow-y-scroll'>
         <p>Instructors</p>
         <ul>
           {conversations.map((conv) => (
@@ -150,12 +150,18 @@ const Message: React.FC = () => {
           ))}
         </ul>
       </div>
-      <div className='lg:w-[65%] w-full p-4 h-[60vh] lg:h-[80vh] overflow-y-scroll'>
+      <div className={`lg:w-[65%] w-full p-4 lg:h-[80vh] overflow-y-scroll ${selectedConversation ? 'sm:fixed sm:top-[70px] sm:h-screen sm:left-0 sm:bg-white' : 'sm:hidden'}`}>
         <div>
+
           <div className='flex-1'>
             {selectedConversation ? (
               <>
-                <div className=''>
+                <div className='flex'>
+                  <button onClick={() => setSelectedConversation(null)} className='bg-primary rounded-full h-8 w-8 my-auto mr-4 p-2 lg:hidden sm:block text-white'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-left" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                    </svg>
+                  </button>
                   {
                     selectedConversation.participants
                       .filter((p) => p._id !== userId)
@@ -205,7 +211,7 @@ const Message: React.FC = () => {
           ) : null}
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
