@@ -4,7 +4,7 @@ import DashboardLayout from '@/components/DashboardLayout';
 import AssesmentCard from '@/components/cards/AssesmentCard';
 import { useAppSelector } from '@/store/hooks';
 import { AssesmentType } from '@/types/AssesmentType';
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 import React, { useEffect, useState } from 'react';
 
 const Assesment = () => {
@@ -12,7 +12,7 @@ const Assesment = () => {
   const user = useAppSelector((state) => state.value);
   
   const getAssesment = async () => {
-    await axios.get(`assessment/my-assessment/${user.id}`)
+    await apiService.get(`assessment/my-assessment/${user.id}`)
       .then(function (response) {
         setAssesment(response.data.myAssesment.reverse())
         // console.log(response.data)

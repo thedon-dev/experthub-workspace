@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 import { useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
 
@@ -37,7 +37,7 @@ const UploadVideo = ({ id }: { id: string }) => {
 
   const uploadVid = async () => {
     setLoading(true)
-    await axios.post(`courses/upload/${id}`, {
+    await apiService.post(`courses/upload/${id}`, {
       videos
     })
       .then(function (response) {

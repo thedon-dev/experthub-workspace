@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Dropdown, MenuProps } from 'antd';
-import axios from 'axios';
 import { ResourceType } from '@/types/ResourceType';
 import AddResources from '../modals/AddResources';
 import { useAppSelector } from '@/store/hooks';
+import apiService from '@/utils/apiService';
 
 const ResourcesCard = ({ material, getAll }: { material: ResourceType, getAll: any }) => {
   const [edit, setEdit] = useState(false)
@@ -27,7 +27,7 @@ const ResourcesCard = ({ material, getAll }: { material: ResourceType, getAll: a
 
 
   const setDelete = () => {
-    axios.delete(`resources/delete/${material._id}`)
+    apiService.delete(`resources/delete/${material._id}`)
       .then(function (response) {
         console.log(response.data)
         getAll()

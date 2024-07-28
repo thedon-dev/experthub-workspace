@@ -11,10 +11,10 @@ import { Dropdown } from 'antd';
 import AddCourse from '@/components/modals/AddCourse';
 import AddResources from '@/components/modals/AddResources';
 import { useAppSelector } from '@/store/hooks';
-import axios from 'axios';
 import Link from 'next/link';
 import { UserType } from '@/types/UserType';
 import AddEvents from '@/components/modals/AddEvents';
+import apiService from '@/utils/apiService';
 
 const tutor = () => {
   const user = useAppSelector((state) => state.value);
@@ -49,7 +49,7 @@ const tutor = () => {
   const [courses, setCourses] = useState([])
 
   const getStudents = () => {
-    axios.put('user/mystudents', {
+    apiService.put('user/mystudents', {
       course: user.assignedCourse
     })
       .then(function (response) {
@@ -59,7 +59,7 @@ const tutor = () => {
   }
 
   const getGraduates = () => {
-    axios.put('user/mygraduate', {
+    apiService.put('user/mygraduate', {
       course: user.assignedCourse
     })
       .then(function (response) {
@@ -69,7 +69,7 @@ const tutor = () => {
   }
 
   const getCourses = async () => {
-    axios.put(`courses/category/author`, {
+    apiService.put(`courses/category/author`, {
       category: user.assignedCourse,
       id: user.id
     })

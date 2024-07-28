@@ -4,7 +4,7 @@
 import DashboardLayout from '@/components/DashboardLayout';
 import { useAppSelector } from '@/store/hooks';
 import { AssesmentElement, AssesmentType } from '@/types/AssesmentType';
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ const SingleAssesment = () => {
   const [grade, showGrade] = useState(false)
 
   const getAssesment = async () => {
-    await axios.get(`assessment/single/${pathname.slice(16)}`)
+    await apiService.get(`assessment/single/${pathname.slice(16)}`)
       .then(function (response) {
         console.log(response.data)
         setAssesment(response.data.myAssesment[0])

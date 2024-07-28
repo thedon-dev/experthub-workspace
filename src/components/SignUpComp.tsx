@@ -1,5 +1,5 @@
+import apiService from '@/utils/apiService';
 import { notification } from 'antd';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -60,7 +60,7 @@ const SignUpComp = ({ role, action }: { role: string, action?: () => void }) => 
     if (fullname && email && phone && country && state && address && password) {
       if (password === confirmPassword) {
         setLoading(true)
-        axios.post(`https://expexthub-trainings.onrender.com/auth/register`, {
+        apiService.post(`/auth/register`, {
           fullname,
           email,
           phone,

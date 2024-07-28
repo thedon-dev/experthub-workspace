@@ -1,9 +1,9 @@
 "use client"
 
 import DashboardLayout from '@/components/DashboardLayout';
-import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation'
+import apiService from '@/utils/apiService';
 
 const newAssesment = () => {
   let layout = {
@@ -49,7 +49,7 @@ const newAssesment = () => {
   };
 
   const getAssesment = async () => {
-    await axios.get(`assessment/single/${page}`)
+    await apiService.get(`assessment/single/${page}`)
       .then(function (response) {
         // setRepo(response.data.course)
         // console.log(response.data.myAssesment[0])
@@ -62,7 +62,7 @@ const newAssesment = () => {
   const submit = () => {
     try {
       setLoading(true)
-      axios.post('assessment/create-assessment',
+      apiService.post('assessment/create-assessment',
         {
           title,
           image,
@@ -83,7 +83,7 @@ const newAssesment = () => {
   const update = async () => {
     try {
       setLoading(true)
-      axios.put(`assessment/edit/${page}`,
+      apiService.put(`assessment/edit/${page}`,
         {
           title,
           // image,

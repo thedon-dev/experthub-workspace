@@ -3,7 +3,7 @@
 import DashboardLayout from '@/components/DashboardLayout';
 import ResourcesCard from '@/components/cards/ResourcesCard';
 import { ResourceType } from '@/types/ResourceType';
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 import React, { useEffect, useState } from 'react';
 
 const resources = () => {
@@ -11,7 +11,7 @@ const resources = () => {
 
 
   const getAll = () => {
-    axios.get("resources/all")
+    apiService.get("resources/all")
       .then(function (response) {
         setResources(response.data.resource.reverse())
         console.log(response.data)

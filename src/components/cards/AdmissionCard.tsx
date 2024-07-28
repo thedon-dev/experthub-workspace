@@ -6,12 +6,12 @@ import { Dropdown, Spin } from 'antd';
 import { usePathname } from 'next/navigation';
 import AssignCourse from '../modals/AssignCourse';
 import SendAssesment from '../modals/SendAssesment';
-import axios from 'axios';
 import { notification } from 'antd';
 import Notice from '../modals/Notice';
 import Link from 'next/link';
 import { useAppSelector } from '@/store/hooks';
 import { useRouter } from 'next/navigation';
+import apiService from '@/utils/apiService';
 
 
 const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
@@ -118,7 +118,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
 
   const sendReminder = () => {
     setLoading(true)
-    axios.post(`events/reminder`, {
+    apiService.post(`events/reminder`, {
       userId: tutor.studentId || tutor.id,
       message,
       type: "Message"
@@ -139,7 +139,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
 
   const blockUser = () => {
     try {
-      axios.put(`user/block/${tutor.studentId || tutor.id}`, {
+      apiService.put(`user/block/${tutor.studentId || tutor.id}`, {
         graduate: true
       })
         .then(function (response) {
@@ -158,7 +158,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
 
   const makeGraduate = () => {
     try {
-      axios.put(`user/updateProfile/${tutor.studentId}`, {
+      apiService.put(`user/updateProfile/${tutor.studentId}`, {
         graduate: true
       })
         .then(function (response) {

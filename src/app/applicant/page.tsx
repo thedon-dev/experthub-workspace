@@ -7,10 +7,10 @@ import StatCard from '@/components/cards/StatCard';
 import CourseDetails from '@/components/modals/CourseDetails';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
-import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
 import { AssesmentType } from '@/types/AssesmentType';
 import Link from 'next/link';
+import apiService from '@/utils/apiService';
 
 const applicant = () => {
   const user = useAppSelector((state) => state.value);
@@ -22,14 +22,14 @@ const applicant = () => {
   const [assesments, setAssesment] = useState<AssesmentType | []>([])
 
   const getAssesment = async () => {
-    await axios.get(`assessment/my-assessment/${user.id}`)
+    await apiService.get(`assessment/my-assessment/${user.id}`)
       .then(function (response) {
         setAssesment(response.data.myAssesment.reverse())
         // console.log(response.data)
       })
   }
   const getRecommended = async () => {
-    await axios.get(`courses/recommended-courses/${user.id}`)
+    await apiService.get(`courses/recommended-courses/${user.id}`)
       .then(function (response) {
         setReccomended(response.data.courses)
         // console.log(response.data)
@@ -53,7 +53,7 @@ const applicant = () => {
   }
 
   const getCourses = async () => {
-    await axios.get(`courses/enrolled-courses/${user.id}`)
+    await apiService.get(`courses/enrolled-courses/${user.id}`)
       .then(function (response) {
         const all: CourseType[] = []
         response.data.enrolledCourses.map((course: CourseType) => {
@@ -66,7 +66,7 @@ const applicant = () => {
       })
   }
   const getTutors = () => {
-    axios.put('user/myinstructors', {
+    apiService.put('user/myinstructors', {
       course: user.assignedCourse
     })
       .then(function (response) {

@@ -1,10 +1,10 @@
 "use client"
 
 import DashboardLayout from '@/components/DashboardLayout';
-import axios from 'axios';
 import React, { useEffect, useState, useRef } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { notification } from 'antd';
+import apiService from '@/utils/apiService';
 
 const profile = () => {
   const user = useAppSelector((state) => state.value);
@@ -40,7 +40,7 @@ const profile = () => {
   }
 
   const getUser = () => {
-    axios.get(`user/profile/${user.id}`)
+    apiService.get(`user/profile/${user.id}`)
       .then(function (response) {
         setPhone(response.data.user.phone)
         setSkill(response.data.user.skillLevel)
@@ -57,7 +57,7 @@ const profile = () => {
   const updateUser = () => {
     setLoading(true)
     try {
-      axios.put(`user/updateProfile/${user.id}`, {
+      apiService.put(`user/updateProfile/${user.id}`, {
         phone,
         gender,
         age,
@@ -81,7 +81,7 @@ const profile = () => {
     const formData = new FormData()
     file && formData.append("image", file[0])
     try {
-      axios.put(`user/updateProfilePicture/${user.id}`, formData)
+      apiService.put(`user/updateProfilePicture/${user.id}`, formData)
         .then(function (response) {
           getUser()
           api.open({

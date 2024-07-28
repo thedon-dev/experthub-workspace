@@ -5,10 +5,10 @@ import { Dropdown } from 'antd';
 import Notification from "./modals/Notification"
 import { useAppDispatch } from '@/store/hooks';
 import { setUser } from '@/store/slices/userSlice'
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { NoticeType } from '@/types/ResourceType';
 import ImageViewer from './ImageViewer';
+import apiService from '@/utils/apiService';
 
 const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   const user = useAppSelector((state) => state.value);
@@ -18,7 +18,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   const router = useRouter()
 
   const getNotice = () => {
-    axios.get(`notice/${user.id}`).then(function (response) {
+    apiService.get(`notice/${user.id}`).then(function (response) {
       console.log(response.data)
       setNotice(response.data.notice.reverse()[0])
     }).catch(error => {
@@ -31,7 +31,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   }, [])
 
   const markRead = () => {
-    axios.put(`notice//enroll/${notice?._id}`, {
+    apiService.put(`notice//enroll/${notice?._id}`, {
       id: user.id
     }).then(function (response) {
       console.log(response.data)
@@ -78,7 +78,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
           </div>
 
         </div>
-        <a href="https://experthubllc.com/feeds">
+        <a href={`https://experthubllc.com/feeds?tid=${user.accessToken}`}>
           <div>
             <img src="/images/home.png" className='lg:w-6 sm:w-10 sm:h-10 mx-auto' alt="" />
             <p className='sm:hidden'>Home</p>

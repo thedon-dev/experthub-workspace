@@ -1,7 +1,6 @@
 "use client"
 
 import { CourseType } from '@/types/CourseType';
-import axios from 'axios';
 import React, { Fragment, useState, useEffect } from 'react';
 import { useSearchParams, usePathname } from 'next/navigation'
 import DashboardLayout from '@/components/DashboardLayout';
@@ -9,6 +8,7 @@ import SinglePage from '@/components/SinglePage';
 import { useAppSelector } from '@/store/hooks';
 import Login from '@/components/Login';
 import SignUpComp from '@/components/SignUpComp';
+import apiService from '@/utils/apiService';
 
 
 export default function SingleCourse() {
@@ -20,14 +20,14 @@ export default function SingleCourse() {
   const [action, setAction] = useState("login")
 
   const getData = async () => {
-    await axios.get(`courses/single-course/${page}`)
+    await apiService.get(`courses/single-course/${page}`)
       .then(function (response) {
         setRepo(response.data.course)
         // console.log(response.data)
       })
   }
   const getEvent = async () => {
-    await axios.get(`events/${page}`)
+    await apiService.get(`events/${page}`)
       .then(function (response) {
         setRepo(response.data.course)
         console.log(response.data)

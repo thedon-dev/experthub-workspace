@@ -3,7 +3,6 @@ import { Dropdown, MenuProps, Progress } from 'antd';
 import { usePathname } from 'next/navigation';
 import CourseDetails from '../modals/CourseDetails';
 import AddCourse from '../modals/AddCourse';
-import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
 import Share from '../Share';
 import Link from 'next/link';
@@ -12,6 +11,7 @@ import EnrollStudent from '../modals/EnrollStudent';
 import { useAppSelector } from '@/store/hooks';
 import ImageViewer from '../ImageViewer';
 import Participants from '../Participants';
+import apiService from '@/utils/apiService';
 
 const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () => Promise<void> }) => {
   const pathname = usePathname()
@@ -68,7 +68,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
   ];
 
   const deleteCourse = async () => {
-    axios.delete(`/courses/delete/${course._id}`)
+    apiService.delete(`/courses/delete/${course._id}`)
       .then(function (response) {
         getCourse()
         setDelete(false)

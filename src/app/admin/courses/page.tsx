@@ -7,13 +7,13 @@ import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import AddCourse from '@/components/modals/AddCourse';
 import AddResources from '@/components/modals/AddResources';
-import axios from 'axios';
 import CoursesCard from '@/components/cards/CoursesCard';
 import Slider from 'react-slick';
 import { CourseType } from '@/types/CourseType';
 import Link from 'next/link';
 import AddEvents from '@/components/modals/AddEvents';
 import CategoryModal from '@/components/modals/CategoryModal';
+import apiService from '@/utils/apiService';
 
 const courses = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
@@ -87,7 +87,7 @@ const courses = () => {
   ];
 
   const getCourses = async () => {
-    axios.get("courses/all/category")
+    apiService.get("courses/all/category")
       .then(function (response) {
         setCourses(response.data.allCourse)
         // console.log(response.data)
@@ -95,7 +95,7 @@ const courses = () => {
   }
 
   const getPendngCourses = () => {
-    axios.get("courses/unapproved")
+    apiService.get("courses/unapproved")
       .then(function (response) {
         setPending(response.data.courses)
         console.log(response.data)

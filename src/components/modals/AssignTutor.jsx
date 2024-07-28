@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
-import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
 import { UserType } from '@/types/UserType';
 import { notification } from 'antd';
+import apiService from '@/utils/apiService';
 
 const AssignTutor = ({ open, handleClick, course, getCourse }) => {
   const user = useAppSelector((state) => state.value);
@@ -14,7 +14,7 @@ const AssignTutor = ({ open, handleClick, course, getCourse }) => {
   const [api, contextHolder] = notification.useNotification();
 
   const getStudents = () => {
-    axios.get('user/instructors')
+    apiService.get('user/instructors')
       .then(function (response) {
         setInstructors(response.data.instructors)
         // console.log(response.data)
@@ -22,7 +22,7 @@ const AssignTutor = ({ open, handleClick, course, getCourse }) => {
   }
   const enroll = () => {
     setLoading(true)
-    axios.post(`courses/assign/${course._id}`, {
+    apiService.post(`courses/assign/${course._id}`, {
       id: enrollStudent
     })
       .then(function (response) {
@@ -44,7 +44,7 @@ const AssignTutor = ({ open, handleClick, course, getCourse }) => {
 
   const unAssign = (id) => {
     // setLoading(true)
-    axios.post(`courses/assign/${course._id}`, {
+    apiService.post(`courses/assign/${course._id}`, {
       id: id
     })
       .then(function (response) {

@@ -1,7 +1,7 @@
 "use client"
 
+import apiService from '@/utils/apiService';
 import { Spin } from 'antd';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
@@ -15,7 +15,7 @@ const verify = () => {
 
   const submit = async () => {
     setLoading(true)
-    axios.post(`https://expexthub-trainings.onrender.com/auth/verify/${user}`, {
+    apiService.post(`/auth/verify/${user}`, {
       verifyCode: code
     })
       .then(function (response) {

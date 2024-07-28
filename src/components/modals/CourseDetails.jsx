@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import { useAppSelector } from '@/store/hooks';
 import { Spin, notification } from 'antd';
-import axios from 'axios';
 import { Fade, Slide } from '@mui/material';
 import ImageViewer from '../ImageViewer';
 import PaymentModal from '../modals/PaymentModal'
+import apiService from '@/utils/apiService';
 
 const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   const user = useAppSelector((state) => state.value);
@@ -22,7 +22,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
 
   const enroll = () => {
     try {
-      axios.post(`courses/enroll/${course._id}`, {
+      apiService.post(`courses/enroll/${course._id}`, {
         id: user.id
       })
         .then(function (response) {
@@ -79,7 +79,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   }
   async function getSignature(meetingNumber, role) {
     try {
-      const res = await axios.post(`courses/get-zoom-signature`,
+      const res = await apiService.post(`courses/get-zoom-signature`,
         {
           meetingNumber,
           role
@@ -128,7 +128,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   }
   const enrollEvent = () => {
     try {
-      axios.put(`events/enroll/${course._id}`, {
+      apiService.put(`events/enroll/${course._id}`, {
         id: user.id
       })
         .then(function (response) {
@@ -159,7 +159,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
 
   const notifyStudents = async () => {
     try {
-      await axios.get(`${action.toLowerCase()}s/notify-live/${course._id}`)
+      await apiService.get(`${action.toLowerCase()}s/notify-live/${course._id}`)
     } catch (e) {
       console.log(e)
       api.open({
@@ -189,7 +189,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   }
 
   const payWithWallet = () => {
-    axios.post(`transactions/pay-with`, {
+    apiService.post(`transactions/pay-with`, {
       amount: course.fee,
       userId: user.id
     })

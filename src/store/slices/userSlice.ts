@@ -9,7 +9,8 @@ type UserState = {
     id: string
     email: string
     assignedCourse: string,
-    profilePicture: string
+    profilePicture: string,
+    accessToken?: string,
   };
 };
 

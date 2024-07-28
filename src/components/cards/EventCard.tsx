@@ -6,9 +6,9 @@ import Share from '../Share';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import AddEvents from '../modals/AddEvents';
-import axios from 'axios';
 import ImageViewer from '../ImageViewer';
 import Participants from '../Participants';
+import apiService from '@/utils/apiService';
 
 const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
   const [open, setOpen] = useState(false)
@@ -46,7 +46,7 @@ const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
   ];
 
   const deleteCourse = async () => {
-    axios.delete(`/events/delete/${event._id}`)
+    apiService.delete(`/events/delete/${event._id}`)
       .then(function (response) {
         // getCourse()
         action()

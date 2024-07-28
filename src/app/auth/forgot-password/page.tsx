@@ -1,7 +1,7 @@
 "use client"
 
+import apiService from '@/utils/apiService';
 import { Spin, notification } from 'antd';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -17,7 +17,7 @@ const page = () => {
       return
     }
     setLoading(true)
-    axios.put('https://expexthub-trainings.onrender.com/auth/forgot-passowrd', {
+    apiService.put('/auth/forgot-passowrd', {
       email
     }).then(function (response) {
       console.log(response.data)

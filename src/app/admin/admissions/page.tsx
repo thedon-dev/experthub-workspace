@@ -4,11 +4,11 @@ import DashboardLayout from '@/components/DashboardLayout';
 import React, { useEffect, useState } from 'react';
 import AdmissionCard from '@/components/cards/AdmissionCard';
 import SearchNav from '@/components/SearchNav';
-import axios from 'axios';
 import { UserType } from '@/types/UserType';
 import Notice from '@/components/modals/Notice';
 import { Modal } from 'antd';
 import SignUpComp from '@/components/SignUpComp';
+import apiService from '@/utils/apiService';
 
 const addmissions = () => {
   const [active, setActive] = useState("contact")
@@ -20,7 +20,7 @@ const addmissions = () => {
   const [contact, setContact] = useState(false)
 
   const getStudents = () => {
-    axios.get('user/students')
+    apiService.get('user/students')
       .then(function (response) {
         setStudents(response.data.students)
         setAll(response.data.students)
@@ -28,7 +28,7 @@ const addmissions = () => {
       })
   }
   const getTutors = () => {
-    axios.get('user/instructors')
+    apiService.get('user/instructors')
       .then(function (response) {
         setTutors(response.data.instructors)
         setAllTutor(response.data.instructors)

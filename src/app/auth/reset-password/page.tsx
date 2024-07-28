@@ -1,7 +1,7 @@
 "use client"
 
+import apiService from '@/utils/apiService';
 import { Spin, notification } from 'antd';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -18,7 +18,7 @@ const page = () => {
       return
     }
     setLoading(true)
-    axios.put('https://expexthub-trainings.onrender.com/auth/reset-passowrd', {
+    apiService.put('/auth/reset-passowrd', {
       verificationCode: email,
       password
     }).then(function (response) {

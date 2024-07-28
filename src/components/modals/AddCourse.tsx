@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
 import { CategoryType, CourseType } from '@/types/CourseType';
 import { notification } from 'antd';
@@ -7,6 +6,7 @@ import Select from 'react-select';
 import { UserType } from '@/types/UserType';
 import { Spin } from 'antd';
 import AddResources from './AddResources';
+import apiService from '@/utils/apiService';
 
 
 const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
@@ -43,7 +43,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [scholarship, setScholarship] = useState([])
 
   const getStudents = () => {
-    axios.get('user/students')
+    apiService.get('user/students')
       .then(function (response) {
         setStudents(response.data.students)
         // console.log(response.data)
@@ -101,7 +101,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   }])
 
   const getCategories = () => {
-    axios.get('category/all').then(function (response) {
+    apiService.get('category/all').then(function (response) {
       // console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {
@@ -197,7 +197,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     try {
       setLoading(true)
 
-      axios.put(`courses/edit/${course?._id}`,
+      apiService.put(`courses/edit/${course?._id}`,
         {
           // image,
           title,
@@ -238,7 +238,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const add = () => {
     if (title && about && duration && category && image && benefits.length > 1 && type === "offline" ? startDate && endDate && startTime && endTime && room && location : type === "online" ? startDate && endDate && startTime && endTime : type === "video" ? videos : pdf) {
       setLoading(true)
-      axios.post(`courses/add-course/${user.id}`,
+      apiService.post(`courses/add-course/${user.id}`,
         {
           asset: image,
           title,

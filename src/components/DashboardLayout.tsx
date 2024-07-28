@@ -3,7 +3,6 @@
 
 import React, { useEffect, useState } from 'react';
 import SideNav from './SideNav';
-import axios from 'axios';
 import ChatWidget from './ChatWidget';
 import { useAppSelector } from '@/store/hooks';
 import { usePathname, useRouter } from 'next/navigation';
@@ -14,7 +13,7 @@ const DashboardLayout = ({ children }: { children: any }) => {
   const pathname = usePathname()
   const router = useRouter()
   const [toggle, setToggle] = useState(false)
-  axios.defaults.baseURL = "https://expexthub-trainings.onrender.com/"
+  // axios.defaults.baseURL = "https://expexthub-trainings.onrender.com/"
   // axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
   // https://api.experthubllc.com/
 

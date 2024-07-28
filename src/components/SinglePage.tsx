@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import FileDownload from '@/components/FileDownload'
 import { useAppSelector } from '@/store/hooks';
 import UploadVideo from './modals/UploadVideo';
-import axios from 'axios';
 import { ResourceType } from '@/types/ResourceType';
 import ImageViewer from './ImageViewer';
 import ResourcesCard from './cards/ResourcesCard';
+import apiService from '@/utils/apiService';
 
 const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any, page: any }) => {
   const [indexCount, setIndexCount] = useState(0)
@@ -22,7 +22,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
   }
 
   const getAssigned = () => {
-    axios.get(`resources/all/${repo._id}`)
+    apiService.get(`resources/all/${repo._id}`)
       .then(function (response) {
         console.log(response.data)
         setResources(response.data.resource)
