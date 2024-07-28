@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AccordionItem as Item } from '@szhsin/react-accordion';
 import CategoryModal from '@/components/modals/CategoryModal';
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 
 const AccordionItem = ({ header, ...rest }) => (
   <Item
@@ -35,7 +35,7 @@ const Category = ({ category, fetch }) => {
   const [showCategory, setShowCategory] = useState(false)
 
   const deleteCategory = () => {
-    axios.delete(`category/delete/${category._id}`)
+    apiService.delete(`category/delete/${category._id}`)
       .then(function (response) {
         fetch()
         console.log(response)

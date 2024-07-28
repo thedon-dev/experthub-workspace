@@ -2,9 +2,9 @@ import { useAppSelector } from '@/store/hooks';
 import React, { useEffect, useState } from 'react'
 import Popover from '@mui/material/Popover';
 import Link from 'next/link';
-import axios from 'axios';
 import Image from 'next/image';
 import CourseDetails from './CourseDetails';
+import apiService from '@/utils/apiService';
 export function formatDate(date) {
     var now = new Date();
     var difference = now - date;
@@ -54,7 +54,7 @@ export default function Notifications() {
     const getNotifcations = () => {
 
         try {
-            axios.get(`notifications/all/${user.id}`)
+            apiService.get(`notifications/all/${user.id}`)
                 .then(function (response) {
                     // console.log(response.data);
                     setNotifications(response.data)
@@ -67,7 +67,7 @@ export default function Notifications() {
     const markAsRead = (id) => {
 
         try {
-            axios.get(`notifications/mark-as-read/${id}`)
+            apiService.get(`notifications/mark-as-read/${id}`)
                 .then(function (response) {
                     console.log(response.data);
                     getNotifcations()

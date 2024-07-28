@@ -4,12 +4,12 @@ import DashboardLayout from '@/components/DashboardLayout';
 import EventsComp from '@/components/EventsComp';
 import { useAppSelector } from '@/store/hooks';
 import { MenuProps, Dropdown } from 'antd';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import AddCourse from '@/components/modals/AddCourse';
 import AddEvents from '@/components/modals/AddEvents';
 import AddResources from '@/components/modals/AddResources';
+import apiService from '@/utils/apiService';
 
 const Events = () => {
   const user = useAppSelector((state) => state.value);
@@ -41,7 +41,7 @@ const Events = () => {
   ];
 
   const getAllEvents = () => {
-    axios.put(`events/category`, {
+    apiService.put(`events/category`, {
       category: user.assignedCourse
     })
       .then(function (response) {

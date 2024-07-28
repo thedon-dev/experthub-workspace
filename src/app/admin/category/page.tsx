@@ -3,10 +3,10 @@
 import DashboardLayout from '@/components/DashboardLayout';
 import CategoryModal from '@/components/modals/CategoryModal';
 import { CategoryType } from '@/types/CourseType';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Accordion, AccordionItem as Item } from '@szhsin/react-accordion';
 import Category from '@/components/cards/Category';
+import apiService from '@/utils/apiService';
 // import chevron from "@/../public/images/icons/chevron-down.svg";
 
 
@@ -16,7 +16,7 @@ const category = () => {
   const [categories, setCategories] = useState<CategoryType[]>([])
 
   const getCategories = () => {
-    axios.get('category/all').then(function (response) {
+    apiService.get('category/all').then(function (response) {
       // console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {

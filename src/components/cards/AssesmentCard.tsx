@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
@@ -7,7 +7,7 @@ const AssesmentCard = ({ assesment, getAssesment }: { assesment: any, getAssesme
   const pathname = usePathname()
 
   const deleteAssesment = () => {
-    axios.delete(`assessment/delete/${assesment._id}`)
+    apiService.delete(`assessment/delete/${assesment._id}`)
       .then(function (response) {
         console.log(response)
         getAssesment()

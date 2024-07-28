@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import { useAppSelector } from '@/store/hooks';
 import { CategoryType, CourseType } from '@/types/CourseType';
 import { Spin, notification } from 'antd';
 import Select from 'react-select';
 import { UserType } from '@/types/UserType';
+import apiService from '@/utils/apiService';
 
 
 const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
@@ -36,7 +36,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [mode, setMode] = useState("")
 
   const getStudents = () => {
-    axios.get('user/students')
+    apiService.get('user/students')
       .then(function (response) {
         setStudents(response.data.students)
         // console.log(response.data)
@@ -67,7 +67,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
     try {
       setLoading(true)
 
-      axios.put(`events/edit/${course?._id}`,
+      apiService.put(`events/edit/${course?._id}`,
         {
           // image,
           title,
@@ -109,7 +109,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
     // console.log(getScholarship())
     if (title && about && duration && category && image && mode && type === "offline" ? startDate && endDate && startTime && endTime && room && location : startDate && endDate && startTime && endTime) {
       setLoading(true)
-      axios.post(`events/add-event/${user.id}`,
+      apiService.post(`events/add-event/${user.id}`,
         {
           asset: image,
           title,
@@ -152,7 +152,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [categories, setCategories] = useState<CategoryType[]>([])
 
   const getCategories = () => {
-    axios.get('category/all').then(function (response) {
+    apiService.get('category/all').then(function (response) {
       // console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {

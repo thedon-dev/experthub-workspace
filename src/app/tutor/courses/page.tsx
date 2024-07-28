@@ -11,10 +11,10 @@ import { Dropdown } from 'antd';
 import AddResources from '@/components/modals/AddResources';
 import AddCourse from '@/components/modals/AddCourse';
 import { useAppSelector } from '@/store/hooks';
-import axios from 'axios';
 import { ResourceType } from '@/types/ResourceType';
 import { CourseType } from '@/types/CourseType';
 import AddEvents from '@/components/modals/AddEvents';
+import apiService from '@/utils/apiService';
 
 
 const courses = () => {
@@ -85,7 +85,7 @@ const courses = () => {
   const [all, setAll] = useState<CourseType | []>([])
 
   const getCourses = async () => {
-    axios.put(`courses/category/author`, {
+    apiService.put(`courses/category/author`, {
       category: user.assignedCourse,
       id: user.id
     })
@@ -97,7 +97,7 @@ const courses = () => {
 
 
   // const getResources = async () => {
-  //   axios.get(`resources/all`)
+  //   apiService.get(`resources/all`)
   //     .then(function (response) {
   //       setMaterials(response.data.resource)
   //       // console.log(response.data)

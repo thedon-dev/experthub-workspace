@@ -2,10 +2,10 @@
 
 
 import DashboardLayout from '@/components/DashboardLayout';
-import axios from 'axios';
 import React, { useEffect, useState, useRef } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { notification } from 'antd';
+import apiService from '@/utils/apiService';
 
 const profile = () => {
   const user = useAppSelector((state) => state.value);
@@ -30,7 +30,7 @@ const profile = () => {
   const [file, setFile] = useState<FileList | null>()
 
   const getBanks = () => {
-    axios.get(`transactions/banks`)
+    apiService.get(`transactions/banks`)
       .then(function (response) {
         // console.log(response.data)
         setBanks(response.data.data)
@@ -40,7 +40,7 @@ const profile = () => {
   const verifyAccount = (code: string) => {
     try {
       setLoading(true)
-      axios.put(`transactions/verify-account`, {
+      apiService.put(`transactions/verify-account`, {
         accountNumber,
         bankCode: code
       })
@@ -67,7 +67,7 @@ const profile = () => {
   const createRecipient = () => {
     try {
       setLoad(true)
-      axios.post(`transactions/create-recipient`, {
+      apiService.post(`transactions/create-recipient`, {
         accountNumber,
         bankCode,
         userId: user.id
@@ -109,7 +109,7 @@ const profile = () => {
   }
 
   const getUser = () => {
-    axios.get(`user/profile/${user.id}`)
+    apiService.get(`user/profile/${user.id}`)
       .then(function (response) {
         setPhone(response.data.user.phone)
         setSkill(response.data.user.skillLevel)
@@ -129,7 +129,7 @@ const profile = () => {
     const formData = new FormData()
     file && formData.append("image", file[0])
     try {
-      axios.put(`user/updateProfilePicture/${user.id}`, formData)
+      apiService.put(`user/updateProfilePicture/${user.id}`, formData)
         .then(function (response) {
           getUser()
           api.open({
@@ -147,7 +147,7 @@ const profile = () => {
   const updateUser = () => {
     setLoading(true)
     try {
-      axios.put(`user/updateProfile/${user.id}`, {
+      apiService.put(`user/updateProfile/${user.id}`, {
         phone,
         gender,
         age,

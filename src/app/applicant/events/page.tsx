@@ -5,7 +5,7 @@ import EventsComp from '@/components/EventsComp';
 import UserEvent from '@/components/cards/UserEvent';
 import { useAppSelector } from '@/store/hooks';
 import { CourseType } from '@/types/CourseType';
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 import React, { useEffect, useState } from 'react';
 
 const Events = () => {
@@ -17,7 +17,7 @@ const Events = () => {
   const [pastEvent, setPastEvent] = useState<CourseType[]>([])
 
   const getAllEvents = () => {
-    axios.put(`events/recommend/${user.id}`, {
+    apiService.put(`events/recommend/${user.id}`, {
       category: user.assignedCourse
     })
       .then(function (response) {
@@ -27,7 +27,7 @@ const Events = () => {
   }
 
   const getMyEvents = () => {
-    axios.get(`events/my-events/${user.id}`)
+    apiService.get(`events/my-events/${user.id}`)
       .then(function (response) {
         // console.log(response.data)
         setMyEvent(response.data.enrolledCourses.reverse())

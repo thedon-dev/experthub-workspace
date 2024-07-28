@@ -3,7 +3,7 @@
 import AssesmentCard from '@/components/cards/AssesmentCard';
 import DashboardLayout from '@/components/DashboardLayout';
 import { AssesmentType } from '@/types/AssesmentType';
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
@@ -11,7 +11,7 @@ const assesment = () => {
   const [assesments, setAssesment] = useState<AssesmentType | []>([])
 
   const getAssesment = async () => {
-    await axios.get(`assessment/get-assessment-questions`)
+    await apiService.get(`assessment/get-assessment-questions`)
       .then(function (response) {
         setAssesment(response.data.assessmentQuestions.reverse())
         console.log(response.data.assessmentQuestions)

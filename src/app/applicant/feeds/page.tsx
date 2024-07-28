@@ -5,14 +5,14 @@ import DashboardLayout from '@/components/DashboardLayout';
 import RecommendedCard from '@/components/cards/RecommendedCard';
 import { CourseType } from '@/types/CourseType';
 import { ResourceType } from '@/types/ResourceType';
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 import React, { useEffect, useState } from 'react';
 
 const archive = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
 
   const getCourses = async () => {
-    axios.get("courses/all/category")
+    apiService.get("courses/all/category")
       .then(function (response) {
         setCourses(response.data.allCourse)
         // console.log(response.data)

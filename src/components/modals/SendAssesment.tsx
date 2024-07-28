@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/store/hooks';
 import { AssesmentType } from '@/types/AssesmentType';
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 import React, { useEffect, useState } from 'react';
 
 const SendAssesment = ({ open, handleClick, studentId }: { open: boolean, handleClick: any, studentId: string }) => {
@@ -9,7 +9,7 @@ const SendAssesment = ({ open, handleClick, studentId }: { open: boolean, handle
   const [assesments, setAssesments] = useState<AssesmentType | []>([])
   const user = useAppSelector((state) => state.value);
   const getAssesment = async () => {
-    await axios.get(`assessment/get-assessment-questions`)
+    await apiService.get(`assessment/get-assessment-questions`)
       .then(function (response) {
         setAssesments(response.data.assessmentQuestions.reverse())
         // console.log(response.data.assessmentQuestions)
@@ -23,7 +23,7 @@ const SendAssesment = ({ open, handleClick, studentId }: { open: boolean, handle
   const assign = () => {
     setLoading(true)
     try {
-      axios.put(`assessment/assign/${assesment}`, {
+      apiService.put(`assessment/assign/${assesment}`, {
         studentId,
         userId:user.id,
       })

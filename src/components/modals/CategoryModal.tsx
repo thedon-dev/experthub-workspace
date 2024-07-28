@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { notification } from 'antd';
 import { CategoryType } from '@/types/CourseType';
+import apiService from '@/utils/apiService';
 
 const CategoryModal = ({ open, fetch, handleClick, category }: { open: boolean, fetch?: any, handleClick: any, category: CategoryType | null }) => {
   const [loading, setLoading] = useState(false)
@@ -12,7 +12,7 @@ const CategoryModal = ({ open, fetch, handleClick, category }: { open: boolean, 
 
   const handleSubmit = () => {
     setLoading(true)
-    axios.post('category/new', {
+    apiService.post('category/new', {
       category: categoryText,
       subCategory
     }).then(function (response) {
@@ -33,7 +33,7 @@ const CategoryModal = ({ open, fetch, handleClick, category }: { open: boolean, 
 
   const handleEdit = () => {
     setLoading(true)
-    axios.put(`category/edit/${category?._id}`, {
+    apiService.put(`category/edit/${category?._id}`, {
       category: categoryText,
       subCategory
     }).then(function (response) {

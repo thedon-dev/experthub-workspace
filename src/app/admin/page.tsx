@@ -11,13 +11,13 @@ import { Dropdown } from 'antd';
 import AddCourse from '@/components/modals/AddCourse';
 import AddResources from '@/components/modals/AddResources';
 import { useAppSelector } from '@/store/hooks';
-import axios from 'axios';
 import Link from 'next/link';
 import { UserType } from '@/types/UserType';
 import { CourseType } from '@/types/CourseType';
 import AddEvents from '@/components/modals/AddEvents';
 import CategoryModal from '@/components/modals/CategoryModal';
 import Notice from '@/components/modals/Notice';
+import apiService from '@/utils/apiService';
 
 const adminDashboard = () => {
   const user = useAppSelector((state) => state.value);
@@ -66,14 +66,14 @@ const adminDashboard = () => {
 
 
   const getCourses = async () => {
-    axios.get("courses/all")
+    apiService.get("courses/all")
       .then(function (response) {
         setCourses(response.data.courses.reverse())
         console.log(response.data)
       })
   }
   const getStudents = () => {
-    axios.get('user/students')
+    apiService.get('user/students')
       .then(function (response) {
         setStudents(response.data.students)
         // console.log(response.data)
@@ -81,7 +81,7 @@ const adminDashboard = () => {
   }
 
   const getGraduates = () => {
-    axios.put('user/graduate')
+    apiService.put('user/graduate')
       .then(function (response) {
         setGraduates(response.data.students)
         // console.log(response.data)
@@ -89,7 +89,7 @@ const adminDashboard = () => {
   }
 
   const getTutors = () => {
-    axios.get('user/instructors')
+    apiService.get('user/instructors')
       .then(function (response) {
         setTutors(response.data.instructors)
         // console.log(response.data)

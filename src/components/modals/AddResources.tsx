@@ -1,7 +1,7 @@
 import { CourseType } from '@/types/CourseType';
 import { ResourceType } from '@/types/ResourceType';
+import apiService from '@/utils/apiService';
 import { notification } from 'antd';
-import axios from 'axios';
 import { error } from 'console';
 import React, { useEffect, useRef, useState } from 'react';
 import Select from 'react-select';
@@ -20,7 +20,7 @@ const AddResources = ({ open, handleClick, material }: { open: boolean, handleCl
   const [courses, setCourses] = useState([])
 
   const getCourses = () => {
-    axios.get("courses/all")
+    apiService.get("courses/all")
       .then(function (response) {
         setCourses(response.data.courses)
         // console.log(response.data)
@@ -49,7 +49,7 @@ const AddResources = ({ open, handleClick, material }: { open: boolean, handleCl
   }
 
   const setEdit = () => {
-    axios.put(`resources/edit/${material?._id}`, {
+    apiService.put(`resources/edit/${material?._id}`, {
       title,
       aboutCourse: about,
       websiteUrl,
@@ -76,7 +76,7 @@ const AddResources = ({ open, handleClick, material }: { open: boolean, handleCl
       formData.append("assignedCourse", assignedCourse)
 
 
-      axios.post(`resources/add-new`,
+      apiService.post(`resources/add-new`,
         formData
       )
         .then(function (response) {

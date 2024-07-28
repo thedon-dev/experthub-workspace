@@ -2,15 +2,15 @@
 
 import DashboardLayout from '@/components/DashboardLayout';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
 import Link from 'next/link';
+import apiService from '@/utils/apiService';
 
 const courses = () => {
   const [pending, setPending] = useState<CourseType | []>([])
 
   const getPendngCourses = () => {
-    axios.get("courses/unapproved")
+    apiService.get("courses/unapproved")
       .then(function (response) {
         setPending(response.data.courses)
         console.log(response.data)

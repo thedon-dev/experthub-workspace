@@ -1,6 +1,6 @@
 "use client"
 
-import axios from 'axios';
+import apiService from '@/utils/apiService';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -17,7 +17,7 @@ const aptitudeTest = () => {
   const submit = async () => {
     setLoading(true)
     try {
-      axios.post(`https://expexthub-trainings.onrender.com/student/aptitude-test`, {
+      apiService.post(`/student/aptitude-test`, {
         willDadicate6Hours: time,
         describeSelf: description,
         personality: personality,

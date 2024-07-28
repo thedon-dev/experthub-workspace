@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
-import axios from 'axios';
 import { CategoryType } from '@/types/CourseType';
+import apiService from '@/utils/apiService';
 
 const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleClick: any, studentId: string }) => {
   const user = useAppSelector((state) => state.value);
@@ -12,7 +12,7 @@ const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleC
   const [categories, setCategories] = useState<CategoryType[]>([])
 
   const getCategories = () => {
-    axios.get('category/all').then(function (response) {
+    apiService.get('category/all').then(function (response) {
       // console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {
@@ -25,7 +25,7 @@ const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleC
   const assign = () => {
     setLoading(true)
     try {
-      axios.put(`user/updateProfile/${studentId}`, {
+      apiService.put(`user/updateProfile/${studentId}`, {
         course: category === "" ? categoryIndex : category,
 
         assignerId: user.id,

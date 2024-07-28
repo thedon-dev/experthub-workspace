@@ -1,11 +1,11 @@
 "use client"
 
 import DashboardLayout from '@/components/DashboardLayout';
-import axios from 'axios';
 import React, { use, useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { Spin, notification } from 'antd';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
+import apiService from '@/utils/apiService';
 
 const Wallet = () => {
   const user = useAppSelector((state) => state.value);
@@ -25,7 +25,7 @@ const Wallet = () => {
   const [api, contextHolder] = notification.useNotification();
 
   const getBalance = () => {
-    axios.get(`transactions/balance/${user.id}`)
+    apiService.get(`transactions/balance/${user.id}`)
       .then(function (response) {
         console.log(response.data)
         setTransactions(response.data.transactions)
@@ -43,7 +43,7 @@ const Wallet = () => {
   }
 
   const getBanks = () => {
-    axios.get(`transactions/banks`)
+    apiService.get(`transactions/banks`)
       .then(function (response) {
         // console.log(response.data)
         setBanks(response.data.data)
@@ -53,7 +53,7 @@ const Wallet = () => {
   const verifyAccount = (code) => {
     try {
       setLoading(true)
-      axios.put(`transactions/verify-account`, {
+      apiService.put(`transactions/verify-account`, {
         accountNumber,
         bankCode: code
       })
@@ -76,7 +76,7 @@ const Wallet = () => {
   const createRecipient = () => {
     try {
       setLoad(true)
-      axios.post(`transactions/create-recipient`, {
+      apiService.post(`transactions/create-recipient`, {
         accountNumber,
         bankCode,
         userId: user.id
@@ -104,7 +104,7 @@ const Wallet = () => {
   const withdraw = () => {
     try {
       setLoad(true)
-      axios.post(`transactions/withdraw`, {
+      apiService.post(`transactions/withdraw`, {
         amount,
         userId: user.id
       })
@@ -146,7 +146,7 @@ const Wallet = () => {
   const addFunds = () => {
     try {
       setLoad(true)
-      axios.post(`transactions/add-funds`, {
+      apiService.post(`transactions/add-funds`, {
         amount,
         userId: user.id
       })

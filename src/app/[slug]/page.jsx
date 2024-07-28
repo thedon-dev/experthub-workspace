@@ -3,11 +3,11 @@
 import { CourseType } from '@/types/CourseType';
 import { UserType } from '@/types/UserType';
 import { notification } from 'antd';
-import axios from 'axios';
 import { closePaymentModal, useFlutterwave } from 'flutterwave-react-v3';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import apiService from "@/utils/apiService";
 
 const Single = () => {
   const [course, setCourse] = useState(null)
@@ -20,7 +20,7 @@ const Single = () => {
 
   const enroll = () => {
     try {
-      axios.post(`https://expexthub-trainings.onrender.com/courses/enroll/${course?._id}`, {
+      apiService.post(`/courses/enroll/${course?._id}`, {
         id: userDeets?.id
       })
         .then(function (response) {
@@ -42,7 +42,7 @@ const Single = () => {
   }
 
   const getData = async () => {
-    await axios.get(`https://expexthub-trainings.onrender.com/courses/single-course${page}`)
+    await apiService.get(`/courses/single-course${page}`)
       .then(function (response) {
         setCourse(response.data.course)
         console.log(response.data)
@@ -50,7 +50,7 @@ const Single = () => {
   }
 
   const getUser = async () => {
-    await axios.get(`https://expexthub-trainings.onrender.com/user/profile/${user}`)
+    await apiService.get(`/user/profile/${user}`)
       .then(function (response) {
         setUserDeets(response.data.user)
         // console.log(response.data)

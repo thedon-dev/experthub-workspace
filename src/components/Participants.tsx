@@ -1,12 +1,12 @@
 import { useAppSelector } from '@/store/hooks';
 import { CourseType } from '@/types/CourseType';
 import { Spin, message, notification } from 'antd';
-import axios from 'axios';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import SendAssesment from './modals/SendAssesment';
+import apiService from '@/utils/apiService';
 
 const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event: CourseType, hndelClick: any, type: string }) => {
   const [api, contextHolder] = notification.useNotification();
@@ -21,7 +21,7 @@ const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event:
 
   const sendReminder = () => {
     setLoading(true)
-    axios.post(`events/reminder`, {
+    apiService.post(`events/reminder`, {
       userId: id,
       message,
       type
@@ -72,7 +72,7 @@ const Participants = ({ view, event, hndelClick, type }: { view: Boolean, event:
 
   const makeGraduate = () => {
     try {
-      axios.put(`user/updateProfile/${id}`, {
+      apiService.put(`user/updateProfile/${id}`, {
         graduate: true
       })
         .then(function (response) {

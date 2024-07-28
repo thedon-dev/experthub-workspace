@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Spin, notification } from 'antd';
-import axios from 'axios';
 import category from '@/app/admin/category/page';
 import { CategoryType, ThumbnailType } from '@/types/CourseType';
+import apiService from '@/utils/apiService';
 
 const Notice = ({ open, handleClick, recipient }: { open: boolean, handleClick: any, recipient?: String }) => {
   const [api, contextHolder] = notification.useNotification();
@@ -63,7 +63,7 @@ const Notice = ({ open, handleClick, recipient }: { open: boolean, handleClick: 
 
   const createNotice = () => {
     setLoading(true)
-    axios.post('notice/new', {
+    apiService.post('notice/new', {
       title,
       body: description,
       role,
@@ -114,7 +114,7 @@ const Notice = ({ open, handleClick, recipient }: { open: boolean, handleClick: 
   }
 
   const getCategories = () => {
-    axios.get('category/all').then(function (response) {
+    apiService.get('category/all').then(function (response) {
       // console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {

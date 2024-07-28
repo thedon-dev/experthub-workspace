@@ -1,7 +1,6 @@
 "use client"
 
 import { CourseType } from '@/types/CourseType';
-import axios from 'axios';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import React, { Fragment, useEffect, useState } from 'react';
@@ -9,6 +8,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import DashboardLayout from '@/components/DashboardLayout';
 import AddCourse from '@/components/modals/AddCourse';
 import SinglePage from '@/components/SinglePage';
+import apiService from '@/utils/apiService';
 
 
 const SingleCourse = () => {
@@ -22,7 +22,7 @@ const SingleCourse = () => {
   // console.log(pathname)
 
   const getData = async () => {
-    await axios.get(`courses/single-course/${page}`)
+    await apiService.get(`courses/single-course/${page}`)
       .then(function (response) {
         setRepo(response.data.course)
         console.log(response.data)
@@ -30,7 +30,7 @@ const SingleCourse = () => {
   }
 
   const getEvent = async () => {
-    await axios.get(`events/${page}`)
+    await apiService.get(`events/${page}`)
       .then(function (response) {
         setRepo(response.data.course)
         console.log(response.data)
@@ -46,7 +46,7 @@ const SingleCourse = () => {
   }, [])
 
   const approve = () => {
-    axios.put(`courses/approve/${page}`)
+    apiService.put(`courses/approve/${page}`)
       .then(function (response) {
         // getPendngCourses()
         router.back()

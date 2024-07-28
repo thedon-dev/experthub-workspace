@@ -1,11 +1,11 @@
 "use client"
 
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Spin, notification } from 'antd';
 import category from '@/app/admin/category/page';
 import { CategoryType } from '@/types/CourseType';
+import apiService from '@/utils/apiService';
 
 const test = () => {
   const [steps, setSteps] = useState(0)
@@ -29,7 +29,7 @@ const test = () => {
   const [categories, setCategories] = useState<CategoryType[]>([])
 
   const getCategories = () => {
-    axios.get('https://expexthub-trainings.onrender.com/category/all').then(function (response) {
+    apiService.get('/category/all').then(function (response) {
       console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {
@@ -44,7 +44,7 @@ const test = () => {
   const submit = async () => {
     if (computer && internet && gender && status && time && age && experience && education && accomplishment) {
       setLoading(true)
-      axios.post(`https://expexthub-trainings.onrender.com/assessment/survey/${user}`, {
+      apiService.post(`/assessment/survey/${user}`, {
         computerAccess: computer,
         internetAccess: internet,
         gender,

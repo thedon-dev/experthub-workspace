@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
-import axios from 'axios';
 import { CourseType } from '@/types/CourseType';
 import { UserType } from '@/types/UserType';
 import { notification } from 'antd';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
+import apiService from '@/utils/apiService';
 
 const EnrollStudent = ({ open, handleClick, course }) => {
   const user = useAppSelector((state) => state.value);
@@ -15,7 +15,7 @@ const EnrollStudent = ({ open, handleClick, course }) => {
   const [api, contextHolder] = notification.useNotification();
 
   const getStudents = () => {
-    axios.get('user/students')
+    apiService.get('user/students')
       .then(function (response) {
         setStudents(response.data.students)
         // console.log(response.data)
@@ -39,7 +39,7 @@ const EnrollStudent = ({ open, handleClick, course }) => {
 
   const enroll = () => {
     setLoading(true)
-    axios.post(`courses/enroll/${course._id}`, {
+    apiService.post(`courses/enroll/${course._id}`, {
       id: enrollStudent
     })
       .then(function (response) {

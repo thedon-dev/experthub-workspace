@@ -2,10 +2,10 @@
 
 import DashboardLayout from '@/components/DashboardLayout';
 import AdmissionCard from '@/components/cards/AdmissionCard';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { UserType } from '@/types/UserType';
+import apiService from '@/utils/apiService';
 
 const tutor = () => {
   const [instructors, setInstructors] = useState<UserType | []>([])
@@ -13,7 +13,7 @@ const tutor = () => {
   const [all, setAll] = useState<UserType | []>([])
 
   const getTutors = () => {
-    axios.put('user/myinstructors', {
+    apiService.put('user/myinstructors', {
       course: user.assignedCourse
     })
       .then(function (response) {
