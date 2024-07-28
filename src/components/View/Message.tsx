@@ -122,7 +122,7 @@ const Message: React.FC = () => {
   return (
     <div className='flex flex-col lg:flex-row'>
       <div className='lg:w-[35%] w-full px-3 border-r border-[#15121233] lg:h-[80vh] overflow-y-scroll'>
-        <p>Instructors</p>
+        <p>{user.role === 'student' ? 'Instructors' : user.role === 'tutor' ? 'Students' : 'Instructors and Students'}</p>
         <ul>
           {conversations.map((conv) => (
             <li
@@ -190,7 +190,8 @@ const Message: React.FC = () => {
               </>
             ) : <div className='w-1/2 mx-auto text-center'>
               <img src="/images/unread.jpg" className='w-full mx-auto' alt="" />
-              <p className='lg:text-lg'>Start having a conversation with your instructor.</p>
+              <p className='lg:text-lg'>Start having a conversation with your {user.role === 'student' ? 'Instructors' : user.role === 'tutor' ? 'Students' : 'Instructors and Students'}
+              </p>
             </div>}
           </div>
 
