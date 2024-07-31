@@ -143,7 +143,7 @@ const courses = () => {
         </div>
       </section> */}
       <div className='w-1/2 relative m-4'>
-        <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
+        <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses.' />
         <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
       </div>
       <section>

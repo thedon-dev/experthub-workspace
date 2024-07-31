@@ -80,7 +80,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
     {
       key: '2',
       label: (
-        <Link href={`${user.role === 'student' ? '/applicant' : user.role}/profile`}><p>View Profile</p></Link>
+        <Link href={`/${user.role === 'student' ? 'applicant' : user.role}/profile`}><p>View Profile</p></Link>
       ),
     },
     ...[
@@ -88,7 +88,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
         {
           key: '3',
           label: (
-            <Link href={`${user.role === 'student' ? '/applicant' : user.role}/wallet`}><p>Wallet</p></Link>
+            <Link href={`/${user.role === 'student' ? 'applicant' : user.role}/wallet`}><p>Wallet</p></Link>
           ),
         } : null
     ],

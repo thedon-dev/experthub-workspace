@@ -17,6 +17,7 @@ import apiService from '@/utils/apiService';
 
 const courses = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
+  const [all, setAll] = useState<CourseType | []>([])
   const [pending, setPending] = useState<CourseType | []>([])
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
@@ -90,6 +91,7 @@ const courses = () => {
     apiService.get("courses/all/category")
       .then(function (response) {
         setCourses(response.data.allCourse)
+        setAll(response.data.allCourse)
         // console.log(response.data)
       })
   }
@@ -107,6 +109,12 @@ const courses = () => {
     // getPendngCourses()
     getCourses()
   }, [])
+
+  const search = (value: string) => {
+    const results = all.filter((obj: CourseType) => obj.category.toLowerCase().includes(value.toLowerCase()));
+    setCourses(results)
+  }
+
   return (
     <DashboardLayout>
       <link
@@ -135,6 +143,10 @@ const courses = () => {
             </Dropdown>
           </div>
           <div></div>
+        </div>
+        <div className='w-[55%] flex relative my-4'>
+          <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search' />
+          <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
         </div>
         <div className='lg:w-[98%] mx-auto'>
           {

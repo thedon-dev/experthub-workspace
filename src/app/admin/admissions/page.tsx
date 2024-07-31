@@ -72,7 +72,7 @@ const addmissions = () => {
             case 'contact':
               return <div>
                 <div className='w-[60%] flex relative my-4'>
-                  <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
+                  <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search students' />
                   <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
                   <button onClick={() => setOpen(true)} className='bg-primary px-4 p-2 ml-6'>Send Notice</button>
                   <button onClick={() => setContact(true)} className='bg-primary px-4 p-2 ml-6'>Add Contact</button>
@@ -84,7 +84,7 @@ const addmissions = () => {
             case 'students':
               return <div>
                 <div className='w-[60%] flex relative my-4'>
-                  <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
+                  <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search students' />
                   <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
                   <button onClick={() => setOpen(true)} className='bg-primary px-4 p-2 ml-6'>Send Notice</button>
                   <button onClick={() => setContact(true)} className='bg-primary px-4 p-2 ml-6'>Add Contact</button>
@@ -97,7 +97,7 @@ const addmissions = () => {
             case 'mentors':
               return <div>
                 <div className='w-[60%] flex relative my-4'>
-                  <input onChange={e => searchTutor(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search courses, trainer, test etc' />
+                  <input onChange={e => searchTutor(e.target.value)} type="text" className='pl-10 p-2 w-1/2 rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search students' />
                   <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
                   <button onClick={() => setOpen(true)} className='bg-primary px-4 p-2 ml-6'>Send Notice</button>
                   <button onClick={() => setContact(true)} className='bg-primary px-4 p-2 ml-6'>Add Contact</button>
