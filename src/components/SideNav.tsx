@@ -44,22 +44,22 @@ const SideNav = () => {
         </svg>
       ),
     },
-    {
-      href: "/tutor/wallet",
-      name: "Wallet",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          className="bi bi-wallet2"
-          viewBox="0 0 16 16"
-        >
-          <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z" />
-        </svg>
-      ),
-    },
+    // {
+    //   href: "/tutor/wallet",
+    //   name: "Wallet",
+    //   icon: (
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       width="16"
+    //       height="16"
+    //       fill="currentColor"
+    //       className="bi bi-wallet2"
+    //       viewBox="0 0 16 16"
+    //     >
+    //       <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z" />
+    //     </svg>
+    //   ),
+    // },
     {
       href: "/tutor/message",
       name: "Message",
@@ -117,22 +117,22 @@ const SideNav = () => {
         </svg>
       ),
     },
-    {
-      href: "/tutor/profile",
-      name: "Profile",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          className="bi bi-person"
-          viewBox="0 0 16 16"
-        >
-          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
-        </svg>
-      ),
-    },
+    // {
+    //   href: "/tutor/profile",
+    //   name: "Profile",
+    //   icon: (
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       width="16"
+    //       height="16"
+    //       fill="currentColor"
+    //       className="bi bi-person"
+    //       viewBox="0 0 16 16"
+    //     >
+    //       <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
+    //     </svg>
+    //   ),
+    // },
   ];
 
   const ApplicantNavigation = [
@@ -186,22 +186,22 @@ const SideNav = () => {
         </svg>
       ),
     },
-    {
-      href: "/applicant/wallet",
-      name: "Wallet",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          className="bi bi-wallet2"
-          viewBox="0 0 16 16"
-        >
-          <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z" />
-        </svg>
-      ),
-    },
+    // {
+    //   href: "/applicant/wallet",
+    //   name: "Wallet",
+    //   icon: (
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       width="16"
+    //       height="16"
+    //       fill="currentColor"
+    //       className="bi bi-wallet2"
+    //       viewBox="0 0 16 16"
+    //     >
+    //       <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z" />
+    //     </svg>
+    //   ),
+    // },
     // {
     //   href: '/applicant/jobs',
     //   name: 'Jobs',
@@ -250,22 +250,22 @@ const SideNav = () => {
         </svg>
       ),
     },
-    {
-      href: "/applicant/profile",
-      name: "Profile",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          className="bi bi-person"
-          viewBox="0 0 16 16"
-        >
-          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
-        </svg>
-      ),
-    },
+    // {
+    //   href: "/applicant/profile",
+    //   name: "Profile",
+    //   icon: (
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       width="16"
+    //       height="16"
+    //       fill="currentColor"
+    //       className="bi bi-person"
+    //       viewBox="0 0 16 16"
+    //     >
+    //       <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
+    //     </svg>
+    //   ),
+    // },
   ];
 
   const AdminNav = [
@@ -411,22 +411,22 @@ const SideNav = () => {
         </svg>
       ),
     },
-    {
-      href: "/admin/profile",
-      name: "Profile",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          className="bi bi-person"
-          viewBox="0 0 16 16"
-        >
-          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
-        </svg>
-      ),
-    },
+    // {
+    //   href: "/admin/profile",
+    //   name: "Profile",
+    //   icon: (
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       width="16"
+    //       height="16"
+    //       fill="currentColor"
+    //       className="bi bi-person"
+    //       viewBox="0 0 16 16"
+    //     >
+    //       <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
+    //     </svg>
+    //   ),
+    // },
   ];
 
   useEffect(() => {
@@ -492,7 +492,7 @@ const SideNav = () => {
             </li>
           )}
 
-          <li className="my-3">
+          {/* <li className="my-3">
             <Link
               href={"#"}
               onClick={() => logout()}
@@ -521,7 +521,7 @@ const SideNav = () => {
               </div>
               Logout
             </Link>
-          </li>
+          </li> */}
         </ol>
       </div>
     </aside>

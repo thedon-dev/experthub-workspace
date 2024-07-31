@@ -99,7 +99,7 @@ export default function Notifications() {
 
     return (
         <>
-            <button aria-describedby={id} className="text-[20px] shadow-md rounded-full px-3 relative" onClick={handleClick}>
+            <button aria-describedby={id} className="text-[20px] shadow-md rounded-full px-4 relative" onClick={handleClick}>
                 <img src="/images/icons/notification.svg" className='w-[20px] h-[20px]' alt="" />
                 {
                     notifications?.filter(data => !data.read).length > 0 && <div className='absolute text-white text-[11px] top-2 right-2 flex items-center justify-center w-[15px] h-[15px] rounded-full bg-red-500'>{notifications?.filter(data => !data.read).length || 0}</div>

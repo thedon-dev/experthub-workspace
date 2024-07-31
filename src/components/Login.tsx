@@ -47,8 +47,10 @@ const Login = ({ type }: { type?: string }) => {
               response.data.user.role === "student"
                 ? "/applicant"
                 : response.data.user.role === "admin"
-                ? "/admin"
-                : "/tutor"
+                  ? "/admin"
+                  : response.data.user.role === "tutor"
+                    ? "/tutor"
+                    : '/'
             );
           }
         })
