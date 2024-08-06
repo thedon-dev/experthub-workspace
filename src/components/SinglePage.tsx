@@ -7,11 +7,15 @@ import { ResourceType } from '@/types/ResourceType';
 import ImageViewer from './ImageViewer';
 import ResourcesCard from './cards/ResourcesCard';
 import apiService from '@/utils/apiService';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any, page: any }) => {
   const [indexCount, setIndexCount] = useState(0)
   const [videos, setVideos] = useState(repo.videos)
   const [resources, setResources] = useState([])
+  const user = useAppSelector((state) => state.value);
+
   const setNext = () => {
     if (videos.length - 1 === indexCount) {
       return
@@ -20,6 +24,67 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
     setIndexCount(count + 1)
 
   }
+
+  const formattedDate = new Intl.DateTimeFormat('en-GB', Option).format(new Date);
+
+
+  const handleDownload = () => {
+    // setLoading(true);
+
+    const doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'px',
+      format: [1000, 700]
+    });
+
+    // Add background image
+    doc.addImage('/images/cert.png', 'JPEG', 0, 0, 1000, 700);
+
+    // Add Certificate Title
+    // doc.setFontSize(48);
+    // doc.setTextColor('#333');
+    // doc.text('Certificate of Completion', 500, 150, { align: 'center' });
+
+    // Add Recipient's Name
+    // doc.setFontSize(36);
+    // doc.text(`This is to certify that`, 500, 0, { align: 'center' });
+
+    doc.setFontSize(70);
+    doc.setTextColor('#FDC332');
+    doc.text(String(user.fullName.toLocaleUpperCase()), 600, 360, { align: 'center' });
+
+    // Add Course Name
+    // doc.setFontSize(36);
+    // doc.setTextColor('#333');
+    // doc.text(`has successfully completed the`, 500, 350, { align: 'center' });
+
+    doc.setFontSize(30);
+    doc.setTextColor('#2F2F2F');
+    doc.text(repo.title, 600, 455, { align: 'center' });
+
+    // Add Date
+    doc.setFontSize(25);
+    doc.setTextColor('#2F2F2F');
+    doc.text(` ${formattedDate}.`, 650, 255);
+
+
+
+    doc.setFontSize(25);
+    doc.setTextColor('#2F2F2F');
+    doc.text(` ${repo.instructorName}.`, 715, 635);
+
+    // Add Signature Image (optional)
+    // doc.addImage('/path/to/signature-image.png', 'PNG', 400, 500, 200, 100);
+
+    // Add Issuer's Name (optional)
+    // doc.setFontSize(24);
+    // doc.text('Issuer Name', 500, 650, { align: 'center' });
+
+    // Save the PDF
+    doc.save(`${user.fullName}_certificate.pdf`);
+
+    // setLoading(false);
+  };
 
   const getAssigned = () => {
     apiService.get(`resources/all/${repo._id}`)
@@ -35,6 +100,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
 
   return (
     <div>
+      {/* <button className='p-3 rounded-md bg-[#FDC332]' onClick={() => handleDownload()}>Download</button> */}
       {(() => {
         switch (pathname) {
           case 'video':
@@ -53,7 +119,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
                     <p className='my-auto ml-3'>A course by {repo?.instructorName}</p>
                   </div>
 
-                  <button onClick={() => setNext()} className='text-[#DC9F08] sm:my-3 border border-[#DC9F08] rounded-sm p-1 px-4'>Next Chapter</button>
+                  {indexCount === videos.length - 1 ? <button className='p-3 rounded-md bg-[#FDC332]' onClick={() => handleDownload()}>Download</button> : <button onClick={() => setNext()} className='text-[#DC9F08] sm:my-3 border border-[#DC9F08] rounded-sm p-1 px-4'>Next Chapter</button>}
                 </div>
                 <div>
                   <p className='text-lg lg:hidden sm:block font-medium mb-2'>Title: {repo?.title}</p>

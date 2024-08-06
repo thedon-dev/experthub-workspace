@@ -13,7 +13,7 @@ type Props = {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const id = params.slug
   // // fetch data
-  let course = await fetch(`${process.env.NEXT_SERVER_URL}/courses/single-course/${id}`).then((res) => res.json())
+  let course = await fetch(`https://expexthub-trainings.onrender.com/courses/single-course/${id}`).then((res) => res.json())
 
   if (course.course === undefined) {
     course = await fetch(`${process.env.NEXT_SERVER_URL}/events/${id}`).then((res) => res.json())
@@ -30,7 +30,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
       type: "website",
       description: course.course?.about,
       siteName: course.course?.title,
-      url: `${process.env.NEXT_SERVER_URL}/applicant/${params.slug}?page=${id}`
+      url: `https://trainings.experthubllc.com/applicant/${params.slug}?page=${id}`
     },
     twitter: {
       title: course.course?.title,
