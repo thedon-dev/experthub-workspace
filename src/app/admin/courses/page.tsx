@@ -14,6 +14,8 @@ import Link from 'next/link';
 import AddEvents from '@/components/modals/AddEvents';
 import CategoryModal from '@/components/modals/CategoryModal';
 import apiService from '@/utils/apiService';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const courses = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
@@ -92,7 +94,7 @@ const courses = () => {
       .then(function (response) {
         setCourses(response.data.allCourse)
         setAll(response.data.allCourse)
-        // console.log(response.data)
+        console.log(response.data)
       })
   }
 
@@ -117,17 +119,6 @@ const courses = () => {
 
   return (
     <DashboardLayout>
-      <link
-        rel="stylesheet"
-        type="text/css"
-        charSet="UTF-8"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
-      />
-      <link
-        rel="stylesheet"
-        type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
-      />
       <section className='p-4'>
         <div className='flex justify-between'>
           <div>
@@ -148,13 +139,13 @@ const courses = () => {
           <input onChange={e => search(e.target.value)} type="text" className='pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent' placeholder='Search' />
           <img className='absolute top-2 w-6 left-2' src="/images/icons/search.svg" alt="" />
         </div>
-        <div className='lg:w-[98%] mx-auto'>
+        <div className='lg:w-[97%] mx-auto'>
           {
-            courses.map((course: { category: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined; courses: any[]; }, index: React.Key | null | undefined) => <div key={index}>
+            courses.map((course: { category: string; courses: CourseType; }, index: number) => <div key={index}>
               <p className='font-bold mt-4'>{course.category}</p>
               <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] my-2'>
                 <Slider {...settings}>
-                  {course.courses.map((item: any, index: React.Key | null | undefined) => <div key={index} className='p-1 w-full'>
+                  {course.courses.reverse().map((item: CourseType) => <div key={item._id} className='p-1 w-full'>
                     <CoursesCard getCourse={() => getCourses()} course={item} />
                   </div>)}
                 </Slider>

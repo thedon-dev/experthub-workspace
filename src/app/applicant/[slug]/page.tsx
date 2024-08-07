@@ -23,7 +23,7 @@ export default function SingleCourse() {
     await apiService.get(`courses/single-course/${page}`)
       .then(function (response) {
         setRepo(response.data.course)
-        // console.log(response.data)
+        console.log(response.data)
       })
   }
   const getEvent = async () => {

@@ -25,7 +25,9 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
 
   }
 
-  const formattedDate = new Intl.DateTimeFormat('en-GB', Option).format(new Date);
+  const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' }
+
+  const formattedDate = new Intl.DateTimeFormat('en-GB', options).format(new Date);
 
 
   const handleDownload = () => {
@@ -119,7 +121,7 @@ const SinglePage = ({ repo, pathname, page }: { repo: CourseType, pathname: any,
                     <p className='my-auto ml-3'>A course by {repo?.instructorName}</p>
                   </div>
 
-                  {indexCount === videos.length - 1 ? <button className='p-3 rounded-md bg-[#FDC332]' onClick={() => handleDownload()}>Download</button> : <button onClick={() => setNext()} className='text-[#DC9F08] sm:my-3 border border-[#DC9F08] rounded-sm p-1 px-4'>Next Chapter</button>}
+                  {indexCount === videos.length - 1 ? <button className='p-3 rounded-md bg-[#FDC332]' onClick={() => handleDownload()}>Download Certificate</button> : <button onClick={() => setNext()} className='text-[#DC9F08] sm:my-3 border border-[#DC9F08] rounded-sm p-1 px-4'>Next Chapter</button>}
                 </div>
                 <div>
                   <p className='text-lg lg:hidden sm:block font-medium mb-2'>Title: {repo?.title}</p>

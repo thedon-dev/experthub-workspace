@@ -299,7 +299,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                       <p> <span className='font-bold'>Room:</span> {course.room}</p>
                       {course.days && <>
                         <div className='my-3 font-bold'>Weekly Hours</div>
-                        {course.days.map(day => day.checked && <div className='flex justify-between'>
+                        {course.days.map((day, index) => day.checked && <div key={index} className='flex justify-between'>
                           <p>{day.day}</p>
                           <p>{day.startTime}</p>
                           <p>-</p>
@@ -363,12 +363,12 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                         <p onClick={() => setActive(1)} className={active === 1 ? 'ml-4 font-bold border-b py-1 border-primary cursor-pointer' : 'font-bold py-1 ml-4 cursor-pointer'}>Course Descriptions</p>
                       </div>
                       {active === 0 ? <div>
-                        {course.modules.map((module, index) => <div className='my-2'>
+                        {course.modules.map((module, index) => <div key={index} className='my-2'>
                           <p className='font-medium my-1'>Module {index + 1}</p>
                           <p>{module.title}</p>
                         </div>)}
                       </div> : <div>
-                        {course.modules.map((module, index) => <div className='my-2'>
+                        {course.modules.map((module, index) => <div key={index} className='my-2'>
                           <p className='font-medium my-1'>Module {index + 1}</p>
                           <p>{module.description}</p>
                         </div>)}

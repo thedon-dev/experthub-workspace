@@ -83,10 +83,10 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       //   label: 'View Account',
       //   key: '1',
       // },
-      {
-        label: 'Make an Expert',
-        key: '1',
-      },
+      // {
+      //   label: 'Make an Expert',
+      //   key: '1',
+      // },
       {
         label: (
           <p onClick={() => setAssign(true)} >Assign Course</p>
@@ -158,9 +158,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
 
   const makeGraduate = () => {
     try {
-      apiService.put(`user/updateProfile/${tutor.studentId}`, {
-        graduate: true
-      })
+      apiService.put(`user/graduate/${tutor.studentId}`)
         .then(function (response) {
           // console.log(response.data)
           api.open({

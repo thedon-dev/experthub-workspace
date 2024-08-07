@@ -1,52 +1,46 @@
 import React from 'react';
 import { Metadata } from 'next';
 
-
 type Props = {
   params: {
     slug: string,
-  }
-  children: React.ReactNode
-
-}
-
-export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const id = params.slug
-  // // fetch data
-  let course = await fetch(`https://expexthub-trainings.onrender.com/courses/single-course/${id}`).then((res) => res.json())
-
-  if (course.course === undefined) {
-    course = await fetch(`${process.env.NEXT_SERVER_URL}/events/${id}`).then((res) => res.json())
-  }
-
-  return {
-    title: `${course.course?.title}`,
-    description: course.course?.about,
-    openGraph: {
-      images: {
-        url: course.course?.thumbnail,
-      },
-      title: course.course?.title,
-      type: "website",
-      description: course.course?.about,
-      siteName: course.course?.title,
-      url: `https://trainings.experthubllc.com/applicant/${params.slug}?page=${id}`
-    },
-    twitter: {
-      title: course.course?.title,
-      description: course.course?.about,
-      images: course.course?.thumbnail,
-    }
-  }
-}
-
-export default function singleLayout({
-  children, params
-}: Props) {
-  return (
-    <div>
-      {children}
-    </div>
-  );
+  };
+  children: React.ReactNode;
 };
 
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const id = params.slug;
+
+  // Fetch course data
+  let course = await fetch(`https://expexthub-trainings.onrender.com/courses/single-course/${id}`).then((res) => res.json());
+
+  // If the course is not found, fetch event data
+  if (!course.course) {
+    course = await fetch(`${process.env.NEXT_SERVER_URL}/events/${id}`).then((res) => res.json());
+  }
+
+  // Destructure the fetched data
+  const { course: courseData } = course;
+
+  return {
+    title: courseData?.title || 'Course Title',
+    description: courseData?.about || 'Course Description',
+    openGraph: {
+      images: [{ url: courseData?.thumbnail.url }],
+      title: courseData?.title || 'Course Title',
+      type: 'website',
+      description: courseData?.about || 'Course Description',
+      siteName: courseData?.title || 'Course Title',
+      url: `https://trainings.experthubllc.com/applicant/${params.slug}?page=${id}`,
+    },
+    twitter: {
+      title: courseData?.title || 'Course Title',
+      description: courseData?.about || 'Course Description',
+      images: [courseData?.thumbnail],
+    },
+  };
+};
+
+export default function SingleLayout({ children }: Props) {
+  return <div>{children}</div>;
+}
