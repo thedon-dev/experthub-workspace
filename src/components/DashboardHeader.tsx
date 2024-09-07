@@ -15,7 +15,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   const user = useAppSelector((state) => state.value);
   const dispatch = useAppDispatch();
   const [notice, setNotice] = useState<NoticeType | null>()
-  const [show, setShow] = useState(true)
+  const [show, setShow] = useState(false)
   const router = useRouter()
   const [api, contextHolder] = notification.useNotification();
 
@@ -34,7 +34,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   }, [])
 
   const markRead = () => {
-    apiService.put(`notice//enroll/${notice?._id}`, {
+    apiService.put(`notice/enroll/${notice?._id}`, {
       id: user.id
     }).then(function (response) {
       console.log(response.data)

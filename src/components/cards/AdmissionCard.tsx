@@ -51,6 +51,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       key: '2',
     },
 
+
     // {
     //   label: 'View Account',
     //   key: '4',
@@ -113,6 +114,12 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         ),
         key: '2',
       },
+      // {
+      //   label: (
+      //     <p className='curcor-pointer' onClick={() => console.log('hello')}>Book Appointment</p>
+      //   ),
+      //   key: '3',
+      // },
     ]
   ];
 
@@ -160,7 +167,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
     try {
       apiService.put(`user/graduate/${tutor.studentId}`)
         .then(function (response) {
-          // console.log(response.data)
+          console.log(response.data)
           api.open({
             message: 'Student made a graduate Successfully!'
           });
@@ -186,7 +193,10 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
           <p className=' text-sm'>{tutor.course}</p>
         </div>
         {tutor.isVerified ? <p className='text-sm sm:hidden text-[#0BC01E] my-auto font-medium'>Completed</p> : <p className='text-sm sm:hidden text-[#DC9F08] my-auto font-medium'>Pending</p>}
-        {pathname.includes("applicant") ? <button onClick={() => linkUser()} className='text-primary text-sm'>Send Message</button> : <div className='my-auto'>
+        {pathname.includes("applicant") ? <div className='flex justify-between w-44'>
+          <button onClick={() => linkUser()} className='text-primary text-sm'>Send Message</button>
+          <button onClick={() => linkUser()} className='text-sm'>Book Appointent</button>
+        </div> : <div className='my-auto'>
           <Dropdown
             menu={{ items }}
             trigger={["click"]}
