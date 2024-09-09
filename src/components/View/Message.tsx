@@ -30,7 +30,7 @@ interface SocketResponse {
   message: Message;
 }
 
-const socket = io('https://expexthub-trainings.onrender.com/');
+const socket = io('https://seashell-app-nejbh.ondigitalocean.app/');
 import { useAppSelector } from '@/store/hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formatDate } from '../modals/Notification';
