@@ -12,7 +12,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   const id = params.slug;
 
   // Fetch course data
-  let course = await fetch(`https://expexthub-trainings.onrender.com/courses/single-course/${id}`).then((res) => res.json());
+  let course = await fetch(`https://seashell-app-nejbh.ondigitalocean.app/courses/single-course/${id}`).then((res) => res.json());
 
   // If the course is not found, fetch event data
   if (!course.course) {

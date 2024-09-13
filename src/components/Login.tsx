@@ -37,9 +37,15 @@ const Login = ({ type }: { type?: string }) => {
             })
           );
           localStorage.setItem("tid", response.data.accessToken);
-          api.open({
-            message: "Logged in Successfully!",
-          });
+          if (response.data.user.role === 'User') {
+            api.open({
+              message: "No account associated with this email!",
+            });
+          } else {
+            api.open({
+              message: "Logged in Successfully!",
+            });
+          }
           if (type) {
             window.location.reload();
           } else {
@@ -50,9 +56,10 @@ const Login = ({ type }: { type?: string }) => {
                   ? "/admin"
                   : response.data.user.role === "tutor"
                     ? "/tutor"
-                    : '/'
+                    : ''
             );
           }
+
         })
         .catch((error) => {
           setLoading(false);

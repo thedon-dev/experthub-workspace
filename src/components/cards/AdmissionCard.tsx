@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { useAppSelector } from '@/store/hooks';
 import { useRouter } from 'next/navigation';
 import apiService from '@/utils/apiService';
+import AppointmentModal from '../modals/AppointmentModal';
 
 
 const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
@@ -25,6 +26,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
   const [message, setMessage] = useState("We hope this message finds you well.")
   const router = useRouter()
   const user = useAppSelector((state) => state.value);
+  const [appointment, setAppointment] = useState(false)
 
   const linkUser = () => {
     router.push(user.role === "student" ? `/applicant/message?id=${tutor.studentId || tutor.id}` : user.role === "admin" ? `/admin/message?id=${tutor.studentId || tutor.id}` : `/tutor/message?id=${tutor.studentId || tutor.id}`)
@@ -195,7 +197,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         {tutor.isVerified ? <p className='text-sm sm:hidden text-[#0BC01E] my-auto font-medium'>Completed</p> : <p className='text-sm sm:hidden text-[#DC9F08] my-auto font-medium'>Pending</p>}
         {pathname.includes("applicant") ? <div className='flex justify-between w-44'>
           <button onClick={() => linkUser()} className='text-primary text-sm'>Send Message</button>
-          <button onClick={() => linkUser()} className='text-sm'>Book Appointent</button>
+          <button onClick={() => setAppointment(true)} className='text-sm'>Book Appointent</button>
         </div> : <div className='my-auto'>
           <Dropdown
             menu={{ items }}
@@ -208,6 +210,7 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       <AssignCourse open={assign} handleClick={() => setAssign(false)} studentId={tutor.studentId || tutor.id} />
       <SendAssesment open={assesment} handleClick={() => setAssesment(false)} studentId={tutor.studentId} />
       <Notice open={notice} handleClick={() => setNotice(false)} recipient={tutor.studentId || tutor.id} />
+      <AppointmentModal open={appointment} handleClick={() => setAppointment(false)} to={tutor.studentId || tutor.id} />
       {email && <div>
         {contextHolder}
         <div onClick={() => setEmail(false)} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
