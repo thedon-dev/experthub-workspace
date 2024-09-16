@@ -1,3 +1,5 @@
+"use client"
+
 import DashboardLayout from '@/components/DashboardLayout';
 import Availability from '@/components/modals/AvailabilityModel';
 import AppointmentView from '@/components/View/AppointmentView';
