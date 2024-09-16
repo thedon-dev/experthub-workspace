@@ -24,7 +24,7 @@ const AppointmentView = () => {
     <>
       <div className='px-4 flex flex-wrap justify-between'>
 
-        {appointments ? appointments.map((appointment: any) => <div key={appointment._id} className='p-3 border w-[32%] rounded-md'>
+        {appointments.length > 1 ? appointments.map((appointment: any) => <div key={appointment._id} className='p-3 border w-[32%] rounded-md'>
           <div className='flex'>
             {appointment.from._id === user.id ? <>
               <img className='w-10 mr-2 h-10 rounded-full object-cover' src={appointment.to.profilePicture ? appointment.to.profilePicture : "/images/user.png"} alt="" />

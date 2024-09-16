@@ -7,14 +7,15 @@ import ChatWidget from './ChatWidget';
 import { useAppSelector } from '@/store/hooks';
 import { usePathname, useRouter } from 'next/navigation';
 import DashboardHeader from './DashboardHeader';
+import axios from 'axios';
 
 const DashboardLayout = ({ children }: { children: any }) => {
   const user = useAppSelector((state) => state.value);
   const pathname = usePathname()
   const router = useRouter()
   const [toggle, setToggle] = useState(false)
-  // axios.defaults.baseURL = "https://expexthub-trainings.onrender.com/"
-  // axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
+  axios.defaults.baseURL = "http://localhost:3001/"
+  axios.defaults.headers['authorization'] = `${user.accessToken}`;
   // https://api.experthubllc.com/
 
   useEffect(() => {

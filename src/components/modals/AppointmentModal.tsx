@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { notification } from 'antd';
 import { useAppSelector } from '@/store/hooks';
 import apiService from '@/utils/apiService';
@@ -15,7 +15,16 @@ const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClic
   const [api, contextHolder] = notification.useNotification();
   const user = useAppSelector((state) => state.value);
   const [loading, setLoading] = useState(false)
-  
+  const [availability, setAvailability] = useState<any>()
+  const getTo = () => {
+    apiService.get(`/appointment/availability/${to}`).then(function (response) {
+      console.log(response.data)
+      setAvailability(response.data)
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
   const createAppointment = () => {
     setLoading(true)
     apiService.post('/appointment/new', {
@@ -44,6 +53,10 @@ const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClic
     })
   }
 
+  useEffect(() => {
+    getTo()
+  }, [])
+
   return (
     open ? <div>
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
@@ -66,11 +79,13 @@ const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClic
                     <div className='mb-2'>
                       <label htmlFor="">Appointment Mode</label>
                     </div>
-                    <select onChange={(e) => setMode(e.target.value)} value={mode} name="" className='w-full border rounded-md p-3 bg-transparent'>
-                      <option value="All">All</option>
-                      <option value="Online">Online</option>
-                      <option value="In Person">In Person</option>
-                      <option value="Phone">Phone</option>
+                    <select onChange={(e) => setMode(e.target.value)} value={mode} name="" className='w-full border capitalize rounded-md p-3 bg-transparent'>
+                      {/* <option value="All">All</option> */}
+                      {availability?.mode.length > 1 ? availability?.mode.map((single: any, index: any) => single.checked && <option key={index} className='capitalize' value={single.name}>{single.name}</option>) : <>
+                        <option value="oOnline">Online</option>
+                        <option value="in person">In Person</option>
+                        <option value="phone">Phone</option>
+                      </>}
                     </select>
                   </div>
                   <div className='my-2'>

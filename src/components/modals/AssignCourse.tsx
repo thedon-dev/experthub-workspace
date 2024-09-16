@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { CategoryType } from '@/types/CourseType';
 import apiService from '@/utils/apiService';
+import axios from 'axios';
 
 const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleClick: any, studentId: string }) => {
   const user = useAppSelector((state) => state.value);
@@ -19,15 +20,16 @@ const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleC
       console.log(error)
     })
   }
+
   useEffect(() => {
     getCategories()
   }, [])
+
   const assign = () => {
     setLoading(true)
     try {
-      apiService.put(`user/updateProfile/${studentId}`, {
+      axios.put(`user/updateProfile/${studentId}`, {
         course: category === "" ? categoryIndex : category,
-
         assignerId: user.id,
       })
         .then(function (response) {

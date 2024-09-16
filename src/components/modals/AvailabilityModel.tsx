@@ -8,7 +8,20 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
   const [api, contextHolder] = notification.useNotification();
   const user = useAppSelector((state) => state.value);
   const [loading, setLoading] = useState(false)
-  const [mode, setMode] = useState([])
+  const [mode, setMode] = useState([
+    {
+      name: 'online',
+      checked: false
+    },
+    {
+      name: 'in person',
+      checked: false
+    },
+    {
+      name: 'phone',
+      checked: false
+    }
+  ])
   const [days, setDays] = useState([{
     day: "Monday",
     startTime: "",
@@ -73,6 +86,12 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
     setDays(updatedObjects);
   };
 
+  const handleModeChange = (index: number, field: string, value: string | number | boolean) => {
+    const updatedObjects = [...mode];
+    updatedObjects[index] = { ...updatedObjects[index], [field]: value };
+    setMode(updatedObjects);
+  };
+
   return (
     open ? <div>
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
@@ -94,18 +113,19 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
                     out to you either via online, by phone call or to your address</p>
                   <div className='mt-8'>
                     <p>How many hours can you commit to your training a week?</p>
-                    <div className='flex my-3'>
-                      <input type="radio" />
-                      <p className='ml-2'>Online</p>
-                    </div>
-                    <div className='flex my-3'>
-                      <input type="radio" />
+                    {mode.map((single, index) => <div className='flex my-3'>
+                      <input onChange={() => handleModeChange(index, 'checked', !single.checked)} type="checkbox" checked={single.checked} />
+                      <p className='ml-2 capitalize'>{single.name}</p>
+                    </div>)}
+
+                    {/* <div className='flex my-3'>
+                      <input type="checkbox" />
                       <p className='ml-2'>In Person</p>
                     </div>
                     <div className='flex my-3'>
-                      <input type="radio" />
+                      <input type="checkbox" />
                       <p className='ml-2'>Phone</p>
-                    </div>
+                    </div> */}
                   </div>
                   <div className='flex justify-evenly w-44 mx-auto mt-6'>
                     <button onClick={() => setSteps(1)} className='bg-[#FDC332] p-3 rounded-md px-6'>Next</button>
