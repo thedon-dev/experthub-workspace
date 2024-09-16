@@ -8,6 +8,7 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
   const [api, contextHolder] = notification.useNotification();
   const user = useAppSelector((state) => state.value);
   const [loading, setLoading] = useState(false)
+  const [mode, setMode] = useState([])
   const [days, setDays] = useState([{
     day: "Monday",
     startTime: "",
@@ -47,8 +48,9 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
 
   const updateAvailability = () => {
     setLoading(true)
-    apiService.post(`/appointment/user/${user.id}`, {
-
+    apiService.put(`/appointment/availability/${user.id}`, {
+      days,
+      mode
     }).then(function (response) {
       api.open({
         message: "Availability succesfully saved!",
