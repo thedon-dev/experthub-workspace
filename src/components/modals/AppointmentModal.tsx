@@ -3,6 +3,16 @@ import { notification } from 'antd';
 import { useAppSelector } from '@/store/hooks';
 import apiService from '@/utils/apiService';
 
+const dayMapping = {
+  "Sunday": 0,
+  "Monday": 1,
+  "Tuesday": 2,
+  "Wednesday": 3,
+  "Thursday": 4,
+  "Friday": 5,
+  "Saturday": 6,
+};
+
 const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClick: any, to: any }) => {
   const [steps, setSteps] = useState(0)
   const [location, setLocation] = useState('')
@@ -52,6 +62,25 @@ const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClic
       });
     })
   }
+
+  const handleDateChange = (e: any) => {
+    const inputDate = e.target.value;
+    const selectedDay = new Date(inputDate).getUTCDay(); // 0 = Sunday, 6 = Saturday
+
+    availability.days.map((single: any, index: any) => {
+      if (single.checked) {
+        if (index++ === 1 || index++ === 2 || index++ === 3 || index++ === 4 || index++ === 4) {
+          alert('Selected date is not allowed. Please choose another day.');
+          setDate(''); // Reset if invalid date
+        } else {
+          setDate(e.target.value); // Set valid date
+        }
+      }else{
+        setDate(e.target.value); // Set valid date
+      }
+    })
+
+  };
 
   useEffect(() => {
     getTo()
@@ -118,7 +147,7 @@ const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClic
                       <div className='mb-3'>
                         <label htmlFor="Date">Date</label>
                       </div>
-                      <input onChange={(e) => setDate(e.target.value)} value={date} className='w-full border rounded-md p-3 bg-transparent' type="date" />
+                      <input id="customDate" onChange={(e) => availability.days.length > 1 ? handleDateChange(e) : setDate(e.target.value)} value={date} className='w-full border rounded-md p-3 bg-transparent' type="date" />
                     </div>
                     <div className='w-[49%]'>
                       <div className='mb-3'>
