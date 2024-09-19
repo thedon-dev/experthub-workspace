@@ -20,6 +20,7 @@ interface Message {
 }
 
 interface Chat {
+  blocked: any;
   error: any;
   _id: string;
   participants: User[];
@@ -38,7 +39,7 @@ import { formatDate } from '../modals/Notification';
 
 const Message: React.FC = () => {
   const [message, setMessage] = useState<string>('');
-  const [chatHistory, setChatHistory] = useState<Message[]>([]);
+  const [chatHistory, setChatHistory] = useState<Message[] | any>([]);
   const [conversations, setConversations] = useState<Chat[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<Chat | null>(null);
   const user = useAppSelector((state) => state.value);
@@ -59,7 +60,7 @@ const Message: React.FC = () => {
     // Receive new message from server
     socket.on('new_message', (data: SocketResponse) => {
       if (data.conversation_id === selectedConversation?._id) {
-        setChatHistory((prevHistory) => [...prevHistory, data.message]);
+        setChatHistory((prevHistory: any) => [...prevHistory, data.message]);
       }
     });
 
@@ -134,10 +135,26 @@ const Message: React.FC = () => {
         conversation_id: selectedConversation?._id
       };
       socket.emit('send_dm', newMessage);
-      setChatHistory((prevHistory) => [...prevHistory, newMessage]);
+      setChatHistory((prevHistory: any) => [...prevHistory, newMessage]);
     }
-    setSelectedConversation(selectedConversation)
+    handleConversationSelect(selectedConversation)
     setLoading(false)
+  }
+
+  const blockMessage = () => {
+    socket.emit('block_user', {
+      by: user.id,
+      conversation_id: selectedConversation?._id
+    });
+    setSelectedConversation(null)
+  }
+
+  const unblockMessage = (id: string) => {
+    socket.emit('unblock_user', {
+      by: user.id,
+      conversation_id: id
+    });
+    setSelectedConversation(null)
   }
 
   const handleSendMessage = () => {
@@ -151,12 +168,12 @@ const Message: React.FC = () => {
         conversation_id: selectedConversation?._id
       };
       socket.emit('send_dm', newMessage);
-      setChatHistory((prevHistory) => [...prevHistory, newMessage]);
+      setChatHistory((prevHistory: any) => [...prevHistory, newMessage]);
       setMessage('');
     }
   };
 
-  const handleConversationSelect = (conversation: Chat) => {
+  const handleConversationSelect = (conversation: Chat | any) => {
     setSelectedConversation(conversation);
     socket.emit('get_messages', { conversation_id: conversation._id }, (messages: Message[]) => {
       setChatHistory(messages);
@@ -171,20 +188,25 @@ const Message: React.FC = () => {
           {conversations.map((conv) => (
             <li
               key={conv._id}
-              onClick={() => handleConversationSelect(conv)}
+              onClick={() => { conv.blocked.isBlocked === false ? handleConversationSelect(conv) : conv.blocked.isBlocked === true && conv.blocked.by === user.id ? handleConversationSelect(conv) : null }}
               className={`cursor-pointer p-2 ${selectedConversation?._id === conv._id ? 'bg-gray-300' : ''}`}
             >
               {conv.participants
                 .filter((p) => p._id !== userId)
                 .map((p) => (
                   <React.Fragment key={p._id}>
+
                     <div className='flex justify-between my-1'>
                       <div className='flex'>
                         <img src={p.profilePicture || '/images/user.png'} alt={p.fullname} className='w-10 h-10 rounded-full mr-2' />
                         <div className='ml-1'>
                           <p className='capitalize sm:text-sm'>{p.fullname}</p>
-
-                          <p className='text-xs'>{conv.messages[conv.messages.length - 1]?.text === null ? 'Attachment' : conv.messages[conv.messages.length - 1]?.text.substring(0, 10)}</p>
+                          {conv.blocked.isBlocked ? conv.blocked.by === user.id ? <button onClick={() => unblockMessage(conv._id)} className='bg-[#808080] px-2 text-sm text-white rounded-full'>
+                            Unblock
+                          </button> : <button className='bg-[#808080] px-2 text-sm text-white rounded-full'>
+                            blocked
+                          </button> :
+                            <p className='text-xs'>{conv.messages[conv.messages.length - 1]?.text === null ? 'Attachment' : conv.messages[conv.messages.length - 1]?.text.substring(0, 10)}</p>}
                         </div>
                       </div>
                       {conv.messages.length >= 1 && <p className='text-xs my-auto'>{formatDate(new Date(conv.messages[conv.messages.length - 1]?.created_at))}</p>}
@@ -212,13 +234,19 @@ const Message: React.FC = () => {
                       .filter((p) => p._id !== userId)
                       .map((p) => (
                         <React.Fragment key={p._id}>
-                          <div className='flex justify-between my-1'>
+                          <div className='flex justify-between w-full my-1'>
                             <div className='flex'>
                               <img src={p.profilePicture || '/images/user.png'} alt={p.fullname} className='lg:w-10 lg:h-10 w-8 h-8 rounded-full mr-2' />
                               <div className='ml-1 my-auto'>
                                 <p className='capitalize my-auto sm:text-sm'>{p.fullname}</p>
                               </div>
                             </div>
+                            {
+                              selectedConversation.blocked.isBlocked ?
+                                <button onClick={() => unblockMessage(selectedConversation._id)} className='bg-primary p-1 rounded-md text-white px-3'>Unblock</button>
+                                : <button onClick={() => blockMessage()} className='bg-[#FF0000] p-1 rounded-md text-white px-3'>Block</button>
+
+                            }
                           </div>
                         </React.Fragment>
                       ))
@@ -226,7 +254,7 @@ const Message: React.FC = () => {
                 </div>
 
                 <ul className='mb-32'>
-                  {chatHistory.map((msg, index) => (
+                  {chatHistory.map((msg: { from: string; text: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined; type: string; file: string | undefined; }, index: React.Key | null | undefined) => (
                     <div key={index}>
                       {msg.from === userId ?
                         <li className='w-1/2 my-1 sm:text-sm bg-primary p-1 text-white rounded-md ml-auto'>{msg.text !== null ? msg.text : msg.type === 'Image' ? <img src={msg.file} alt="" /> :
@@ -239,7 +267,7 @@ const Message: React.FC = () => {
                         <li className='w-1/2 my-1  sm:text-sm'>{msg.text !== null ? msg.text : msg.type === 'Image' ? <img src={msg.file} alt="" /> : msg.type === 'Video' ?
                           <video controls src={msg.file}></video> : <div className='flex'>
                             <span className='text-3xl mr-3'>📁</span>
-                            <a href={msg.file} download target='_blank' className='text-white my-auto'>Download</a>
+                            <a href={msg.file} download target='_blank' className='my-auto'>Download</a>
                           </div>} </li>}
                     </div>
                   ))}
@@ -253,7 +281,7 @@ const Message: React.FC = () => {
           </div>
 
           {toUserId || selectedConversation ? (
-            <div className='p-4 fixed bottom-0 lg:left-[48%] left-0 right-0'>
+            selectedConversation?.blocked.isBlocked === false && <div className='p-4 fixed bottom-0 lg:left-[48%] left-0 right-0'>
               <div className='sm:flex sm:flex-col'>
                 <textarea
                   value={message}
