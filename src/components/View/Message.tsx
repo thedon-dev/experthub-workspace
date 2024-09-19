@@ -52,6 +52,9 @@ const Message: React.FC = () => {
   const [edit, setEdit] = useState(false)
   const [editedText, setEditedText] = useState<any>("")
   const [messageToEdit, setMessagetoEdit] = useState<any>(0)
+  const [isTyping, setIsTyping] = useState(false)
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Timeout ref for typing indication
+
 
   useEffect(() => {
     // Receive chat history from server
@@ -67,9 +70,19 @@ const Message: React.FC = () => {
       }
     });
 
+    socket.on('user_typing', (data) => {
+      // Handle user typing indicator here, e.g., set a typing state
+      setIsTyping(true);
+    });
+
+    socket.on('user_stopped_typing', (data) => {
+      setIsTyping(false);
+    });
     // Cleanup on unmount
     return () => {
       socket.off('new_message');
+      socket.off('user_typing');
+      socket.off('user_stopped_typing');
     };
   }, [selectedConversation, userId]);
 
@@ -219,7 +232,25 @@ const Message: React.FC = () => {
       socket.emit('send_dm', newMessage);
       setChatHistory((prevHistory: any) => [...prevHistory, newMessage]);
       setMessage('');
+      setIsTyping(false);
+      socket.emit('stop_typing', { conversation_id: selectedConversation?._id });
     }
+  };
+
+  const handleTyping = () => {
+    setIsTyping(true);
+    socket.emit('typing', { conversation_id: selectedConversation?._id });
+
+    // Reset the typing timeout
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    // Set a timeout to stop typing after a delay
+    typingTimeoutRef.current = setTimeout(() => {
+      setIsTyping(false);
+      socket.emit('stop_typing', { conversation_id: selectedConversation?._id });
+    }, 3000); // Typing indication lasts for 3 seconds
   };
 
   const handleConversationSelect = (conversation: Chat | any) => {
@@ -354,6 +385,7 @@ const Message: React.FC = () => {
                       )}
                     </div>
                   ))}
+                  {isTyping && <p className="italic text-gray-500">Someone is typing...</p>}
                 </ul>
 
               </>
@@ -376,7 +408,10 @@ const Message: React.FC = () => {
               <div className='sm:flex sm:flex-col'>
                 <textarea
                   value={message}
-                  onChange={(e) => setMessage(e.target.value)}
+                  onChange={(e) => {
+                    setMessage(e.target.value);
+                    handleTyping();
+                  }}
                   className='lg:h-20 h-10 p-2 w-full'
                   placeholder='Write a message'
                 />
