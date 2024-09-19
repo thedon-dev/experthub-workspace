@@ -49,6 +49,9 @@ const Message: React.FC = () => {
   const uploadRef = useRef<HTMLInputElement>(null)
   const [filesPreview, setFilePreview] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const [edit, setEdit] = useState(false)
+  const [editedText, setEditedText] = useState<any>("")
+  const [messageToEdit, setMessagetoEdit] = useState<any>(0)
 
   useEffect(() => {
     // Receive chat history from server
@@ -140,6 +143,52 @@ const Message: React.FC = () => {
     handleConversationSelect(selectedConversation)
     setLoading(false)
   }
+
+  const handleDeleteMessage = (index: any) => {
+    // Get the message to delete using the index
+    const messageToDelete = chatHistory[index]
+
+    // Make sure you have the conversation_id and message_id or the unique index
+    const conversation_id = selectedConversation?._id; // This should be available in the component or passed as a prop
+    const message_id = messageToDelete._id; // Assuming messages have a unique _id
+
+    // Emit the 'delete_message' event through socket.io
+    socket.emit('delete_message', {
+      conversation_id,
+      message_id,
+      user_id: user.id
+    });
+
+    // Optionally update the UI to optimistically remove the message
+    const updatedChatHistory = chatHistory.filter((_: any, i: number) => i !== index);
+    setChatHistory(updatedChatHistory); // Assuming you use state for chatHistory
+  };
+
+  const handleSaveEdit = () => {
+    const message = chatHistory[messageToEdit];
+
+    const conversation_id = selectedConversation?._id; // Available in your component or passed as prop
+    const message_id = message._id; // Assuming each message has a unique _id
+
+    // Emit the 'edit_message' event through socket.io
+    socket.emit('edit_message', {
+      conversation_id,
+      message_id,
+      newText: editedText,
+      user_id: user.id // The new text to update
+    });
+
+    // Optimistically update the UI
+    const updatedChatHistory = chatHistory.map((msg: any, i: any) =>
+      i === messageToEdit ? { ...msg, text: editedText } : msg
+    );
+    setChatHistory(updatedChatHistory);
+    setEdit(false)
+    setEditedText("")
+    setMessagetoEdit(0)
+    // Optionally, close the edit form here after saving
+  };
+
 
   const blockMessage = () => {
     socket.emit('block_user', {
@@ -253,25 +302,60 @@ const Message: React.FC = () => {
                   }
                 </div>
 
-                <ul className='mb-32'>
-                  {chatHistory.map((msg: { from: string; text: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.PromiseLikeOfReactNode | null | undefined; type: string; file: string | undefined; }, index: React.Key | null | undefined) => (
-                    <div key={index}>
-                      {msg.from === userId ?
-                        <li className='w-1/2 my-1 sm:text-sm bg-primary p-1 text-white rounded-md ml-auto'>{msg.text !== null ? msg.text : msg.type === 'Image' ? <img src={msg.file} alt="" /> :
-                          msg.type === 'Video' ?
-                            <video controls src={msg.file}></video> : <div className='flex'>
-                              <span className='text-3xl mr-3'>📁</span>
-                              <a href={msg.file} download target='_blank' className='text-white my-auto'>Download</a>
+                <ul className="mb-32">
+                  {chatHistory.map((msg: { from: string; text: string | React.ReactNode; type: string; file?: string; }, index: React.Key | null | undefined) => (
+                    <div key={index} className="relative group">
+                      {msg.from === userId ? (
+                        <li className="w-1/2 my-1 sm:text-sm bg-primary p-1 text-white rounded-md ml-auto relative">
+                          {msg.text !== null ? msg.text : msg.type === 'Image' ? (
+                            <img src={msg.file} alt="" />
+                          ) : msg.type === 'Video' ? (
+                            <video controls src={msg.file}></video>
+                          ) : (
+                            <div className="flex">
+                              <span className="text-3xl mr-3">📁</span>
+                              <a href={msg.file} download target="_blank" className="text-white my-auto">
+                                Download
+                              </a>
                             </div>
-                        }</li> :
-                        <li className='w-1/2 my-1  sm:text-sm'>{msg.text !== null ? msg.text : msg.type === 'Image' ? <img src={msg.file} alt="" /> : msg.type === 'Video' ?
-                          <video controls src={msg.file}></video> : <div className='flex'>
-                            <span className='text-3xl mr-3'>📁</span>
-                            <a href={msg.file} download target='_blank' className='my-auto'>Download</a>
-                          </div>} </li>}
+                          )}
+
+                          {/* Edit & Delete Buttons (visible on hover) */}
+                          <div className="absolute top-1/2 -translate-y-1/2 right-2 hidden group-hover:flex space-x-2">
+                            {msg.type === 'Text' && <button
+                              className="text-sm bg-blue-500 hover:bg-blue-600 p-1 rounded"
+                              onClick={() => { setEdit(true), setMessagetoEdit(index), setEditedText(msg.text) }}
+                            >
+                              Edit
+                            </button>}
+                            <button
+                              className="text-sm bg-red-500 hover:bg-red-600 p-1 rounded"
+                              onClick={() => handleDeleteMessage(index)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </li>
+                      ) : (
+                        <li className="w-1/2 my-1 sm:text-sm">
+                          {msg.text !== null ? msg.text : msg.type === 'Image' ? (
+                            <img src={msg.file} alt="" />
+                          ) : msg.type === 'Video' ? (
+                            <video controls src={msg.file}></video>
+                          ) : (
+                            <div className="flex">
+                              <span className="text-3xl mr-3">📁</span>
+                              <a href={msg.file} download target="_blank" className="my-auto">
+                                Download
+                              </a>
+                            </div>
+                          )}
+                        </li>
+                      )}
                     </div>
                   ))}
                 </ul>
+
               </>
             ) : <div className='w-1/2 mx-auto text-center'>
               <img src="/images/unread.jpg" className='w-full mx-auto' alt="" />
@@ -280,7 +364,14 @@ const Message: React.FC = () => {
             </div>}
           </div>
 
-          {toUserId || selectedConversation ? (
+          {edit ? <div className='p-4 fixed bottom-0 lg:left-[48%] left-0 right-0'>
+            <textarea
+              className='lg:h-20 h-10 p-2 w-full'
+              value={editedText}
+              onChange={(e) => setEditedText(e.target.value)}
+            />
+            <button className='bg-primary text-white p-2' onClick={handleSaveEdit}>Edit</button>
+          </div> : toUserId || selectedConversation ? (
             selectedConversation?.blocked.isBlocked === false && <div className='p-4 fixed bottom-0 lg:left-[48%] left-0 right-0'>
               <div className='sm:flex sm:flex-col'>
                 <textarea
