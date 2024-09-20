@@ -253,11 +253,26 @@ const Message: React.FC = () => {
     }, 3000); // Typing indication lasts for 3 seconds
   };
 
+  const markAllMessagesAsRead = () => {
+    if (selectedConversation) {
+      const chat_id = selectedConversation._id; // Change this to chat_id
+
+      // Emit event to server to mark all messages as read
+      socket.emit('mark_all_as_read', { chat_id, user_id: user.id });
+
+      // Update local state to mark all messages as read
+      setChatHistory((prevHistory: any[]) =>
+        prevHistory.map((msg) => ({ ...msg, read: true }))
+      );
+    }
+  };
+
   const handleConversationSelect = (conversation: Chat | any) => {
     setSelectedConversation(conversation);
     socket.emit('get_messages', { conversation_id: conversation._id }, (messages: Message[]) => {
       setChatHistory(messages);
     });
+    markAllMessagesAsRead()
   };
 
   return (
@@ -334,7 +349,9 @@ const Message: React.FC = () => {
                 </div>
 
                 <ul className="mb-32">
-                  {chatHistory.map((msg: { from: string; text: string | React.ReactNode; type: string; file?: string; }, index: React.Key | null | undefined) => (
+                  {chatHistory.map((msg: {
+                    read: any; from: string; text: string | React.ReactNode; type: string; file?: string;
+                  }, index: React.Key | null | undefined) => (
                     <div key={index} className="relative group">
                       {msg.from === userId ? (
                         <li className="w-1/2 my-1 sm:text-sm bg-primary p-1 text-white rounded-md ml-auto relative">
@@ -366,6 +383,12 @@ const Message: React.FC = () => {
                               Delete
                             </button>
                           </div>
+                          <p className='text-xs my-auto float-right z-10'>{msg.read ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check2-all" viewBox="0 0 16 16">
+                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0" />
+                            <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708" />
+                          </svg> : <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check2" viewBox="0 0 16 16">
+                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0" />
+                          </svg>}</p>
                         </li>
                       ) : (
                         <li className="w-1/2 my-1 sm:text-sm">
