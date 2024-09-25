@@ -13,22 +13,23 @@ const dayMapping = {
   "Saturday": 6,
 };
 
-const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClick: any, to: any }) => {
+const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, handleClick: any, to: any, data?: any }) => {
   const [steps, setSteps] = useState(0)
-  const [location, setLocation] = useState('')
-  const [room, setRoom] = useState('')
-  const [mode, setMode] = useState("")
-  const [category, setCategory] = useState("")
-  const [reason, setReason] = useState("")
-  const [date, setDate] = useState("")
-  const [time, setTime] = useState("")
+  const [location, setLocation] = useState(data?.location || '')
+  const [room, setRoom] = useState(data?.room || '')
+  const [mode, setMode] = useState(data?.mode || "")
+  const [category, setCategory] = useState(data?.category || "")
+  const [reason, setReason] = useState(data?.reason || "")
+  const [date, setDate] = useState(data?.date || "")
+  const [time, setTime] = useState(data?.time || "")
   const [api, contextHolder] = notification.useNotification();
   const user = useAppSelector((state) => state.value);
   const [loading, setLoading] = useState(false)
   const [availability, setAvailability] = useState<any>()
+
   const getTo = () => {
     apiService.get(`/appointment/availability/${to}`).then(function (response) {
-      console.log(response.data)
+      // console.log(response.data)
       setAvailability(response.data)
     }).catch(error => {
       console.log(error)
@@ -67,24 +68,56 @@ const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClic
     const inputDate = e.target.value;
     const selectedDay = new Date(inputDate).getUTCDay(); // 0 = Sunday, 6 = Saturday
 
-    availability.days.map((single: any, index: any) => {
-      if (single.checked) {
-        if (index++ === 1 || index++ === 2 || index++ === 3 || index++ === 4 || index++ === 4) {
-          alert('Selected date is not allowed. Please choose another day.');
-          setDate(''); // Reset if invalid date
-        } else {
-          setDate(e.target.value); // Set valid date
-        }
-      }else{
-        setDate(e.target.value); // Set valid date
-      }
-    })
+    let isDayAllowed = true;
 
+    availability.days.forEach((single: any, index: number) => {
+      if (single.checked) {
+        // Days from Monday (index 1) to Friday (index 5)
+        if (index >= 1 && index <= 5 && selectedDay === index) {
+          isDayAllowed = false;
+        }
+      }
+    });
+
+    if (!isDayAllowed) {
+      alert('Selected date is not allowed. Please choose another day.');
+      setDate(''); // Reset if invalid date
+    } else {
+      setDate(inputDate); // Set valid date
+    }
   };
 
   useEffect(() => {
     getTo()
   }, [])
+
+  const editAppointment = () => {
+    setLoading(true)
+    apiService.put(`/appointment/edit-appointment/${data._id}`, {
+      category,
+      room,
+      date,
+      time,
+      reason,
+      location,
+      mode,
+      from: user.id,
+      to
+    }).then(function (response) {
+      api.open({
+        message: "Appointment succesfully Edited!",
+      });
+      console.log(response.data)
+      handleClick()
+      setLoading(false)
+    }).catch(error => {
+      console.log(error)
+      setLoading(false)
+      api.open({
+        message: error.response.data.message
+      });
+    })
+  }
 
   return (
     open ? <div>
@@ -92,9 +125,9 @@ const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClic
       <div className='fixed top-10 bottom-10 left-0 overflow-y-auto rounded-md right-0 lg:w-[70%] w-[95%] mx-auto z-20 bg-[#F8F7F4]'>
         <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between'>
           <div className='flex w-1/2 justify-between'>
-            <p className={steps === 0 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium'}>Appointment</p>
-            <p className={steps === 1 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium'}>Available Time</p>
-            <p className={steps === 2 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium'}>Location</p>
+            <p onClick={() => setSteps(0)} className={steps === 0 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Appointment</p>
+            <p onClick={() => setSteps(1)} className={steps === 1 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Available Time</p>
+            <p onClick={() => setSteps(2)} className={steps === 2 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Location</p>
           </div>
           <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
         </div>
@@ -110,7 +143,11 @@ const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClic
                     </div>
                     <select onChange={(e) => setMode(e.target.value)} value={mode} name="" className='w-full border capitalize rounded-md p-3 bg-transparent'>
                       {/* <option value="All">All</option> */}
-                      {availability?.mode.length > 1 ? availability?.mode.map((single: any, index: any) => single.checked && <option key={index} className='capitalize' value={single.name}>{single.name}</option>) : <>
+                      {availability?.mode.length > 1 ? <>
+                        <option className='hidden' value="">Select Mode</option>
+                        {availability?.mode.map((single: any, index: any) => single.checked && <option key={index} className='capitalize' value={single.name}>{single.name}</option>)}
+                      </> : <>
+                        <option className='hidden' value="">Select Mode</option>
                         <option value="oOnline">Online</option>
                         <option value="in person">In Person</option>
                         <option value="phone">Phone</option>
@@ -122,6 +159,7 @@ const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClic
                       <label htmlFor="">Appointment  Category</label>
                     </div>
                     <select value={category} onChange={(e) => setCategory(e.target.value)} name="" className=' w-full border rounded-md p-3 bg-transparent'>
+                      <option className='hidden' value="">Select Category</option>
                       <option value="Mentorhsip">Mentorhsip</option>
                       <option value="Classes">Classes</option>
                       <option value="Enquiries">Enquiries</option>
@@ -173,7 +211,9 @@ const AppointmentModal = ({ open, handleClick, to }: { open: boolean, handleClic
                     </div>
                   </div>
                   <div className='flex justify-evenly mx-auto mt-6'>
-                    <button onClick={() => createAppointment()} className='bg-[#FDC332] p-3 rounded-md px-6'>{loading ? 'loading...' : 'Create  Appointment'}</button>
+                    {data ? <button onClick={() => editAppointment()} className='bg-[#FDC332] p-3 rounded-md px-6'>{loading ? 'loading...' : 'Edit  Appointment'}</button>
+                      : <button onClick={() => createAppointment()} className='bg-[#FDC332] p-3 rounded-md px-6'>{loading ? 'loading...' : 'Create  Appointment'}</button>
+                    }
                     <button>Cancel</button>
                   </div>
                 </div>

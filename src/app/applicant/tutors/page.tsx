@@ -19,7 +19,7 @@ const tutor = () => {
       .then(function (response) {
         setInstructors(response.data.instructors)
         setAll(response.data.instructors)
-        console.log(response.data)
+        // console.log(response.data)
       })
   }
 

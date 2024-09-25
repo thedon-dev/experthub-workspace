@@ -141,6 +141,7 @@ const Message: React.FC = () => {
 
   const sendFile = (url: string, type: string) => {
     setLoading(true)
+    console.log({ type, url })
     if (selectedConversation) {
       const newMessage = {
         from: userId,

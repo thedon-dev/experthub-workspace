@@ -3,16 +3,33 @@
 import { useAppSelector } from '@/store/hooks';
 import apiService from '@/utils/apiService';
 import React, { useEffect, useState } from 'react';
+import { notification } from 'antd';
+import AppointmentModal from '../modals/AppointmentModal';
 
 const AppointmentView = () => {
   const [appointments, setAppointments] = useState([])
   const user = useAppSelector((state) => state.value);
+  const [api, contextHolder] = notification.useNotification();
+  const [open, setOpen] = useState(false)
 
   const getAppointments = () => {
     apiService.get(`/appointment/${user.id}`)
       .then(function (response) {
-        console.log(response.data)
+        // console.log(response.data)
         setAppointments(response.data.appointment)
+      }).catch(error => {
+        console.log(error)
+      })
+  }
+  const deleteAppointment = () => {
+    apiService.delete(`/appointment/delete/${user.id}`)
+      .then(function (response) {
+        console.log(response.data)
+        getAppointments()
+        api.open({
+          message: "Appointment succesfully deleted!",
+        });
+        getAppointments()
       }).catch(error => {
         console.log(error)
       })
@@ -22,9 +39,10 @@ const AppointmentView = () => {
   }, [])
   return (
     <>
+      {contextHolder}
       <div className='px-4 flex flex-wrap justify-between'>
 
-        {appointments.length > 1 ? appointments.map((appointment: any) => <div key={appointment._id} className='p-3 border w-[32%] rounded-md'>
+        {appointments.length >= 1 ? appointments.map((appointment: any) => <div key={appointment._id} className='p-3 border w-[32%] rounded-md'>
           <div className='flex'>
             {appointment.from._id === user.id ? <>
               <img className='w-10 mr-2 h-10 rounded-full object-cover' src={appointment.to.profilePicture ? appointment.to.profilePicture : "/images/user.png"} alt="" />
@@ -34,7 +52,7 @@ const AppointmentView = () => {
               <p className='my-auto font-medium text-lg'>{appointment.from.fullname}</p>
             </>}
           </div>
-          <p className='my-2'>{appointment.reason}</p>
+          <p className='my-2 '>{appointment.reason}</p>
           <div>
             <p>Mode: {appointment.mode}</p>
 
@@ -44,7 +62,15 @@ const AppointmentView = () => {
             <p>Location: {appointment.location}</p>
             <p>Room: {appointment.room}</p>
           </div>
-
+          {appointment.from._id === user.id && <div className='flex justify-between'>
+            <button onClick={() => setOpen(true)} className='bg-primary p-2 px-4 rounded-md mt-4'>
+              Edit
+            </button>
+            <button onClick={() => deleteAppointment()} className='bg-[#FF0000] text-white p-2 px-4 rounded-md mt-4'>
+              Delete
+            </button>
+          </div>}
+          <AppointmentModal open={open} handleClick={() => { setOpen(false), getAppointments() }} to={appointment.to._id} data={appointment} />
         </div>) : <p>No active appointments!</p>}
       </div>
     </>
