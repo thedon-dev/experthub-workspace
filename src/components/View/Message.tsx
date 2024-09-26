@@ -36,6 +36,8 @@ const socket = io('https://seashell-app-nejbh.ondigitalocean.app/');
 import { useAppSelector } from '@/store/hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formatDate } from '../modals/Notification';
+import Link from 'next/link';
+import AppointmentModal from '../modals/AppointmentModal';
 
 const Message: React.FC = () => {
   const [message, setMessage] = useState<string>('');
@@ -48,13 +50,16 @@ const Message: React.FC = () => {
   const router = useRouter()
   const uploadRef = useRef<HTMLInputElement>(null)
   const [filesPreview, setFilePreview] = useState<any>(null)
+  const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [edit, setEdit] = useState(false)
   const [editedText, setEditedText] = useState<any>("")
   const [messageToEdit, setMessagetoEdit] = useState<any>(0)
   const [isTyping, setIsTyping] = useState(false)
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Timeout ref for typing indication
-
+  const [typingUser, setTypingUser] = useState("")
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [messageToDeleteIndex, setMessageToDeleteIndex] = useState<number | null>(null);
 
   useEffect(() => {
     // Receive chat history from server
@@ -71,12 +76,15 @@ const Message: React.FC = () => {
     });
 
     socket.on('user_typing', (data) => {
-      // Handle user typing indicator here, e.g., set a typing state
-      setIsTyping(true);
+      if (data.conversation_id === selectedConversation?._id) {
+        setIsTyping(true);
+        setTypingUser(data.user_fullname); // Capture the user who's typing
+      }
     });
 
     socket.on('user_stopped_typing', (data) => {
       setIsTyping(false);
+      setTypingUser(''); // Clear typing user when they stop typing
     });
     // Cleanup on unmount
     return () => {
@@ -158,7 +166,7 @@ const Message: React.FC = () => {
     setLoading(false)
   }
 
-  const handleDeleteMessage = (index: any) => {
+  const DeleteMessage = (index: any) => {
     // Get the message to delete using the index
     const messageToDelete = chatHistory[index]
 
@@ -235,12 +243,13 @@ const Message: React.FC = () => {
       setMessage('');
       setIsTyping(false);
       socket.emit('stop_typing', { conversation_id: selectedConversation?._id });
+      setTypingUser('');
     }
   };
 
   const handleTyping = () => {
     setIsTyping(true);
-    socket.emit('typing', { conversation_id: selectedConversation?._id });
+    socket.emit('typing', { conversation_id: selectedConversation?._id, user_fullname: user.fullName });
 
     // Reset the typing timeout
     if (typingTimeoutRef.current) {
@@ -274,6 +283,30 @@ const Message: React.FC = () => {
       setChatHistory(messages);
     });
     markAllMessagesAsRead()
+  };
+
+  useEffect(() => {
+    if (selectedConversation) {
+      socket.emit('get_messages', { conversation_id: selectedConversation._id }, (messages: Message[]) => {
+        setChatHistory(messages);
+      });
+    }
+  })
+  const handleDeleteMessage = (index: any) => {
+    setMessageToDeleteIndex(index);
+    setShowDeleteModal(true);
+  };
+
+
+  const handleConfirmDelete = () => {
+    if (messageToDeleteIndex !== null) {
+      DeleteMessage(messageToDeleteIndex)
+      setShowDeleteModal(false); // Hide the modal after deletion
+    }
+
+  };
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false);
   };
 
   return (
@@ -370,6 +403,18 @@ const Message: React.FC = () => {
                           )}
 
                           {/* Edit & Delete Buttons (visible on hover) */}
+                          {showDeleteModal && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                              <div className="bg-white p-6 rounded-md text-center">
+                                <p className=' text-black'>Are you sure you want to delete this message?</p>
+                                <div className="mt-4 flex justify-center space-x-4">
+                                  <button onClick={handleCancelDelete} className="bg-primary text-white px-4 py-2 rounded-md">Cancel</button>
+                                  <button onClick={handleConfirmDelete} className="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
                           <div className="absolute top-1/2 -translate-y-1/2 right-2 hidden group-hover:flex space-x-2">
                             {msg.type === 'Text' && <button
                               className="text-sm bg-blue-500 hover:bg-blue-600 p-1 rounded"
@@ -384,7 +429,7 @@ const Message: React.FC = () => {
                               Delete
                             </button>
                           </div>
-                          <p className='text-xs my-auto float-right z-10'>{msg.read ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check2-all" viewBox="0 0 16 16">
+                          <p className='text-xs my-auto float-right z-10'>{msg.read ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" className="bi bi-check2-all" viewBox="0 0 16 16">
                             <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0" />
                             <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708" />
                           </svg> : <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check2" viewBox="0 0 16 16">
@@ -409,7 +454,7 @@ const Message: React.FC = () => {
                       )}
                     </div>
                   ))}
-                  {isTyping && <p className="italic text-gray-500">Someone is typing...</p>}
+                  {isTyping && <p className="italic text-gray-500">{typingUser} is typing...</p>}
                 </ul>
 
               </>
@@ -439,15 +484,27 @@ const Message: React.FC = () => {
                   className='lg:h-20 h-10 p-2 w-full'
                   placeholder='Write a message'
                 />
-                <div className='flex'>
+                <div className='flex justify-between'>
                   <input type="file" ref={uploadRef} className="hidden" onChange={(e) => handleImage(e)} />
-                  <button onClick={handleSendMessage} className='mt-2 lg:mt-0 border lg:p-2 p-1 bg-primary text-white'>
+
+                  <div className='flex'>
+                    <button onClick={() => uploadRef.current?.click()} className='p-2 rounded-full shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] w-10 h-10 bg-white flex justify-center'>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi my-auto bi-paperclip" viewBox="0 0 16 16">
+                        <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
+                      </svg>
+                    </button>
+
+                    {/* <Link href={`/${user.role === 'student' ? 'applicant' : user.role}/appointment`}> */}
+                    <button onClick={() => setOpen(true)} className='p-2 bg-white rounded-full shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] w-10 ml-4 h-10 flex justify-center'>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-workspace my-auto" viewBox="0 0 16 16">
+                        <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
+                        <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.4 5.4 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2z" />
+                      </svg>
+                    </button>
+                    {/* </Link> */}
+                  </div>
+                  <button onClick={handleSendMessage} className='mt-2 ml-3 lg:mt-0 border lg:p-2 p-1 bg-primary text-white'>
                     {loading ? '...' : 'Send'}
-                  </button>
-                  <button onClick={() => uploadRef.current?.click()} className='p-2 rounded-full shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] w-10 h-10 flex justify-center ml-6'>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi my-auto bi-plus" viewBox="0 0 16 16">
-                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                    </svg>
                   </button>
                 </div>
               </div>
@@ -455,6 +512,7 @@ const Message: React.FC = () => {
           ) : null}
         </div>
       </div>
+      <AppointmentModal to={selectedConversation?.participants[0]._id === userId ? selectedConversation?.participants[1]._id : selectedConversation?.participants[0]._id} open={open} handleClick={() => setOpen(false)} />
     </div>
   );
 };
@@ -482,3 +540,4 @@ function checkFileType(fileName: string) {
     return 'Unknown file type';
   }
 }
+
