@@ -5,6 +5,7 @@ import apiService from '@/utils/apiService';
 import React, { useEffect, useState } from 'react';
 import { notification } from 'antd';
 import AppointmentModal from '../modals/AppointmentModal';
+import JoinMeeting from '../JoinMeeting'
 
 const AppointmentView = () => {
   const [appointments, setAppointments] = useState([])
@@ -42,7 +43,7 @@ const AppointmentView = () => {
       {contextHolder}
       <div className='px-4 flex flex-wrap justify-between'>
 
-        {appointments.length >= 1 ? appointments.map((appointment: any) => <div key={appointment._id} className='p-3 border w-[32%] rounded-md'>
+        {appointments.length >= 1 ? appointments.map((appointment: any) => <div key={appointment._id} className='p-3 my-3 border w-[32%] rounded-md'>
           <div className='flex'>
             {appointment.from._id === user.id ? <>
               <img className='w-10 mr-2 h-10 rounded-full object-cover' src={appointment.to.profilePicture ? appointment.to.profilePicture : "/images/user.png"} alt="" />
@@ -59,17 +60,24 @@ const AppointmentView = () => {
             <p>Category: {appointment.category}</p>
             <p>Date: {appointment.date}</p>
             <p>Time: {appointment.time}</p>
-            <p>Location: {appointment.location}</p>
-            <p>Room: {appointment.room}</p>
+            {appointment.mode === 'in person' && <>
+              <p>Location: {appointment.location}</p>
+              <p>Room: {appointment.room}</p>
+            </>}
           </div>
-          {appointment.from._id === user.id && <div className='flex justify-between'>
-            <button onClick={() => setOpen(true)} className='bg-primary p-2 px-4 rounded-md mt-4'>
-              Edit
-            </button>
-            <button onClick={() => deleteAppointment()} className='bg-[#FF0000] text-white p-2 px-4 rounded-md mt-4'>
-              Delete
-            </button>
-          </div>}
+          <div className='flex justify-between'>
+
+            {appointment.from._id === user.id && <>
+              <button onClick={() => setOpen(true)} className='bg-primary p-2 px-4 rounded-md mt-4'>
+                Edit
+              </button>
+              <button onClick={() => deleteAppointment()} className='bg-[#FF0000] text-white p-2 px-4 rounded-md mt-4'>
+                Delete
+              </button>
+            </>}
+            {appointment.mode === 'online' && <JoinMeeting appointment={appointment} />}
+          </div>
+
           <AppointmentModal open={open} handleClick={() => { setOpen(false), getAppointments() }} to={appointment.to._id} data={appointment} />
         </div>) : <p>No active appointments!</p>}
       </div>

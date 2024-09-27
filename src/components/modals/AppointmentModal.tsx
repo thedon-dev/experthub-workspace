@@ -26,11 +26,14 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
   const user = useAppSelector((state) => state.value);
   const [loading, setLoading] = useState(false)
   const [availability, setAvailability] = useState<any>()
+  const [phone, setPhone] = useState("")
 
   const getTo = () => {
     apiService.get(`/appointment/availability/${to}`).then(function (response) {
-      // console.log(response.data)
+      console.log(response.data)
       setAvailability(response.data)
+      setRoom(response.data.room)
+      setLocation(response.data.location)
     }).catch(error => {
       console.log(error)
     })
@@ -43,6 +46,7 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
       room,
       date,
       time,
+      phone,
       reason,
       location,
       mode,
@@ -100,6 +104,7 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
       time,
       reason,
       location,
+      phone,
       mode,
       from: user.id,
       to
@@ -124,10 +129,10 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
       <div className='fixed top-10 bottom-10 left-0 overflow-y-auto rounded-md right-0 lg:w-[70%] w-[95%] mx-auto z-20 bg-[#F8F7F4]'>
         <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between'>
-          <div className='flex w-1/2 justify-between'>
+          <div className='flex w-[30%] justify-between mx-auto'>
             <p onClick={() => setSteps(0)} className={steps === 0 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Appointment</p>
             <p onClick={() => setSteps(1)} className={steps === 1 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Available Time</p>
-            <p onClick={() => setSteps(2)} className={steps === 2 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Location</p>
+            {/* <p onClick={() => setSteps(2)} className={steps === 2 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Location</p> */}
           </div>
           <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
         </div>
@@ -148,12 +153,16 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
                         {availability?.mode.map((single: any, index: any) => single.checked && <option key={index} className='capitalize' value={single.name}>{single.name}</option>)}
                       </> : <>
                         <option className='hidden' value="">Select Mode</option>
-                        <option value="oOnline">Online</option>
+                        <option value="online">Online</option>
                         <option value="in person">In Person</option>
                         <option value="phone">Phone</option>
                       </>}
                     </select>
                   </div>
+                  {mode === 'phone' && <>
+                    <label htmlFor="">Enter Your Phone Number</label>
+                    <input className='w-full border capitalize rounded-md p-3 bg-transparent' value={phone} onChange={(e) => setPhone(e.target.value)} type="number" />
+                  </>}
                   <div className='my-2'>
                     <div className='mb-2'>
                       <label htmlFor="">Appointment  Category</label>
@@ -178,8 +187,8 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
                 </div>
               case 1:
                 return <div>
-                  <p>Your Business Hours will prevent students and mentees from booking appointments with you outside these hours.</p>
-                  <p className='font-bold my-4'>Set your weekly hours</p>
+                  {/* <p>Your Business Hours will prevent students and mentees from booking appointments with you outside these hours.</p> */}
+                  <p className='font-bold my-4'>Select your available time for appointment</p>
                   <div className='flex justify-between'>
                     <div className='w-[49%]'>
                       <div className='mb-3'>
@@ -194,8 +203,10 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
                       <input value={time} onChange={(e) => setTime(e.target.value)} className='w-full border rounded-md p-3 bg-transparent' type="time" />
                     </div>
                   </div>
-                  <div className='flex justify-evenly w-44 mx-auto mt-6'>
-                    <button onClick={() => setSteps(2)} className='bg-[#FDC332] p-3 rounded-md px-6'>Next</button>
+                  <div className='flex justify-evenly mx-auto mt-6'>
+                    {data ? <button onClick={() => editAppointment()} className='bg-[#FDC332] p-3 rounded-md px-6'>{loading ? 'loading...' : 'Edit  Appointment'}</button>
+                      : <button onClick={() => createAppointment()} className='bg-[#FDC332] p-3 rounded-md px-6'>{loading ? 'loading...' : 'Create  Appointment'}</button>
+                    }
                     <button>Cancel</button>
                   </div>
                 </div>

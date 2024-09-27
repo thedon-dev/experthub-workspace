@@ -8,6 +8,9 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
   const [api, contextHolder] = notification.useNotification();
   const user = useAppSelector((state) => state.value);
   const [loading, setLoading] = useState(false)
+  const [location, setLocation] = useState('')
+  const [room, setRoom] = useState('')
+
   const [mode, setMode] = useState([
     {
       name: 'online',
@@ -63,7 +66,9 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
     setLoading(true)
     apiService.put(`/appointment/availability/${user.id}`, {
       days,
-      mode
+      mode,
+      room,
+      location
     }).then(function (response) {
       api.open({
         message: "Availability succesfully saved!",
@@ -98,8 +103,8 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
       <div className='fixed top-10 bottom-10 left-0 overflow-y-auto rounded-md right-0 lg:w-[70%] w-[95%] mx-auto z-20 bg-[#F8F7F4]'>
         <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between'>
           <div className='flex w-[40%] justify-between'>
-            <p className={steps === 0 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium'}>Mode of Appointment</p>
-            <p className={steps === 1 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium'}>Available Time</p>
+            <p onClick={() => setSteps(0)} className={steps === 0 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Mode of Appointment</p>
+            <p onClick={() => setSteps(1)} className={steps === 1 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Available Time</p>
           </div>
           <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
         </div>
@@ -109,14 +114,25 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
             switch (steps) {
               case 0:
                 return <div>
-                  <p>How will you want to cont. Setting your mode of Appointment will enable your client reach
-                    out to you either via online, by phone call or to your address</p>
+                  <p>Setting your mode of Appointment will enable your client reach
+                    out to you either via online, by phone call or your address</p>
                   <div className='mt-8'>
-                    <p>How many hours can you commit to your training a week?</p>
+                    {/* <p>How many hours can you commit to your training a week?</p> */}
                     {mode.map((single, index) => <div className='flex my-3'>
                       <input onChange={() => handleModeChange(index, 'checked', !single.checked)} type="checkbox" checked={single.checked} />
                       <p className='ml-2 capitalize'>{single.name}</p>
                     </div>)}
+                    {mode[1].checked && <>
+                      <p>Appointment Location</p>
+                      <div className='flex mt-4 justify-between'>
+                        <div className='w-[49%]'>
+                          <input onChange={(e) => setLocation(e.target.value)} value={location} className='w-full border rounded-md p-3 bg-transparent' placeholder='Place where this Event will be held' type="text" />
+                        </div>
+                        <div className='w-[49%]'>
+                          <input value={room} onChange={(e) => setRoom(e.target.value)} className='w-full border rounded-md p-3 bg-transparent' placeholder='Room No.' type="text" />
+                        </div>
+                      </div>
+                    </>}
 
                     {/* <div className='flex my-3'>
                       <input type="checkbox" />
@@ -129,7 +145,7 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
                   </div>
                   <div className='flex justify-evenly w-44 mx-auto mt-6'>
                     <button onClick={() => setSteps(1)} className='bg-[#FDC332] p-3 rounded-md px-6'>Next</button>
-                    <button>Cancel</button>
+                    <button onClick={() => handleClick()}>Cancel</button>
                   </div>
                 </div>
               case 1:
@@ -144,7 +160,7 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
                   </div>)}
                   <div className='flex justify-evenly mx-auto mt-6'>
                     <button onClick={() => updateAvailability()} className='bg-[#FDC332] p-3 rounded-md px-6'>{loading ? 'loading...' : 'Save'}</button>
-                    <button>Cancel</button>
+                    <button onClick={() => handleClick()}>Cancel</button>
                   </div>
                 </div>
             }

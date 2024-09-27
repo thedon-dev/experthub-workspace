@@ -120,12 +120,8 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
       setLoading(false)
       console.log(e);;
     })
-
-
-
-
-
   }
+  
   const enrollEvent = () => {
     try {
       apiService.put(`events/enroll/${course._id}`, {
