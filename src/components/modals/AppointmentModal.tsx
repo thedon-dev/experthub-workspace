@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { notification } from 'antd';
 import { useAppSelector } from '@/store/hooks';
 import apiService from '@/utils/apiService';
+import { useRouter } from "next/navigation";
 
 const dayMapping = {
   "Sunday": 0,
@@ -27,6 +28,7 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
   const [loading, setLoading] = useState(false)
   const [availability, setAvailability] = useState<any>()
   const [phone, setPhone] = useState("")
+  const router = useRouter();
 
   const getTo = () => {
     apiService.get(`/appointment/availability/${to}`).then(function (response) {
@@ -58,6 +60,7 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
       });
       console.log(response.data)
       handleClick()
+      router.push('/applicant/appointment')
       setLoading(false)
     }).catch(error => {
       console.log(error)
