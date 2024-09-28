@@ -132,14 +132,14 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
       <div className='fixed top-10 bottom-10 left-0 overflow-y-auto rounded-md right-0 lg:w-[70%] w-[95%] mx-auto z-20 bg-[#F8F7F4]'>
         <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between'>
-          <div className='flex w-[30%] justify-between mx-auto'>
+          <div className='flex lg:w-[30%] w-[70%] justify-between mx-auto'>
             <p onClick={() => setSteps(0)} className={steps === 0 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Appointment</p>
             <p onClick={() => setSteps(1)} className={steps === 1 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Available Time</p>
             {/* <p onClick={() => setSteps(2)} className={steps === 2 ? 'font-medium border-b border-[#DC9F08] pb-2' : 'font-medium cursor-pointer'}>Location</p> */}
           </div>
           <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
         </div>
-        <div className='w-1/2 mx-auto mt-10'>
+        <div className='lg:w-1/2 w-[90%] mx-auto mt-10'>
           {contextHolder}
           {(() => {
             switch (steps) {

@@ -473,7 +473,7 @@ const Message: React.FC = () => {
             />
             <button className='bg-primary text-white p-2' onClick={handleSaveEdit}>Edit</button>
           </div> : toUserId || selectedConversation ? (
-            selectedConversation?.blocked.isBlocked === false && <div className='p-4 fixed bottom-0 lg:left-[48%] left-0 right-0'>
+            selectedConversation?.blocked.isBlocked === false && <div className='p-4 fixed bg-white bottom-0 lg:left-[48%] left-0 right-0'>
               <div className='sm:flex sm:flex-col'>
                 <textarea
                   value={message}

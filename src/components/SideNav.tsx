@@ -384,7 +384,7 @@ const SideNav = () => {
       ),
     },
     {
-      href: "/tutor/appointment",
+      href: "/admin/appointment",
       name: "Appointments",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-workspace" viewBox="0 0 16 16">
