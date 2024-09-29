@@ -32,7 +32,7 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
 
   const getTo = () => {
     apiService.get(`/appointment/availability/${to}`).then(function (response) {
-      console.log(response.data)
+      // console.log(response.data)
       setAvailability(response.data)
       setRoom(response.data.room)
       setLocation(response.data.location)
