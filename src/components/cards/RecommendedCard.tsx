@@ -2,11 +2,12 @@ import { CourseType } from '@/types/CourseType';
 import React, { useState } from 'react';
 import CourseDetails from '../modals/CourseDetails';
 import ShareModal from '../modals/ShareModal';
+import AppointmentModal from '../modals/AppointmentModal';
 
 const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) => {
   const [open, setOpen] = useState(false)
   const [share, setShare] = useState(false)
-
+  const [appointment, setAppointment] = useState(false)
 
   return (
     <div className='lg:flex justify-between border p-3 my-3 lg:w-[49%] rounded-md border-[#1E1E1E75]'>
@@ -33,7 +34,7 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
           <div>
             <p className='text-xs my-1'>Students {course.enrolledStudents.length}</p>
             <div className='flex ml-1'>
-              {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture  ? course.profilePicture : '/images/user.png'} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+              {course.enrolledStudents.slice(0, 6).map(course => <img key={course._id} src={course.profilePicture ? course.profilePicture : '/images/user.png'} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
             </div>
           </div>
           <div></div>
@@ -44,8 +45,10 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
       <div className='lg:w-52 my-auto'>
         <button onClick={() => setOpen(true)} className='p-2 w-full my-1 bg-primary rounded-sm'>Enrol Now</button>
         <button onClick={() => setShare(true)} className='p-2 w-full bg-primary rounded-sm my-1'>Share</button>
+        <button onClick={() => setAppointment(true)} className='p-2 w-full bg-primary rounded-sm my-1'>Enquires</button>
       </div>
       <ShareModal open={share} course={course} handleClick={() => setShare(false)} />
+      <AppointmentModal open={appointment} handleClick={() => setAppointment(false)} to={course.instructorId} />
       <CourseDetails course={course} open={open} action={"Course"} type='enroll' call={call} handleClick={() => setOpen(false)} />
     </div>
 

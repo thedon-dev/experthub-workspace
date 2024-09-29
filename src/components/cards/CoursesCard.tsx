@@ -12,6 +12,8 @@ import { useAppSelector } from '@/store/hooks';
 import ImageViewer from '../ImageViewer';
 import Participants from '../Participants';
 import apiService from '@/utils/apiService';
+import AppointmentModal from '../modals/AppointmentModal';
+import { useRouter } from 'next/navigation';
 
 const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () => Promise<void> }) => {
   const pathname = usePathname()
@@ -23,6 +25,8 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
   const user = useAppSelector((state) => state.value);
   const [assign, setAssign] = useState(false)
   const [participants, setParticipants] = useState(false)
+  const [appointment, setAppointment] = useState(false)
+  const router = useRouter()
 
   const items: MenuProps['items'] = [
     {
@@ -66,6 +70,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       }
     ] : [])
   ];
+  
 
   const deleteCourse = async () => {
     apiService.delete(`/courses/delete/${course._id}`)
@@ -91,6 +96,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       {/* <img className="rounded-md w-full h-44 object-cover" src={course.thumbnail} alt="" /> */}
       <h3 className="font-medium my-3">{course.title}
         {pathname.includes("courses") && pathname.includes("admin") ? <Link href={`/admin/${course._id}?page=${course.type}`} ><button className='bg-primary p-2 rounded-md'>{course.type}</button> </Link> : pathname.includes("courses") ? <button onClick={() => setOpen(true)} className='bg-primary p-2 rounded-md'> {course.type === 'online' ? 'Join Live' : course.type}</button> : <button onClick={() => setOpen(true)} className='bg-primary p-2 rounded-md'>{course.type === 'online' ? 'Join Live' : course.type}</button>}  </h3>
+     
       <p className='text-xs'>{course.about.substring(0, 50)}...</p>
 
       <div className='flex justify-between my-3'>

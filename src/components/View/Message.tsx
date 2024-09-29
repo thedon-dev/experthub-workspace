@@ -382,7 +382,7 @@ const Message: React.FC = () => {
                   }
                 </div>
 
-                <ul className="mb-32">
+                <ul className="lg:mb-32 mb-52">
                   {chatHistory.map((msg: {
                     read: any; from: string; text: string | React.ReactNode; type: string; file?: string;
                   }, index: React.Key | null | undefined) => (
