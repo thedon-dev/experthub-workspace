@@ -415,7 +415,7 @@ const Message: React.FC = () => {
                             </div>
                           )}
 
-                          <div className="absolute top-1/2 -translate-y-1/2 right-2 hidden group-hover:flex space-x-2">
+                          <div className="absolute top-1/2 -translate-y-1/2 right-2 hidden lg:group-hover:flex space-x-2">
                             {msg.type === 'Text' && <button
                               className="text-sm bg-blue-500 hover:bg-blue-600 p-1 rounded"
                               onClick={() => { setEdit(true), setMessagetoEdit(index), setEditedText(msg.text) }}

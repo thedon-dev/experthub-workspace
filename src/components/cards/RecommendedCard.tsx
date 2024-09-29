@@ -44,8 +44,8 @@ const RecommendedCard = ({ course, call }: { course: CourseType, call: any }) =>
 
       <div className='lg:w-52 my-auto'>
         <button onClick={() => setOpen(true)} className='p-2 w-full my-1 bg-primary rounded-sm'>Enrol Now</button>
+        <button onClick={() => setAppointment(true)} className='p-2 w-full bg-primary rounded-sm my-1'>Enquire</button>
         <button onClick={() => setShare(true)} className='p-2 w-full bg-primary rounded-sm my-1'>Share</button>
-        <button onClick={() => setAppointment(true)} className='p-2 w-full bg-primary rounded-sm my-1'>Enquires</button>
       </div>
       <ShareModal open={share} course={course} handleClick={() => setShare(false)} />
       <AppointmentModal open={appointment} handleClick={() => setAppointment(false)} to={course.instructorId} />
