@@ -61,6 +61,7 @@ const Message: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [messageToDeleteIndex, setMessageToDeleteIndex] = useState<number | null>(null);
   const chatContainerRef = useRef<any>(null);
+  const lastScrollTop = useRef<number>(0); // Store the last scroll position
 
   useEffect(() => {
     // Receive chat history from server
@@ -104,17 +105,17 @@ const Message: React.FC = () => {
 
   useEffect(() => {
     const scrollToBottom = () => {
-      if (chatContainerRef.current) {
+      if (chatContainerRef.current && isTyping) {
         chatContainerRef.current.scroll({
           top: chatContainerRef.current.scrollHeight,
           behavior: 'smooth', // Add smooth scrolling effect
         });
       }
     };
-  
+
     scrollToBottom();
-  }, [isTyping]);
-  
+  }, [chatHistory, isTyping]);
+
 
   const startConversation = (to: string) => {
     const from = userId;
