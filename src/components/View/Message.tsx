@@ -361,7 +361,7 @@ const Message: React.FC = () => {
           ))}
         </ul>
       </div>
-      <div ref={chatContainerRef} className={`lg:w-[65%] w-full p-4 lg:h-[60vh] overflow-y-scroll ${selectedConversation ? 'sm:fixed sm:top-[70px] sm:h-[73vh] sm:left-0 sm:bg-white' : 'sm:hidden'}`}>
+      <div ref={chatContainerRef} className={`lg:w-[65%] w-full p-4 lg:h-[60vh] overflow-y-scroll ${selectedConversation ? 'sm:fixed sm:top-[70px] sm:h-[100vh] sm:left-0 sm:bg-white' : 'sm:hidden'}`}>
         <div>
 
           <div className='flex-1'>
@@ -397,7 +397,7 @@ const Message: React.FC = () => {
                   }
                 </div>
 
-                <ul className="">
+                <ul className="sm:mb-44">
                   {chatHistory.map((msg: {
                     read: any; from: string; text: string | React.ReactNode; type: string; file?: string;
                   }, index: React.Key | null | undefined) => (
