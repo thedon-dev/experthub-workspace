@@ -362,7 +362,7 @@ const Message: React.FC = () => {
           ))}
         </ul>
       </div>
-      <div ref={chatContainerRef} className={`lg:w-[65%] w-full p-4 lg:h-[60vh] sm:overflow-x-hidden overflow-y-scroll ${selectedConversation ? 'sm:fixed sm:top-[70px] sm:h-[80vh] sm:left-0 sm:bg-white' : 'sm:hidden'}`}>
+      <div ref={chatContainerRef} className={`lg:w-[65%] w-full p-4 lg:h-[60vh] sm:overflow-x-hidden overflow-y-scroll ${selectedConversation ? 'sm:fixed sm:top-[70px] sm:h-[100vh] sm:left-0 sm:bg-white' : 'sm:hidden'}`}>
         <div>
 
           <div className='flex-1'>

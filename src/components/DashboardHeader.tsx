@@ -54,7 +54,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   }
 
   const logout = async () => {
-    localStorage.removeItem("tid");
+    localStorage.clear();
     api.open({
       message: "Logged out Successfully!",
     });
