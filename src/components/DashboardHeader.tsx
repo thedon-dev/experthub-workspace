@@ -113,18 +113,25 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
             <p className='font-bold capitalize'>{user.fullName}</p>
           </div>
           <div className='flex lg:w-52 justify-between'>
-            <a href={`https://experthubllc.com/feeds?tid=${user.accessToken}`}>
-              <div>
+            <button className="text-[20px] mx-auto shadow-md rounded-full p-3 relative">
+              <a href={`https://experthubllc.com/feeds?tid=${user.accessToken}`}>
+                {/* <div> */}
                 <img src="/images/home.png" className='lg:w-6 sm:w-10 sm:h-10 mx-auto' alt="" />
-                <p className='sm:hidden'>Home</p>
-              </div>
-            </a>
-            <a className='my-auto' href="https://project.experthubllc.com/" target='_blank'>
-              <div className='my-auto'>
-                <img src="/images/project.png" className='lg:w-5 sm:w-8 my-auto sm:h-8 mx-auto' alt="" />
-                <p className='sm:hidden'>Project Manager</p>
-              </div>
-            </a>
+                {/* <p className='sm:hidden'>Home</p> */}
+                {/* </div> */}
+              </a>
+            </button>
+
+            <div>
+              <button className="text-[20px] mx-auto shadow-md rounded-full p-3 relative">
+                <a className='my-auto' href="https://project.experthubllc.com/" target='_blank'>
+                  <div className='my-auto'>
+                    <img src="/images/project.png" className='lg:w-5 sm:w-8 my-auto sm:h-8 mx-auto' alt="" />
+                  </div>
+                </a>
+              </button>
+              {/* <p className='sm:hidden'>Project Manager</p> */}
+            </div>
           </div>
         </div>
 

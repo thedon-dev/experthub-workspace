@@ -147,7 +147,7 @@ export default function Notifications() {
                                         markAsRead(data._id)
                                         setAnchorEl(null)
 
-                                    }} href={data.title === 'Message' ? user.role === "student" ? "/applicant/message" : `/${user.role}/message` : data.contentType !== "course" ? "/applicant/test/" + data.contentId : data.title === "Course assigned" ? user.role === "student" ? "/applicant" : "/courses" : data.title.endsWith("live") && data.contentInfo ? "/join-live" : user.role === "student" ? "/applicant" : `/${user.role}/courses`} className='text-primary'>
+                                    }} href={data.title === 'Appointment Booked' ? user.role === "student" ? "/applicant/appointment" : `/${user.role}/appointment` : data.title === 'Message' ? user.role === "student" ? "/applicant/message" : `/${user.role}/message` : data.contentType !== "course" ? "/applicant/test/" + data.contentId : data.title === "Course assigned" ? user.role === "student" ? "/applicant" : "/courses" : data.title.endsWith("live") && data.contentInfo ? "/join-live" : user.role === "student" ? "/applicant" : `/${user.role}/courses`} className='text-primary'>
                                         {data.title === "Course live" ? "Join Live" : "View"}
                                     </Link>
                                 </div>

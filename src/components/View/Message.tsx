@@ -382,82 +382,80 @@ const Message: React.FC = () => {
                   }
                 </div>
 
-                <div className=''>
-                  <ul className="">
-                    {chatHistory.map((msg: {
-                      read: any; from: string; text: string | React.ReactNode; type: string; file?: string;
-                    }, index: React.Key | null | undefined) => (
-                      <div key={index} className="relative group">
-                        {msg.from === userId ? (
-                          <li className="w-1/2 my-1 sm:text-sm bg-primary p-1 text-white rounded-md ml-auto relative">
-                            {msg.text !== null ? msg.text : msg.type === 'Image' ? (
-                              <img src={msg.file} alt="" />
-                            ) : msg.type === 'Video' ? (
-                              <video controls src={msg.file}></video>
-                            ) : (
-                              <div className="flex">
-                                <span className="text-3xl mr-3">📁</span>
-                                <a href={msg.file} download target="_blank" className="text-white my-auto">
-                                  Download
-                                </a>
-                              </div>
-                            )}
+                <ul className="">
+                  {chatHistory.map((msg: {
+                    read: any; from: string; text: string | React.ReactNode; type: string; file?: string;
+                  }, index: React.Key | null | undefined) => (
+                    <div key={index} className="relative group">
+                      {msg.from === userId ? (
+                        <li className="w-1/2 my-1 sm:text-sm bg-primary p-1 text-white rounded-md ml-auto relative">
+                          {msg.text !== null ? msg.text : msg.type === 'Image' ? (
+                            <img src={msg.file} alt="" />
+                          ) : msg.type === 'Video' ? (
+                            <video controls src={msg.file}></video>
+                          ) : (
+                            <div className="flex">
+                              <span className="text-3xl mr-3">📁</span>
+                              <a href={msg.file} download target="_blank" className="text-white my-auto">
+                                Download
+                              </a>
+                            </div>
+                          )}
 
-                            {/* Edit & Delete Buttons (visible on hover) */}
-                            {showDeleteModal && (
-                              <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                                <div className="bg-white p-6 rounded-md text-center">
-                                  <p className=' text-black'>Are you sure you want to delete this message?</p>
-                                  <div className="mt-4 flex justify-center space-x-4">
-                                    <button onClick={handleCancelDelete} className="bg-primary text-white px-4 py-2 rounded-md">Cancel</button>
-                                    <button onClick={handleConfirmDelete} className="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
-                                  </div>
+                          {/* Edit & Delete Buttons (visible on hover) */}
+                          {showDeleteModal && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                              <div className="bg-white p-6 rounded-md text-center">
+                                <p className=' text-black'>Are you sure you want to delete this message?</p>
+                                <div className="mt-4 flex justify-center space-x-4">
+                                  <button onClick={handleCancelDelete} className="bg-primary text-white px-4 py-2 rounded-md">Cancel</button>
+                                  <button onClick={handleConfirmDelete} className="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
                                 </div>
                               </div>
-                            )}
-
-                            <div className="absolute top-1/2 -translate-y-1/2 right-2 hidden lg:group-hover:flex space-x-2">
-                              {msg.type === 'Text' && <button
-                                className="text-sm bg-blue-500 hover:bg-blue-600 p-1 rounded"
-                                onClick={() => { setEdit(true), setMessagetoEdit(index), setEditedText(msg.text) }}
-                              >
-                                Edit
-                              </button>}
-                              <button
-                                className="text-sm bg-red-500 hover:bg-red-600 p-1 rounded"
-                                onClick={() => handleDeleteMessage(index)}
-                              >
-                                Delete
-                              </button>
                             </div>
-                            <p className='text-xs my-auto float-right z-10'>{msg.read ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" className="bi bi-check2-all" viewBox="0 0 16 16">
-                              <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0" />
-                              <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708" />
-                            </svg> : <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check2" viewBox="0 0 16 16">
-                              <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0" />
-                            </svg>}</p>
-                          </li>
-                        ) : (
-                          <li className="w-1/2 my-1 sm:text-sm">
-                            {msg.text !== null ? msg.text : msg.type === 'Image' ? (
-                              <img src={msg.file} alt="" />
-                            ) : msg.type === 'Video' ? (
-                              <video controls src={msg.file}></video>
-                            ) : (
-                              <div className="flex">
-                                <span className="text-3xl mr-3">📁</span>
-                                <a href={msg.file} download target="_blank" className="my-auto">
-                                  Download
-                                </a>
-                              </div>
-                            )}
-                          </li>
-                        )}
-                      </div>
-                    ))}
-                    {isTyping && <p className="italic text-gray-500">{typingUser} is typing...</p>}
-                  </ul>
-                </div>
+                          )}
+
+                          <div className="absolute top-1/2 -translate-y-1/2 right-2 hidden lg:group-hover:flex space-x-2">
+                            {msg.type === 'Text' && <button
+                              className="text-sm bg-blue-500 hover:bg-blue-600 p-1 rounded"
+                              onClick={() => { setEdit(true), setMessagetoEdit(index), setEditedText(msg.text) }}
+                            >
+                              Edit
+                            </button>}
+                            <button
+                              className="text-sm bg-red-500 hover:bg-red-600 p-1 rounded"
+                              onClick={() => handleDeleteMessage(index)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                          <p className='text-xs my-auto float-right z-10'>{msg.read ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" className="bi bi-check2-all" viewBox="0 0 16 16">
+                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0" />
+                            <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708" />
+                          </svg> : <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check2" viewBox="0 0 16 16">
+                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0" />
+                          </svg>}</p>
+                        </li>
+                      ) : (
+                        <li className="w-1/2 my-1 sm:text-sm">
+                          {msg.text !== null ? msg.text : msg.type === 'Image' ? (
+                            <img src={msg.file} alt="" />
+                          ) : msg.type === 'Video' ? (
+                            <video controls src={msg.file}></video>
+                          ) : (
+                            <div className="flex">
+                              <span className="text-3xl mr-3">📁</span>
+                              <a href={msg.file} download target="_blank" className="my-auto">
+                                Download
+                              </a>
+                            </div>
+                          )}
+                        </li>
+                      )}
+                    </div>
+                  ))}
+                  {isTyping && <p className="italic text-gray-500">{typingUser} is typing...</p>}
+                </ul>
 
               </>
             ) : <div className='w-1/2 mx-auto text-center'>
