@@ -45,12 +45,14 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
           {course.startTime && <p className='text-xs text-[#0ACF83]'>Time: {course.startTime}</p>}
         </div>
         <h3 className="font-medium text-xl my-2">{course.title} {course.type === "onlibe" ? <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>Join Live</button> : <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>{course.type}</button>}
-          <Dropdown
-            menu={{ items }}
-            trigger={["click"]}
-          >
-            <img className='w-4 h-4 my-auto cursor-pointer' src="/images/icons/edit-icon.svg" alt="" />
-          </Dropdown>
+          <button className='ml-2 my-auto'>
+            <Dropdown
+              menu={{ items }}
+              trigger={["click"]}
+            >
+              <img className='w-4 h-4 rotate-90 my-auto cursor-pointer' src="/images/icons/edit-icon.svg" alt="" />
+            </Dropdown>
+          </button>
         </h3>
         <p className='text-xs'>{course.about.substring(0, 70)}...</p>
       </div>
