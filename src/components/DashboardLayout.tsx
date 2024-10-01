@@ -30,7 +30,7 @@ const DashboardLayout = ({ children }: { children: any }) => {
 
   return (
     <main className='lg:flex'>
-      {user.fullName ? <ChatWidget /> : null}
+      {user.fullName && !pathname.includes('message') ? <ChatWidget /> : null}
       {/* <ChatWidget /> */}
       {
         toggle ? <div className='lg:w-[20%]'>
