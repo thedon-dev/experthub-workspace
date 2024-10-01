@@ -60,6 +60,7 @@ const Message: React.FC = () => {
   const [typingUser, setTypingUser] = useState("")
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [messageToDeleteIndex, setMessageToDeleteIndex] = useState<number | null>(null);
+  const chatContainerRef = useRef<any>(null);
 
   useEffect(() => {
     // Receive chat history from server
@@ -100,6 +101,20 @@ const Message: React.FC = () => {
       router.push(user.role === "student" ? "/applicant/message" : user.role === "admin" ? '/admin/message' : "/tutor/message")
     }
   }, [toUserId]);
+
+  useEffect(() => {
+    const scrollToBottom = () => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scroll({
+          top: chatContainerRef.current.scrollHeight,
+          behavior: 'smooth', // Add smooth scrolling effect
+        });
+      }
+    };
+  
+    scrollToBottom();
+  }, [chatHistory, isTyping]);
+  
 
   const startConversation = (to: string) => {
     const from = userId;
@@ -346,7 +361,7 @@ const Message: React.FC = () => {
           ))}
         </ul>
       </div>
-      <div className={`lg:w-[65%] w-full p-4 lg:h-[55vh] overflow-y-scroll ${selectedConversation ? 'sm:fixed sm:top-[70px] sm:h-screen sm:left-0 sm:bg-white' : 'sm:hidden'}`}>
+      <div ref={chatContainerRef} className={`lg:w-[65%] w-full p-4 lg:h-[60vh] overflow-y-scroll ${selectedConversation ? 'sm:fixed sm:top-[70px] sm:h-[73vh] sm:left-0 sm:bg-white' : 'sm:hidden'}`}>
         <div>
 
           <div className='flex-1'>
@@ -355,7 +370,7 @@ const Message: React.FC = () => {
                 <div className='flex'>
                   <button onClick={() => setSelectedConversation(null)} className='bg-primary rounded-full h-8 w-8 my-auto mr-4 p-2 lg:hidden sm:block text-white'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-left" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                      <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
                     </svg>
                   </button>
                   {
