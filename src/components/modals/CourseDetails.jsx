@@ -1,4 +1,3 @@
-import { CourseType } from '@/types/CourseType';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -97,6 +96,8 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
     setLoading(true)
     const { client, signature } = await initClient();
     console.log(signature, user);
+    console.log(course.meetingId, course.meetingPassword, course.zakToken);
+
     client.join({
       sdkKey: process.env.NEXT_PUBLIC_CLIENT_ID,
       signature,
@@ -121,7 +122,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
       console.log(e);;
     })
   }
-  
+
   const enrollEvent = () => {
     try {
       apiService.put(`events/enroll/${course._id}`, {
