@@ -84,18 +84,28 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
       });
     })
   }
-
-  const handleDaysInputChange = (index: number, field: string, value: string | number | boolean) => {
-    const updatedObjects = [...days];
-    updatedObjects[index] = { ...updatedObjects[index], [field]: value };
-    setDays(updatedObjects);
-  };
-
   const handleModeChange = (index: number, field: string, value: string | number | boolean) => {
     const updatedObjects = [...mode];
     updatedObjects[index] = { ...updatedObjects[index], [field]: value };
     setMode(updatedObjects);
   };
+
+  const handleDaysInputChange = (index: number, updates: Partial<typeof days[0]>) => {
+    setDays(prevDays =>
+      prevDays.map((day, i) => (i === index ? { ...day, ...updates } : day))
+    );
+  };
+
+  const handleChecked = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+
+    handleDaysInputChange(index, {
+      checked: isChecked,
+      startTime: isChecked ? '09:00:00' : '',
+      endTime: isChecked ? '17:00:00' : '',
+    });
+  };
+
 
   return (
     open ? <div>
@@ -152,11 +162,23 @@ const Availability = ({ open, handleClick }: { open: boolean, handleClick: any }
                 return <div>
                   <p>Select Appointment day and time</p>
                   {days.map((day: { checked: boolean | undefined; day: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; startTime: string | number | readonly string[] | undefined; endTime: string | number | readonly string[] | undefined; }, index: any) => <div key={index} className='flex justify-between my-1'>
-                    <input onChange={e => handleDaysInputChange(index, 'checked', e.target.checked)} checked={day.checked} type="checkbox" />
+                    <input onChange={e => {
+                      handleChecked(index, e)
+                    }} checked={day.checked} type="checkbox" />
                     <p className='w-24 my-auto'>{day.day}</p>
-                    <input value={day.startTime} onChange={e => handleDaysInputChange(index, 'startTime', e.target.value)} className={day.checked === true && day.startTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm' : 'py-1 px-2 rounded-sm'} type="time" />
-                    <p className='my-auto'>-</p>
-                    <input value={day.endTime} onChange={e => handleDaysInputChange(index, 'endTime', e.target.value)} className={day.checked === true && day.endTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm' : 'py-1 px-2 rounded-sm'} type="time" />
+                    <input
+                      value={day.startTime}
+                      onChange={e => handleDaysInputChange(index, { startTime: e.target.value })}
+                      className={`py-1 px-2 rounded-sm ${day.checked && !day.startTime ? 'border border-[#FF0000]' : ''}`}
+                      type="time"
+                    />
+                    <p className="my-auto">-</p>
+                    <input
+                      value={day.endTime}
+                      onChange={e => handleDaysInputChange(index, { endTime: e.target.value })}
+                      className={`py-1 px-2 rounded-sm ${day.checked && !day.endTime ? 'border border-[#FF0000]' : ''}`}
+                      type="time"
+                    />
                   </div>)}
                   <div className='flex justify-evenly mx-auto mt-6'>
                     <button onClick={() => updateAvailability()} className='bg-[#FDC332] p-3 rounded-md px-6'>{loading ? 'loading...' : 'Save'}</button>

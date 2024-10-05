@@ -86,7 +86,7 @@ const applicant = () => {
   return (
     <DashboardLayout>
 
-      <section className='p-4 lg:flex justify-between'>
+      <section className='p-4 lg:flex hidden justify-between'>
         <StatCard title='Total No of Courses' count={courses.length} bg='#27C2D6' img='clock-line' />
         <StatCard title='Module Assessments' count={assesments.length} bg='#DC9F08' img='ic_outline-assessment' />
         <StatCard title='Progress' count={"0%"} bg='#53C48C' img='game-icons_progression' />

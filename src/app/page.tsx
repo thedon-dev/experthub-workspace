@@ -159,7 +159,7 @@ export default function Home() {
               <div className="bg-[#1E1E1E] w-12 h-12 text-xl pt-[10px] text-white font-mediun text-center rounded-full">2</div>
               <div className="mt-4">
                 <h3 className="mb-3 font-medium">Specialized Training Modules</h3>
-                <p>Compac Consult is committed to offering a diverse
+                <p>Expert Hub Tranings is committed to offering a diverse
                   range of training modules that cater to the digital
                   ecosystem's multifaceted needs. Whether it's coding
                   data analysis, digital marketing, cybersecurity, or any
@@ -179,7 +179,7 @@ export default function Home() {
                   work on real-world projects, gaining hands-on skills in a
                   supervised environment. Additionally, we'll collaborate with
                   leading tech companies to offer internship opportunities and
-                  support in job placement through our platform 'ExpertHub LLC'
+                  support in job placement through our platform 'ExpertHub Trainings'
                   an International Company Registered in the state of New York,
                   USA. Our ultimate goal is to facilitate the placement of 30,000
                   technical talents across Nigeria (and beyond) in this first phase.</p>
@@ -262,7 +262,7 @@ export default function Home() {
                     Training</p>
                   <img src="/images/icons/mic.svg" alt="" />
                 </div>
-                <p className="text-white text-sm">Mentorship is the cornerstone of success in any field, and at Expert Hub LLC, we understand its importance. As you complete your training, we don't leave you hanging. We provide mentorship to guide you through your career path. Our mentors are seasoned professionals with a wealth of experience in their respective fields. They will offer insights, advice, and support to help you navigate the complexities of your chosen industry.</p>
+                <p className="text-white text-sm">Expert Hub Trainings is the cornerstone of success in any field, and at Expert Hub LLC, we understand its importance. As you complete your training, we don't leave you hanging. We provide mentorship to guide you through your career path. Our mentors are seasoned professionals with a wealth of experience in their respective fields. They will offer insights, advice, and support to help you navigate the complexities of your chosen industry.</p>
               </div>
             </div>
             <div className="lg:w-[32%] my-3 relative">
@@ -272,7 +272,7 @@ export default function Home() {
                   <p className="text-xl font-medium uppercase w-[60%]">Opportunities to Make Money</p>
                   <img src="/images/icons/mic.svg" alt="" />
                 </div>
-                <p className="text-white text-sm">At Expert Hub LLC, we're not just about learning; we're about application. As soon as you complete your training, we're thrilled to enlist you into our prestigious network of experts. What does this mean for you? It means you gain access to a diverse pool of businesses and clients looking for your expertise</p>
+                <p className="text-white text-sm">At Expert Hub Trainings, we're not just about learning; we're about application. As soon as you complete your training, we're thrilled to enlist you into our prestigious network of experts. What does this mean for you? It means you gain access to a diverse pool of businesses and clients looking for your expertise</p>
               </div>
             </div>
             <div className="lg:w-[32%] my-3 relative">

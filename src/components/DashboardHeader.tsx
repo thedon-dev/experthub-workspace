@@ -54,7 +54,7 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
   }
 
   const logout = async () => {
-    localStorage.removeItem("tid");
+    localStorage.clear();
     api.open({
       message: "Logged out Successfully!",
     });
@@ -113,18 +113,34 @@ const DashboardHeader = ({ setToggle }: { setToggle: () => void }) => {
             <p className='font-bold capitalize'>{user.fullName}</p>
           </div>
           <div className='flex lg:w-52 justify-between'>
-            <a href={`https://experthubllc.com/feeds?tid=${user.accessToken}`}>
-              <div>
-                <img src="/images/home.png" className='lg:w-6 sm:w-10 sm:h-10 mx-auto' alt="" />
-                <p className='sm:hidden'>Home</p>
-              </div>
-            </a>
-            <a className='my-auto' href="https://project.experthubllc.com/" target='_blank'>
-              <div className='my-auto'>
-                <img src="/images/project.png" className='lg:w-5 sm:w-8 my-auto sm:h-8 mx-auto' alt="" />
-                <p className='sm:hidden'>Project Manager</p>
-              </div>
-            </a>
+            <div className='text-center'>
+              <button className="text-[20px] mx-auto rounded-full p-3 relative">
+                <a href={`https://experthubllc.com/feeds?tid=${user.accessToken}`}>
+                  {/* <div> */}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-house" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
+                  </svg>
+                  {/* </div> */}
+                </a>
+              </button>
+              <p className='sm:hidden'>Home</p>
+            </div>
+
+            <div className='text-center'>
+              <button className="text-[20px] mx-auto rounded-full p-3 relative">
+                <a className='my-auto' href="https://project.experthubllc.com/" target='_blank'>
+                  <div className='my-auto'>
+                    {/* <img src="/images/project.png" className='lg:w-5 sm:w-8 my-auto sm:h-8 mx-auto' alt="" /> */}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi mx-autobi-journal-text" viewBox="0 0 16 16">
+                      <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+                      <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
+                      <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
+                    </svg>
+                  </div>
+                </a>
+              </button>
+              <p className='sm:hidden'>Project Manager</p>
+            </div>
           </div>
         </div>
 
