@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+'use client'
+
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { CategoryType, CourseType } from '@/types/CourseType';
 import { notification } from 'antd';
@@ -7,15 +9,23 @@ import { UserType } from '@/types/UserType';
 import { Spin } from 'antd';
 import AddResources from './AddResources';
 import apiService from '@/utils/apiService';
-
+import { useSearchParams } from 'next/navigation';
+import { useZoom } from '@/contexts/ZoomUserContext';
+import Play from '../icons/play';
+import Pause from '../icons/pause';
+import Video from '../icons/video';
+import Replace from '../icons/replace';
+import Bin from '../icons/bin';
+import { AxiosProgressEvent } from 'axios';
 
 const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
   const user = useAppSelector((state) => state.value);
+  // const { zoomUser } = useZoom()
+
   const uploadRef = useRef<HTMLInputElement>(null)
-  const videoRef = useRef<HTMLInputElement>(null)
   const pdfUploadRef = useRef<HTMLInputElement>(null)
   const [api, contextHolder] = notification.useNotification();
-
+  const searchParams = useSearchParams();
   const [active, setActive] = useState(0)
   const [about, setAbout] = useState(course?.about || "")
   const [startDate, setStartDate] = useState(course?.startDate || "")
@@ -38,7 +48,6 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
   const [room, setRoom] = useState(course?.room || "")
   const [loading, setLoading] = useState(false)
-  const [file, setFile] = useState<FileList | null>()
   const [students, setStudents] = useState([])
   const [scholarship, setScholarship] = useState([])
 
@@ -53,13 +62,20 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [pdf, setPdf] = useState("")
   let layout = {
     title: "",
-    videoUrl: ""
+    videoUrl: "",
+    video: null
   }
   let module = {
     title: "",
     description: ""
   }
   const [videos, setVideos] = useState(course?.videos || [layout])
+
+  const [uploadedCount, setUploadedCount] = useState(0);
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [uploading, setUploading] = useState(false)
+
+
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [modules, setModules] = useState(course?.modules || [module])
   const [benefits, setBenefits] = useState(course?.benefits || [""])
@@ -99,7 +115,59 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     endTime: "",
     checked: false
   }])
+  const [playingIndex, setPlayingIndex] = useState<number | null>(null)
 
+  const handlePlayClick = (index: number) => {
+    const video = document.querySelector(`video.video${index}`) as HTMLVideoElement;
+
+    if (video) {
+      if (video.paused) {
+        video.play();
+        setPlayingIndex(index)
+      } else {
+        video.pause();
+        setPlayingIndex(null)
+      }
+    }
+  };
+
+  const uploadVideo = async (index: number) => {
+    try {
+      const { video, videoUrl } = videos[index];
+
+      if (videoUrl.includes(`res.cloudinary.com`)) return;
+      if (!video) return;
+      const { data } = await apiService.get('courses/cloudinary/signed-url');
+      console.log(data);
+
+      const formData = new FormData();
+      formData.append('file', video);
+      formData.append('api_key', data.apiKey);
+      formData.append('timestamp', data.timestamp);
+      formData.append('signature', data.signature);
+
+      const { data: dataCloud } = await apiService.post(`https://api.cloudinary.com/v1_1/${data.cloudname}/video/upload`, formData, {
+        onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
+          setUploadProgress(percentCompleted);
+        }
+      });
+      console.log(dataCloud);
+
+      setUploadedCount(prev => prev + 1);
+      setVideos(prevVideos => {
+        const updatedVideos = [...prevVideos];
+        updatedVideos[index] = {
+          ...updatedVideos[index],
+          videoUrl: dataCloud.secure_url
+        };
+        return updatedVideos;
+      });
+    } catch (e) {
+      console.error(e, `\n from uploader`);
+      throw e
+    }
+  };
   const getCategories = () => {
     apiService.get('category/all').then(function (response) {
       // console.log(response.data)
@@ -133,22 +201,26 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     setVideos(updatedObjects);
   };
 
-
   const handleVideo = (e: React.ChangeEvent<HTMLInputElement>, index: any) => {
-
-    const files = e.target.files
-
-    const reader = new FileReader()
+    const files = e.target.files;
     if (files && files.length > 0) {
+      const updatedObjects = [...videos];
+      const videoUrl = URL.createObjectURL(files[0]);
+      updatedObjects[index] = { ...updatedObjects[index], video: files[0], videoUrl };
+      setVideos(updatedObjects);
 
-      reader.readAsDataURL(files[0])
-      reader.onloadend = () => {
-        if (reader.result) {
-          handleInputChange(index, 'videoUrl', reader.result as string)
-        }
-      }
     }
-  }
+
+  };
+  const removeVideo = (index: number) => {
+    const newVideos = videos.filter((_, i) => i !== index)
+    if (newVideos.length === 0) {
+      setVideos([...newVideos, layout])
+    } else {
+      setVideos([...newVideos])
+    }
+
+  };
 
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -235,56 +307,98 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   }
 
 
-  const add = () => {
-    if (title && about && duration && category && image && benefits.length > 1 && type === "offline" ? startDate && endDate && startTime && endTime && room && location : type === "online" ? startDate && endDate && startTime && endTime : type === "video" ? videos : pdf) {
-      setLoading(true)
-      apiService.post(`courses/add-course/${user.id}`,
-        {
-          asset: image,
-          title,
-          target,
-          about,
-          duration: duration.toString(),
-          type,
-          startDate,
-          endDate,
-          startTime,
-          endTime,
-          category: category === "" ? categoryIndex : category,
-          privacy,
-          fee: fee.toString(),
-          strikedFee: striked.toString(),
-          room,
-          modules,
-          location,
-          videos,
-          pdf,
-          days: days,
-          benefits,
-          scholarship: getScholarship()
+  const add = async () => {
+    // Your Zoom check logic, currently commented out
+    // if (zoomUser === null && type === online) {
+    //   setActive(1)
+    //   return api.open({
+    //     message: Please login with zoom to create a live course
+    //   });
+    // }
+    if (type === 'video') {
+      try {
+        console.log(videos.filter(video => video.video === null));
+
+        if (videos.filter(video => video.video === null).length > 0) {
+          return api.open({
+            message: `You must upload a video file to create this course`,
+          });
         }
-      )
+
+        setUploading(true);
+        console.log(videos);
+
+        await Promise.all(videos.map((_, index) => uploadVideo(index)));
+        setUploading(false);
+      } catch (e) {
+        console.error(e);
+        setUploading(false);
+        return api.open({
+          message: `Something went wrong during video upload`,
+        });
+      }
+    }
+
+
+
+    if (
+      title &&
+      about &&
+      duration &&
+      category &&
+      image &&
+      benefits.length >= 1 &&
+      (type === "offline" ? startDate && endDate && startTime && endTime && room && location :
+        type === "online" ? startDate && endDate && startTime && endTime :
+          type === "video" ? videos : pdf)
+    ) {
+      setLoading(true);
+      apiService.post(`courses/add-course/${user.id}`, {
+        asset: image,
+        title,
+        target,
+        about,
+        duration: duration.toString(),
+        type,
+        startDate,
+        endDate,
+        startTime,
+        endTime,
+        category: category === "" ? categoryIndex : category,
+        privacy,
+        fee: fee.toString(),
+        strikedFee: striked.toString(),
+        room,
+        modules,
+        location,
+        videos,
+        pdf,
+        days,
+        benefits,
+        scholarship: getScholarship(),
+      })
         .then(function (response) {
           api.open({
-            message: "Course succesfully created!",
+            message: "Course successfully created!",
           });
-          console.log(response.data)
-          setLoading(false)
-          setResource(true)
-          handleClick()
-        }).catch(error => {
-          console.log(error)
-          api.open({
-            message: error.response.data.message
-          });
+          console.log(response.data);
+          setLoading(false);
+          setResource(true);
+          handleClick();
         })
+        .catch(error => {
+          console.log(error);
+          setLoading(false);
+          api.open({
+            message: error.response.data.message,
+          });
+        });
     } else {
       api.open({
-        message: "Please fill all fields!"
+        message: "Please fill all fields!",
       });
     }
-  }
-
+  };
   useEffect(() => {
     getStudents()
     getCategories()
@@ -301,6 +415,18 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     const newArray = modules.filter((item: any, index: any) => index !== targetIndex);
     setModules(newArray)
   }
+
+
+
+  useEffect(() => {
+    const open = searchParams.get(`open`)
+    if (open) {
+      handleClick()
+    }
+  }, [searchParams])
+
+
+
 
   return (
     open ? <div>
@@ -439,12 +565,26 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                       <div className='flex justify-between mt-6 my-1'>
                         <div className='w-[48%]'>
                           <label className='text-sm font-medium my-1'>Course type</label>
-                          <select onChange={e => setType(e.target.value)} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                          <select onChange={e => { setType(e.target.value) }} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                             <option value="offline">Offline</option>
                             <option value="online">Live</option>
                             <option value="video">Video</option>
                             <option value="pdf">PDF</option>
                           </select>
+                          {/* {type === "online" && <>
+                            {
+                              zoomUser === null ? (
+                                <p className="text-red-500 text-sm my-2">
+                                  You need to sign in with Zoom to create a live course.
+                                  <button onClick={handleZoomLogin} className="text-blue-600 underline">Sign in with Zoom</button>
+                                </p>
+                              ) : <div className=' text-sm'>
+                                Zoom account - <span className='font-medium'>{zoomUser.email}</span>
+                                <button onClick={handleZoomLogin} className="text-blue-600 underline flex text-[12px]">Switch Account</button>
+                              </div>
+                            }
+
+                          </>} */}
                         </div>
 
                         <div className='w-[48%]'>
@@ -531,18 +671,44 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                                 onChange={(e) => handleVideo(e, index)}
                                 type="file"
                                 name="identification"
-                                accept="/*"
-                                ref={videoRef}
+                                accept="video/*"
+                                id={`video${index}`}
                                 hidden
                                 multiple={false}
                               />
-                              <div className='flex cursor-pointer' onClick={() => videoRef.current?.click()}>
-                                <img className='w-5 h-5 my-auto mr-2' src="/images/icons/charm_camera-video.svg" alt="" />
-                                <p className='text-sm'>{video.videoUrl === "" ? "Add Video to Sub-title" : video.videoUrl.slice(0, 20)}</p>
-                              </div>
+                              <label className='flex cursor-pointer h-full   ' htmlFor={`video${index}`} >
+
+                                {
+                                  video.videoUrl === "" ? <div className='w-full gap-1 flex items-center'>
+                                    <span className='text-primary text-[18px]'><Video /></span>
+                                    <span className='text-sm'>Add Video to Sub-title</span>
+                                  </div> : <div className='relative w-[250px] group  h-full'>
+
+                                    <video key={video.videoUrl} className={`rounded-lg w-full video${index}`} width="250" >
+                                      <source src={video.videoUrl} type="video/mp4" />
+                                    </video>
+                                    <div className='absolute inset-0 bg-[rgb(0,0,0,0.3)] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-90 group-hover:scale-100 flex justify-center gap-2 items-center'>
+                                      <button className='text-primary text-[40px] transform scale-75 group-hover:scale-100 transition-transform duration-300' onClick={(e) => { e.stopPropagation(); e.preventDefault(); handlePlayClick(index) }}>
+                                        {playingIndex === index ? <Pause /> : <Play />}
+                                      </button>
+
+                                    </div>
+                                    <div className='absolute bg-[rgb(0,0,0,0.3)] bottom-0 w-full transform scale-0 group-hover:scale-100 transition-transform duration-300'>
+                                      <div className='px-3 py-1.5 flex items-center gap-3'>
+                                        <label title='Change Video' htmlFor={`video${index}`} className='cursor-pointer text-white hover:text-gray text-[13px]'><Replace /></label>
+                                        <button className='text-white hover:text-red-400 text-[13px]' title='remove video' onClick={(e) => { e.stopPropagation(); e.preventDefault(); removeVideo(index) }}><Bin /></button>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                }
+
+
+                                {/* <p className='text-sm'>{video.videoUrl === "" ?  : video.videoUrl.slice(0, 20)}</p> */}
+                              </label>
                             </div>)
                           }
-                          <button className='px-3 font-medium' onClick={() => setVideos([...videos, layout])}>Add </button>
+                          <button className='px-3 bg-gray rounded-md py-1 mt-4 font-medium' onClick={() => setVideos([...videos, layout])}>Add Videos </button>
                         </>
                       }
 
@@ -588,7 +754,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                           <textarea onChange={e => handleModulesInputChange(index, 'description', e.target.value)} value={single.description} className='h-18 border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'></textarea>
                         </div>
                       </div>)}
-                      <button onClick={() => setModules([...modules, module])} className='bg-primary p-2 rounded-md'>Add</button>
+                      <button onClick={() => setModules([...modules, module])} className='bg-primary py-2 px-5 rounded-md'>Add</button>
                     </div>
                   default:
                     return null
@@ -597,8 +763,20 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
               <div>
                 <p className='text-sm my-4'>By uploading you agree that this course is a product of you
                   and not being forged<input className='ml-2' type="checkbox" /></p>
+
+                {
+                  (type === `video` && uploading) && <div className='flex  flex-col mb-5 '>
+                    <h3>Video Upload</h3>
+                    <div className='mt-3'>
+                      <div className='w-full bg-gray p-0.5 rounded-md'>
+                        <div style={{ width: `${uploadProgress}%` }} className='bg-primary h-2 rounded-md'></div>
+                      </div>
+                      <p className='text-[14px] text-slate-500'>Uploaded {uploadedCount} of {videos.length} videos.</p>
+                    </div>
+                  </div>
+                }
                 <div className='flex'>
-                  {course === null ? active === 3 ? <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Add Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button> : active === 3 ? <button onClick={() => edit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Edit Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
+                  {course === null ? active === 3 ? <button disabled={uploading} onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Add Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button> : active === 3 ? <button onClick={() => edit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Edit Course"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
                   <button onClick={() => handleClick()} className='mx-4'>Cancel</button>
                 </div>
               </div>
