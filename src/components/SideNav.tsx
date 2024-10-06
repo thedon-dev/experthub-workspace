@@ -443,7 +443,7 @@ const SideNav = () => {
     window.location.href = "/auth/login";
   };
   return (
-    <aside className="h-screen fixed lg:w-[20%] z-100 w-full bg-[#F8F7F4] sm:mt-4 shadow-md p-6">
+    <aside className="h-screen fixed lg:w-[20%] lg:z-10 z-100 w-full bg-[#F8F7F4] sm:mt-4 shadow-md p-6">
       {contextHolder}
       <h3 className="font-bold text-lg text-[#DC9F08]">EXPERTHUB INSTITUTE</h3>
       <div className="flex-1 flex flex-col h-full my-6 overflow-auto">
