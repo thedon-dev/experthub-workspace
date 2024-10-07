@@ -245,7 +245,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                       </div>
                       <div className='flex justify-between my-1'>
                         <div className='w-full'>
-                          <label className='text-sm font-medium my-1'>Course Category</label>
+                          <label className='text-sm font-medium my-1'>Event Category</label>
                           <select onChange={e => setCategoryIndex(e.target.value)} value={categoryIndex} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                             <option className='hidden' value="">Select Category</option>
                             {categories.map((single, index) => <option key={index} value={single.category}>{single.category}</option>)}
@@ -341,7 +341,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                       <div className='my-1'>
                         <label className='text-sm font-medium my-1'>Event Fee</label>
                         <input onChange={e => setFee(parseInt(e.target.value))} value={fee} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
-                        <p className='text-xs'>Set course fee to 0 for a free course</p>
+                        <p className='text-xs'>Set event fee to 0 for a free course</p>
                       </div>
                       <div className='my-1'>
                         <label className='text-sm font-medium my-1'>Who attends this event for free (Scholarship)</label>
@@ -363,7 +363,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                 }
               })()}
               <div>
-                <p className='text-sm my-4'>By uploading you agree that this course is a product of you
+                <p className='text-sm my-4'>By uploading you agree that this event is a product of you
                   and not being forged<input className='ml-2' type="checkbox" /></p>
                 <div className='flex'>
                   {course === null ? active === 2 ? <button onClick={() => add()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Create Event"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button> : active === 2 ? <button onClick={() => edit()} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>{loading ? <Spin /> : "Edit Event"}</button> : <button onClick={() => setActive(active + 1)} className='p-2 bg-primary font-medium w-40 rounded-md text-sm'>Next</button>}
