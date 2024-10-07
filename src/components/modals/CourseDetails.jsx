@@ -246,7 +246,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                 <p className='font-medium capitalize'>{action} Details</p>
                 <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
               </div>
-              <div className='py-4 lg:px-10 px-4'>
+              <div className='py-4 lg:px-10 px-4 '>
                 <div className='lg:flex justify-between'>
                   <div className='lg:w-[40%]'>
                     <ImageViewer image={course.thumbnail} />
