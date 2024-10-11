@@ -220,7 +220,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
 
     const startTime = dayjs(course.startDate);
     const endTime = dayjs(course.endDate);
-    console.log(startTime.format(), endTime.format(), currentDate.format(), course.title);
+    // console.log(startTime.format(), endTime.format(), currentDate.format(), course.title);
 
     const isStarted = currentDate.isSameOrAfter(startTime);
     const isEnded = currentDate.isAfter(endTime);
