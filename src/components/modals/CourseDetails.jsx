@@ -8,6 +8,9 @@ import { Fade, Slide } from '@mui/material';
 import ImageViewer from '../ImageViewer';
 import PaymentModal from '../modals/PaymentModal'
 import apiService from '@/utils/apiService';
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+dayjs.extend(isSameOrAfter)
 
 const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   const user = useAppSelector((state) => state.value);
@@ -213,26 +216,28 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   }
 
   const isOn = () => {
-    let currentDate = new Date();
-    let startTime = new Date(`${course.startDate} ${course.startTime}`);
-    let endTime = new Date(`${course.endDate} ${course.endTime}`);
+    const currentDate = dayjs();
 
-    let isStarted = currentDate >= startTime;
-    let isEnded = currentDate > endTime;
-    let on = false
-    let msg
+    const startTime = dayjs(course.startDate);
+    const endTime = dayjs(course.endDate);
+    console.log(startTime.format(), endTime.format(), currentDate.format(), course.title);
+
+    const isStarted = currentDate.isSameOrAfter(startTime);
+    const isEnded = currentDate.isAfter(endTime);
+    let on = false;
+    let msg;
+
     if (isStarted && !isEnded) {
-      on = true
-      msg = "ongoing"
+      on = true;
+      msg = "ongoing";
     } else if (!isStarted) {
-
-      msg = "notStarted"
-
+      msg = "notStarted";
     } else {
-      msg = "ended"
+      msg = "ended";
     }
-    return { on, msg }
-  }
+
+    return { on, msg };
+  };
 
   return (
     <>
@@ -281,7 +286,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                           <p className='text-sm'>Certificate of completion</p>
                         </div>}
                       </div>
-
+                      {course.startTime}
                       {
                         type === "view" ? course.type === "online" ? isOn().on ? <button onClick={() => startMeeting()} className='bg-primary p-2 my-3 rounded-md px-8 w-[150px]'>{loading ? <Spin /> : "Join Live"}</button> : null : user.role !== 'student' ?
                           <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> :

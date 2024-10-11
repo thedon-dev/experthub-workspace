@@ -9,15 +9,17 @@ import { UserType } from '@/types/UserType';
 import { Spin } from 'antd';
 import AddResources from './AddResources';
 import apiService from '@/utils/apiService';
-import { useSearchParams } from 'next/navigation';
-import { useZoom } from '@/contexts/ZoomUserContext';
 import Play from '../icons/play';
 import Pause from '../icons/pause';
 import Video from '../icons/video';
 import Replace from '../icons/replace';
 import Bin from '../icons/bin';
 import { AxiosProgressEvent } from 'axios';
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween'
 
+
+dayjs.extend(isBetween)
 const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
   const user = useAppSelector((state) => state.value);
   // const { zoomUser } = useZoom()
@@ -25,12 +27,11 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const uploadRef = useRef<HTMLInputElement>(null)
   const pdfUploadRef = useRef<HTMLInputElement>(null)
   const [api, contextHolder] = notification.useNotification();
-  const searchParams = useSearchParams();
   const [active, setActive] = useState(0)
   const [about, setAbout] = useState(course?.about || "")
-  const [startDate, setStartDate] = useState(course?.startDate || "")
+  const [startDate, setStartDate] = useState(course?.startDate || dayjs().format('YYYY-MM-DD'))
   const [endDate, setEndDate] = useState(course?.endDate.toString() || "")
-  const [startTime, setStartTime] = useState(course?.startTime || "")
+  const [startTime, setStartTime] = useState(course?.startTime || dayjs().format('HH:mm'))
   const [endTime, setEndTime] = useState(course?.endTime || "")
   const [striked, setStriked] = useState<number>(course?.strikedFee || 0)
   const [fee, setFee] = useState<number>(course?.fee || 0)
@@ -77,6 +78,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
 
   const [categories, setCategories] = useState<CategoryType[]>([])
+
   const [modules, setModules] = useState(course?.modules || [module])
   const [benefits, setBenefits] = useState(course?.benefits || [""])
   const [days, setDays] = useState(course?.days || [{
@@ -115,6 +117,8 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     endTime: "",
     checked: false
   }])
+
+
   const [playingIndex, setPlayingIndex] = useState<number | null>(null)
 
   const handlePlayClick = (index: number) => {
@@ -170,7 +174,6 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   };
   const getCategories = () => {
     apiService.get('category/all').then(function (response) {
-      // console.log(response.data)
       setCategories(response.data.category)
     }).catch(error => {
       console.log(error)
@@ -308,13 +311,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
 
   const add = async () => {
-    // Your Zoom check logic, currently commented out
-    // if (zoomUser === null && type === online) {
-    //   setActive(1)
-    //   return api.open({
-    //     message: Please login with zoom to create a live course
-    //   });
-    // }
+
     if (type === 'video') {
       try {
         console.log(videos.filter(video => video.video === null));
@@ -404,6 +401,8 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     getCategories()
   }, [])
 
+
+
   const formattedOptions = students.map((option: UserType) => ({ value: option.studentId, label: option.fullname }));
 
   const removeBenefits = (targetIndex: any) => {
@@ -419,11 +418,20 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
 
   useEffect(() => {
-    const open = searchParams.get(`open`)
-    if (open) {
-      handleClick()
+    if (type === 'online' && startTime) {
+      const [hours, minutes] = startTime.split(':');
+      const startDateIn = new Date(new Date(startDate).setHours(parseInt(hours), parseInt(minutes)));
+      const endDateIn = new Date()
+      endDateIn.setTime(startDateIn.getTime() + ((duration || 1) * 60000))
+      setEndTime(dayjs(endDateIn).format('HH:mm'));
+      setEndDate(dayjs(endDateIn).format('YYYY-MM-DD'));
+    } else {
+      setDuration(0);
     }
-  }, [searchParams])
+    if (duration > 40) {
+      setDuration(40);
+    }
+  }, [type, startTime, duration]);
 
 
 
@@ -564,8 +572,8 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                       </div> */}
                       <div className='flex justify-between mt-6 my-1'>
                         <div className='w-[48%]'>
-                          <label className='text-sm font-medium my-1'>Course type</label>
-                          <select onChange={e => { setType(e.target.value) }} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                          <label className='text-sm font-medium my-1 inline-flex items-center'>Course type</label>
+                          <select onChange={e => { setType(e.target.value) }} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2.5 bg-transparent'>
                             <option value="offline">Offline</option>
                             <option value="online">Live</option>
                             <option value="video">Video</option>
@@ -588,8 +596,12 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         </div>
 
                         <div className='w-[48%]'>
-                          <label className='text-sm font-medium my-1'>Duration</label>
-                          <input onChange={e => setDuration(parseInt(e.target.value))} value={duration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                          <label className='text-sm font-medium my-1 inline-flex items-center gap-1'>Duration {
+                            type === `online` && <>
+                              - <span className='text-orange-500 leading-3 font-thin text-[12px]'>{process.env.NEXT_PUBLIC_MEETING_DURATION}min max for Live</span>
+                            </>
+                          } </label>
+                          <input onChange={e => setDuration(parseInt(e.target.value))} max={type === 'online' ? parseFloat(process.env.NEXT_PUBLIC_MEETING_DURATION as string) : undefined} value={duration} type="number" className='border disabled:cursor-not-allowed rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent ' />
                         </div>
 
                       </div>
@@ -597,21 +609,21 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         <div className='flex justify-between my-1'>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>Start date</label>
-                            <input onChange={e => setStartDate(e.target.value)} value={startDate} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                            <input onChange={e => setStartDate(e.target.value)} value={startDate} min={new Date().toISOString().split('T')[0]} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                           </div>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>End date</label>
-                            <input onChange={e => setEndDate(e.target.value)} value={endDate} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                            <input onChange={e => setEndDate(e.target.value)} readOnly disabled value={endDate} min={new Date().toISOString().split('T')[0]} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
                           </div>
                         </div>
                         <div className='flex justify-between my-1'>
                           <div className='w-[48%]'>
-                            <label className='text-sm font-medium my-1'>Start time</label>
+                            <label className='text-sm font-medium my-1 inline-flex items-center'>Start time</label>
                             <input onChange={e => setStartTime(e.target.value)} value={startTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                           </div>
                           <div className='w-[48%]'>
-                            <label className='text-sm font-medium my-1'>End time</label>
-                            <input onChange={e => setEndTime(e.target.value)} value={endTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                            <label className='text-sm font-medium my-1 inline-flex items-center justify-center gap-1'>End time </label>
+                            <input onChange={e => setEndTime(e.target.value)} value={endTime} disabled readOnly min={new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} type="time" className='border rounded-md w-full disabled:cursor-not-allowed border-[#1E1E1ED9] disabled:border-[#bdbcbc] disabled:text-[#acabab] p-2 bg-transparent' />
                           </div>
                         </div>
                       </> : null}
@@ -619,11 +631,11 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         <div className='flex justify-between my-1'>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>Start date</label>
-                            <input onChange={e => setStartDate(e.target.value)} value={startDate} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                            <input onChange={e => setStartDate(e.target.value)} value={startDate} type="date" min={new Date().toISOString().split('T')[0]} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                           </div>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>End date</label>
-                            <input onChange={e => setEndDate(e.target.value)} value={endDate} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                            <input onChange={e => setEndDate(e.target.value)} value={endDate} type="date" min={new Date().toISOString().split('T')[0]} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                           </div>
                         </div>
                         <div className='flex justify-between my-1'>
