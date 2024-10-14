@@ -1,6 +1,8 @@
 "use client"
 
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setUser } from '@/store/slices/userSlice';
+import apiService from '@/utils/apiService';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -10,6 +12,51 @@ const HeaderNav = () => {
   const user = useAppSelector((state) => state.value);
   const router = useRouter()
   const pathname = usePathname()
+  const dispatch = useAppDispatch();
+
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("tid");
+    const searchParams = new URLSearchParams(window.location.search);
+
+    if (searchParams.has("tid")) {
+      const urlToken = searchParams.get("tid");
+      if (urlToken === storedToken) {
+        searchParams.delete("tid");
+        const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+        window.history.replaceState(null, '', newUrl);
+      } else {
+        apiService
+          .post("auth/login-with-token", { accessToken: urlToken })
+          .then(({ data }) => {
+            dispatch(
+              setUser({
+                ...data.user,
+                accessToken: data.accessToken,
+              })
+            );
+            localStorage.setItem("tid", data.token);
+
+            searchParams.delete("tid");
+            const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+            window.history.replaceState(null, "", newUrl);
+            router.push(
+              data.user.role === "student"
+                ? "/applicant"
+                : data.user.role === "admin"
+                  ? "/admin"
+                  : data.user.role === "tutor"
+                    ? "/tutor"
+                    : ''
+            );
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+    } else if (!storedToken) {
+      window.location.href = "/";
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     if (user.role === "student" && !pathname.includes('applicant')) {
