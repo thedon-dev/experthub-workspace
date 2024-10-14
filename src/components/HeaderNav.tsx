@@ -54,9 +54,9 @@ const HeaderNav = () => {
       }
 
     } else if (!storedToken) {
-      window.location.href = "/";
+      window.location.href = "/auth/login";
     }
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (user.role === "student" && !pathname.includes('applicant')) {
