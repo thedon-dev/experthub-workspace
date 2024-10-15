@@ -63,3 +63,23 @@ button:focus {
     transform: rotate(360deg);
   }
 }
+
+.loader2 {
+  width: 20px;
+  height: 20px;
+  border: 1.8px solid #FFF;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation2 1s linear infinite;
+  }
+
+  @keyframes rotation2 {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+  } 

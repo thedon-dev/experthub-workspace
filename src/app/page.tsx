@@ -10,6 +10,7 @@ import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
 import { CourseType } from "@/types/CourseType";
 import apiService from "@/utils/apiService";
+import Loader from "@/components/Loader";
 
 export default function Home() {
   const text = `Ans: We are determine to raise the next generation of Global leaders and empower youths to harness the immense potential of technology to overcome the challenges our planet faces, including its dwindling economy.
@@ -298,6 +299,7 @@ export default function Home() {
         </section>
       </main>
       <FooterNav />
+
     </Fragment>
   )
 }
