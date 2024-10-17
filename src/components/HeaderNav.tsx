@@ -17,11 +17,9 @@ const HeaderNav = () => {
   useEffect(() => {
     const storedToken = localStorage.getItem("tid");
     const searchParams = new URLSearchParams(window.location.search);
-
+    
     if (searchParams.has("tid")) {
       const urlToken = searchParams.get("tid");
-      if (urlToken === storedToken) return;
-      localStorage.clear();
       apiService
         .post("auth/login-with-token", { accessToken: urlToken })
         .then(({ data }) => {
