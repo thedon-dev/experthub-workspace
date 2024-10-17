@@ -104,7 +104,7 @@ button:focus {
   } 
 
   .loader3 {
-    color: #FFF;
+    color: #000;
     display: inline-block;
     position: relative;
     font-size: 16px;
