@@ -116,7 +116,7 @@ button:focus {
     width: 3px;
     height: 3px;
     border-radius: 50%;
-    background: currentColor;
+    background: #000;
     position: absolute;
     bottom: 5px;
     right: -5px;
@@ -129,10 +129,10 @@ button:focus {
       box-shadow: 10px 0 rgba(255, 255, 255, 0), 20px 0 rgba(255, 255, 255, 0);
     }
     50% {
-      box-shadow: 10px 0 white, 20px 0 rgba(255, 255, 255, 0);
+      box-shadow: 10px 0 black, 20px 0 rgba(255, 255, 255, 0);
     }
     100% {
-      box-shadow: 10px 0 white, 20px 0 white;
+      box-shadow: 10px 0 black, 20px 0 black;
     }
   }
   
