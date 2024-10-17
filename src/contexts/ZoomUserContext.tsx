@@ -20,23 +20,23 @@ export const ZoomProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const user = useAppSelector((state) => state.value);
 
-  useEffect(() => {
-    const verifyUser = async () => {
-      try {
-        const { data } = await apiService.get('auth/zoom/verify', { params: { userId: user.id } });
-        console.log(data);
+  // useEffect(() => {
+  //   const verifyUser = async () => {
+  //     try {
+  //       const { data } = await apiService.get('auth/zoom/verify', { params: { userId: user.id } });
+  //       console.log(data);
 
-        setZoomUser(data);
-      } catch (e) {
-        console.log(e);
+  //       setZoomUser(data);
+  //     } catch (e) {
+  //       console.log(e);
 
-        setZoomUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-    verifyUser();
-  }, []);
+  //       setZoomUser(null);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   verifyUser();
+  // }, []);
 
   return (
     <ZoomContext.Provider value={{ zoomUser, setZoomUser, loading }}>
