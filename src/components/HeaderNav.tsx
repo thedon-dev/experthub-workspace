@@ -59,14 +59,10 @@ const HeaderNav = () => {
         .catch((error) => { console.error("Error:", error); router.push(`/auth/login`) });
     } else if (!storedToken) {
       window.location.href = "/auth/login";
-    } else
-
-
+    }
   }, []);
 
-  useEffect(() => {
 
-  }, [])
   return (
     <header className='absolute p-2 top-0 lg:w-[80%] left-0 right-0 mx-auto border-b border-white flex justify-between'>
       <div className='flex'>
