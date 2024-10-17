@@ -64,10 +64,29 @@ button:focus {
   }
 }
 
+.loader{
+  font-size: 48px;
+  color: #FFF;
+  display: inline-block;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  position: relative;
+}
+.loader:after{
+  content: '';
+  height: 4px;
+  width:0%;
+  display: block;
+  background: #FF3D00;
+  animation: 5s lineGrow linear infinite;
+}
+
+@keyframes lineGrow {to{width: 100%;}}
+
 .loader2 {
-  width: 20px;
-  height: 20px;
-  border: 1.8px solid #FFF;
+  width: 45px;
+  height: 45px;
+  border: 3px solid #FDC332;
   border-bottom-color: transparent;
   border-radius: 50%;
   display: inline-block;
@@ -83,3 +102,37 @@ button:focus {
       transform: rotate(360deg);
   }
   } 
+
+  .loader3 {
+    color: #FFF;
+    display: inline-block;
+    position: relative;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+  }
+  .loader3::after {
+    content: '';  
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    position: absolute;
+    bottom: 5px;
+    right: -5px;
+    box-sizing: border-box;
+    animation: animloader 1s linear infinite;
+  }
+  
+  @keyframes animloader {
+    0% {
+      box-shadow: 10px 0 rgba(255, 255, 255, 0), 20px 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+      box-shadow: 10px 0 white, 20px 0 rgba(255, 255, 255, 0);
+    }
+    100% {
+      box-shadow: 10px 0 white, 20px 0 white;
+    }
+  }
+  

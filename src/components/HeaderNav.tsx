@@ -1,8 +1,7 @@
 "use client"
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setUser } from '@/store/slices/userSlice';
-import apiService from '@/utils/apiService';
+
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -12,57 +11,16 @@ const HeaderNav = () => {
   const user = useAppSelector((state) => state.value);
   const router = useRouter()
   const pathname = usePathname()
-  const dispatch = useAppDispatch();
-
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("tid");
-    const searchParams = new URLSearchParams(window.location.search);
-
-    if (searchParams.has("tid")) {
-      const urlToken = searchParams.get("tid");
-
-      if (urlToken === storedToken) {
-        if (user.role === "student" && !pathname.includes('applicant')) {
-          return router.push('/applicant')
-        } else if (user.role === "admin" && !pathname.includes('admin')) {
-          return router.push("/admin")
-        } else if (user.role === "tutor" && !pathname.includes('tutor')) {
-          return router.push('/tutor')
-        }
-        return router.push('/auth/login')
-      }
-      apiService
-        .post("auth/login-with-token", { accessToken: urlToken })
-        .then(({ data }) => {
-          dispatch(
-            setUser({
-              ...data.user,
-              accessToken: data.accessToken,
-            })
-          );
-          localStorage.setItem("tid", data.token);
-
-          searchParams.delete("tid");
-          const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-          window.history.replaceState(null, "", newUrl);
-          router.push(
-            data.user.role === "student"
-              ? "/applicant"
-              : data.user.role === "admin"
-                ? "/admin"
-                : data.user.role === "tutor"
-                  ? "/tutor"
-                  : ''
-          );
-        })
-        .catch((error) => { console.error("Error:", error); router.push(`/auth/login`) });
-    } else if (!storedToken) {
-      window.location.href = "/auth/login";
+    if (user.role === "student" && !pathname.includes('applicant')) {
+      router.push('/applicant')
+    } else if (user.role === "admin" && !pathname.includes('admin')) {
+      router.push("/admin")
+    } else if (user.role === "tutor" && !pathname.includes('tutor')) {
+      router.push('/tutor')
     }
-  }, []);
-
-
+  }, [])
   return (
     <header className='absolute p-2 top-0 lg:w-[80%] left-0 right-0 mx-auto border-b border-white flex justify-between'>
       <div className='flex'>
