@@ -216,14 +216,15 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   }
 
   const isOn = () => {
-    const currentDate = dayjs();
+    const currentDate = new Date();
 
-    const startTime = dayjs(course.startDate);
-    const endTime = dayjs(course.endDate);
-    // console.log(startTime.format(), endTime.format(), currentDate.format(), course.title);
+    const startTime = new Date(`${course.startDate}T${course.startTime}`);
+    const endTime = new Date(`${course.endDate}T${course.endTime}`);
 
-    const isStarted = currentDate.isSameOrAfter(startTime);
-    const isEnded = currentDate.isAfter(endTime);
+
+    const isStarted = currentDate.getTime() >= startTime.getTime();
+    const isEnded = currentDate.getTime() > endTime.getTime();
+
     let on = false;
     let msg;
 
@@ -286,7 +287,6 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                           <p className='text-sm'>Certificate of completion</p>
                         </div>}
                       </div>
-                      {course.startTime}
                       {
                         type === "view" ? course.type === "online" ? isOn().on ? <button onClick={() => startMeeting()} className='bg-primary p-2 my-3 rounded-md px-8 w-[150px]'>{loading ? <Spin /> : "Join Live"}</button> : null : user.role !== 'student' ?
                           <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> :
