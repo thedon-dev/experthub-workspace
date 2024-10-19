@@ -39,21 +39,7 @@ const applicant = () => {
       })
   }
 
-  function hasDatePassed(course: CourseType) {
-    if (course.type === "online" || course.type === "offline") {
-      const currentDate = new Date();
-      const endTime = new Date(`${course.endDate} ${course.endTime}`);
 
-      // console.log(currentDate, compareDate)
-
-      // Compare the target date with the current date
-      if (currentDate <= endTime) {
-        return true
-      }
-      return false;
-    }
-    return true
-  }
 
   const getCourses = async () => {
     await apiService.get(`courses/enrolled-courses/${user.id}`)
