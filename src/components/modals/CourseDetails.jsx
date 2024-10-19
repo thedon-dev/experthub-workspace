@@ -102,7 +102,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   }
 
   async function startMeeting() {
-    setLoading(tr,ue)
+    setLoading(true)
     const { client, signature } = await initClient();
     console.log(signature, user);
     console.log(course.meetingId, course.meetingPassword, course.zakToken);
