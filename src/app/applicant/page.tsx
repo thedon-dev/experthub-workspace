@@ -58,13 +58,13 @@ const applicant = () => {
   const getCourses = async () => {
     await apiService.get(`courses/enrolled-courses/${user.id}`)
       .then(function (response) {
-        const all: CourseType[] = []
-        response.data.enrolledCourses.map((course: CourseType) => {
-          if (hasDatePassed(course)) {
-            all.push(course)
-          }
-        })
-        setCourses(all)
+        // const all: CourseType[] = []
+        // response.data.enrolledCourses.map((course: CourseType) => {
+        //   if (hasDatePassed(course)) {
+        //     all.push(course)
+        //   }
+        // })
+        setCourses(response.data.enrolledCourses)
         // console.log(response.data.enrolledCourses)
       }).catch(e => {
         setCourses([])
