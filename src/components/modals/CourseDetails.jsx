@@ -10,12 +10,15 @@ import PaymentModal from '../modals/PaymentModal'
 import apiService from '@/utils/apiService';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isBetween from 'dayjs/plugin/isBetween';
 
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(isBetween);
+
 dayjs.extend(isSameOrAfter)
 
 const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
@@ -268,13 +271,16 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
       .filter(day => day.dayIndex > todayIndex)
       .sort((a, b) => a.dayIndex - b.dayIndex);
 
-    if (futureMeetings.length > 0) {
-      const nextMeeting = futureMeetings[0];
-      return { on: false, msg: `No meeting today. Next meeting is on ${nextMeeting.day} at ${nextMeeting.startTime}` };
-    } else {
-      const nextMeeting = activeDays[0];
-      return { on: false, msg: `No meeting today. Next meeting is on ${nextMeeting.day} at ${nextMeeting.startTime}` };
-    }
+    const futureMeetingsMain = [...(course.days.filter(day => day.checked))]
+    const msg = <div className='flex flex-col  '>
+      <div>No meeting today. Check out our schedule below</div>
+      {
+        futureMeetingsMain.map((day, i) => <span className='text-slate-400'>{i + 1}) {day.day}s at {day.startTime}, </span>
+        )
+      }
+    </div>
+    return { on: false, msg };
+
   };
 
   return (
@@ -353,10 +359,10 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                     <p className='text-sm'>{course.about}</p>
                     {
                       course.type === "online" &&
-                      <>
-                        <p className='text-[18px] font-medium mt-4 mb-1 '>Course Info</p>
-                        <p className='text-sm'>
-                          <span>This course {isOn().msg === "ended" ? "was" : "is"} is from  <span className='font-medium'>{new Date(course?.startDate).toLocaleString('en-US', {
+                      <div className='border border-gray py-3  px-5 rounded-lg my-3'>
+                        <p className='text-[18px] font-medium  mb-1 '>Course Details</p>
+                        <p className='text-sm '>
+                          <span>This program  starts from  <span className='font-medium'>{new Date(course?.startDate).toLocaleString('en-US', {
                             day: "numeric",
                             month: "short",
                             weekday: "long",
@@ -370,7 +376,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                         <div className='flex mt-1 items-center text-sm   text-yellow-600 gap-3'>
                           {isOn().msg}
                         </div>
-                      </>
+                      </div>
                     }
 
                     {type === 'enroll' && <div className='flex my-4'>
