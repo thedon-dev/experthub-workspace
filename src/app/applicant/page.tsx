@@ -4,7 +4,6 @@ import DashboardLayout from '@/components/DashboardLayout';
 import ApplicantCourses from '@/components/cards/ApplicantCourses';
 import RecommendedCard from '@/components/cards/RecommendedCard';
 import StatCard from '@/components/cards/StatCard';
-import CourseDetails from '@/components/modals/CourseDetails';
 import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { CourseType } from '@/types/CourseType';
@@ -26,6 +25,8 @@ const applicant = () => {
       .then(function (response) {
         setAssesment(response.data.myAssesment.reverse())
         // console.log(response.data)
+      }).catch(e => {
+        setAssesment([])
       })
   }
   const getRecommended = async () => {
@@ -33,6 +34,8 @@ const applicant = () => {
       .then(function (response) {
         setReccomended(response.data.courses)
         // console.log(response.data)
+      }).catch(e => {
+        setReccomended([])
       })
   }
 
@@ -63,6 +66,8 @@ const applicant = () => {
         })
         setCourses(all)
         // console.log(response.data.enrolledCourses)
+      }).catch(e => {
+        setCourses([])
       })
   }
   const getTutors = () => {
@@ -72,6 +77,8 @@ const applicant = () => {
       .then(function (response) {
         setInstructors(response.data.instructors)
         // console.log(response.data)
+      }).catch(e => {
+        setInstructors([])
       })
   }
 

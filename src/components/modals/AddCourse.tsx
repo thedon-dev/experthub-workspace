@@ -31,7 +31,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [active, setActive] = useState(0)
   const [about, setAbout] = useState(course?.about || "")
   const [startDate, setStartDate] = useState(course?.startDate || dayjs().format('YYYY-MM-DD'))
-  const [endDate, setEndDate] = useState(course?.endDate.toString() || "")
+  const [endDate, setEndDate] = useState(course?.endDate.toString() || dayjs().format('YYYY-MM-DD'))
   const [startTime, setStartTime] = useState(course?.startTime || dayjs().format('HH:mm'))
   const [endTime, setEndTime] = useState(course?.endTime || "")
   const [striked, setStriked] = useState<number>(course?.strikedFee || 0)
@@ -199,7 +199,12 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     const updatedObjects = [...days];
     if (type === `online`) {
       if (value) {
-        updatedObjects[index] = { ...updatedObjects[index], startTime, endTime, [field]: value };
+        const [hours, minutes] = value === true ? startTime.split(':') : (value as string).split(':');
+        const startDateIn = new Date(new Date(startDate).setHours(parseInt(hours), parseInt(minutes)));
+        const endDateIn = new Date()
+        endDateIn.setTime(startDateIn.getTime() + ((duration || 1) * 60000))
+        const endTime = dayjs(endDateIn).format('HH:mm')
+        updatedObjects[index] = { ...updatedObjects[index], startTime: value === true ? startTime : value, endTime, [field]: value };
         return setDays(updatedObjects)
       } else {
         updatedObjects[index] = { ...updatedObjects[index], startTime: ``, endTime: ``, [field]: value };
@@ -283,7 +288,10 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const edit = () => {
     try {
       setLoading(true)
-
+      const startDateTime = dayjs.utc(`${startDate}T${startTime}:00`);
+      const endDateTime = dayjs.utc(`${endDate}T${endTime}:00`);
+      const startDateJS = startDateTime.toDate();
+      const endDateJS = endDateTime.toDate();
       apiService.put(`courses/edit/${course?._id}`,
         {
           // image,
@@ -294,9 +302,9 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           modules,
           duration: duration.toString(),
           type,
-          startDate,
+          startDate: new Date(startDateJS).toISOString(),
+          endDate: new Date(endDateJS).toISOString(),
           target,
-          endDate,
           startTime,
           endTime,
           category,
@@ -361,6 +369,12 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         type === "online" ? startDate && endDate && startTime && endTime :
           type === "video" ? videos : pdf)
     ) {
+
+      const startDateTime = dayjs.utc(`${startDate}T${startTime}:00`);
+      const endDateTime = dayjs.utc(`${endDate}T${endTime}:00`);
+      const startDateJS = startDateTime.toDate();
+      const endDateJS = endDateTime.toDate();
+
       setLoading(true);
       apiService.post(`courses/add-course/${user.id}`, {
         asset: image,
@@ -369,8 +383,8 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         about,
         duration: duration.toString(),
         type,
-        startDate: new Date(`${startDate}T${startTime}:00`),
-        endDate: new Date(`${endDate}T${endTime}:00`),
+        startDate: new Date(startDateJS).toISOString(),
+        endDate: new Date(endDateJS).toISOString(),
         startTime,
         endTime,
         category: category === "" ? categoryIndex : category,
@@ -448,6 +462,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
       endDateIn.setTime(startDateIn.getTime() + ((duration || 1) * 60000))
       const endTime = dayjs(endDateIn).format('HH:mm')
       setEndTime(endTime);
+      setEndDate(dayjs(endDateIn).format('YYYY-MM-DD'));
 
       setDays((prev: any) => prev.map((day: any) => {
         if (day.checked) {
@@ -501,20 +516,20 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                   <span className='text-slate-400'>You cannot create courses within these times</span>
                   <div className='flex flex-col gap-1 overflow-y-auto max-h-[500px] mt-7 '>
                     {
-                      liveCourses.map((course: any, i: number) => <div className='flex  items-center justify-between border-b py-2 border-slate-400'>
-                        <span className='font-normal text-ellipsis whitespace-nowrap capitalize'>{i + 1})</span>
+                      liveCourses.map((course: any, i: number) => <div className='flex  items-center  border-b py-2 border-slate-400'>
+                        <span className='font-semibold text-ellipsis whitespace-nowrap capitalize w-1/12'>{i + 1})</span>
 
-                        <span className='font-normal text-ellipsis whitespace-nowrap capitalize'>{course.title}</span>
-                        <div className='flex flex-col' >
+                        <span className='font-normal text-ellipsis whitespace-nowrap capitalize overflow-hidden  text-left w-5/12'>{course.title}</span>
+                        <div className='flex flex-col w-6/12' >
                           <span className='flex'>{dayjs(course.startDate).format('Do MMMM YYYY')} -  {dayjs(course.endDate).format('Do MMMM YYYY')}</span>
+                          {
+                            course.days.filter((day: any) => day.checked).length === 0 ? <div className='flex items-start gap-2 '>@ {course.startTime} - {course.endTime}</div> : <div className='flex items-start gap-2 '>
+                              Every - <span className='text-[14px] flex flex-col'>{course.days.filter((day: any) => day.checked).map((day: any, i: number) => <span>{day.day + ` @ ${day.startTime}-${day.endTime} ${(i + 1 !== course.days.filter((day: any) => day.checked).length) ? `, ` : ``}`}</span>)}</span>
 
-                          <div className='flex items-center gap-2'>
-                            Every - <span className='text-sm'>{course.days.filter((day: any) => day.checked).map((day: any, i: number) => <span>{day.day + `${(i + 1 !== course.days.filter((day: any) => day.checked).length) ? `, ` : ``}`}</span>)}</span>
+                            </div>
+                          }
 
-                          </div>
-                          <div className='flex items-center'>
-                            @ {course.startTime} - {course.endTime}
-                          </div>
+
                         </div>
                       </div>)
                     }
@@ -674,17 +689,17 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                           </div>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>End date</label>
-                            <input onChange={e => setEndDate(e.target.value)} value={endDate} min={new Date().toISOString().split('T')[0]} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
+                            <input onChange={e => setEndDate(e.target.value)} disabled={type === `online` && days.filter((day: any) => day.checked).length == 0} value={endDate} min={new Date().toISOString().split('T')[0]} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
                           </div>
                         </div>
                         <div className='flex justify-between my-1'>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1 inline-flex items-center'>Start time</label>
-                            <input onChange={e => setStartTime(e.target.value)} value={startTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                            <input onChange={e => setStartTime(e.target.value)} value={startTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent cursor-pointer' />
                           </div>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1 inline-flex items-center justify-center gap-1'>End time </label>
-                            <input onChange={e => setEndTime(e.target.value)} value={endTime} disabled readOnly min={new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} type="time" className='border rounded-md w-full disabled:cursor-not-allowed border-[#1E1E1ED9] disabled:border-[#bdbcbc] disabled:text-[#acabab] p-2 bg-transparent' />
+                            <input onChange={e => setEndTime(e.target.value)} value={endTime} disabled readOnly min={new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} type="time" className='border rounded-md w-full disabled:cursor-not-allowed border-[#1E1E1ED9] disabled:border-[#bdbcbc] disabled:text-[#acabab] p-2 bg-transparent cursor-pointer' />
                           </div>
                         </div>
                       </> : null}
@@ -702,7 +717,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         <div className='flex justify-between my-1'>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>Start time</label>
-                            <input onChange={e => setStartTime(e.target.value)} value={startTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                            <input onChange={e => setStartTime(e.target.value)} value={startTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent ' />
                           </div>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>End time</label>
@@ -726,9 +741,9 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         {days.map((day: { checked: boolean | undefined; day: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; startTime: string | number | readonly string[] | undefined; endTime: string | number | readonly string[] | undefined; }, index: any) => <div key={index} className='flex justify-between my-1'>
                           <input className='cursor-pointer' onChange={e => handleDaysInputChange(index, 'checked', e.target.checked)} checked={day.checked} type="checkbox" />
                           <p className='w-24 my-auto'>{day.day}</p>
-                          <input readOnly={type === `online`} disabled={type === `online`} value={day.startTime} onChange={e => handleDaysInputChange(index, 'startTime', e.target.value)} className={day.checked === true && day.startTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm disabled:cursor-not-allowed' : 'py-1 px-2 rounded-sm disabled:cursor-not-allowed'} type="time" />
+                          <input value={day.startTime} onChange={e => handleDaysInputChange(index, 'startTime', e.target.value)} className={day.checked === true && day.startTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm disabled:cursor-not-allowed cursor-pointer' : 'py-1 px-2 rounded-sm disabled:cursor-not-allowed cursor-pointer'} type="time" />
                           <p className='my-auto'>-</p>
-                          <input readOnly={type === `online`} disabled={type === `online`} value={day.endTime} onChange={e => handleDaysInputChange(index, 'endTime', e.target.value)} className={day.checked === true && day.endTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm disabled:cursor-not-allowed' : 'py-1 px-2 rounded-sm disabled:cursor-not-allowed'} type="time" />
+                          <input value={day.endTime} disabled={type === `online`} onChange={e => handleDaysInputChange(index, 'endTime', e.target.value)} className={day.checked === true && day.endTime === "" ? 'py-1  px-2 border border-[#FF0000] rounded-sm disabled:cursor-not-allowed cursor-pointer' : 'py-1 px-2 rounded-sm disabled:cursor-not-allowed cursor-pointer'} type="time" />
                         </div>)}
                       </> : null}
 

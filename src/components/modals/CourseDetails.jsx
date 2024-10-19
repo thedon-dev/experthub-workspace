@@ -222,15 +222,31 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   }
 
   const isOn = () => {
+
     const userTimeZone = dayjs.tz.guess();
     const currentDate = dayjs().tz(userTimeZone);
-    const startDate = dayjs(course.startDate).tz(userTimeZone);
-    const endDate = dayjs(course.endDate).tz(userTimeZone);
+
+    const startDate = dayjs(course.startDate).tz(userTimeZone).startOf('day');
+    const endDate = dayjs(course.endDate).tz(userTimeZone).endOf('day');
+
+    console.log(currentDate.format(), endDate.format());
 
     if (currentDate.isAfter(endDate)) return { on: false, msg: 'Meeting period is over' };
     if (!currentDate.isBetween(startDate, endDate)) return { on: false, msg: 'Meeting is out of date range' };
 
     const activeDays = course.days.filter(day => day.checked);
+
+    if (activeDays.length === 0) {
+      const meetingStartTime = dayjs(`${currentDate.format('YYYY-MM-DD')}T${course.startTime}`).tz(userTimeZone);
+      const meetingEndTime = dayjs(`${currentDate.format('YYYY-MM-DD')}T${course.endTime}`).tz(userTimeZone);
+      if (currentDate.isBetween(meetingStartTime, meetingEndTime)) {
+        return { on: true, msg: 'Meeting is ongoing' };
+      } else if (currentDate.isBefore(meetingStartTime)) {
+        return { on: false, msg: `Meeting has not started, will start at ${meetingStartTime.format('HH:mm')}` };
+      } else {
+        return { on: false, msg: `Meeting has ended, ended at ${meetingEndTime.format('HH:mm')}` };
+      }
+    }
     const todayMeeting = activeDays.find(day => day.day === currentDate.format('dddd'));
 
     if (todayMeeting) {
@@ -238,11 +254,11 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
       const meetingEndTime = dayjs(`${currentDate.format('YYYY-MM-DD')}T${todayMeeting.endTime}`).tz(userTimeZone);
 
       if (currentDate.isBetween(meetingStartTime, meetingEndTime)) {
-        return { on: true, msg: 'ongoing' };
+        return { on: true, msg: 'Meeting is ongoing' };
       } else if (currentDate.isBefore(meetingStartTime)) {
-        return { on: false, msg: `notStarted, will start at ${meetingStartTime.format('HH:mm')}` };
+        return { on: false, msg: `Meeting has not started, will start at ${meetingStartTime.format('HH:mm')}` };
       } else {
-        return { on: false, msg: `ended, ended at ${meetingEndTime.format('HH:mm')}` };
+        return { on: false, msg: `Meeting has ended, ended at ${meetingEndTime.format('HH:mm')}` };
       }
     }
 
