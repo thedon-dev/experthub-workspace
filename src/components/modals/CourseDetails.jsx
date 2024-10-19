@@ -10,6 +10,12 @@ import PaymentModal from '../modals/PaymentModal'
 import apiService from '@/utils/apiService';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 dayjs.extend(isSameOrAfter)
 
 const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
@@ -216,28 +222,43 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   }
 
   const isOn = () => {
-    const currentDate = new Date();
+    const userTimeZone = dayjs.tz.guess();
+    const currentDate = dayjs().tz(userTimeZone);
+    const startDate = dayjs(course.startDate).tz(userTimeZone);
+    const endDate = dayjs(course.endDate).tz(userTimeZone);
 
-    const startTime = new Date(`${course.startDate}T${course.startTime}`);
-    const endTime = new Date(`${course.endDate}T${course.endTime}`);
+    if (currentDate.isAfter(endDate)) return { on: false, msg: 'Meeting period is over' };
+    if (!currentDate.isBetween(startDate, endDate)) return { on: false, msg: 'Meeting is out of date range' };
 
+    const activeDays = course.days.filter(day => day.checked);
+    const todayMeeting = activeDays.find(day => day.day === currentDate.format('dddd'));
 
-    const isStarted = currentDate.getTime() >= startTime.getTime();
-    const isEnded = currentDate.getTime() > endTime.getTime();
+    if (todayMeeting) {
+      const meetingStartTime = dayjs(`${currentDate.format('YYYY-MM-DD')}T${todayMeeting.startTime}`).tz(userTimeZone);
+      const meetingEndTime = dayjs(`${currentDate.format('YYYY-MM-DD')}T${todayMeeting.endTime}`).tz(userTimeZone);
 
-    let on = false;
-    let msg;
-
-    if (isStarted && !isEnded) {
-      on = true;
-      msg = "ongoing";
-    } else if (!isStarted) {
-      msg = "notStarted";
-    } else {
-      msg = "ended";
+      if (currentDate.isBetween(meetingStartTime, meetingEndTime)) {
+        return { on: true, msg: 'ongoing' };
+      } else if (currentDate.isBefore(meetingStartTime)) {
+        return { on: false, msg: `notStarted, will start at ${meetingStartTime.format('HH:mm')}` };
+      } else {
+        return { on: false, msg: `ended, ended at ${meetingEndTime.format('HH:mm')}` };
+      }
     }
 
-    return { on, msg };
+    const todayIndex = currentDate.day();
+    const futureMeetings = activeDays
+      .map(day => ({ ...day, dayIndex: dayjs().day(day.day).day() }))
+      .filter(day => day.dayIndex > todayIndex)
+      .sort((a, b) => a.dayIndex - b.dayIndex);
+
+    if (futureMeetings.length > 0) {
+      const nextMeeting = futureMeetings[0];
+      return { on: false, msg: `No meeting today. Next meeting is on ${nextMeeting.day} at ${nextMeeting.startTime}` };
+    } else {
+      const nextMeeting = activeDays[0];
+      return { on: false, msg: `No meeting today. Next meeting is on ${nextMeeting.day} at ${nextMeeting.startTime}` };
+    }
   };
 
   return (
@@ -317,20 +338,21 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                     {
                       course.type === "online" &&
                       <>
-                        <p className='text-sm mt-4 mb-1 '>Course Info</p>
+                        <p className='text-[18px] font-medium mt-4 mb-1 '>Course Info</p>
                         <p className='text-sm'>
-                          <span>This meeting {isOn().msg === "ended" ? "was" : "is"} scheduled for {new Date(course?.startDate).toLocaleString('en-US', {
+                          <span>This course {isOn().msg === "ended" ? "was" : "is"} is from  <span className='font-medium'>{new Date(course?.startDate).toLocaleString('en-US', {
                             day: "numeric",
                             month: "short",
                             weekday: "long",
-                          })} {"at " + course.startTime}
+                          })} </span>to  <span className='font-medium'>{new Date(course?.endDate).toLocaleString('en-US', {
+                            day: "numeric",
+                            month: "short",
+                            weekday: "long",
+                          })}</span>
                           </span>
                         </p>
-                        <div className='flex mt-1 items-center text-sm   text-[#a1a1a1] gap-3'>
-                          {isOn().on ? "Meeting is ongoing" : isOn().msg === "ended" ? "This meeting has ended" : <>
-                            <span>Starts at {course.startTime}</span>
-                            <span className='loader'></span>
-                          </>}
+                        <div className='flex mt-1 items-center text-sm   text-yellow-600 gap-3'>
+                          {isOn().msg}
                         </div>
                       </>
                     }

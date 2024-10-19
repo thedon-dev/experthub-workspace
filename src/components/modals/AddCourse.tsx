@@ -17,9 +17,10 @@ import Bin from '../icons/bin';
 import { AxiosProgressEvent } from 'axios';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween'
-
-
+import advancedFormat from 'dayjs/plugin/advancedFormat'
 dayjs.extend(isBetween)
+dayjs.extend(advancedFormat)
+
 const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
   const user = useAppSelector((state) => state.value);
   // const { zoomUser } = useZoom()
@@ -39,6 +40,8 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [category, setCategory] = useState(course?.category || "")
   const [categoryIndex, setCategoryIndex] = useState("")
   const [resources, setResource] = useState(false)
+  const [liveCourses, setLiveCourses] = useState([])
+
 
   const [privacy, setPrivacy] = useState(course?.privacy || "")
   const [type, setType] = useState(course?.type || "offline")
@@ -194,8 +197,17 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
   const handleDaysInputChange = (index: number, field: string, value: string | number | boolean) => {
     const updatedObjects = [...days];
+    if (type === `online`) {
+      if (value) {
+        updatedObjects[index] = { ...updatedObjects[index], startTime, endTime, [field]: value };
+        return setDays(updatedObjects)
+      } else {
+        updatedObjects[index] = { ...updatedObjects[index], startTime: ``, endTime: ``, [field]: value };
+        return setDays(updatedObjects)
+      }
+    }
     updatedObjects[index] = { ...updatedObjects[index], [field]: value };
-    setDays(updatedObjects);
+    return setDays(updatedObjects);
   };
 
   const handleInputChange = (index: number, field: string, value: string | number) => {
@@ -357,8 +369,8 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         about,
         duration: duration.toString(),
         type,
-        startDate,
-        endDate,
+        startDate: new Date(`${startDate}T${startTime}:00`),
+        endDate: new Date(`${endDate}T${endTime}:00`),
         startTime,
         endTime,
         category: category === "" ? categoryIndex : category,
@@ -396,9 +408,20 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
       });
     }
   };
+
+  const getLiveCourses = () => {
+    apiService.get('courses/live')
+      .then(function (response) {
+        setLiveCourses(response.data)
+      }).catch(e => {
+        console.log(e);
+
+      })
+  }
   useEffect(() => {
     getStudents()
     getCategories()
+    getLiveCourses()
   }, [])
 
 
@@ -423,8 +446,16 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
       const startDateIn = new Date(new Date(startDate).setHours(parseInt(hours), parseInt(minutes)));
       const endDateIn = new Date()
       endDateIn.setTime(startDateIn.getTime() + ((duration || 1) * 60000))
-      setEndTime(dayjs(endDateIn).format('HH:mm'));
-      setEndDate(dayjs(endDateIn).format('YYYY-MM-DD'));
+      const endTime = dayjs(endDateIn).format('HH:mm')
+      setEndTime(endTime);
+
+      setDays((prev: any) => prev.map((day: any) => {
+        if (day.checked) {
+          return { ...day, startTime, endTime }
+        }
+        return { ...day, startTime: "", endTime: "" }
+      }))
+
     } else {
       setDuration(0);
     }
@@ -463,6 +494,36 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                   <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
                   <p> Add course</p>
                 </button>}
+
+              {
+                (liveCourses.length !== 0 && type === `online`) && <div className='flex flex-col mt-7'>
+                  <p className='text-[19px]'> Upcoming courses</p>
+                  <span className='text-slate-400'>You cannot create courses within these times</span>
+                  <div className='flex flex-col gap-1 overflow-y-auto max-h-[500px] mt-7 '>
+                    {
+                      liveCourses.map((course: any, i: number) => <div className='flex  items-center justify-between border-b py-2 border-slate-400'>
+                        <span className='font-normal text-ellipsis whitespace-nowrap capitalize'>{i + 1})</span>
+
+                        <span className='font-normal text-ellipsis whitespace-nowrap capitalize'>{course.title}</span>
+                        <div className='flex flex-col' >
+                          <span className='flex'>{dayjs(course.startDate).format('Do MMMM YYYY')} -  {dayjs(course.endDate).format('Do MMMM YYYY')}</span>
+
+                          <div className='flex items-center gap-2'>
+                            Every - <span className='text-sm'>{course.days.filter((day: any) => day.checked).map((day: any, i: number) => <span>{day.day + `${(i + 1 !== course.days.filter((day: any) => day.checked).length) ? `, ` : ``}`}</span>)}</span>
+
+                          </div>
+                          <div className='flex items-center'>
+                            @ {course.startTime} - {course.endTime}
+                          </div>
+                        </div>
+                      </div>)
+                    }
+
+                  </div>
+                </div>
+              }
+
+
             </div>
             <div className='flex my-1'>
             </div>
@@ -613,7 +674,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                           </div>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>End date</label>
-                            <input onChange={e => setEndDate(e.target.value)} readOnly disabled value={endDate} min={new Date().toISOString().split('T')[0]} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
+                            <input onChange={e => setEndDate(e.target.value)} value={endDate} min={new Date().toISOString().split('T')[0]} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
                           </div>
                         </div>
                         <div className='flex justify-between my-1'>
@@ -663,11 +724,11 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                       {type === 'offline' || type === 'online' ? <>
                         <p className='font-medium'>Set your weekly hours</p>
                         {days.map((day: { checked: boolean | undefined; day: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; startTime: string | number | readonly string[] | undefined; endTime: string | number | readonly string[] | undefined; }, index: any) => <div key={index} className='flex justify-between my-1'>
-                          <input onChange={e => handleDaysInputChange(index, 'checked', e.target.checked)} checked={day.checked} type="checkbox" />
+                          <input className='cursor-pointer' onChange={e => handleDaysInputChange(index, 'checked', e.target.checked)} checked={day.checked} type="checkbox" />
                           <p className='w-24 my-auto'>{day.day}</p>
-                          <input value={day.startTime} onChange={e => handleDaysInputChange(index, 'startTime', e.target.value)} className={day.checked === true && day.startTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm' : 'py-1 px-2 rounded-sm'} type="time" />
+                          <input readOnly={type === `online`} disabled={type === `online`} value={day.startTime} onChange={e => handleDaysInputChange(index, 'startTime', e.target.value)} className={day.checked === true && day.startTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm disabled:cursor-not-allowed' : 'py-1 px-2 rounded-sm disabled:cursor-not-allowed'} type="time" />
                           <p className='my-auto'>-</p>
-                          <input value={day.endTime} onChange={e => handleDaysInputChange(index, 'endTime', e.target.value)} className={day.checked === true && day.endTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm' : 'py-1 px-2 rounded-sm'} type="time" />
+                          <input readOnly={type === `online`} disabled={type === `online`} value={day.endTime} onChange={e => handleDaysInputChange(index, 'endTime', e.target.value)} className={day.checked === true && day.endTime === "" ? 'py-1 px-2 border border-[#FF0000] rounded-sm disabled:cursor-not-allowed' : 'py-1 px-2 rounded-sm disabled:cursor-not-allowed'} type="time" />
                         </div>)}
                       </> : null}
 
