@@ -180,7 +180,7 @@ const profile = () => {
             </div>
             <div className='text-center'><button onClick={updateUser} className='bg-primary p-2 px-6 my-4 font-medium'>{loading ? "updating..." : "Edit highlights"}</button></div>
           </div>
-          <div className='my-4 text-center p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md'>
+          <div id='interests' className='my-4 text-center p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md'>
             <p className='font-medium text-sm'>Course Interests</p>
           </div>
           <div className=' p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md my-4'>

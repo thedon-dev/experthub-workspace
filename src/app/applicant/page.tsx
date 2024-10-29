@@ -87,7 +87,14 @@ const applicant = () => {
       <section className='m-3 p-3 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
         <div className='text-sm flex justify-between'>
           <div className=' lg:w-[40%]'>
-            <h4 className='text-lg font-medium'>Continue learning</h4>
+            <div className='flex '>
+              <h4 className='text-lg my-auto mr-6 font-medium'>Continue learning</h4>
+              <Link href={'/applicant/profile#interests'}>
+                <button className='bg-primary p-3 rounded-md'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                </svg></button>
+              </Link>
+            </div>
             <div className='flex flex-wrap'>
               <p className='my-2 text-base'>{user.assignedCourse}, </p>
               {user.otherCourse?.map((single: string, index: any) => <p key={index} className='my-2 text-base'>{single},</p>)}
