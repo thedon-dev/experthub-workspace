@@ -25,18 +25,16 @@ const AssignCourse = ({ open, handleClick, studentId }: { open: boolean, handleC
     getCategories()
   }, [])
 
-  const assign = () => {
+  const assign = async () => {
     setLoading(true)
     try {
-      axios.put(`user/updateProfile/${studentId}`, {
+      const res = await apiService.put(`user/updateProfile/${studentId}`, {
         course: category === "" ? categoryIndex : category,
         assignerId: user.id,
       })
-        .then(function (response) {
-          setLoading(false)
-          console.log(response.data)
-          handleClick()
-        })
+      setLoading(false)
+      console.log(res.data)
+      handleClick()
     } catch (e) {
       console.log(e)
       setLoading(false)

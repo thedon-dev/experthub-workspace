@@ -113,7 +113,7 @@ const addmissions = () => {
 
         <Notice open={open} handleClick={() => setOpen(false)} />
         <Modal title="Add Contact" footer={[]} open={contact} onOk={() => setContact(false)} onCancel={() => setContact(false)}>
-          <SignUpComp role='student' action={() => { getStudents(), setContact(false) }} />
+          <SignUpComp role='student' contact={true} action={() => { getStudents(), setContact(false) }} />
         </Modal>
       </section>
     </DashboardLayout>

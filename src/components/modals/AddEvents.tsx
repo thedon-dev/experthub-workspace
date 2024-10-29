@@ -5,7 +5,11 @@ import { Spin, notification } from 'antd';
 import Select from 'react-select';
 import { UserType } from '@/types/UserType';
 import apiService from '@/utils/apiService';
-
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+dayjs.extend(isBetween)
+dayjs.extend(advancedFormat)
 
 const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
   const user = useAppSelector((state) => state.value);
@@ -14,9 +18,9 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
   const [active, setActive] = useState(0)
   const [about, setAbout] = useState(course?.about || "")
-  const [startDate, setStartDate] = useState(course?.startDate || "")
-  const [endDate, setEndDate] = useState(course?.endDate.toString() || "")
-  const [startTime, setStartTime] = useState(course?.startTime || "")
+  const [startDate, setStartDate] = useState(course?.startDate || dayjs().format('YYYY-MM-DD'))
+  const [endDate, setEndDate] = useState(course?.endDate.toString() || dayjs().format('YYYY-MM-DD'))
+  const [startTime, setStartTime] = useState(course?.startTime || dayjs().format('HH:mm'))
   const [endTime, setEndTime] = useState(course?.endTime || "")
   const [striked, setStriked] = useState<number>(course?.strikedFee || 0)
   const [fee, setFee] = useState<number>(course?.fee || 0)
@@ -109,6 +113,11 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
     // console.log(getScholarship())
     if (title && about && duration && category && image && mode && type === "offline" ? startDate && endDate && startTime && endTime && room && location : startDate && endDate && startTime && endTime) {
       setLoading(true)
+
+      const startDateTime = dayjs.utc(`${startDate}T${startTime}:00`);
+      const endDateTime = dayjs.utc(`${endDate}T${endTime}:00`);
+      const startDateJS = startDateTime.toDate();
+      const endDateJS = endDateTime.toDate();
       apiService.post(`events/add-event/${user.id}`,
         {
           asset: image,
@@ -118,8 +127,8 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
           mode,
           type,
           target,
-          startDate,
-          endDate,
+          startDate: new Date(startDateJS).toISOString(),
+          endDate: new Date(endDateJS).toISOString(),
           startTime,
           endTime,
           category: category === "" ? categoryIndex : category,
@@ -148,7 +157,23 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
       });
     }
   }
+  useEffect(() => {
+    if (type === 'online' && startTime) {
+      const [hours, minutes] = startTime.split(':');
+      const startDateIn = new Date(new Date(startDate).setHours(parseInt(hours), parseInt(minutes)));
+      const endDateIn = new Date()
+      endDateIn.setTime(startDateIn.getTime() + ((duration || 1) * 60000))
+      const endTime = dayjs(endDateIn).format('HH:mm')
+      setEndTime(endTime);
+      setEndDate(dayjs(endDateIn).format('YYYY-MM-DD'));
 
+    } else {
+      setDuration(0);
+    }
+    if (duration > 40) {
+      setDuration(40);
+    }
+  }, [type, startTime, duration]);
   const [categories, setCategories] = useState<CategoryType[]>([])
 
   const getCategories = () => {
@@ -277,8 +302,12 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
                       <div className='flex justify-between mt-6 my-1'>
                         <div className='w-full'>
-                          <label className='text-sm font-medium my-1'>Duration</label>
-                          <input onChange={e => setDuration(parseInt(e.target.value))} value={duration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                          <label className='text-sm font-medium my-1'>Duration {
+                            type === `online` && <>
+                              - <span className='text-orange-500 leading-3 font-thin text-[12px]'>{process.env.NEXT_PUBLIC_MEETING_DURATION}min max for Online Events</span>
+                            </>
+                          }</label>
+                          <input onChange={e => setDuration(parseInt(e.target.value))} max={type === 'online' ? parseFloat(process.env.NEXT_PUBLIC_MEETING_DURATION as string) : undefined} value={duration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                         </div>
                       </div>
                       {type === 'online' ? <>
@@ -289,7 +318,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                           </div>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>End date</label>
-                            <input onChange={e => setEndDate(e.target.value)} value={endDate} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                            <input disabled={type === `online`} onChange={e => setEndDate(e.target.value)} value={endDate} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
                           </div>
                         </div>
                         <div className='flex justify-between my-1'>
@@ -299,7 +328,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                           </div>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>End time</label>
-                            <input onChange={e => setEndTime(e.target.value)} value={endTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                            <input disabled={type === `online`} onChange={e => setEndTime(e.target.value)} value={endTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
                           </div>
                         </div>
                       </> : null}
