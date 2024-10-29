@@ -8,6 +8,7 @@ import apiService from '@/utils/apiService';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import tutor from '../../tutors/page';
 
 const SingleAssesment = () => {
   const pathname = usePathname()
@@ -26,7 +27,7 @@ const SingleAssesment = () => {
   }
 
   const select = (question: AssesmentElement, index: Number) => {
-    
+
     if (question.correctAnswerIndex === index) {
       setScore([...score, index]);
     } else {
@@ -39,17 +40,29 @@ const SingleAssesment = () => {
       alert("Answer all questions to submit")
       return;
     }
+    claimCertificate()
     showGrade(true)
   }
   const getGrade = () => {
     let matchingIndexCount = 0;
-
     for (let i = 0; i < score.length; i++) {
       if (score[i] === assesment?.assesment[i].correctAnswerIndex) {
         matchingIndexCount++;
       }
     }
     return matchingIndexCount
+  }
+
+  const claimCertificate = async () => {
+    await apiService.post(`certificate/claim`, {
+      user: user.id,
+      title: assesment?.title,
+      tutor: assesment?.tutor
+    })
+      .then(function (response) {
+        console.log(response.data)
+      })
+
   }
 
   useEffect(() => {
