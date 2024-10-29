@@ -78,6 +78,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [uploadedCount, setUploadedCount] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0)
   const [uploading, setUploading] = useState(false)
+  const [instant, setInstant] = useState(false)
 
 
   const [categories, setCategories] = useState<CategoryType[]>([])
@@ -120,6 +121,10 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     endTime: "",
     checked: false
   }])
+
+  const UncheckAllDays = () => {
+    setDays(days.map((day: any) => { return { ...day, checked: false,  startTime: "",endTime: "", } }))
+  }
 
 
   const [playingIndex, setPlayingIndex] = useState<number | null>(null)
@@ -682,26 +687,37 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
                       </div>
                       {type === 'online' ? <>
-                        <div className='flex justify-between my-1'>
-                          <div className='w-[48%]'>
-                            <label className='text-sm font-medium my-1'>Start date</label>
-                            <input onChange={e => setStartDate(e.target.value)} value={startDate} min={new Date().toISOString().split('T')[0]} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                        {type === 'online' &&
+                          <div className='flex items-center border-b border-slate-500 my-5 gap-3 px-4'>
+                            <button onClick={() => { setInstant(true); UncheckAllDays() }} className={`font-medium py-1 px-5 rounded-t-lg duration-300  ${instant ? `bg-primary` : `bg-gray`}`}>Instant Course</button>
+                            <button onClick={() => { setInstant(false) }} className={`font-medium py-1 px-5 rounded-t-lg duration-300  ${!instant ? `bg-primary` : `bg-gray`}`}>Scheduled Course</button>
                           </div>
-                          <div className='w-[48%]'>
-                            <label className='text-sm font-medium my-1'>End date</label>
-                            <input onChange={e => setEndDate(e.target.value)} disabled={type === `online` && days.filter((day: any) => day.checked).length == 0} value={endDate} min={new Date().toISOString().split('T')[0]} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
+                        }
+
+                        {
+                          !instant ? <>
+                            <div className='flex justify-between my-1'>
+                              <div className='w-[48%]'>
+                                <label className='text-sm font-medium my-1'>Start date</label>
+                                <input onChange={e => setStartDate(e.target.value)} value={startDate} min={new Date().toISOString().split('T')[0]} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                              </div>
+                              <div className='w-[48%]'>
+                                <label className='text-sm font-medium my-1'>End date</label>
+                                <input onChange={e => setEndDate(e.target.value)} disabled={type === `online` && days.filter((day: any) => day.checked).length == 0} value={endDate} min={new Date().toISOString().split('T')[0]} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
+                              </div>
+                            </div>
+
+                          </> : <div className='flex justify-between my-1'>
+                            <div className='w-[48%]'>
+                              <label className='text-sm font-medium my-1 inline-flex items-center'>Start time</label>
+                              <input onChange={e => setStartTime(e.target.value)} value={startTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent cursor-pointer' />
+                            </div>
+                            <div className='w-[48%]'>
+                              <label className='text-sm font-medium my-1 inline-flex items-center justify-center gap-1'>End time </label>
+                              <input onChange={e => setEndTime(e.target.value)} value={endTime} disabled readOnly min={new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} type="time" className='border rounded-md w-full disabled:cursor-not-allowed border-[#1E1E1ED9] disabled:border-[#bdbcbc] disabled:text-[#acabab] p-2 bg-transparent cursor-pointer' />
+                            </div>
                           </div>
-                        </div>
-                        <div className='flex justify-between my-1'>
-                          <div className='w-[48%]'>
-                            <label className='text-sm font-medium my-1 inline-flex items-center'>Start time</label>
-                            <input onChange={e => setStartTime(e.target.value)} value={startTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent cursor-pointer' />
-                          </div>
-                          <div className='w-[48%]'>
-                            <label className='text-sm font-medium my-1 inline-flex items-center justify-center gap-1'>End time </label>
-                            <input onChange={e => setEndTime(e.target.value)} value={endTime} disabled readOnly min={new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} type="time" className='border rounded-md w-full disabled:cursor-not-allowed border-[#1E1E1ED9] disabled:border-[#bdbcbc] disabled:text-[#acabab] p-2 bg-transparent cursor-pointer' />
-                          </div>
-                        </div>
+                        }
                       </> : null}
                       {type === 'offline' && <>
                         <div className='flex justify-between my-1'>
@@ -736,7 +752,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         </div>
                       </>}
 
-                      {type === 'offline' || type === 'online' ? <>
+                      {type === 'offline' || (type === 'online' && !instant) ? <>
                         <p className='font-medium'>Set your weekly hours</p>
                         {days.map((day: { checked: boolean | undefined; day: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; startTime: string | number | readonly string[] | undefined; endTime: string | number | readonly string[] | undefined; }, index: any) => <div key={index} className='flex justify-between my-1'>
                           <input className='cursor-pointer' onChange={e => handleDaysInputChange(index, 'checked', e.target.checked)} checked={day.checked} type="checkbox" />

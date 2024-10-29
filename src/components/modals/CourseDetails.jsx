@@ -29,6 +29,8 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
   const [api, contextHolder] = notification.useNotification();
   const router = useRouter()
   const [active, setActive] = useState(0)
+  const [init, setInit] = useState(false)
+
   // console.log(course)
 
   const enroll = () => {
@@ -57,12 +59,11 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
 
   async function initClient() {
     const ZoomMtgEmbedded = (await import('@zoom/meetingsdk/embedded')).default;
-
+    set
     const client = ZoomMtgEmbedded.createClient();
 
     const { signature } = await getSignature(course.meetingId, (user.role === "applicant" ? 0 : 1));
     const meetingSDKElement = document.getElementById('meetingSDKElement');
-
     client.init({
       leaveUrl: `${window.location.origin}/${user.role}`,
       debug: true,
@@ -124,6 +125,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
         console.log(user);
         notifyStudents()
       }
+      setInit(true)
       handleClick()
       setLoading(false)
 
@@ -445,7 +447,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
         },
       })} />
 
-      <div className='fixed top-1/2 left-1/2   -translate-x-1/2 -translate-y-1/2 '>
+      <div className={`fixed ${!init ? `invisible` : `flex`} top-0 left-0 w-full h-full   items-center justify-center z-[999999999]`}>
         <div id="meetingSDKElement"></div>
       </div>
     </>
