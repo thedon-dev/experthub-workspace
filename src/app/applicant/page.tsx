@@ -88,8 +88,10 @@ const applicant = () => {
         <div className='text-sm flex justify-between'>
           <div className=' lg:w-[40%]'>
             <h4 className='text-lg font-medium'>Continue learning</h4>
-            <p className='my-2 text-base'>{user.assignedCourse}</p>
-
+            <div className='flex flex-wrap'>
+              <p className='my-2 text-base'>{user.assignedCourse}, </p>
+              {user.otherCourse?.map((single: string, index: any) => <p key={index} className='my-2 text-base'>{single},</p>)}
+            </div>
           </div>
           <p onClick={() => setView(view === 3 ? courses.length : 3)} className='text-[#DC9F08] cursor-pointer mt-auto'>VIEW {view === 3 ? "ALL" : "LESS"}</p>
         </div>
