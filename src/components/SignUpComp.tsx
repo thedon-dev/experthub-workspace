@@ -3,7 +3,7 @@ import { notification } from 'antd';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-const SignUpComp = ({ role, action, contact }: { role: string, contact: boolean, action?: () => void }) => {
+const SignUpComp = ({ role, action, contact }: { role: string, contact?: boolean, action?: () => void }) => {
   const [api, contextHolder] = notification.useNotification();
   const [active, setActive] = useState(false)
   const [fullname, setName] = useState("")
