@@ -5,6 +5,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { notification } from 'antd';
 import apiService from '@/utils/apiService';
+import { CategoryType } from '@/types/CourseType';
 
 const profile = () => {
   const user = useAppSelector((state) => state.value);
@@ -20,7 +21,35 @@ const profile = () => {
   const [profilePicture, setProfilePicture] = useState<string>()
   const [editing, setEditing] = useState(false)
   const [file, setFile] = useState<FileList | null>()
+  const [saving, setSaving] = useState(false)
 
+  const [category, setCategory] = useState("")
+  const [categoryIndex, setCategoryIndex] = useState("")
+  const [categories, setCategories] = useState<CategoryType[]>([])
+
+  const getCategories = () => {
+    apiService.get('category/all').then(function (response) {
+      setCategories(response.data.category)
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+  useEffect(() => {
+    getCategories()
+  }, [])
+
+  const saveChanges = async () => {
+    setSaving(true)
+    await apiService.put(`user/assign/${user.id}`, {
+      course: category === "" ? categoryIndex : category
+    }).then(function (response) {
+      console.log(response.data)
+      setSaving(false)
+    }).catch(error => {
+      console.log(error)
+      setSaving(false)
+    })
+  }
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     const files = e.target.files
@@ -151,8 +180,28 @@ const profile = () => {
             </div>
             <div className='text-center'><button onClick={updateUser} className='bg-primary p-2 px-6 my-4 font-medium'>{loading ? "updating..." : "Edit highlights"}</button></div>
           </div>
+          <div id='interests' className='my-4 text-center p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md'>
+            <p className='font-medium text-sm'>Course Interests</p>
+          </div>
+          <div className=' p-3 shadow-[0px_2px_4px_0px_#1E1E1E21] rounded-md my-4'>
+            <div className='w-full my-2'>
+              <label className='text-sm font-medium my-1'>Category</label>
+              <select onChange={e => setCategoryIndex(e.target.value)} value={categoryIndex} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                <option className='hidden' value="">Select Category</option>
+                {categories.map((single, index) => <option key={index} value={single.category}>{single.category}</option>)}
+              </select>
+            </div>
+            {categories.map(single => single.category === categoryIndex && single.subCategory.length >= 1 && <div key={single._id} className='w-full my-2'>
+              <label className='text-sm font-medium my-1'>Sub Category</label>
+              <select onChange={e => setCategory(e.target.value)} value={category} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                <option className='hidden' value="">Select Sub-Category</option>
+                {single.subCategory.map((sub, index) => <option key={index} value={sub}>{sub}</option>)}
+              </select>
+            </div>)}
+            <div className='text-center'><button onClick={() => saveChanges()} className='bg-primary p-2 px-6 my-4 font-medium'>{saving ? "saving..." : "Save Changes"}</button></div>
+          </div>
         </div>
-        
+
         {/* <div className='mt-4 sm:p-4 lg:w-[65%]'>
           <p className='text-xl font-medium my-3'>Courses</p>
           <div className='shadow-[0px_2px_4px_0px_#1E1E1E21] p-3 rounded-md'>

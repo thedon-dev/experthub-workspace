@@ -4,6 +4,7 @@ import DashboardLayout from '@/components/DashboardLayout';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation'
 import apiService from '@/utils/apiService';
+import { useAppSelector } from '@/store/hooks';
 
 const newAssesment = () => {
   let layout = {
@@ -16,6 +17,7 @@ const newAssesment = () => {
   const [questions, setQuestions] = useState([
     layout
   ])
+  const user = useAppSelector((state) => state.value);
   const router = useRouter()
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
@@ -66,6 +68,7 @@ const newAssesment = () => {
         {
           title,
           image,
+          tutor: user.id,
           assesment: questions
         }
       )
