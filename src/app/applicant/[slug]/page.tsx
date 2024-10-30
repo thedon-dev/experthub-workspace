@@ -71,7 +71,7 @@ export default function SingleCourse() {
                     case 'signup':
                       return <div className='lg:p-10 p-4'>
                         <h3 className='text-center text-xl my-3'>SignUp</h3>
-                        <SignUpComp role='student' action={() => setAction("login")} />
+                        <SignUpComp contact={false} role='student' action={() => setAction("login")} />
                         <div className='text-xs flex justify-center mt-2'>
                           <p className='text-[#052126] mr-2'>Already have an account? </p>
                           <p onClick={() => setAction("login")} className='text-[#346771] cursor-pointer'>Login</p>
