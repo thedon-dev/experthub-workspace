@@ -41,6 +41,8 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [categoryIndex, setCategoryIndex] = useState("")
   const [resources, setResource] = useState(false)
   const [liveCourses, setLiveCourses] = useState([])
+  const [courseDuration, setCourseDuration] = useState<number>(0)
+  const [timeframe, setTimeframe] = useState("days")
 
 
   const [privacy, setPrivacy] = useState(course?.privacy || "")
@@ -123,7 +125,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   }])
 
   const UncheckAllDays = () => {
-    setDays(days.map((day: any) => { return { ...day, checked: false,  startTime: "",endTime: "", } }))
+    setDays(days.map((day: any) => { return { ...day, checked: false, startTime: "", endTime: "", } }))
   }
 
 
@@ -618,6 +620,20 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                           </select>
                         </div>)}
                       </div>
+                      <div className='flex justify-between'>
+                        <div className='w-[48%]'>
+                          <label className='text-sm font-medium my-1'>Course Duration</label>
+                          <input onChange={e => setCourseDuration(parseInt(e.target.value))} value={courseDuration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                        </div>
+                        <div className='w-[48%]'>
+                          <label className='text-sm font-medium my-1'> *</label>
+                          <select onChange={(e) => setTimeframe(e.target.value)} value={timeframe} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                            <option value="days">Days</option>
+                            <option value="weeks">Weeks</option>
+                            <option value="months">Months</option>
+                          </select>
+                        </div>
+                      </div>
                       <div className='my-1'>
                         <label className='text-sm font-medium my-1'>Target</label>
                         <input onChange={e => setTarget(e.target.value)} value={target} type="text" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
@@ -676,15 +692,14 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                           </>} */}
                         </div>
 
-                        <div className='w-[48%]'>
-                          <label className='text-sm font-medium my-1 inline-flex items-center gap-1'>Duration {
+                        {type === 'online' && <div className='w-[48%]'>
+                          <label className='text-sm font-medium my-1 inline-flex items-center gap-1'>Class Duration {
                             type === `online` && <>
                               - <span className='text-orange-500 leading-3 font-thin text-[12px]'>{process.env.NEXT_PUBLIC_MEETING_DURATION}min max for Live</span>
                             </>
                           } </label>
                           <input onChange={e => setDuration(parseInt(e.target.value))} max={type === 'online' ? parseFloat(process.env.NEXT_PUBLIC_MEETING_DURATION as string) : undefined} value={duration} type="number" className='border disabled:cursor-not-allowed rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent ' />
-                        </div>
-
+                        </div>}
                       </div>
                       {type === 'online' ? <>
                         {type === 'online' &&
