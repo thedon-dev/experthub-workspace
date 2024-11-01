@@ -17,9 +17,7 @@ const Events = () => {
   const [pastEvent, setPastEvent] = useState<CourseType[]>([])
 
   const getAllEvents = () => {
-    apiService.put(`events/recommend/${user.id}`, {
-      category: user.assignedCourse
-    })
+    apiService.put(`events/recommend/${user.id}`)
       .then(function (response) {
         console.log(response.data)
         setAll(response.data.recommendedEvent)

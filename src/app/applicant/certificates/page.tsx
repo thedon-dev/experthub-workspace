@@ -100,11 +100,11 @@ const Certificates = () => {
       <section className='p-6'>
         <p className='text-xl'>Certificates</p>
         <div className='flex flex-wrap justify-between'>
-          {certificates.map((single: any) => <div className="flex shadow-md rounded-xl p-4 w-[32%] bg-white my-3" key={single._id}>
+          {certificates.map((single: any) => <div className="flex shadow-md rounded-xl p-4 lg:w-[32%] bg-white my-3" key={single._id}>
             <img className='w-32 my-auto' src="/images/mockup.jpg" alt="" />
             <div>
               <p className='text-sm'>Certificate For:</p>
-              <h1 className='text-3xl my-auto'>{single.title}</h1>
+              <h1 className='lg:text-3xl text-xl my-auto'>{single.title}</h1>
               <button className='p-2 rounded-md mt-3 bg-primary' onClick={() => handleDownload(single)}>Download</button>
               {/* <button onClick={() => del(single._id)}>del</button> */}
             </div>
