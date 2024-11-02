@@ -96,8 +96,8 @@ const applicant = () => {
               </Link>
             </div>
             <div className='flex flex-wrap'>
-              <p className='my-2 text-base'>{user.assignedCourse}, </p>
-              {user.otherCourse?.map((single: string, index: any) => <p key={index} className='my-2 text-base'>{single},</p>)}
+              <p className='m-2 bg-gray-200 px-2 text-base'>{user.assignedCourse}</p>
+              {user.otherCourse?.map((single: string, index: any) => <p key={index} className='m-2 bg-gray-200 px-2 text-base'>{single}</p>)}
             </div>
           </div>
           <p onClick={() => setView(view === 3 ? courses.length : 3)} className='text-[#DC9F08] cursor-pointer mt-auto'>VIEW {view === 3 ? "ALL" : "LESS"}</p>

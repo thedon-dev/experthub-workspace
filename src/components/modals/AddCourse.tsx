@@ -321,6 +321,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           enrolledStudents: course && [...course?.enrolledStudents, ...getScholarship()],
           room,
           location,
+
           // videos,
           // pdf
         }
@@ -405,6 +406,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         pdf,
         days,
         benefits,
+        timeframe: courseDuration + ' ' + timeframe,
         scholarship: getScholarship(),
       })
         .then(function (response) {
