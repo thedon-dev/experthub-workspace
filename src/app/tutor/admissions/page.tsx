@@ -91,7 +91,7 @@ const addmissions = () => {
               </div>
             default:
               return null
-          }s
+          }
         })()}
         <Modal title="Add Contact" footer={[]} open={contact} onOk={() => setContact(false)} onCancel={() => setContact(false)}>
           <SignUpComp role='student' action={() => getStudents()} />
