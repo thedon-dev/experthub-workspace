@@ -59,7 +59,6 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
 
   async function initClient() {
     const ZoomMtgEmbedded = (await import('@zoom/meetingsdk/embedded')).default;
-    set
     const client = ZoomMtgEmbedded.createClient();
 
     const { signature } = await getSignature(course.meetingId, (user.role === "applicant" ? 0 : 1));
@@ -262,22 +261,17 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
         return { on: true, msg: 'Meeting is ongoing' };
       } else if (currentDate.isBefore(meetingStartTime)) {
         return { on: false, msg: `Meeting has not started, will start at ${meetingStartTime.format('HH:mm')}` };
-      } else {
-        return { on: false, msg: `Meeting has ended, ended at ${meetingEndTime.format('HH:mm')}` };
       }
     }
 
-    const todayIndex = currentDate.day();
-    const futureMeetings = activeDays
-      .map(day => ({ ...day, dayIndex: dayjs().day(day.day).day() }))
-      .filter(day => day.dayIndex > todayIndex)
-      .sort((a, b) => a.dayIndex - b.dayIndex);
+
 
     const futureMeetingsMain = [...(course.days.filter(day => day.checked))]
     const msg = <div className='flex flex-col  '>
-      <div>No meeting today. Check out our schedule below</div>
+      <div>No meeting now. Check out our schedule below</div>
       {
-        futureMeetingsMain.map((day, i) => <span className='text-slate-400'>{i + 1}) {day.day}s at {day.startTime}, </span>
+        futureMeetingsMain.map((day, i) => <span className='text-slate-400'> {day.day}s at {dayjs(`${dayjs().format('YYYY-MM-DD')} ${day.startTime}`, 'YYYY-MM-DD HH:mm').format('hh:mm A')} - {dayjs(`${dayjs().format('YYYY-MM-DD')} ${day.endTime}`, 'YYYY-MM-DD HH:mm').format('hh:mm A')}
+          , </span>
         )
       }
     </div>
