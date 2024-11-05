@@ -35,14 +35,6 @@ const SingleAssesment = () => {
     }
   };
 
-  const submit = () => {
-    if (score.length !== assesment?.assesment.length) {
-      alert("Answer all questions to submit")
-      return;
-    }
-    claimCertificate()
-    showGrade(true)
-  }
   const getGrade = () => {
     let matchingIndexCount = 0;
     for (let i = 0; i < score.length; i++) {
@@ -51,6 +43,20 @@ const SingleAssesment = () => {
       }
     }
     return matchingIndexCount
+  }
+
+  const isEligibleForCertificate = getGrade() >= (assesment?.length / 2) || (getGrade() === 1 && assesment?.length === 1);
+
+
+  const submit = () => {
+    if (score.length !== assesment?.assesment.length) {
+      alert("Answer all questions to submit")
+      return;
+    }
+    if (isEligibleForCertificate) {
+      claimCertificate()
+    }
+    showGrade(true)
   }
 
   const claimCertificate = async () => {
@@ -128,7 +134,11 @@ const SingleAssesment = () => {
               <div className='lg:p-10 p-4'>
                 <div className='text-center'>
                   <h1 className='text-4xl capitalize'>Congratulations {user.fullName}</h1>
-                  <p className='my-2 text-lg'>Your score is {getGrade()} / {score.length}</p>
+                  <p>
+                    {isEligibleForCertificate
+                      ? "Your Certificate has been awarded to you. Proceed to the certificate page to claim and download."
+                      : "You scored below average. Please retake the test to be awarded a certificate of completion."}
+                  </p>
                 </div>
                 <div>
                   <div className='flex justify-center mt-6'>
