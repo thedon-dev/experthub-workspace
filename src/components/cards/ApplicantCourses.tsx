@@ -6,11 +6,13 @@ import ImageViewer from '../ImageViewer';
 import AppointmentModal from '../modals/AppointmentModal';
 import { useRouter } from 'next/navigation';
 import { Dropdown, MenuProps, Progress } from 'antd';
+import { useAppSelector } from '@/store/hooks';
 
 const ApplicantCourses = ({ course }: { course: CourseType }) => {
   const [open, setOpen] = useState(false)
   const [appointment, setAppointment] = useState(false)
   const router = useRouter()
+  const user = useAppSelector((state) => state.value);
 
   const items: MenuProps['items'] = [
     {
@@ -26,7 +28,7 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
       ),
     },
   ]
-
+  console.log(course.enrollments?.filter((single: { user: any; }) => single.user === user.id))
   return (
     <div className=" lg:w-[32%] w-full my-3 ">
       <div className='flex my-2'>
@@ -44,7 +46,11 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
           {course.startDate && <p className='text-xs text-[#DC9F08]'>Starts: {course.startDate}</p>}
           {course.startTime && <p className='text-xs text-[#0ACF83]'>Time: {course.startTime}</p>}
         </div>
-        <h3 className="font-medium text-xl my-2">{course.title} {course.type === "onlibe" ? <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>Join Live</button> : <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>{course.type}</button>}
+
+        <h3 className="font-medium text-xl my-2">{course.title}
+          { }
+          {course.type === "online" ? <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>Join Live</button> : <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>{course.type}</button>}
+
           <button className='my-auto'>
             <Dropdown
               menu={{ items }}

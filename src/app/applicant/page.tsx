@@ -10,6 +10,7 @@ import { CourseType } from '@/types/CourseType';
 import { AssesmentType } from '@/types/AssesmentType';
 import Link from 'next/link';
 import apiService from '@/utils/apiService';
+import AddCourseInterests from '@/components/modals/AddCourseInterests';
 
 const applicant = () => {
   const user = useAppSelector((state) => state.value);
@@ -19,6 +20,7 @@ const applicant = () => {
   const [instructors, setInstructors] = useState([])
   const [active, setActive] = useState("")
   const [assesments, setAssesment] = useState<AssesmentType | []>([])
+  const [open, setOpen] = useState(false)
 
   const getAssesment = async () => {
     await apiService.get(`assessment/my-assessment/${user.id}`)
@@ -51,7 +53,7 @@ const applicant = () => {
         //   }
         // })
         setCourses(response.data.enrolledCourses)
-        // console.log(response.data.enrolledCourses)
+        console.log(response.data.enrolledCourses)
       }).catch(e => {
         setCourses([])
       })
@@ -89,11 +91,12 @@ const applicant = () => {
           <div className=''>
             <div className='flex '>
               <h4 className='text-lg my-auto mr-6 font-medium'>Continue learning</h4>
-              <Link href={'/applicant/profile#interests'}>
-                <button className='bg-primary p-3 rounded-md'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg></button>
-              </Link>
+              {/* <Link href={'/applicant/profile#interests'}> */}
+              <button onClick={() => setOpen(true)} className='bg-primary p-3 rounded-md'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+              </svg>
+              </button>
+              {/* </Link> */}
             </div>
             <div className='!flex w-full flex-wrap'>
               <p onClick={() => setActive("")} className='m-2 bg-gray cursor-pointer px-2 text-base'>All</p>
@@ -132,10 +135,8 @@ const applicant = () => {
               filter((course: CourseType) => course.category === active || active === "")
               .map((course: any) => <RecommendedCard key={course._id} course={course} call={() => getCourses()} />)
           }
-          {/* <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard /> */}
         </div>
+        <AddCourseInterests open={open} handleClick={() => setOpen(false)} />
       </section>
     </DashboardLayout>
   );

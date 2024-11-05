@@ -431,7 +431,10 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         pdf,
         days,
         benefits,
-        timeframe: courseDuration + ' ' + timeframe,
+        timeframe: {
+          value: courseDuration,
+          unit: timeframe
+        },
         scholarship: getScholarship(),
       })
         .then(function (response) {
