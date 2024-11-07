@@ -31,6 +31,8 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
   ]
   const enrolee = course.enrollments?.filter((single: { user: any; }) => single.user === user.id)
   // console.log(course)
+  // console.log(hasTimeElapsed(enrolee[0]?.enrolledOn, course.timeframe?.value, course.timeframe?.unit))
+
   if (course.timeframe) {
     if (hasTimeElapsed(enrolee[0].enrolledOn, course.timeframe?.value, course.timeframe?.unit) && enrolee[0].status === 'active') {
       apiService.put(`/update-status/${course.id}`, {
@@ -50,7 +52,7 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
         <p className='font-medium ml-3 text-sm'>A course by {course.instructorName}</p>
       </div>
       <div className='bg-white p-2 rounded-md'>
-        <Link href={`/applicant/${course._id}?page=${course.type}`}>
+        <Link href={course.timeframe && hasTimeElapsed(enrolee[0].enrolledOn, course.timeframe?.value, course.timeframe?.unit) ? '' : `/applicant/${course._id}?page=${course.type}`}>
           <ImageViewer image={course.thumbnail} />
           {/* <img className="rounded-md object-cover h-40 w-full" src={course.thumbnail} alt="" /> */}
         </Link>
@@ -62,7 +64,7 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
         </div>
 
         <h3 className="font-medium text-xl my-2">{course.title}
-          {course.timeframe && hasTimeElapsed(enrolee[0].enrolledOn, course.timeframe?.value, course.timeframe?.unit) ? <button className='bg-[#FF0000] px-4 py-1'>Expired</button> :
+          {course.timeframe && hasTimeElapsed(enrolee[0].enrolledOn, course.timeframe?.value, course.timeframe?.unit) ? <button className='bg-[#FF0000] text-white text-sm rounded-md px-4 py-1'>Expired</button> :
             course.type === "online" ? <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>Join Live</button> : <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>{course.type}</button>}
 
 
