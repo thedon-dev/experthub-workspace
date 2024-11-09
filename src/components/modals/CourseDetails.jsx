@@ -57,84 +57,105 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
     }
   }
 
+  // Function to initialize the Zoom client and SDK
   async function initClient() {
-    const ZoomMtgEmbedded = (await import('@zoom/meetingsdk/embedded')).default;
-    const client = ZoomMtgEmbedded.createClient();
+    try {
+      const ZoomMtgEmbedded = (await import('@zoom/meetingsdk/embedded')).default;
+      const client = ZoomMtgEmbedded.createClient();
 
-    const { signature } = await getSignature(course.meetingId, (user.role === "applicant" ? 0 : 1));
-    const meetingSDKElement = document.getElementById('meetingSDKElement');
-    client.init({
-      leaveUrl: `${window.location.origin}/${user.role}`,
-      debug: true,
-      zoomAppRoot: meetingSDKElement,
-      language: 'en-US',
-      customize: {
-        video: {
-          isResizable: true,
-          viewSizes: {
-            default: {
-              width: (window.innerWidth > 700) ? 900 : 300,
-              height: 500,
-            },
-            ribbon: {
-              width: 300,
-              height: 500,
+      // Retrieve the signature
+      const { signature } = await getSignature(course.meetingId, (user.role === "applicant" ? 0 : 1));
+
+      // Select the SDK element and check if it exists
+      const meetingSDKElement = document.getElementById('meetingSDKElement');
+      if (!meetingSDKElement) {
+        console.error("Meeting SDK element not found.");
+        return;
+      }
+
+      // Initialize the Zoom client with configuration
+      client.init({
+        leaveUrl: `${window.location.origin}/${user.role}`,
+        debug: true,
+        zoomAppRoot: meetingSDKElement,
+        language: 'en-US',
+        customize: {
+          video: {
+            isResizable: true,
+            viewSizes: {
+              default: {
+                width: (window.innerWidth > 700) ? 900 : 300,
+                height: 500,
+              },
+              ribbon: {
+                width: 300,
+                height: 500,
+              },
             },
           },
         },
-      },
+      });
 
-    });
-
-    return { client, signature };
+      console.log("Zoom SDK initialized.");
+      return { client, signature };
+    } catch (error) {
+      console.error("Error initializing Zoom client:", error);
+    }
   }
+
+  // Function to get the Zoom signature
   async function getSignature(meetingNumber, role) {
     try {
-      const res = await apiService.post(`courses/get-zoom-signature`,
-        {
-          meetingNumber,
-          role
-        })
-      return res.data
-    } catch (e) {
-      console.log(e);
-
+      const res = await apiService.post(`courses/get-zoom-signature`, { meetingNumber, role });
+      console.log("Signature received:", res.data.signature);
+      return res.data;
+    } catch (error) {
+      console.error("Error fetching signature:", error);
     }
-
-
   }
 
+  // Function to start the Zoom meeting
   async function startMeeting() {
-    setLoading(true)
-    const { client, signature } = await initClient();
-    console.log(signature, user);
-    console.log(course.meetingId, course.meetingPassword, course.zakToken);
+    try {
+      setLoading(true);
 
-    client.join({
-      sdkKey: process.env.NEXT_PUBLIC_CLIENT_ID,
-      signature,
-      meetingNumber: course.meetingId,
-      password: course.meetingPassword,
-      userName: user.fullName,
-      ...(user.role !== "applicant" && user.role !== "student" ? {
-        zak: course.zakToken
-      } : {}),
-    }).then((res) => {
-      if (user.role !== "applicant" && user.role !== "student") {
-        console.log(user);
-        notifyStudents()
+      // Initialize the client and retrieve the signature
+      const { client, signature } = await initClient();
+
+      // Check if signature or client failed to initialize
+      if (!client || !signature) {
+        console.error("Client or signature not available. Meeting cannot start.");
+        setLoading(false);
+        return;
       }
-      setInit(true)
-      handleClick()
-      setLoading(false)
 
+      console.log("Starting meeting with:", { meetingId: course.meetingId, password: course.meetingPassword, zak: course.zakToken });
 
-    }).catch((e) => {
-      handleClick()
-      setLoading(false)
-      console.log(e);;
-    })
+      // Join the meeting
+      await client.join({
+        sdkKey: process.env.NEXT_PUBLIC_CLIENT_ID,
+        signature,
+        meetingNumber: course.meetingId,
+        userName: user.fullName,
+        password: course.meetingPassword,
+        ...(user.role !== "applicant" && user.role !== "student" ? { zak: course.zakToken } : {}),
+      }).then((res) => {
+        console.log("Meeting joined successfully:", res);
+        setInit(true);
+        notifyStudents();
+        handleClick();
+        setLoading(false);
+      }).catch((error) => {
+        console.error("Error joining meeting:", error);
+        handleClick();
+        setLoading(false);
+      });
+    } catch (error) {
+      console.error("Unexpected error in startMeeting:", error);
+      setLoading(false);
+    }
   }
+
 
   const enrollEvent = () => {
     try {
@@ -233,7 +254,6 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
     const startDate = dayjs(course.startDate).tz(userTimeZone).startOf('day');
     const endDate = dayjs(course.endDate).tz(userTimeZone).endOf('day');
 
-    console.log(currentDate.format(), endDate.format());
 
     if (currentDate.isAfter(endDate)) return { on: false, msg: 'Meeting period is over' };
     if (!currentDate.isBetween(startDate, endDate)) return { on: false, msg: 'Meeting is out of date range' };
@@ -441,9 +461,9 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
         },
       })} />
 
-      <div className={`fixed ${!init ? `invisible` : `flex`} top-0 left-0 w-full h-full   items-center justify-center z-[999999999]`}>
-        <div id="meetingSDKElement"></div>
-      </div>
+
+      <div className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' id="meetingSDKElement" />
+
     </>
 
   );
