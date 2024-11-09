@@ -10,6 +10,7 @@ import { CourseType } from '@/types/CourseType';
 import { AssesmentType } from '@/types/AssesmentType';
 import Link from 'next/link';
 import apiService from '@/utils/apiService';
+import AddCourseInterests from '@/components/modals/AddCourseInterests';
 
 const applicant = () => {
   const user = useAppSelector((state) => state.value);
@@ -17,8 +18,9 @@ const applicant = () => {
   const [courses, setCourses] = useState<CourseType[]>([])
   const [view, setView] = useState(3)
   const [instructors, setInstructors] = useState([])
-
+  const [active, setActive] = useState("")
   const [assesments, setAssesment] = useState<AssesmentType | []>([])
+  const [open, setOpen] = useState(false)
 
   const getAssesment = async () => {
     await apiService.get(`assessment/my-assessment/${user.id}`)
@@ -51,7 +53,7 @@ const applicant = () => {
         //   }
         // })
         setCourses(response.data.enrolledCourses)
-        // console.log(response.data.enrolledCourses)
+        console.log(response.data.enrolledCourses)
       }).catch(e => {
         setCourses([])
       })
@@ -86,24 +88,29 @@ const applicant = () => {
       </section>
       <section className='m-3 p-3 rounded-md shadow-[0px_2px_4px_0px_#1E1E1E21]'>
         <div className='text-sm flex justify-between'>
-          <div className=' lg:w-[40%]'>
+          <div className=''>
             <div className='flex '>
               <h4 className='text-lg my-auto mr-6 font-medium'>Continue learning</h4>
-              <Link href={'/applicant/profile#interests'}>
-                <button className='bg-primary p-3 rounded-md'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                </svg></button>
-              </Link>
+              {/* <Link href={'/applicant/profile#interests'}> */}
+              <button onClick={() => setOpen(true)} className='bg-primary p-3 rounded-md'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+              </svg>
+              </button>
+              {/* </Link> */}
             </div>
-            <div className='flex flex-wrap'>
-              <p className='m-2 bg-gray-200 px-2 text-base'>{user.assignedCourse}</p>
-              {user.otherCourse?.map((single: string, index: any) => <p key={index} className='m-2 bg-gray-200 px-2 text-base'>{single}</p>)}
+            <div className='!flex w-full flex-wrap'>
+              <p onClick={() => setActive("")} className='m-2 bg-gray cursor-pointer px-2 text-base'>All</p>
+              <p onClick={() => setActive(user.assignedCourse)} className='m-2 bg-gray px-2 cursor-pointer text-base'>{user.assignedCourse}</p>
+              {user.otherCourse?.map((single: string, index: any) => single.length === 0 ? null : <p key={index} onClick={() => setActive(single)} className='m-2 bg-gray cursor-pointer px-2 text-base'>{single}</p>)}
             </div>
           </div>
+          
           <p onClick={() => setView(view === 3 ? courses.length : 3)} className='text-[#DC9F08] cursor-pointer mt-auto'>VIEW {view === 3 ? "ALL" : "LESS"}</p>
         </div>
         <div className='flex flex-wrap justify-between'>
-          {courses.slice(0, view).map((course: CourseType) => <ApplicantCourses key={course._id} course={course} />)}
+          {courses.slice(0, view)
+            .filter((course: CourseType) => course.category === active || active === "")
+            .map((course: CourseType) => <ApplicantCourses key={course._id} course={course} />)}
           {/* <ApplicantCourses />
           <ApplicantCourses />
           <ApplicantCourses /> */}
@@ -125,12 +132,12 @@ const applicant = () => {
         </div>
         <div className='flex flex-wrap justify-between'>
           {
-            reccomended.length === 0 ? <div>No reccomended courses</div> : reccomended.map((course: any) => <RecommendedCard key={course._id} course={course} call={() => getCourses()} />)
+            reccomended.length === 0 ? <div>No reccomended courses</div> : reccomended.
+              filter((course: CourseType) => course.category === active || active === "")
+              .map((course: any) => <RecommendedCard key={course._id} course={course} call={() => getCourses()} />)
           }
-          {/* <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard /> */}
         </div>
+        <AddCourseInterests open={open} handleClick={() => setOpen(false)} />
       </section>
     </DashboardLayout>
   );

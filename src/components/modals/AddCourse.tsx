@@ -331,7 +331,10 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           enrolledStudents: course && [...course?.enrolledStudents, ...getScholarship()],
           room,
           location,
-
+          timeframe: {
+            value: courseDuration,
+            unit: timeframe
+          },
           // videos,
           // pdf
         }
@@ -393,13 +396,11 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
     if (
       title &&
       about &&
-      duration &&
       category &&
       image &&
       benefits.length >= 1 &&
       (type === "offline" ? startDate && endDate && startTime && endTime && room && location :
-        type === "online" ? instant ? startDate && endDate && startTime && endTime : startDate && endDate && days.filter((day: any) => day.checked).length > 0 :
-          type === "video" ? videos : pdf)
+        type === "online" ? instant ? startDate && endDate && startTime && endTime : startDate && endDate && days.filter((day: any) => day.checked).length > 0 : type === "video" ? videos : pdf)
     ) {
 
       const startDateTime = dayjs.utc(`${dayjs(startDate).format(`YYYY-MM-DD`)}T${instant ? startTime : days.filter((day: any) => day.checked)[0].startTime}:00`);
@@ -431,7 +432,10 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
         pdf,
         days,
         benefits,
-        timeframe: courseDuration + ' ' + timeframe,
+        timeframe: {
+          value: courseDuration,
+          unit: timeframe
+        },
         scholarship: getScholarship(),
       })
         .then(function (response) {

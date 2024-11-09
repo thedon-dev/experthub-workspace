@@ -254,6 +254,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
     const startDate = dayjs(course.startDate).tz(userTimeZone).startOf('day');
     const endDate = dayjs(course.endDate).tz(userTimeZone).endOf('day');
 
+    // console.log(currentDate.format(), endDate.format());
 
     if (currentDate.isAfter(endDate)) return { on: false, msg: 'Meeting period is over' };
     if (!currentDate.isBetween(startDate, endDate)) return { on: false, msg: 'Meeting is out of date range' };
