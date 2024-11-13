@@ -4,7 +4,6 @@ import React from 'react';
 
 const Calender = () => {
   return (
-    
     <DashboardLayout>
       <div className='p-4'>
         <CalenderView />

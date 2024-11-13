@@ -7,8 +7,8 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import apiService from '@/utils/apiService';
 import { useAppSelector } from '@/store/hooks';
-
 const localizer = momentLocalizer(moment);
+import { usePathname } from 'next/navigation'
 
 
 const CalendarComponent: React.FC = () => {
@@ -16,15 +16,20 @@ const CalendarComponent: React.FC = () => {
   const [events, setEvents] = useState<BigCalendarEvent[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<any>("month");
+  const pathname = usePathname()
 
   useEffect(() => {
     const fetchEvents = async () => {
       let formattedEvents: any[] = [];
 
       try {
-        const [appointmentsResponse, coursesResponse] = await Promise.all([
+        const [appointmentsResponse, coursesResponse, tutorResponse] = await Promise.all([
           apiService.get(`/appointment/${user.id}`),
-          apiService.get(`courses/enrolled-courses/${user.id}`)
+          apiService.get(`courses/enrolled-courses/${user.id}`),
+          apiService.put(`courses/category/author`, {
+            category: user.assignedCourse,
+            id: user.id
+          })
         ]);
 
         // Process appointments
@@ -36,14 +41,26 @@ const CalendarComponent: React.FC = () => {
         }));
 
         // Process enrolled courses
-        const enrolledCourses = coursesResponse.data.enrolledCourses
-          .filter((event: any) => event.type === 'online' || event.type === 'offline')
-          .map((event: any) => ({
-            id: event._id,
-            title: event.title,
-            start: new Date(event.startDate),
-            end: new Date(event.endDate),
-          }));
+        let enrolledCourses: any
+        if (pathname.includes('applicant')) {
+          enrolledCourses = coursesResponse.data.enrolledCourses
+            .filter((event: any) => event.type === 'online' || event.type === 'offline')
+            .map((event: any) => ({
+              id: event._id,
+              title: event.title,
+              start: new Date(event.startDate),
+              end: new Date(event.endDate),
+            }));
+        } else {
+          enrolledCourses = tutorResponse.data.enrolledCourses
+            .filter((event: any) => event.type === 'online' || event.type === 'offline')
+            .map((event: any) => ({
+              id: event._id,
+              title: event.title,
+              start: new Date(event.startDate),
+              end: new Date(event.endDate),
+            }));
+        }
 
         // Combine events into one array
         formattedEvents = [...appointments, ...enrolledCourses];

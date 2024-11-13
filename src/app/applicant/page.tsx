@@ -104,7 +104,7 @@ const applicant = () => {
               {user.otherCourse?.map((single: string, index: any) => single.length === 0 ? null : <p key={index} onClick={() => setActive(single)} className='m-2 bg-gray cursor-pointer px-2 text-base'>{single}</p>)}
             </div>
           </div>
-          
+
           <p onClick={() => setView(view === 3 ? courses.length : 3)} className='text-[#DC9F08] cursor-pointer mt-auto'>VIEW {view === 3 ? "ALL" : "LESS"}</p>
         </div>
         <div className='flex flex-wrap justify-between'>

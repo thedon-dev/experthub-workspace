@@ -15,15 +15,18 @@ import Link from 'next/link';
 import { UserType } from '@/types/UserType';
 import AddEvents from '@/components/modals/AddEvents';
 import apiService from '@/utils/apiService';
+import AddCourseInterests from '@/components/modals/AddCourseInterests';
 
 const tutor = () => {
   const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
   const [event, setEvent] = useState(false)
+  const [openAdd, setOpenAdd] = useState(false)
 
   const [students, setStudents] = useState([])
   const [graduates, setGraduates] = useState<UserType[]>([])
+  const [active, setActive] = useState("")
 
   const items: MenuProps['items'] = [
     {
@@ -116,6 +119,7 @@ const tutor = () => {
         <div className='text-sm lg:flex justify-between'>
           <div className='flex justify-between lg:w-[40%]'>
             <p className='my-auto'>Assigned Courses</p>
+
             <Dropdown menu={{ items }} trigger={["click"]}>
               <button className='bg-primary p-2 font-medium text-sm rounded-md'>
                 + Add training resources
@@ -124,6 +128,17 @@ const tutor = () => {
             </Dropdown>
           </div>
           <Link href={'/tutor/courses'}><p className='text-[#DC9F08]'>VIEW ALL</p></Link>
+        </div>
+        <div className='flex'>
+          <button onClick={() => setOpenAdd(true)} className='bg-primary p-3 rounded-md'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+          </svg>
+          </button>
+          <div className='!flex w-full flex-wrap'>
+            <p onClick={() => setActive("")} className='m-2 bg-gray cursor-pointer px-2 text-base'>All</p>
+            <p onClick={() => setActive(user.assignedCourse)} className='m-2 bg-gray px-2 cursor-pointer text-base'>{user.assignedCourse}</p>
+            {user.otherCourse?.map((single: string, index: any) => single.length === 0 ? null : <p key={index} onClick={() => setActive(single)} className='m-2 bg-gray cursor-pointer px-2 text-base'>{single}</p>)}
+          </div>
         </div>
         <div className='lg:flex flex-wrap justify-between'>
           {
@@ -135,7 +150,7 @@ const tutor = () => {
       <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
       <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
-
+      <AddCourseInterests open={openAdd} handleClick={() => setOpenAdd(false)} />
     </DashboardLayout>
   );
 };
