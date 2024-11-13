@@ -17,10 +17,10 @@ const Events = () => {
   const [pastEvent, setPastEvent] = useState<CourseType[]>([])
 
   const getAllEvents = () => {
-    apiService.put(`events/recommend/${user.id}`)
+    apiService.get(`events/category/${user.id}`)
       .then(function (response) {
         console.log(response.data)
-        setAll(response.data.recommendedEvent)
+        setAll(response.data.events)
       })
   }
 

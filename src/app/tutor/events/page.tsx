@@ -41,9 +41,7 @@ const Events = () => {
   ];
 
   const getAllEvents = () => {
-    apiService.put(`events/category`, {
-      category: user.assignedCourse
-    })
+    apiService.get(`events/category/${user.id}`)
       .then(function (response) {
         setEvents(response.data.events)
         console.log(response.data)
