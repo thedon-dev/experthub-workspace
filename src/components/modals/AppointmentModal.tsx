@@ -14,7 +14,7 @@ const dayMapping = {
   "Saturday": 6,
 };
 
-const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, handleClick: any, to: any, data?: any }) => {
+const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, handleClick: any, to?: any, data?: any }) => {
   const [steps, setSteps] = useState(0)
   const [location, setLocation] = useState(data?.location || '')
   const [room, setRoom] = useState(data?.room || '')
@@ -29,6 +29,16 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
   const [availability, setAvailability] = useState<any>()
   const [phone, setPhone] = useState("")
   const router = useRouter();
+
+  useEffect(() => {
+    setLocation(data?.location)
+    setRoom(data?.room)
+    setMode(data?.mode)
+    setCategory(data?.category)
+    setReason(data?.reason)
+    setDate(data?.date)
+    setTime(data?.time)
+  }, [data])
 
   const getTo = () => {
     apiService.get(`/appointment/availability/${to}`).then(function (response) {
@@ -95,7 +105,9 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
   };
 
   useEffect(() => {
-    getTo()
+    if (to) {
+      getTo()
+    }
   }, [])
 
   const editAppointment = () => {
@@ -225,9 +237,12 @@ const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, hand
                     </div>
                   </div>
                   <div className='flex justify-evenly mx-auto mt-6'>
-                    {data ? <button onClick={() => editAppointment()} className='bg-[#FDC332] p-3 rounded-md px-6'>{loading ? 'loading...' : 'Edit  Appointment'}</button>
-                      : <button onClick={() => createAppointment()} className='bg-[#FDC332] p-3 rounded-md px-6'>{loading ? 'loading...' : 'Create  Appointment'}</button>
-                    }
+                    <button
+                      onClick={() => (data ? editAppointment() : createAppointment())}
+                      className="bg-[#FDC332] p-3 rounded-md px-6"
+                    >
+                      {loading ? 'Loading...' : data ? 'Edit Appointment' : 'Create Appointment'}
+                    </button>
                     <button>Cancel</button>
                   </div>
                 </div>
