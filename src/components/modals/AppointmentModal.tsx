@@ -14,7 +14,7 @@ const dayMapping = {
   "Saturday": 6,
 };
 
-const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, handleClick: any, to?: any, data: any }) => {
+const AppointmentModal = ({ open, handleClick, to, data }: { open: boolean, handleClick: any, to?: any, data?: any }) => {
   const [steps, setSteps] = useState(0)
   const [location, setLocation] = useState(data?.location || '')
   const [room, setRoom] = useState(data?.room || '')

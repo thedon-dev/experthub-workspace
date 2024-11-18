@@ -8,12 +8,17 @@ import { useRouter } from 'next/navigation';
 import { Dropdown, MenuProps, Progress } from 'antd';
 import { useAppSelector } from '@/store/hooks';
 import apiService from '@/utils/apiService';
+import PaymentModal from '../modals/PaymentModal'
+import { notification } from 'antd';
+import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 
 const ApplicantCourses = ({ course }: { course: CourseType }) => {
   const [open, setOpen] = useState(false)
   const [appointment, setAppointment] = useState(false)
   const router = useRouter()
   const user = useAppSelector((state) => state.value);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
 
   const items: MenuProps['items'] = [
     {
@@ -45,6 +50,63 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
     }
   }
 
+  const renew = () => {
+    apiService.get(`courses/renew/${course._id}/${user.id}`)
+      .then(function (response) {
+        console.log(response.data)
+        api.open({
+          message: "Course Renewed Successfully!"
+        });
+        setTimeout(() => {
+          router.refresh();
+        },5000)
+      }).catch(err => {
+        console.log(err)
+      })
+  }
+
+  const payWithWallet = () => {
+    apiService.post(`transactions/pay-with`, {
+      amount: course.fee,
+      userId: user.id
+    })
+      .then(function (response) {
+        console.log(response.data)
+        api.open({
+          message: response.data.message
+        });
+        if (response.status == 200) {
+          renew()
+          setIsModalOpen(false)
+        }
+      })
+      .catch(err => {
+        setIsModalOpen(false)
+        console.log(err)
+        // handleClick()
+        api.open({
+          message: err.response.data,
+          placement: 'top'
+        });
+      })
+  }
+
+  const config: any = {
+    public_key: 'FLWPUBK-56b564d97f4bfe75b37c3f180b6468d5-X',
+    tx_ref: Date.now(),
+    amount: course.fee,
+    currency: 'NGN',
+    payment_options: 'card,mobilemoney,ussd',
+    customer: {
+      email: user.email,
+      // phone_number: '070********',
+      name: user.fullName,
+    },
+  };
+
+  const handleFlutterPayment = useFlutterwave(config);
+
+
   return (
     <div className=" lg:w-[32%] w-full my-3 ">
       <div className='flex my-2'>
@@ -64,7 +126,8 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
         </div>
 
         <h3 className="font-medium text-xl my-2">{course.title}
-          {course.timeframe && hasTimeElapsed(enrolee[0].enrolledOn, course.timeframe?.value, course.timeframe?.unit) ? <button className='bg-[#FF0000] text-white text-sm rounded-md px-4 py-1'>Expired</button> :
+          {course.timeframe && hasTimeElapsed(enrolee[0].enrolledOn, course.timeframe?.value, course.timeframe?.unit) ? <button
+            onClick={() => setIsModalOpen(true)} className='bg-[#FF0000] text-white text-sm rounded-md px-4 py-1'>Expired Renew</button> :
             course.type === "online" ? <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>Join Live</button> : <button onClick={() => setOpen(true)} className='text-sm px-4 bg-primary p-1 rounded-md'>{course.type}</button>}
 
 
@@ -87,6 +150,18 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
       </div>
       <AppointmentModal open={appointment} handleClick={() => setAppointment(false)} to={course.instructorId} />
       <CourseDetails course={course} open={open} action={"Course"} call={null} type='view' handleClick={() => setOpen(false)} />
+
+      <PaymentModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} wallet={() => payWithWallet()} card={() => handleFlutterPayment({
+        callback: (response) => {
+          renew()
+          setIsModalOpen(false)
+          console.log(response)
+          closePaymentModal() // this will close the modal programmatically
+        },
+        onClose: () => {
+          console.log("closed")
+        },
+      })} />
     </div>
   );
 };
