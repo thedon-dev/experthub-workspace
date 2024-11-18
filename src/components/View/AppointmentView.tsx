@@ -46,7 +46,7 @@ const AppointmentView = () => {
         {appointments.length >= 1 ? appointments.map((appointment: any) => <div key={appointment._id} className='p-3 my-3 border lg:w-[32%] rounded-md'>
           <div>
             <div className='flex justify-between ml-auto w-20 mb-6'>
-              {appointment.from._id === user.id && <>
+              {appointment.from?._id === user.id && <>
                 <button onClick={() => setOpen(true)} className=''>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
@@ -62,12 +62,12 @@ const AppointmentView = () => {
             </div>
           </div>
           <div className='flex'>
-            {appointment.from._id === user.id ? <>
+            {appointment.from?._id === user.id ? <>
               <img className='w-10 mr-2 h-10 rounded-full object-cover' src={appointment.to.profilePicture ? appointment.to.profilePicture : "/images/user.png"} alt="" />
               <p className='my-auto font-medium text-lg'>{appointment.to.fullname}</p>
             </> : <>
-              <img className='w-10 mr-2 h-10 rounded-full object-cover' src={appointment.from.profilePicture ? appointment.from.profilePicture : "/images/user.png"} alt="" />
-              <p className='my-auto font-medium text-lg'>{appointment.from.fullname}</p>
+              <img className='w-10 mr-2 h-10 rounded-full object-cover' src={appointment.from?.profilePicture ? appointment.from?.profilePicture : "/images/user.png"} alt="" />
+              <p className='my-auto font-medium text-lg'>{appointment.from?.fullname}</p>
             </>}
           </div>
           <p className='my-2 '>{appointment.reason}</p>
