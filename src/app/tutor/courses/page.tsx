@@ -15,11 +15,14 @@ import { ResourceType } from '@/types/ResourceType';
 import { CourseType } from '@/types/CourseType';
 import AddEvents from '@/components/modals/AddEvents';
 import apiService from '@/utils/apiService';
+import GoPremuim from '@/components/modals/GoPremuium';
 
 
 const courses = () => {
   const user = useAppSelector((state) => state.value);
   const [open, setOpen] = useState(false)
+  const [showPremuim, setShowPremuim] = useState(false)
+
   const [resources, setResources] = useState(false)
   // const [materials, setMaterials] = useState<ResourceType | []>([])
   const [event, setEvent] = useState(false)
@@ -235,7 +238,8 @@ const courses = () => {
 
       </section>
 
-      <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
+      <AddCourse course={null} setShowPremium={setShowPremuim} open={open} handleClick={() => setOpen(!open)} />
+      <GoPremuim show={showPremuim} setShow={setShowPremuim} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
       <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
 

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { CategoryType, CourseType } from '@/types/CourseType';
 import { notification } from 'antd';
@@ -23,7 +23,7 @@ import SheduledCourse from '../date-time-pickers/ScheduledCourse';
 dayjs.extend(isBetween)
 dayjs.extend(advancedFormat)
 
-const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
+const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolean, handleClick: any, course: CourseType | null, setShowPremium?: Dispatch<SetStateAction<boolean>> }) => {
   const user = useAppSelector((state) => state.value);
   // const { zoomUser } = useZoom()
 
@@ -58,15 +58,21 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
   const [room, setRoom] = useState(course?.room || "")
   const [loading, setLoading] = useState(false)
-  const [students, setStudents] = useState([])
+  const [students, setStudents] = useState<{ label: string, value: string }[]>([])
   const [scholarship, setScholarship] = useState([])
+  const [audience, setAudience] = useState([])
 
   const getStudents = () => {
     apiService.get('user/students')
       .then(function (response) {
-        setStudents(response.data.students)
-        // console.log(response.data)
+        console.log(response.data.students)
+        const formattedStudents = response.data.students.map((option: UserType) => ({ value: option.studentId, label: option.fullname }))
+        console.log((formattedStudents));
+
+        setStudents(formattedStudents)
       })
+
+
   }
 
   const [pdf, setPdf] = useState("")
@@ -84,7 +90,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [uploadedCount, setUploadedCount] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0)
   const [uploading, setUploading] = useState(false)
-  const [instant, setInstant] = useState(false)
+  const [instant, setInstant] = useState(true)
 
 
   const [categories, setCategories] = useState<CategoryType[]>([])
@@ -199,7 +205,15 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
       console.log(error)
     })
   }
+  const handleTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    if (user.role === 'tutor' && e.target.value === "online" && setShowPremium) {
+      handleClick()
+      setShowPremium(true)
+    } else {
+      setType(e.target.value)
+    }
 
+  }
   const handleModulesInputChange = (index: number, field: string, value: string | number | boolean) => {
     const updatedObjects = [...modules];
     updatedObjects[index] = { ...updatedObjects[index], [field]: value };
@@ -437,6 +451,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
           unit: timeframe
         },
         scholarship: getScholarship(),
+        audience: audience.map((data: any) => data.value)
       })
         .then(function (response) {
           api.open({
@@ -478,7 +493,6 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
 
 
-  const formattedOptions = students.map((option: UserType) => ({ value: option.studentId, label: option.fullname }));
 
   const removeBenefits = (targetIndex: any) => {
     const newArray = benefits.filter((item: any, index: any) => index !== targetIndex);
@@ -678,7 +692,7 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                       <div className='flex justify-between mt-6 my-1'>
                         <div className='w-[48%]'>
                           <label className='text-sm font-medium my-1 inline-flex items-center'>Course type</label>
-                          <select onChange={e => { setType(e.target.value) }} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2.5 bg-transparent'>
+                          <select onChange={handleTypeChange} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2.5 bg-transparent'>
                             <option value="offline">Offline</option>
                             <option value="online">Live</option>
                             <option value="video">Video</option>
@@ -709,7 +723,18 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                           <input onChange={e => setDuration(parseInt(e.target.value))} max={type === 'online' ? parseFloat(process.env.NEXT_PUBLIC_MEETING_DURATION as string) : undefined} value={duration} type="number" className='border disabled:cursor-not-allowed rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent ' />
                         </div>}
                       </div>
-
+                      <div className='w-full'>
+                        <label className='text-sm font-medium my-1'>Target Audience</label>
+                        <Select
+                          isMulti
+                          options={students}
+                          value={audience}
+                          className="basic-multi-select !border-[1px] !border-[#d3d3d3] [&>div]:!border-black [&>div]:!shadow-none outline-none ring-0  outline-0 rounded-md bg-transparent"
+                          classNamePrefix="select"
+                          placeholder="Everybody on the platform"
+                          onChange={(e: any) => { setAudience(e) }}
+                        />
+                      </div>
                       {type === 'online' ? <>
                         {type === 'online' &&
                           <div className='flex items-center border-b border-slate-500 my-5 gap-3 px-4'>
@@ -833,7 +858,9 @@ const AddCourse = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         <label className='text-sm font-medium my-1'>Who gets this course for free (Scholarship)</label>
                         <Select
                           isMulti
-                          options={formattedOptions}
+                          options={students}
+                          value={scholarship}
+
                           className="basic-multi-select"
                           classNamePrefix="select"
                           onChange={(e: any) => { setScholarship(e) }}

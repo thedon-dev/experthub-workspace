@@ -16,6 +16,7 @@ import { UserType } from '@/types/UserType';
 import AddEvents from '@/components/modals/AddEvents';
 import apiService from '@/utils/apiService';
 import AddCourseInterests from '@/components/modals/AddCourseInterests';
+import GoPremuim from '@/components/modals/GoPremuium';
 
 const tutor = () => {
   const user = useAppSelector((state) => state.value);
@@ -23,6 +24,7 @@ const tutor = () => {
   const [resources, setResources] = useState(false)
   const [event, setEvent] = useState(false)
   const [openAdd, setOpenAdd] = useState(false)
+  const [showPremuim, setShowPremuim] = useState(false)
 
   const [students, setStudents] = useState([])
   const [graduates, setGraduates] = useState<UserType[]>([])
@@ -147,7 +149,9 @@ const tutor = () => {
           }
         </div>
       </section>
-      <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
+      <AddCourse course={null} setShowPremium={setShowPremuim} open={open} handleClick={() => setOpen(!open)} />
+      <GoPremuim show={showPremuim} setShow={setShowPremuim} />
+
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
       <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
       <AddCourseInterests open={openAdd} handleClick={() => setOpenAdd(false)} />

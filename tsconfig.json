@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/modals/AddCourse.tsx", "src/components/modals/CourseDetails.jsx", "src/components/modals/EnrollStudent.jsx", "src/components/cards/Category.jsx", "src/app/[slug]/page.jsx", "src/components/Wallet.jsx", "src/components/date-time-pickers/TimePicker.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/modals/AddCourse.tsx", "src/components/modals/CourseDetails.jsx", "src/components/modals/EnrollStudent.jsx", "src/components/cards/Category.jsx", "src/app/[slug]/page.jsx", "src/components/Wallet.jsx", "src/components/date-time-pickers/TimePicker.jsx", "src/components/modals/GoPremuium.jsx", "src/app/tutor/plans/components/plans.sx"],
   "exclude": ["node_modules"]
 }

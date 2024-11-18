@@ -1,6 +1,6 @@
 export interface UserType {
   id: string;
-  fullName: string;
+  fullname: string;
   profilePicture: string;
   course: string;
   studentId: string;

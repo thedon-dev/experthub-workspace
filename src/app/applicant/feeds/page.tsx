@@ -3,17 +3,18 @@
 
 import DashboardLayout from '@/components/DashboardLayout';
 import RecommendedCard from '@/components/cards/RecommendedCard';
+import { useAppSelector } from '@/store/hooks';
 import { CourseType } from '@/types/CourseType';
-import { ResourceType } from '@/types/ResourceType';
 import apiService from '@/utils/apiService';
 import React, { useEffect, useState } from 'react';
 
 const archive = () => {
   const [courses, setCourses] = useState<CourseType | []>([])
   const [all, setAll] = useState<CourseType | []>([])
+  const user = useAppSelector((state) => state.value);
 
-  const getCourses = async () => {
-    apiService.get("courses/all/category")
+  const getCourses = async () => { 
+    apiService.get(`courses/all/category?id=${user.id}`)
       .then(function (response) {
         setCourses(response.data.allCourse)
         setAll(response.data.allCourse)
