@@ -28,14 +28,15 @@ dayjs.extend(isBetween);
 
 dayjs.extend(isSameOrAfter)
 
-const EventComponent = ({ event }: { event: any }) => (
-  <span className='text-xm '>
-    <span className='capitalize'>{event.title}</span>
-    <br />
-    {moment(event.start).format('hh:mm A')} - {moment(event.end).format('hh:mm A')}
-  </span>
-);
-
+const EventComponent = ({ event }: { event: any }) => {
+  return (
+    <span className='text-xm !h-44'>
+      <span className='capitalize'>{event.title}</span>
+      <br />
+      {moment(event.start).format('hh:mm A')} - {moment(event.end).format('hh:mm A')}
+    </span>
+  )
+};
 
 
 const CalendarComponent: React.FC = () => {
@@ -377,7 +378,19 @@ const CalendarComponent: React.FC = () => {
         style={{ height: '80vh' }}
         className="bg-white shadow-lg rounded-lg"
         components={{
-          event: EventComponent,
+          // event: EventComponent,
+          month: {
+            event: EventComponent, // Explicitly applies to week view
+          },
+          week: {
+            event: EventComponent, // Explicitly applies to week view
+          },
+          // work_week: {
+          //   event: EventComponent, // Explicitly applies to work week view
+          // },
+          // day:{
+          //   event: EventComponent, // Explicitly applies to work week view
+          // }
         }}
         onSelectEvent={handleSelectEvent}
         messages={{
@@ -387,7 +400,7 @@ const CalendarComponent: React.FC = () => {
 
       {open && <div>
         <div onClick={() => setOpen(false)} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
-        <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 lg:w-[30%] w-[90%] overflow-y-scroll mx-auto z-20 bg-[#F8F7F4]'>
+        <div className='fixed top-10 bottom-10 left-0 rounded-md right-0 lg:w-[30%] h-[55%] w-[90%] overflow-y-scroll mx-auto z-20 bg-[#F8F7F4]'>
           <div className='shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between'>
             <p className='font-medium capitalize'>{selectedEvent.type}</p>
             <img onClick={() => setOpen(false)} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />

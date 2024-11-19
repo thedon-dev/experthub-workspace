@@ -140,4 +140,6 @@ button:focus {
     }
   }
   
-  
+  .rbc-day-slot .rbc-event-label{
+    display: none;
+  }
