@@ -14,8 +14,8 @@ import AppointmentModal from '../modals/AppointmentModal';
 import JoinMeeting from '../JoinMeeting'
 
 const EventComponent = ({ event }: { event: any }) => (
-  <span className='text-xm h-32'>
-    <strong className='capitalize'>{event.title}</strong>
+  <span className='text-xm '>
+    <span className='capitalize'>{event.title}</span>
     <br />
     {moment(event.start).format('hh:mm A')} - {moment(event.end).format('hh:mm A')}
   </span>
@@ -187,15 +187,12 @@ const CalendarComponent: React.FC = () => {
         style={{ height: '80vh' }}
         className="bg-white shadow-lg rounded-lg"
         components={{
-          event: EventComponent, // Custom event component
-          week: {
-            event: EventComponent, // Use the same component for week view
-          },
-          day: {
-            event: EventComponent, // Optional: Handle daily view styling
-          },
+          event: EventComponent,
         }}
         onSelectEvent={handleSelectEvent}
+        messages={{
+          agenda: 'Activities',
+        }}
       />
 
       {open && <div>
