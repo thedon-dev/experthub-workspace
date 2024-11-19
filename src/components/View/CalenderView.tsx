@@ -271,7 +271,7 @@ const CalendarComponent: React.FC = () => {
       setLoading(true);
 
       // Initialize the client and retrieve the signature
-      const { client, signature } = await initClient();
+      const { client, signature } = await initClient() || {};
 
       // Check if signature or client failed to initialize
       if (!client || !signature) {
