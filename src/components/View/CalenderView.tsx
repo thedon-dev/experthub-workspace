@@ -11,9 +11,10 @@ const localizer = momentLocalizer(moment);
 import { usePathname } from 'next/navigation'
 import { addDays, isSameDay, isAfter } from "date-fns";
 import AppointmentModal from '../modals/AppointmentModal';
+import JoinMeeting from '../JoinMeeting'
 
 const EventComponent = ({ event }: { event: any }) => (
-  <span className='text-xm'>
+  <span className='text-xm h-32'>
     <strong className='capitalize'>{event.title}</strong>
     <br />
     {moment(event.start).format('hh:mm A')} - {moment(event.end).format('hh:mm A')}
@@ -29,7 +30,7 @@ const CalendarComponent: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
   const [open, setOpen] = useState(false)
   const [show, setShow] = useState(false)
-  const [data, setData] = useState()
+  const [data, setData] = useState<any>()
 
   useEffect(() => {
     if (selectedEvent) {
@@ -108,7 +109,7 @@ const CalendarComponent: React.FC = () => {
         // Process appointments
         const appointments = appointmentsResponse.data.appointment.map((event: any) => ({
           id: event._id,
-          title: `${event.category} with ${event.from?.fullname}`,
+          title: `${event.category} with ${event.to?.fullname}`,
           start: new Date(event.date),
           end: new Date(event.date),
           description: event.reason,
@@ -186,7 +187,13 @@ const CalendarComponent: React.FC = () => {
         style={{ height: '80vh' }}
         className="bg-white shadow-lg rounded-lg"
         components={{
-          event: EventComponent,
+          event: EventComponent, // Custom event component
+          week: {
+            event: EventComponent, // Use the same component for week view
+          },
+          day: {
+            event: EventComponent, // Optional: Handle daily view styling
+          },
         }}
         onSelectEvent={handleSelectEvent}
       />
@@ -213,11 +220,22 @@ const CalendarComponent: React.FC = () => {
                 <p>
                   <strong>Description:</strong> {selectedEvent.description}
                 </p>
+                {data && <>
+                  <p>
+                    <strong>Mode:</strong> {data?.mode}
+                  </p>
+                  {data.mode === 'phone' && <p><strong>Phone:</strong> {data.phone}</p>}
+                  {data.mode === 'in person' && <>
+                    <p> <strong>Location:</strong> {data.location}</p>
+                    <p><strong>Room:</strong> {data.room}</p>
+                  </>}
+                  {data.mode === 'online' && <JoinMeeting appointment={data} />}
+                </>}
               </div>
             )}
           </div>
           <div className='text-center'>
-            {selectedEvent.type === 'appointment' && <button onClick={() => { setShow(true); setOpen(false) }} className='bg-primary p-3 w-44 mx-auto'>Edit</button>}
+            {selectedEvent.type === 'appointment' && <button onClick={() => { setShow(true); setOpen(false) }} className='bg-primary p-3 w-44 mx-auto'>Reschedule</button>}
           </div>
         </div>
       </div>}
