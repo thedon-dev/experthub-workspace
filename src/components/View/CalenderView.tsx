@@ -429,22 +429,15 @@ const CalendarComponent: React.FC = () => {
                             {loading ? <Spin /> : "Join Live"}
                           </button>
                         ) : null
-                      ) : user.role !== 'student' ? (
-                        <button
-                          onClick={() => router.push(`/${user.role}/${data._id}?page=${data.type}`)}
-                          className="bg-primary p-2 my-3 rounded-md px-8"
-                        >
-                          {data.type}
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => router.push(`/applicant/${data._id}?page=${data.type}`)}
-                          className="bg-primary p-2 my-3 rounded-md px-8"
-                        >
-                          {data.type}
-                        </button>
-                      )
+                      ) : null
                     ) : null
+                  }
+
+                  {
+                    (selectedEvent.type === 'course' || selectedEvent.type === 'event') && data.type === "online" &&
+                    <div className='flex mt-1 items-center text-sm   text-yellow-600 gap-3'>
+                      {isOn().msg}
+                    </div>
                   }
 
                   {(selectedEvent.type === 'course' || selectedEvent.type === 'event') && data?.type === "offline" ? (
