@@ -259,9 +259,9 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
     if (currentDate.isAfter(endDate)) return { on: false, msg: 'Meeting period is over' };
     if (!currentDate.isBetween(startDate, endDate)) return { on: false, msg: 'Meeting is out of date range' };
 
-    const activeDays = course.days.filter(day => day.checked);
+    const activeDays = course?.days?.filter(day => day.checked) || null;
 
-    if (activeDays.length === 0) {
+    if (activeDays?.length === 0) {
       const meetingStartTime = dayjs(`${currentDate.format('YYYY-MM-DD')}T${course.startTime}`).tz(userTimeZone);
       const meetingEndTime = dayjs(`${currentDate.format('YYYY-MM-DD')}T${course.endTime}`).tz(userTimeZone);
       if (currentDate.isBetween(meetingStartTime, meetingEndTime)) {
@@ -272,7 +272,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
         return { on: false, msg: `Meeting has ended, ended at ${meetingEndTime.format('HH:mm')}` };
       }
     }
-    const todayMeeting = activeDays.find(day => day.day === currentDate.format('dddd'));
+    const todayMeeting = activeDays?.find(day => day.day === currentDate.format('dddd'));
 
     if (todayMeeting) {
       const meetingStartTime = dayjs(`${currentDate.format('YYYY-MM-DD')}T${todayMeeting.startTime}`).tz(userTimeZone);
@@ -283,11 +283,20 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
       } else if (currentDate.isBefore(meetingStartTime)) {
         return { on: false, msg: `Meeting has not started, will start at ${meetingStartTime.format('HH:mm')}` };
       }
+    } else if (type === "Event") {
+      const meetingStartTime = dayjs(`${currentDate.format('YYYY-MM-DD')}T${course.startTime}`).tz(userTimeZone);
+      const meetingEndTime = dayjs(`${currentDate.format('YYYY-MM-DD')}T${course.endTime}`).tz(userTimeZone);
+
+      if (currentDate.isBetween(meetingStartTime, meetingEndTime)) {
+        return { on: true, msg: 'Meeting is ongoing' };
+      } else if (currentDate.isBefore(meetingStartTime)) {
+        return { on: false, msg: `Meeting has not started, will start at ${meetingStartTime.format('HH:mm')}` };
+      }
     }
 
 
 
-    const futureMeetingsMain = [...(course.days.filter(day => day.checked))]
+    const futureMeetingsMain = [...(course?.days?.filter(day => day.checked) || [])]
     const msg = <div className='flex flex-col  '>
       <div>No meeting now. Check out our schedule below</div>
       {
