@@ -48,6 +48,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
   const [courseDuration, setCourseDuration] = useState<number>(0)
   const [timeframe, setTimeframe] = useState("days")
 
+  const [userProfile, setUser] = useState<any>();
 
   const [privacy, setPrivacy] = useState(course?.privacy || "")
   const [type, setType] = useState(course?.type || "offline")
@@ -73,6 +74,13 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
       })
 
 
+  }
+
+  const getUser = () => {
+    apiService.get(`user/profile/${user.id}`)
+      .then(function (response) {
+        setUser(response.data.user)
+      })
   }
 
   const [pdf, setPdf] = useState("")
@@ -206,13 +214,12 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
     })
   }
   const handleTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (user.role === 'tutor' && e.target.value === "online" && setShowPremium) {
+    if (user.role === 'tutor' && (e.target.value === "online" && (!userProfile?.premiumPlan || userProfile?.premiumPlan === "basic")) && setShowPremium) {
       handleClick()
       setShowPremium(true)
     } else {
       setType(e.target.value)
     }
-
   }
   const handleModulesInputChange = (index: number, field: string, value: string | number | boolean) => {
     const updatedObjects = [...modules];
@@ -489,6 +496,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
     getStudents()
     getCategories()
     getLiveCourses()
+    getUser()
   }, [])
 
 

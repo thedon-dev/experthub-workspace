@@ -20,7 +20,8 @@ export default function Plans() {
     const [open, setOpen] = useState(false);
     const [paymentInfo, setPaymentInfo] = useState({
         plan: '',
-        amount: ''
+        amount: '',
+        planId: null
     })
     const getUser = () => {
         apiService.get(`user/profile/${user.id}`)
@@ -85,7 +86,7 @@ export default function Plans() {
         amount: parseFloat(paymentInfo.amount),
         currency: 'NGN',
         payment_options: "card",
-        payment_plan: "3341",
+        payment_plan: paymentInfo.planId,
         customer: {
             email: user.email,
             name: user.fullName,
@@ -115,7 +116,7 @@ export default function Plans() {
         },
         {
             name: "Standard",
-            price: { monthly: "8000", yearly: "80000" },
+            price: { monthly: { amount: "8000", payment_id: "133951" }, yearly: { amount: "8000", payment_id: "133952" } },
             description: "Perfect for small businesses",
             features: [
                 { feature: "Can create up to 20 Courses and Events", available: true },
@@ -131,7 +132,7 @@ export default function Plans() {
         },
         {
             name: "Enterprise",
-            price: { monthly: "15000", yearly: "150000" },
+            price: { monthly: { amount: "15000", payment_id: "133953" }, yearly: { amount: "150000", payment_id: "133954" } },
             description: "Perfect for big businesses",
             features: [
                 { feature: "Can create Unlimited Courses and Events", available: true },
@@ -192,12 +193,12 @@ export default function Plans() {
                                             currency: "NGN",
                                             minimumFractionDigits: 0
 
-                                        }).format(parseFloat(plan.price.yearly)) : new Intl.NumberFormat("en-NG", {
+                                        }).format(parseFloat(plan.price.yearly.amount)) : new Intl.NumberFormat("en-NG", {
                                             style: "currency",
                                             currency: "NGN",
                                             minimumFractionDigits: 0
 
-                                        }).format(parseFloat(plan.price.monthly))
+                                        }).format(parseFloat(plan.price.monthly.amount))
                                         }
 
                                         {isYearly ? "/year" : "/month"}
@@ -218,7 +219,7 @@ export default function Plans() {
                             {plan.buttonLabel && userProfile?.premiumPlan !== plan.name.toLowerCase() && (
                                 <div className='text-center w-full'>
                                     <button onClick={() => {
-                                        setPaymentInfo({ amount: isYearly ? plan.price.yearly : plan.price.monthly, plan: plan.name })
+                                        setPaymentInfo({ amount: isYearly ? plan.price.yearly.amount : plan.price.monthly.amount, plan: plan.name, planId: isYearly ? plan.price.yearly.payment_id : plan.price.monthly.payment_id })
                                         setOpen(true)
                                     }} className="bg-yellow-500 text-black font-semibold uppercase py-2 px-4 rounded-lg shadow-[0px_4px_2px_-1px_rgb(0,0,0,0.5)] mt-9 mx-auto hover:shadow-none duration-300">
                                         {plan.buttonLabel}

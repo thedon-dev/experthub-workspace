@@ -8,6 +8,8 @@ import apiService from '@/utils/apiService';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
+import SelectCourseDate from '../date-time-pickers/SelectCourseDate'
+
 dayjs.extend(isBetween)
 dayjs.extend(advancedFormat)
 
@@ -27,6 +29,8 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [duration, setDuration] = useState<number>(course?.duration || 0)
   const [category, setCategory] = useState(course?.category || "")
   const [categoryIndex, setCategoryIndex] = useState("")
+  const [liveCourses, setLiveCourses] = useState([])
+  const [conflict, setConflict] = useState(false)
 
   const [type, setType] = useState(course?.type || "offline")
   const [title, setTitle] = useState(course?.title || "")
@@ -111,6 +115,13 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
 
   const add = () => {
     // console.log(getScholarship())
+
+    if (type === `online` && conflict) {
+      setActive(1)
+      return api.open({
+        message: "You have chosen a disabled time please check",
+      });
+    }
     if (title && about && duration && category && image && mode && type === "offline" ? startDate && endDate && startTime && endTime && room && location : startDate && endDate && startTime && endTime) {
       setLoading(true)
 
@@ -185,9 +196,20 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
     })
   }
 
+  const getLiveCourses = () => {
+    apiService.get('courses/live')
+      .then(function (response) {
+        setLiveCourses(response.data)
+      }).catch(e => {
+        console.log(e);
+
+      })
+  }
   useEffect(() => {
     getStudents()
     getCategories()
+    getLiveCourses()
+
   }, [])
 
   const formattedOptions = students.map((option: UserType) => ({ value: option.studentId, label: option.fullname }));
@@ -311,26 +333,8 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         </div>
                       </div>
                       {type === 'online' ? <>
-                        <div className='flex justify-between my-1'>
-                          <div className='w-[48%]'>
-                            <label className='text-sm font-medium my-1'>Start date</label>
-                            <input onChange={e => setStartDate(e.target.value)} value={startDate} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
-                          </div>
-                          <div className='w-[48%]'>
-                            <label className='text-sm font-medium my-1'>End date</label>
-                            <input disabled={type === `online`} onChange={e => setEndDate(e.target.value)} value={endDate} type="date" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
-                          </div>
-                        </div>
-                        <div className='flex justify-between my-1'>
-                          <div className='w-[48%]'>
-                            <label className='text-sm font-medium my-1'>Start time</label>
-                            <input onChange={e => setStartTime(e.target.value)} value={startTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
-                          </div>
-                          <div className='w-[48%]'>
-                            <label className='text-sm font-medium my-1'>End time</label>
-                            <input disabled={type === `online`} onChange={e => setEndTime(e.target.value)} value={endTime} type="time" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent disabled:cursor-not-allowed disabled:border-[#bdbcbc] disabled:text-[#acabab]' />
-                          </div>
-                        </div>
+                        <SelectCourseDate setEndDate={setEndDate} setConflict={setConflict} startDate={startDate} duration={duration} startTime={startTime} endTime={endTime} setStartDate={setStartDate} setStartTime={setStartTime} setEndTime={setEndTime} courses={liveCourses} />
+
                       </> : null}
                       {type === 'offline' && <>
                         <div className='flex justify-between my-1'>
