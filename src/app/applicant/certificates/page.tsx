@@ -76,10 +76,10 @@ const Certificates = () => {
 
     doc.setFontSize(25);
     doc.setTextColor('#2F2F2F');
-    doc.text(` ${repo.tutor}.`, 715, 635);
+    doc.text(` ${repo.tutor.fullname}.`, 715, 635);
 
     // Add Signature Image (optional)
-    // doc.addImage('/path/to/signature-image.png', 'PNG', 400, 500, 200, 100);
+    doc.addImage(repo.tutor.signature, 'PNG', 715, 530, 100, 60);
 
     // Add Issuer's Name (optional)
     // doc.setFontSize(24);

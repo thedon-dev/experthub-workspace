@@ -90,7 +90,8 @@ const newAssesment = () => {
         {
           title,
           // image,
-          assesment: questions
+          assesment: questions,
+          tutor: user.id,
         }
       )
         .then(function (response) {
