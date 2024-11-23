@@ -42,7 +42,7 @@ button:focus {
   /* margin-top: 10px; */
 }
 
-.shadow{
+.shadow {
   box-shadow: 8px 8px 10px 0px #1E1E1E40;
 }
 
@@ -68,7 +68,7 @@ button:focus {
   }
 }
 
-.loader{
+.loader {
   font-size: 48px;
   color: #FFF;
   display: inline-block;
@@ -76,16 +76,21 @@ button:focus {
   font-weight: 400;
   position: relative;
 }
-.loader:after{
+
+.loader:after {
   content: '';
   height: 4px;
-  width:0%;
+  width: 0%;
   display: block;
   background: #FF3D00;
   animation: 5s lineGrow linear infinite;
 }
 
-@keyframes lineGrow {to{width: 100%;}}
+@keyframes lineGrow {
+  to {
+    width: 100%;
+  }
+}
 
 .loader2 {
   width: 45px;
@@ -96,48 +101,58 @@ button:focus {
   display: inline-block;
   box-sizing: border-box;
   animation: rotation2 1s linear infinite;
-  }
+}
 
-  @keyframes rotation2 {
+@keyframes rotation2 {
   0% {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-  100% {
-      transform: rotate(360deg);
-  }
-  } 
 
-  .loader3 {
-    color: #000;
-    display: inline-block;
-    position: relative;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
-    box-sizing: border-box;
+  100% {
+    transform: rotate(360deg);
   }
-  .loader3::after {
-    content: '';  
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: #000;
-    position: absolute;
-    bottom: 5px;
-    right: -5px;
-    box-sizing: border-box;
-    animation: animloader 1s linear infinite;
+}
+
+.loader3 {
+  color: #000;
+  display: inline-block;
+  position: relative;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
+.loader3::after {
+  content: '';
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #000;
+  position: absolute;
+  bottom: 5px;
+  right: -5px;
+  box-sizing: border-box;
+  animation: animloader 1s linear infinite;
+}
+
+@keyframes animloader {
+  0% {
+    box-shadow: 10px 0 rgba(255, 255, 255, 0), 20px 0 rgba(255, 255, 255, 0);
   }
-  
-  @keyframes animloader {
-    0% {
-      box-shadow: 10px 0 rgba(255, 255, 255, 0), 20px 0 rgba(255, 255, 255, 0);
-    }
-    50% {
-      box-shadow: 10px 0 black, 20px 0 rgba(255, 255, 255, 0);
-    }
-    100% {
-      box-shadow: 10px 0 black, 20px 0 black;
-    }
+
+  50% {
+    box-shadow: 10px 0 black, 20px 0 rgba(255, 255, 255, 0);
   }
-  
-  
+
+  100% {
+    box-shadow: 10px 0 black, 20px 0 black;
+  }
+}
+
+.rbc-day-slot .rbc-event-label {
+  display: none;
+}
+
+#meetingSDKElement{
+  z-index: 1000;
+}
