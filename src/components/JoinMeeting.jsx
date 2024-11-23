@@ -81,11 +81,11 @@ const JoinMeeting = ({ appointment }) => {
     })
   }
   return (
-    <div className='!z-[10000px]'>
+    <div className='!z-[10000px] z-50'>
       <button onClick={() => startMeeting()} className='bg-[#0000FF] text-white p-2 px-4 rounded-md mt-4'>
         Join
       </button>
-      <div className='fixed top-1/2 left-1/2 !z-[10000] -translate-x-1/2 -translate-y-1/2 '>
+      <div className='static top-1/2 left-1/2 !z-50 -translate-x-1/2 -translate-y-1/2 '>
         <div id="meetingSDKElement"></div>
       </div>
     </div>

@@ -644,7 +644,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
                       </div>
                       <div className='flex justify-between'>
                         <div className='w-[48%]'>
-                          <label className='text-sm font-medium my-1'>Course Duration</label>
+                          <label className='text-sm font-medium my-1'>Subscription Plan</label>
                           <input onChange={e => setCourseDuration(parseInt(e.target.value))} value={courseDuration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                         </div>
                         <div className='w-[48%]'>

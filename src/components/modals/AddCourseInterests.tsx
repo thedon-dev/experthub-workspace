@@ -1,4 +1,4 @@
-import { useAppSelector,useAppDispatch } from '@/store/hooks';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { CategoryType } from '@/types/CourseType';
 import apiService from '@/utils/apiService';
 import { notification } from 'antd';
@@ -49,6 +49,29 @@ const AddCourseInterests = ({ open, handleClick }: { open: boolean, handleClick:
     })
   }
 
+  const unAssign = async (category: any) => {
+    // setSaving(true)
+    await apiService.put(`user/unassign/${user.id}`, {
+      course: category
+    }).then(function (response) {
+      console.log(response.data.user)
+      dispatch(
+        setUser({
+          ...response.data.user,
+          accessToken: user.accessToken,
+        })
+      );
+      // setSaving(false)
+      api.open({
+        message: `Interest removed Successfully!`
+      });
+      handleClick()
+    }).catch(error => {
+      console.log(error)
+      setSaving(false)
+    })
+  }
+
   return (
     open ? <div>
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
@@ -77,7 +100,17 @@ const AddCourseInterests = ({ open, handleClick }: { open: boolean, handleClick:
             <div className='text-center'><button onClick={() => saveChanges()} className='bg-primary p-2 px-6 my-4 font-medium'>{saving ? "saving..." : "Save Changes"}</button></div>
           </div>
         </div>
-
+        <div className='p-4'>
+          <p className='text-base font-bold'>Interests</p>
+          {user.otherCourse?.map((single: string, index: any) => single.length === 0 ? null : <div key={index} className='my-2 bg-gray px-2 text-base flex justify-between'>
+            <p >{single}</p>
+            <div className='my-auto cursor-pointer' onClick={() => { unAssign(single) }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
+                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+              </svg>
+            </div>
+          </div>)}
+        </div>
       </div>
     </div> : null
   );

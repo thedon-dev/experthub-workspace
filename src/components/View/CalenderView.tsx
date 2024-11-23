@@ -366,37 +366,39 @@ const CalendarComponent: React.FC = () => {
   return (
     <div className="h-screen p-2">
       <h2 className="text-xl font-bold mb-4">My Calendar</h2>
-      <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        onNavigate={(date: React.SetStateAction<Date>) => setCurrentDate(date)} // Update state on navigation
-        date={currentDate}
-        view={view}
-        onView={(newView: React.SetStateAction<string>) => setView(newView)}
-        endAccessor="end"
-        style={{ height: '80vh' }}
-        className="bg-white shadow-lg rounded-lg"
-        components={{
-          // event: EventComponent,
-          month: {
-            event: EventComponent, // Explicitly applies to week view
-          },
-          week: {
-            event: EventComponent, // Explicitly applies to week view
-          },
-          // work_week: {
-          //   event: EventComponent, // Explicitly applies to work week view
-          // },
-          // day:{
-          //   event: EventComponent, // Explicitly applies to work week view
-          // }
-        }}
-        onSelectEvent={handleSelectEvent}
-        messages={{
-          agenda: 'Activities',
-        }}
-      />
+      <div className='z-0'>
+        <Calendar
+          localizer={localizer}
+          events={events}
+          startAccessor="start"
+          onNavigate={(date: React.SetStateAction<Date>) => setCurrentDate(date)} // Update state on navigation
+          date={currentDate}
+          view={view}
+          onView={(newView: React.SetStateAction<string>) => setView(newView)}
+          endAccessor="end"
+          style={{ height: '80vh' }}
+          className="bg-white shadow-lg rounded-lg z-0"
+          components={{
+            // event: EventComponent,
+            month: {
+              event: EventComponent, // Explicitly applies to week view
+            },
+            week: {
+              event: EventComponent, // Explicitly applies to week view
+            },
+            // work_week: {
+            //   event: EventComponent, // Explicitly applies to work week view
+            // },
+            // day:{
+            //   event: EventComponent, // Explicitly applies to work week view
+            // }
+          }}
+          onSelectEvent={handleSelectEvent}
+          messages={{
+            agenda: 'Activities',
+          }}
+        />
+      </div>
 
       {open && <div>
         <div onClick={() => setOpen(false)} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>

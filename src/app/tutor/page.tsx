@@ -17,6 +17,7 @@ import AddEvents from '@/components/modals/AddEvents';
 import apiService from '@/utils/apiService';
 import AddCourseInterests from '@/components/modals/AddCourseInterests';
 import GoPremuim from '@/components/modals/GoPremuium';
+import { CourseType } from '@/types/CourseType';
 
 const tutor = () => {
   const user = useAppSelector((state) => state.value);
@@ -143,10 +144,10 @@ const tutor = () => {
           </div>
         </div>
         <div className='lg:flex flex-wrap justify-between'>
-          {
-            courses.length >= 1 ?
-              courses.slice(0, 6).map((course, index) => <div key={index} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>) : <div>No Assigned course!</div>
-          }
+          {courses.length >= 1 ? courses.slice(0, 6)
+            .filter((course: CourseType) => course.category === active || active === "")
+            .map((course: CourseType) => <div key={course._id} className='lg:w-[32%]'> <CoursesCard getCourse={() => getCourses()} course={course} /></div>) : <div>No Assigned course!</div>}
+          
         </div>
       </section>
       <AddCourse course={null} setShowPremium={setShowPremuim} open={open} handleClick={() => setOpen(!open)} />

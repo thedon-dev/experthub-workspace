@@ -54,7 +54,7 @@ export default function Notifications() {
     const getNotifcations = () => {
 
         try {
-            apiService.get(`notifications/all/${user.id}`)
+            apiService.get(`notifications/all/${user?.id}`)
                 .then(function (response) {
                     // console.log(response.data);
                     setNotifications(response.data)
