@@ -81,7 +81,7 @@ const AddCourseInterests = ({ open, handleClick }: { open: boolean, handleClick:
           <img onClick={() => handleClick()} className='w-6 h-6 cursor-pointer' src="/images/icons/material-symbols_cancel-outline.svg" alt="" />
         </div>
         {contextHolder}
-        <div className='m-10'>
+        <div className='mx-10'>
           <div className=' p-3 rounded-md my-4'>
             <div className='w-full my-2'>
               <label className='text-sm font-medium my-1'>Category</label>
@@ -100,10 +100,12 @@ const AddCourseInterests = ({ open, handleClick }: { open: boolean, handleClick:
             <div className='text-center'><button onClick={() => saveChanges()} className='bg-primary p-2 px-6 my-4 font-medium'>{saving ? "saving..." : "Save Changes"}</button></div>
           </div>
         </div>
-        <div className='p-4'>
+        <div className='px-4'>
           <p className='text-base font-bold'>Interests</p>
-          {user.otherCourse?.map((single: string, index: any) => single.length === 0 ? null : <div key={index} className='my-2 bg-gray px-2 text-base flex justify-between'>
-            <p >{single}</p>
+          {user.otherCourse?.map((single: string, index: any) => single.length === 0 ? null : <div key={index} className='my-2  text-base flex w-1/2 justify-between'>
+            <div className='bg-gray px-4'>
+              <p >{single}</p>
+            </div>
             <div className='my-auto cursor-pointer' onClick={() => { unAssign(single) }}>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
