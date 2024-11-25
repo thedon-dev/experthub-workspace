@@ -71,7 +71,7 @@ const AddResources = ({ open, handleClick, material }: { open: boolean, handleCl
       file && formData.append("image", file[0])
       formData.append("title", title)
       formData.append("aboutCourse", about)
-      formData.append("privacy", privacy)
+      // formData.append("privacy", privacy)
       formData.append("websiteUrl", websiteUrl)
       formData.append("assignedCourse", assignedCourse)
 
