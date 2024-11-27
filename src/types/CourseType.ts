@@ -7,7 +7,7 @@ export interface CourseType {
   duration: number;
   type: string;
   startDate: string;
-  endDate: Date;
+  endDate: string;
   startTime: string;
   endTime: string;
   fee: number;
