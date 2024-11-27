@@ -591,11 +591,11 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
 
             {
               type === 'pdf' && <div>
-                <p className='text-sm font-medium my-1'>Course Content</p>
+                <p className='text-sm font-medium  my-1'>Course Content</p>
                 <button className='border border-[#1E1E1ED9] h-32 p-2 my-1 rounded-md font-medium w-full' onClick={() => pdfUploadRef.current?.click()}>
                   <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
                   <p> Click to upload</p></button>
-                <p className='text-sm'>{pdf === "" ? "" : pdf.slice(0, 20)}</p>
+                <p className='text-sm'>{pdf === "" ? " " : pdf.slice(0, 20)}</p>
               </div>
             }
             <input
@@ -652,7 +652,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
                       </div>
                       <div className='flex justify-between'>
                         <div className='w-[48%]'>
-                          <label className='text-sm font-medium my-1'>Subscription Plan</label>
+                          <label className='text-sm font-medium my-1'>Course Duration</label>
                           <input onChange={e => setCourseDuration(parseInt(e.target.value))} value={courseDuration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                         </div>
                         <div className='w-[48%]'>
