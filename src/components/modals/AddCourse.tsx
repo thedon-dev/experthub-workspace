@@ -763,7 +763,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
                           </div>
                           <div className='w-[48%]'>
                             <label className='text-sm font-medium my-1'>End date</label>
-                            <input onChange={e => setEndDate(dayjs().toDate())} value={endDate?.toISOString()} type="date" min={new Date().toISOString().split('T')[0]} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                            <input onChange={e => setEndDate(e.target.value)} value={endDate} type="date" min={new Date().toISOString().split('T')[0]} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                           </div>
                         </div>
                         <div className='flex justify-between my-1'>
