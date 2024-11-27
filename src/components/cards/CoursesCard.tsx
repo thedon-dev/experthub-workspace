@@ -53,7 +53,8 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
       {
         key: '4',
         label: (
-          <p onClick={() => { course.enrolledStudents.length >= 1 ? setEnrolled(true) : setDelete(true) }}>Delete course</p>
+          <p onClick={() => { setDelete(true) }}>Delete course</p>
+          // <p onClick={() => { course.enrolledStudents.length >= 1 ? setEnrolled(true) : setDelete(true) }}>Delete course</p>
         ),
       },
       {

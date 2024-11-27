@@ -153,6 +153,32 @@ button:focus {
   display: none;
 }
 
-#meetingSDKElement{
-  z-index: 1000;
+.fixed {
+  z-index: 90;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: rgba(0, 0, 0, 0.171);
+  color: #fff;
+  text-align: center;
+  padding: 2px 0;
+  border-radius: 6px;
+  font-size: 10px;
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }

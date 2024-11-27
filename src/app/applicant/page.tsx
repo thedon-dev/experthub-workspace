@@ -23,7 +23,7 @@ const applicant = () => {
   const [open, setOpen] = useState(false)
 
   const getAssesment = async () => {
-    await apiService.get(`assessment/my-assessment/${user.id}`)
+    await apiService.get(`assessment/my-assessment/${user?.id}`)
       .then(function (response) {
         setAssesment(response.data.myAssesment.reverse())
         // console.log(response.data)
@@ -32,7 +32,7 @@ const applicant = () => {
       })
   }
   const getRecommended = async () => {
-    await apiService.get(`courses/recommended-courses/${user.id}`)
+    await apiService.get(`courses/recommended-courses/${user?.id}`)
       .then(function (response) {
         setReccomended(response.data.courses)
         // console.log(response.data)
@@ -44,7 +44,7 @@ const applicant = () => {
 
 
   const getCourses = async () => {
-    await apiService.get(`courses/enrolled-courses/${user.id}`)
+    await apiService.get(`courses/enrolled-courses/${user?.id}`)
       .then(function (response) {
         // const all: CourseType[] = []
         // response.data.enrolledCourses.map((course: CourseType) => {
