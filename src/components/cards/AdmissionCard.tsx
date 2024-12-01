@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Dropdown, Spin } from 'antd';
 import { usePathname } from 'next/navigation';
@@ -8,11 +8,11 @@ import AssignCourse from '../modals/AssignCourse';
 import SendAssesment from '../modals/SendAssesment';
 import { notification } from 'antd';
 import Notice from '../modals/Notice';
-import Link from 'next/link';
 import { useAppSelector } from '@/store/hooks';
 import { useRouter } from 'next/navigation';
 import apiService from '@/utils/apiService';
 import AppointmentModal from '../modals/AppointmentModal';
+import { UserType } from '@/types/UserType';
 
 
 const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
@@ -27,6 +27,8 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
   const router = useRouter()
   const user = useAppSelector((state) => state.value);
   const [appointment, setAppointment] = useState(false)
+
+  const [userProfile, setUser] = useState<UserType>();
 
   const linkUser = () => {
     router.push(user.role === "student" ? `/applicant/message?id=${tutor.studentId || tutor.id}` : user.role === "admin" ? `/admin/message?id=${tutor.studentId || tutor.id}` : `/tutor/message?id=${tutor.studentId || tutor.id}`)
@@ -46,12 +48,15 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       ),
       key: '8',
     },
-    {
-      label: (
-        <p onClick={() => setEmail(true)}>Send Email</p>
-      ),
-      key: '2',
-    },
+    ...(userProfile?.premiumPlan !== "basic" ? [
+      {
+        label: (
+          <p onClick={() => setEmail(true)}>Send Email</p>
+        ),
+        key: '2',
+      },
+    ] : []),
+
 
 
     // {
@@ -102,12 +107,14 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         ),
         key: '3',
       },
-      {
-        label: (
-          <p onClick={() => setEmail(true)}>Send Email</p>
-        ),
-        key: '4',
-      },
+      ...(userProfile?.premiumPlan !== "basic" ? [
+        {
+          label: (
+            <p onClick={() => setEmail(true)}>Send Email</p>
+          ),
+          key: '2',
+        },
+      ] : []),
     ]),
     ...[
       {
@@ -164,7 +171,12 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       });
     }
   }
-
+  const getUser = () => {
+    apiService.get(`user/profile/${user.id}`)
+      .then(function (response) {
+        setUser(response.data.user)
+      })
+  }
   const makeGraduate = () => {
     try {
       apiService.put(`user/graduate/${tutor.studentId}`)
@@ -181,6 +193,11 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       });
     }
   }
+
+
+  useEffect(() => {
+    getUser()
+  }, [])
   return (
     <div>
       {contextHolder}

@@ -3,7 +3,6 @@
 import DashboardLayout from '@/components/DashboardLayout';
 import React, { useEffect, useState } from 'react';
 import AdmissionCard from '@/components/cards/AdmissionCard';
-import SearchNav from '@/components/SearchNav';
 import { useAppSelector } from '@/store/hooks';
 import { UserType } from '@/types/UserType';
 import SignUpComp from '@/components/SignUpComp';
