@@ -475,6 +475,10 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
           api.open({
             message: error.response.data.message,
           });
+          if (error.response.data.showPop && setShowPremium) {
+            setShowPremium(true)
+          }
+
         });
     } else {
       api.open({
