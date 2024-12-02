@@ -424,8 +424,8 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
         type === "online" ? instant ? startDate && endDate && startTime && endTime : startDate && endDate && days.filter((day: any) => day.checked).length > 0 : type === "video" ? videos : pdf)
     ) {
 
-      const startDateTime = dayjs.utc(`${dayjs(startDate).format(`YYYY-MM-DD`)}T${instant ? startTime : days.filter((day: any) => day.checked)[0].startTime}:00`);
-      const endDateTime = dayjs.utc(`${dayjs(endDate).format(`YYYY-MM-DD`)}T${instant ? endTime : days.filter((day: any) => day.checked)[0].endTime}:00`);
+      const startDateTime = (type === "video" || type === "pdf") ? dayjs() : dayjs.utc(`${dayjs(startDate || "").format(`YYYY-MM-DD`)}T${instant ? startTime : days.filter((day: any) => day.checked)[0].startTime}:00`);
+      const endDateTime = (type === "video" || type === "pdf") ? dayjs() : dayjs.utc(`${dayjs(endDate || "").format(`YYYY-MM-DD`)}T${instant ? endTime : days.filter((day: any) => day.checked)[0].endTime}:00`);
 
       const startDateJS = startDateTime.toDate();
       const endDateJS = endDateTime.toDate();
