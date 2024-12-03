@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Dropdown, Spin } from 'antd';
 import { usePathname } from 'next/navigation';
@@ -15,7 +15,7 @@ import AppointmentModal from '../modals/AppointmentModal';
 import { UserType } from '@/types/UserType';
 
 
-const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
+const AdmissionCard = ({ tutor, role, setShowPremium }: { tutor: any, role: string, setShowPremium: Dispatch<SetStateAction<boolean>> }) => {
   const [assign, setAssign] = useState(false)
   const [email, setEmail] = useState(false)
   const [assesment, setAssesment] = useState(false)
@@ -48,14 +48,12 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
       ),
       key: '8',
     },
-    ...(userProfile?.premiumPlan !== "basic" ? [
-      {
-        label: (
-          <p onClick={() => setEmail(true)}>Send Email</p>
-        ),
-        key: '2',
-      },
-    ] : []),
+    {
+      label: (
+        <p onClick={() => { userProfile?.premiumPlan !== "enterprise" ? setShowPremium(true) : setEmail(true) }}>Send Email</p>
+      ),
+      key: '2',
+    },
 
 
 
@@ -107,14 +105,12 @@ const AdmissionCard = ({ tutor, role }: { tutor: any, role: string }) => {
         ),
         key: '3',
       },
-      ...(userProfile?.premiumPlan !== "basic" ? [
-        {
-          label: (
-            <p onClick={() => setEmail(true)}>Send Email</p>
-          ),
-          key: '2',
-        },
-      ] : []),
+      {
+        label: (
+          <p onClick={() => { userProfile?.premiumPlan !== "enterprise" ? setShowPremium(true) : setEmail(true) }}>Send Email</p>
+        ),
+        key: '2',
+      },
     ]),
     ...[
       {

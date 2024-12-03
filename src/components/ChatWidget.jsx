@@ -1,21 +1,28 @@
 "use client"
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
+import apiService from '@/utils/apiService';
 
 
 const ChatWidget = () => {
   const user = useAppSelector((state) => state.value);
   const crypto = require("crypto");
+  const [userProfile, setUser] = useState();
 
   const key = "nj4Rk7eeLMDVGMuRWokrcLxE";
   // const message = "some-unique-identifier";
 
   // Generate the HMAC
 
-
+  const getUser = () => {
+    apiService.get(`user/profile/${user.id}`)
+      .then(function (response) {
+        setUser(response.data.user)
+      })
+  }
   useEffect(() => {
-    if (user) {
+    if (user && userProfile && userProfile.premiumPlan === "enterprise") {
       // console.log(user)
       const identifierHash = crypto
         .createHmac("sha256", key)
@@ -50,7 +57,9 @@ const ChatWidget = () => {
         }
       })(document, "script");
     }
-  }, [user])
+
+    getUser()
+  }, [user, userProfile])
 
 
   return null;

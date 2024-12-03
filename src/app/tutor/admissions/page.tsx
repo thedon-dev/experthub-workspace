@@ -8,6 +8,7 @@ import { UserType } from '@/types/UserType';
 import SignUpComp from '@/components/SignUpComp';
 import { Modal } from 'antd';
 import apiService from '@/utils/apiService';
+import GoPremuim from '@/components/modals/GoPremuium';
 
 const addmissions = () => {
   const [active, setActive] = useState("students")
@@ -15,6 +16,7 @@ const addmissions = () => {
   const [students, setStudents] = useState<UserType | []>([])
   const [all, setAll] = useState<UserType | []>([])
   const [contact, setContact] = useState(false)
+  const [showPremuim, setShowPremuim] = useState(false)
 
   const getStudents = () => {
     apiService.put('/user/mystudents', {
@@ -67,25 +69,25 @@ const addmissions = () => {
             case 'contact':
               return <div>
                 {
-                  students.map((student: UserType, index: any) => student.contact ? <AdmissionCard role={active} tutor={student} key={index} /> : null)
+                  students.map((student: UserType, index: any) => student.contact ? <AdmissionCard setShowPremium={setShowPremuim} role={active} tutor={student} key={index} /> : null)
                 }
               </div>
             case 'students':
               return <div>
                 {
-                  students.map((student: UserType, index: any) => <AdmissionCard role={active} tutor={student} key={index} />)
+                  students.map((student: UserType, index: any) => <AdmissionCard setShowPremium={setShowPremuim} role={active} tutor={student} key={index} />)
                 }
               </div>
             case 'mentees':
               return <div>
                 {
-                  students.map((student: UserType, index: any) => <AdmissionCard role={active} tutor={student} key={index} />)
+                  students.map((student: UserType, index: any) => <AdmissionCard setShowPremium={setShowPremuim} role={active} tutor={student} key={index} />)
                 }
               </div>
             case 'graduates':
               return <div>
                 {
-                  students.map((student: UserType, index: any) => student.graduate && <AdmissionCard role={active} tutor={student} key={index} />)
+                  students.map((student: UserType, index: any) => student.graduate && <AdmissionCard setShowPremium={setShowPremuim} role={active} tutor={student} key={index} />)
                 }
               </div>
             default:
@@ -95,6 +97,8 @@ const addmissions = () => {
         <Modal title="Add Contact" footer={[]} open={contact} onOk={() => setContact(false)} onCancel={() => setContact(false)}>
           <SignUpComp role='student' action={() => getStudents()} />
         </Modal>
+        <GoPremuim show={showPremuim} setShow={setShowPremuim} />
+
       </section>
     </DashboardLayout>
   );
