@@ -19,7 +19,7 @@ const Events = () => {
   const getAllEvents = () => {
     apiService.get(`events/category/${user.id}`)
       .then(function (response) {
-        console.log(response.data)
+        console.log(response.data, 'cat events')
         setAll(response.data.events)
       })
   }
@@ -29,6 +29,9 @@ const Events = () => {
       .then(function (response) {
         // console.log(response.data)
         setMyEvent(response.data.enrolledCourses.reverse())
+      }).catch(e => {
+        console.log(e);
+
       })
   }
 

@@ -10,10 +10,12 @@ import AddCourse from '@/components/modals/AddCourse';
 import AddEvents from '@/components/modals/AddEvents';
 import AddResources from '@/components/modals/AddResources';
 import apiService from '@/utils/apiService';
+import GoPremuim from '@/components/modals/GoPremuium';
 
 const Events = () => {
   const user = useAppSelector((state) => state.value);
   const [events, setEvents] = useState([])
+  const [showPremuim, setShowPremuim] = useState(false)
 
   const [open, setOpen] = useState(false)
   const [resources, setResources] = useState(false)
@@ -41,10 +43,10 @@ const Events = () => {
   ];
 
   const getAllEvents = () => {
-    apiService.get(`events/category/${user.id}`)
+    apiService.get(`events/author/${user.id}`)
       .then(function (response) {
         setEvents(response.data.events)
-        console.log(response.data)
+        console.log(response.data, 'name of yhem')
       })
   }
 
@@ -66,7 +68,9 @@ const Events = () => {
 
       <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
       <AddResources open={resources} handleClick={() => setResources(!resources)} />
-      <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
+      <AddEvents setShowPremium={setShowPremuim} open={event} handleClick={() => setEvent(!event)} course={null} />
+      <GoPremuim show={showPremuim} setShow={setShowPremuim} />
+
     </DashboardLayout>
   );
 };

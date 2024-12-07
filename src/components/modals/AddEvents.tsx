@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { CategoryType, CourseType } from '@/types/CourseType';
 import { Spin, notification } from 'antd';
@@ -13,7 +13,7 @@ import SelectCourseDate from '../date-time-pickers/SelectCourseDate'
 dayjs.extend(isBetween)
 dayjs.extend(advancedFormat)
 
-const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: any, course: CourseType | null }) => {
+const AddEvents = ({ open, handleClick, course, setShowPremium }: { open: boolean, handleClick: any, course: CourseType | null, setShowPremium?: Dispatch<SetStateAction<boolean>> }) => {
   const user = useAppSelector((state) => state.value);
   const uploadRef = useRef<HTMLInputElement>(null)
   const [api, contextHolder] = notification.useNotification();
@@ -31,6 +31,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
   const [categoryIndex, setCategoryIndex] = useState("")
   const [liveCourses, setLiveCourses] = useState([])
   const [conflict, setConflict] = useState(false)
+  const [userProfile, setUser] = useState<UserType>();
 
   const [type, setType] = useState(course?.type || "offline")
   const [title, setTitle] = useState(course?.title || "")
@@ -70,7 +71,14 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
     }
   }
 
-
+  const handleTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    if (user.role === 'tutor' && (e.target.value === "online" && (!userProfile?.premiumPlan || userProfile?.premiumPlan === "basic")) && setShowPremium) {
+      handleClick()
+      setShowPremium(true)
+    } else {
+      setType(e.target.value)
+    }
+  }
   const edit = () => {
     try {
       setLoading(true)
@@ -161,6 +169,9 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
           api.open({
             message: error.response.data.message
           });
+          if (error.response.data.showPop && setShowPremium) {
+            setShowPremium(true)
+          }
         })
     } else {
       api.open({
@@ -178,10 +189,10 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
       setEndTime(endTime);
       setEndDate(dayjs(endDateIn).format('YYYY-MM-DD'));
 
-    } else {
+    } else if (type !== "offline") {
       setDuration(0);
     }
-    if (duration > 40) {
+    if (duration > 40 && type !== "offline") {
       setDuration(40);
     }
   }, [type, startTime, duration]);
@@ -194,6 +205,13 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
     }).catch(error => {
       console.log(error)
     })
+  }
+
+  const getUser = () => {
+    apiService.get(`user/profile/${user.id}`)
+      .then(function (response) {
+        setUser(response.data.user)
+      })
   }
 
   const getLiveCourses = () => {
@@ -209,6 +227,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
     getStudents()
     getCategories()
     getLiveCourses()
+    getUser()
 
   }, [])
 
@@ -284,7 +303,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                         </div>
                         <div className='my-1 w-[48%]'>
                           <label className='text-sm font-medium my-1'>Event Mode</label>
-                          <select onChange={e => setType(e.target.value)} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
+                          <select onChange={handleTypeChange} value={type} className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent'>
                             <option value="online">Online</option>
                             <option value="offline">Offline</option>
                           </select>
@@ -329,7 +348,7 @@ const AddEvents = ({ open, handleClick, course }: { open: boolean, handleClick: 
                               - <span className='text-orange-500 leading-3 font-thin text-[12px]'>{process.env.NEXT_PUBLIC_MEETING_DURATION}min max for Online Events</span>
                             </>
                           }</label>
-                          <input onChange={e => setDuration(parseInt(e.target.value))} max={type === 'online' ? parseFloat(process.env.NEXT_PUBLIC_MEETING_DURATION as string) : undefined} value={duration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
+                          <input onChange={e => { e.preventDefault(); console.log(e.target.value); setDuration(parseInt(e.target.value)) }} max={type === 'online' ? parseFloat(process.env.NEXT_PUBLIC_MEETING_DURATION as string) : undefined} value={duration} type="number" className='border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent' />
                         </div>
                       </div>
                       {type === 'online' ? <>

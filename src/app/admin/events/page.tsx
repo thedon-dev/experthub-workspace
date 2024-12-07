@@ -50,7 +50,7 @@ const Events = () => {
     apiService.get(`events/all`)
       .then(function (response) {
         setEvents(response.data.events.reverse())
-        console.log(response.data)
+        console.log(response.data, 'events')
       })
   }
 

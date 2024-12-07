@@ -58,10 +58,12 @@ export default function Home() {
   const [courses, setCourses] = useState<CourseType | []>([])
 
   const getCourses = async () => {
-    apiService.get("/courses/all")
+    apiService.get("courses/all")
       .then(function (response) {
         console.log(response.data)
         setCourses(response.data.courses)
+      }).catch(e => {
+        console.log(e)
       })
   }
   useEffect(() => {
