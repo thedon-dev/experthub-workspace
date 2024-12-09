@@ -503,10 +503,10 @@ const SideNav = () => {
   return (
     <aside className="h-screen fixed lg:w-[20%] lg:z-10 z-100 w-full bg-[#F8F7F4] sm:mt-4 shadow-md p-6">
       {contextHolder}
-      <h3 className="font-bold text-lg text-[#DC9F08]">EXPERTHUB INSTITUTE</h3>
+      <Link href={"/#courses"} className="font-bold text-lg text-[#DC9F08]">EXPERTHUB INSTITUTE</Link>
       <div className="flex-1 flex flex-col h-full my-6 overflow-auto">
         <ol className="text-sm font-medium flex-1">
-          {nav?.map((item, idx) => (
+          {nav?.map((item, idx) => ( 
             <li key={idx} className="my-3">
               <Link
                 href={item.href}

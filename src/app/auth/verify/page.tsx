@@ -1,7 +1,7 @@
 "use client"
 
 import apiService from '@/utils/apiService';
-import { Spin } from 'antd';
+import { notification, Spin } from 'antd';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
@@ -11,7 +11,10 @@ const verify = () => {
   const router = useRouter()
   const [code, setCode] = useState("")
   const [loading, setLoading] = useState(false)
-  const user = useSearchParams().get("user")
+  const [api] = notification.useNotification();
+
+  const searchParams = useSearchParams()
+  const user = searchParams.get("user")
 
   const submit = async () => {
     setLoading(true)
@@ -21,7 +24,8 @@ const verify = () => {
       .then(function (response) {
         console.log(response.data)
         setLoading(false)
-        router.push(`/auth/survey?user=${user}`)
+        handleEnroll(searchParams.get('enroll'))
+        router.push(`/auth/survey?user=${user}}`)
 
         // setSuccess(true)
       })
@@ -30,7 +34,23 @@ const verify = () => {
         setLoading(false)
       })
   }
+  const handleEnroll = (id: string | null) => {
+    try {
+      apiService.post(`courses/enroll/${id}`, {
+        id: user
+      })
+        .then(function () {
+        })
+        .catch(err => {
+          api.open({
+            message: err.response.data.message
+          });
 
+        })
+    } catch (e) {
+      // console.log(e.response.data.message)
+    }
+  }
   return (
     <main >
       <img src="/images/auth-bg.png" className='h-[100vh] w-full' alt="" />

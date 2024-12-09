@@ -5,12 +5,13 @@ import FooterNav from "@/components/FooterNav";
 import HeaderNav from "@/components/HeaderNav";
 import SliderComp from "@/components/SliderComp";
 import Link from "next/link";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
 import { CourseType } from "@/types/CourseType";
 import apiService from "@/utils/apiService";
 import Loader from "@/components/Loader";
+import CourseDetails from "@/components/modals/CourseDetails";
 
 export default function Home() {
   const text = `Ans: We are determine to raise the next generation of Global leaders and empower youths to harness the immense potential of technology to overcome the challenges our planet faces, including its dwindling economy.
@@ -56,6 +57,8 @@ export default function Home() {
   ];
 
   const [courses, setCourses] = useState<CourseType | []>([])
+  const [course, setCourse] = useState<CourseType | null>(null)
+  const [open, setOpen] = useState(false)
 
   const getCourses = async () => {
     apiService.get("courses/all")
@@ -66,6 +69,23 @@ export default function Home() {
         console.log(e)
       })
   }
+
+  const coursesSectionRef = useRef<HTMLElement | null>(null);
+  const [shouldScroll, setShouldScroll] = useState(false)
+
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash === '#courses') {
+      setShouldScroll(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (shouldScroll && coursesSectionRef.current) {
+      coursesSectionRef.current.scrollIntoView({ behavior: 'instant' })
+      setShouldScroll(false)
+    }
+  }, [shouldScroll, courses])
   useEffect(() => {
     getCourses()
   }, [])
@@ -124,14 +144,20 @@ export default function Home() {
           <div className="flex justify-between flex-wrap">
             {courses.slice(0, 9).map((course: any) => <div key={course._id} className="p-2 lg:w-[32%] my-3 sm:w-full rounded-sm bg-white">
               <img className="rounded-sm w-full h-40 object-cover" src={course.thumbnail} alt="" />
-              <h3 className="font-medium my-3">{course.title}</h3>
-              <div className="flex justify-between">
-                <div className="flex">
-                  <img className="w-6 h-6 rounded-full" src={course.instructorImage || "/images/user.png"} alt="" />
-                  <p className="text-sm font-medium ml-3">{course.instructorName}</p>
+              <div className="p-3">
+                <h3 className="font-medium my-3">{course.title}</h3>
+                <div className="flex justify-between">
+                  <div className="flex">
+                    <img className="w-6 h-6 rounded-full" src={course.instructorImage || "/images/user.png"} alt="" />
+                    <p className="text-sm font-medium ml-3">{course.instructorName}</p>
+                  </div>
+                  {/* <p className="text-sm font-medium">45 Lessons</p> */}
                 </div>
-                {/* <p className="text-sm font-medium">45 Lessons</p> */}
+                <button onClick={() => { setCourse(course); setOpen(true) }} className="mt-4 inline-flex items-center px-5 py-2.5 border border-transparent text-sm leading-4 hover:scale-105 font-medium duration-300   bg-yellow-500  ">
+                  Enroll Now
+                </button>
               </div>
+
             </div>)}
           </div>
           <div className="text-center my-10">
@@ -301,7 +327,9 @@ export default function Home() {
         </section>
       </main>
       <FooterNav />
-
+      {
+        course && <CourseDetails course={course} open={open} action={"Course"} type='enroll' call={getCourses} handleClick={() => setOpen(false)} />
+      }
     </Fragment>
   )
 }
