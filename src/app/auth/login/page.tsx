@@ -49,7 +49,7 @@ const login = () => {
           localStorage.setItem("tid", data.token);
 
           searchParams.delete("tid");
-          const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+          const newUrl = `${searchParams.get("redirect") ? searchParams.get("redirect") : window.location.pathname}?${searchParams.toString()}`;
           window.history.replaceState(null, "", newUrl);
           router.push(
             data.user.role === "student"
