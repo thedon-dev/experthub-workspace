@@ -1,6 +1,6 @@
 import apiService from '@/utils/apiService';
 import { notification } from 'antd';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 const SignUpComp = ({ role, action, contact }: { role: string, contact?: boolean, action?: () => void }) => {
@@ -16,6 +16,7 @@ const SignUpComp = ({ role, action, contact }: { role: string, contact?: boolean
   const [confirmPassword, setConfirmPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const states_in_nigeria = [
     "Abia",
     "Adamawa",
@@ -80,7 +81,7 @@ const SignUpComp = ({ role, action, contact }: { role: string, contact?: boolean
             if (action) {
               action()
             } else {
-              router.push(`/auth/verify?user=${response.data.id}`)
+              router.push(`/auth/verify?user=${response.data.id}&enroll=${searchParams.get('enroll')}`)
             }
           })
           .catch(error => {

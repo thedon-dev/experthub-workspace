@@ -35,6 +35,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
 
   const enroll = () => {
     try {
+      setLoading(true)
       apiService.post(`courses/enroll/${course._id}`, {
         id: user.id
       })
@@ -45,12 +46,16 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
             message: 'Enrolled Successfully'
           });
           handleClick()
+          router.push("/applicant")
         })
         .catch(err => {
           api.open({
             message: err.response.data.message
           });
           // console.log(err.response.data.message)
+        }).finally(() => {
+          setLoading(false)
+
         })
     } catch (e) {
       // console.log(e.response.data.message)
@@ -185,6 +190,7 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
       enrollEvent()
     } else (
       enroll()
+
     )
   }
 
@@ -361,8 +367,13 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                           <button onClick={() => router.push(`/${user.role}/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button> :
                           action === "Event" ? null : <button onClick={() => router.push(`/applicant/${course._id}?page=${course.type}`)} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type}</button>
                           : <button onClick={() => {
-                            course.fee === 0 ? checkTyoe() : setIsModalOpen(true)
-                          }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : action === "Event" ? "Book Now" : "Enroll Now"}</button>
+                            if (user.id) {
+                              parseInt(course.fee) === 0 ? checkTyoe() : setIsModalOpen(true)
+
+                            } else {
+                              router.push(`/auth/signup?enroll=${course._id}`)
+                            }
+                          }} className='bg-primary p-2 my-3 rounded-md px-8'>{(course.type === "pdf" && parseInt(course.fee) > 0) ? "Buy Now" : action === "Event" ? "Book Now" : loading ? <Spin /> : "Enroll Now"}</button>
                       }
                     </div>
                     {course.type === "offline" && type === "view" ? <div className='text-sm'>
@@ -414,8 +425,13 @@ const CourseDetails = ({ open, handleClick, course, type, call, action }) => {
                         </div>
                       </div>
                       <button onClick={() => {
-                        course.fee === 0 ? checkTyoe() : setIsModalOpen(true)
-                      }} className='bg-primary p-2 my-3 rounded-md px-8'>{course.type === "pdf" ? "Buy Now" : action === "Event" ? "Book Now" : "Enroll Now"}</button>
+                        if (user.id) {
+                          course.fee === 0 ? checkTyoe() : setIsModalOpen(true)
+
+                        } else {
+                          router.push(`/auth/signup?enroll=${course._id}`)
+                        }
+                      }} className='bg-primary p-2 my-3 rounded-md px-8'>{(course.type === "pdf" && parseInt(course.fee) > 0) ? "Buy Now" : action === "Event" ? "Book Now" : loading ? <Spin /> : "Enroll Now"}</button>
                     </div>}
 
                     {course.benefits && <div className='my-3'>

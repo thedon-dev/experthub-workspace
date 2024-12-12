@@ -12,15 +12,15 @@ const HeaderNav = () => {
   const router = useRouter()
   const pathname = usePathname()
 
-  useEffect(() => {
-    if (user.role === "student" && !pathname.includes('applicant')) {
-      router.push('/applicant')
-    } else if (user.role === "admin" && !pathname.includes('admin')) {
-      router.push("/admin")
-    } else if (user.role === "tutor" && !pathname.includes('tutor')) {
-      router.push('/tutor')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (user.role === "student" && !pathname.includes('applicant')) {
+  //     router.push('/applicant')
+  //   } else if (user.role === "admin" && !pathname.includes('admin')) {
+  //     router.push("/admin")
+  //   } else if (user.role === "tutor" && !pathname.includes('tutor')) {
+  //     router.push('/tutor')
+  //   }
+  // }, [])
   return (
     <header className='absolute p-2 top-0 lg:w-[80%] left-0 right-0 mx-auto border-b border-white flex justify-between'>
       <div className='flex'>
