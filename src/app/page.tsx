@@ -142,23 +142,38 @@ export default function Home() {
               bespoke training courses, We crush the barriers to getting a degree</p>
           </div>
           <div className="flex justify-between flex-wrap">
-            {courses.slice(0, 9).map((course: any) => <div key={course._id} className="p-2 lg:w-[32%] my-3 sm:w-full rounded-sm bg-white">
-              <img className="rounded-sm w-full h-40 object-cover" src={course.thumbnail} alt="" />
-              <div className="p-3">
-                <h3 className="font-medium my-3">{course.title}</h3>
-                <div className="flex justify-between">
-                  <div className="flex">
-                    <img className="w-6 h-6 rounded-full" src={course.instructorImage || "/images/user.png"} alt="" />
-                    <p className="text-sm font-medium ml-3">{course.instructorName}</p>
+            {courses.slice(0, 9).map((course: any) =>
+              <div className="card-container group lg:w-[32%]">
+                <div key={course._id} className="card-front p-2 my-3 sm:w-full rounded-sm bg-white">
+                  <img className="rounded-sm w-full h-40 object-cover" src={course.thumbnail} alt="" />
+                  <div className="p-3">
+                    <h3 className="font-medium my-3">{course.title}</h3>
+                    <div className="flex justify-between">
+                      <div className="flex">
+                        <img className="w-6 h-6 rounded-full" src={course.instructorImage || "/images/user.png"} alt="" />
+                        <p className="text-sm font-medium ml-3">{course.instructorName}</p>
+                      </div>
+                      {/* <p className="text-sm font-medium">45 Lessons</p> */}
+                    </div>
+                    <button onClick={() => { setCourse(course); setOpen(true) }} className="mt-4 inline-flex items-center px-5 py-2.5 border border-transparent text-sm leading-4 hover:scale-105 font-medium duration-300   bg-yellow-500  ">
+                      Enroll Now
+                    </button>
                   </div>
-                  {/* <p className="text-sm font-medium">45 Lessons</p> */}
-                </div>
-                <button onClick={() => { setCourse(course); setOpen(true) }} className="mt-4 inline-flex items-center px-5 py-2.5 border border-transparent text-sm leading-4 hover:scale-105 font-medium duration-300   bg-yellow-500  ">
-                  Enroll Now
-                </button>
-              </div>
 
-            </div>)}
+                </div>
+                {/* Back Side */}
+                <div className="card-back bg-gray p-4 rounded-md absolute top-0 left-0 w-full !h-full opacity-0 transform rotate-y-180 group-hover:opacity-100 group-hover:rotate-y-0">
+                  <h3 className="font-medium text-lg mb-2">Course Benefits</h3>
+                  <ul className="list-disc ml-5">
+                    {course.benefits?.map((benefit: string, index: number) => (
+                      <li key={index} className="text-sm">
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
           </div>
           <div className="text-center my-10">
             <button className="bg-primary p-3 rounded-sm px-10">View More Courses</button>

@@ -32,12 +32,12 @@ const Events = () => {
         <p onClick={() => setEvent(true)}>Events</p>
       ),
     },
-    {
-      key: '3',
-      label: (
-        <p onClick={() => setResources(true)}>Resources</p>
-      ),
-    },
+    // {
+    //   key: '3',
+    //   label: (
+    //     <p onClick={() => setResources(true)}>Resources</p>
+    //   ),
+    // },
     {
       key: '4',
       label: (
@@ -71,7 +71,7 @@ const Events = () => {
       <EventsComp action={() => getAllEvents()} events={events} />
 
       <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
-      <AddResources open={resources} handleClick={() => setResources(!resources)} />
+      {/* <AddResources open={resources} handleClick={() => setResources(!resources)} /> */}
       <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
       <CategoryModal category={null} open={category} handleClick={() => setCategory(false)} />
 

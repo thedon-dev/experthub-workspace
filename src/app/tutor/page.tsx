@@ -44,12 +44,12 @@ const tutor = () => {
         <p onClick={() => setEvent(true)}>Events</p>
       ),
     },
-    {
-      key: '3',
-      label: (
-        <p onClick={() => setResources(true)}>Resources</p>
-      ),
-    },
+    // {
+    //   key: '3',
+    //   label: (
+    //     <p onClick={() => setResources(true)}>Resources</p>
+    //   ),
+    // },
 
   ];
   const [courses, setCourses] = useState([])
@@ -153,7 +153,7 @@ const tutor = () => {
       <AddCourse course={null} setShowPremium={setShowPremuim} open={open} handleClick={() => setOpen(!open)} />
       <GoPremuim show={showPremuim} setShow={setShowPremuim} />
 
-      <AddResources open={resources} handleClick={() => setResources(!resources)} />
+      {/* <AddResources open={resources} handleClick={() => setResources(!resources)} /> */}
       <AddEvents open={event} handleClick={() => setEvent(!event)} course={null} />
       <AddCourseInterests open={openAdd} handleClick={() => setOpenAdd(false)} />
     </DashboardLayout>

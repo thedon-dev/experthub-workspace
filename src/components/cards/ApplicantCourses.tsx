@@ -109,49 +109,34 @@ const ApplicantCourses = ({ course }: { course: CourseType }) => {
 
   return (
     <div className="lg:w-[32%] w-full my-3">
-      <div className="card-container group">
-        {/* Front Side */}
-        <div className="card-front bg-white p-2 rounded-md">
-          <div className="flex my-2">
-            <img className="w-6 h-6 rounded-full" src={course.instructorImage || "/images/user.png"} alt="" />
-            <p className="font-medium ml-3 text-sm">A course by {course.instructorName}</p>
-          </div>
-          <Link href={course.timeframe && hasTimeElapsed(enrolee[0]?.enrolledOn, course.timeframe?.value, course.timeframe?.unit) ? '' : `/applicant/${course._id}?page=${course.type}`}>
-            <ImageViewer image={course.thumbnail} />
-          </Link>
-          <div className="p-2">
-            <h3 className="font-medium text-xl my-2">
-              {course.title}
-              {course.timeframe && hasTimeElapsed(enrolee[0]?.enrolledOn, course.timeframe?.value, course.timeframe?.unit) ? (
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="bg-[#FF0000] text-white text-sm rounded-md px-4 py-1"
-                >
-                  Renew
-                </button>
-              ) : (
-                <button
-                  onClick={() => setOpen(true)}
-                  className="text-sm px-4 bg-primary p-1 rounded-md"
-                >
-                  {course.type === "online" ? "Join Live" : course.type}
-                </button>
-              )}
-            </h3>
-            <p className="text-xs">{course.about.substring(0, 70)}...</p>
-          </div>
+      <div className="bg-white p-2 rounded-md">
+        <div className="flex my-2">
+          <img className="w-6 h-6 rounded-full" src={course.instructorImage || "/images/user.png"} alt="" />
+          <p className="font-medium ml-3 text-sm">A course by {course.instructorName}</p>
         </div>
-
-        {/* Back Side */}
-        <div className="card-back bg-gray p-4 rounded-md absolute top-0 left-0 w-full !h-full opacity-0 transform rotate-y-180 group-hover:opacity-100 group-hover:rotate-y-0">
-          <h3 className="font-medium text-lg mb-2">Course Benefits</h3>
-          <ul className="list-disc ml-5">
-            {course.benefits.map((benefit: string, index: number) => (
-              <li key={index} className="text-sm">
-                {benefit}
-              </li>
-            ))}
-          </ul>
+        <Link href={course.timeframe && hasTimeElapsed(enrolee[0]?.enrolledOn, course.timeframe?.value, course.timeframe?.unit) ? '' : `/applicant/${course._id}?page=${course.type}`}>
+          <ImageViewer image={course.thumbnail} />
+        </Link>
+        <div className="p-2">
+          <h3 className="font-medium text-xl my-2">
+            {course.title}
+            {course.timeframe && hasTimeElapsed(enrolee[0]?.enrolledOn, course.timeframe?.value, course.timeframe?.unit) ? (
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-[#FF0000] text-white text-sm rounded-md px-4 py-1"
+              >
+                Renew
+              </button>
+            ) : (
+              <button
+                onClick={() => setOpen(true)}
+                className="text-sm px-4 bg-primary p-1 rounded-md"
+              >
+                {course.type === "online" ? "Join Live" : course.type}
+              </button>
+            )}
+          </h3>
+          <p className="text-xs">{course.about.substring(0, 70)}...</p>
         </div>
       </div>
 

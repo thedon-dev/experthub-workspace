@@ -472,7 +472,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
           });
           console.log(response.data);
           setLoading(false);
-          setResource(true);
+          // setResource(true);
           handleClick();
         })
         .catch(error => {
@@ -935,7 +935,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
           </div>
         </div>
       </div>
-    </div> : resources ? <AddResources handleClick={() => setResource(false)} open={resources} /> : null
+    </div> : null
   );
 };
 
