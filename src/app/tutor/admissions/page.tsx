@@ -94,13 +94,13 @@ const addmissions = () => {
             case 'mentees':
               return <div>
                 {
-                  mentees.map((student: UserType, index: any) => <AdmissionCard setShowPremium={setShowPremuim} role={active} tutor={student} key={index} />)
+                  students.map((student: UserType, index: any) => <AdmissionCard setShowPremium={setShowPremuim} role={active} tutor={student} key={index} />)
                 }
               </div>
             case 'graduates':
               return <div>
                 {
-                  mentees.map((student: UserType, index: any) => student.graduate && <AdmissionCard setShowPremium={setShowPremuim} role={active} tutor={student} key={index} />)
+                  students.map((student: UserType, index: any) => student.graduate && <AdmissionCard setShowPremium={setShowPremuim} role={active} tutor={student} key={index} />)
                 }
               </div>
             default:
