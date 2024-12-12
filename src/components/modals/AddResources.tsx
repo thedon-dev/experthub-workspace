@@ -74,23 +74,32 @@ const AddResources = ({ open, handleClick, material, course }: { open: boolean, 
   const add = () => {
     if (title && about && websiteUrl) {
       setLoading(true)
-      const formData = new FormData()
-      file && formData.append("image", file[0])
-      formData.append("title", title)
-      formData.append("aboutCourse", about)
-      formData.append("assignedCourse", course)
-      formData.append("type", type)
+      // const formData = new FormData()
+      // file && formData.append("image", file[0])
+      // formData.append("title", title)
+      // formData.append("aboutCourse", about)
+      // formData.append("assignedCourse", course)
+      // formData.append("type", type)
 
-      if (type === 'link') {
-        formData.append("websiteUrl", websiteUrl)
-      } else if (type === 'video') {
-        formData.append("websiteUrl", video)
-      } else if (type === 'pdf') {
-        formData.append("websiteUrl", pdf)
-      }
+      // if (type === 'link') {
+      //   formData.append("websiteUrl", websiteUrl)
+      // } else if (type === 'video') {
+      //   formData.append("websiteUrl", video)
+      // } else if (type === 'pdf') {
+      //   formData.append("websiteUrl", pdf)
+      // }
 
       apiService.post(`resources/add-new`,
-        formData
+        {
+          image,
+          title,
+          type,
+          assignedCourse: course,
+          aboutCourse: about,
+          video,
+          pdf,
+          websiteUrl
+        }
       )
         .then(function (response) {
           console.log(response.data)
