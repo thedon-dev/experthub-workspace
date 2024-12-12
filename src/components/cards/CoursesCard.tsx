@@ -14,10 +14,12 @@ import Participants from '../Participants';
 import apiService from '@/utils/apiService';
 import AppointmentModal from '../modals/AppointmentModal';
 import { useRouter } from 'next/navigation';
+import AddResources from '../modals/AddResources';
 
 const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () => Promise<void> }) => {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [resources, setResources] = useState(false)
   const [edit, setEdit] = useState(false)
   const [deletec, setDelete] = useState(false)
   const [enrolled, setEnrolled] = useState(false)
@@ -67,6 +69,12 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
         key: '6',
         label: (
           <p onClick={() => setParticipants(true)} >View Participants</p>
+        ),
+      },
+      {
+        key: '7',
+        label: (
+          <p onClick={() => setResources(true)} >Add Resources</p>
         ),
       }
     ] : [])
@@ -170,6 +178,7 @@ const CoursesCard = ({ course, getCourse }: { course: CourseType, getCourse: () 
         </div>
       }
       <Participants view={participants} event={course} hndelClick={() => setParticipants(false)} type="Course" />
+      <AddResources course={course._id} open={resources} handleClick={() => setResources(false)} />
     </div>
   );
 };

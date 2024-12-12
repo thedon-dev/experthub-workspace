@@ -43,6 +43,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
   const [categoryIndex, setCategoryIndex] = useState("")
   const [resources, setResource] = useState(false)
   const [conflict, setConflict] = useState(false)
+  const [fileName, setFileName] = useState("")
 
   const [liveCourses, setLiveCourses] = useState([])
   const [courseDuration, setCourseDuration] = useState<number>(0)
@@ -206,6 +207,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
       throw e
     }
   };
+
   const getCategories = () => {
     apiService.get('category/all').then(function (response) {
       setCategories(response.data.category)
@@ -213,6 +215,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
       console.log(error)
     })
   }
+
   const handleTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     if (user.role === 'tutor' && (e.target.value === "online" && (!userProfile?.premiumPlan || userProfile?.premiumPlan === "basic")) && setShowPremium) {
       handleClick()
@@ -221,6 +224,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
       setType(e.target.value)
     }
   }
+
   const handleModulesInputChange = (index: number, field: string, value: string | number | boolean) => {
     const updatedObjects = [...modules];
     updatedObjects[index] = { ...updatedObjects[index], [field]: value };
@@ -270,6 +274,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
     }
 
   };
+
   const removeVideo = (index: number) => {
     const newVideos = videos.filter((_, i) => i !== index)
     if (newVideos.length === 0) {
@@ -279,7 +284,6 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
     }
 
   };
-
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -307,6 +311,8 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
 
     const reader = new FileReader()
     if (files && files.length > 0) {
+      setFileName(files[0].name)
+
       reader.readAsDataURL(files[0])
       reader.onloadend = () => {
         if (reader.result) {
@@ -516,13 +522,6 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
     setModules(newArray)
   }
 
-
-
-
-
-
-
-
   return (
     open ? <div>
       <div onClick={() => handleClick()} className='fixed cursor-pointer bg-[#000000] opacity-50 top-0 left-0 right-0 w-full h-[100vh] z-10'></div>
@@ -595,11 +594,15 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
 
             {
               type === 'pdf' && <div>
-                <p className='text-sm font-medium  my-1'>Course Content</p>
-                <button className='border border-[#1E1E1ED9] h-32 p-2 my-1 rounded-md font-medium w-full' onClick={() => pdfUploadRef.current?.click()}>
-                  <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
-                  <p> Click to upload</p></button>
-                <p className='text-sm'>{pdf === "" ? " " : pdf.slice(0, 20)}</p>
+                <p className='text-sm font-medium my-1'>Course Content</p>
+                <button className='w-full flex my-3' onClick={() => pdfUploadRef.current?.click()}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FDC332" className="bi bi-file-earmark-arrow-up" viewBox="0 0 16 16">
+                    <path d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707z" />
+                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                  </svg>
+                  <p className='ml-4 text-sm'> Click to upload</p>
+                </button>
+                <p className='text-sm'>{fileName}</p>
               </div>
             }
             <input
