@@ -377,14 +377,12 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
     }
   }
 
-
   const add = async () => {
-
-    if (type === 'video') {
-      try {
+    try {
+      if (type === 'video') {
         console.log(videos.filter(video => video.video === null));
 
-        if (videos.filter(video => video.video === null).length > 0) {
+        if (videos.some(video => !video.video)) {
           return api.open({
             message: `You must upload a video file to create this course`,
           });
@@ -393,105 +391,129 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
         setUploading(true);
         console.log(videos);
 
-        await Promise.all(videos.map((_, index) => uploadVideo(index)));
+        try {
+          await Promise.all(videos.map((_, index) => uploadVideo(index)));
+        } catch (e) {
+          console.error(e);
+          setUploading(false);
+          return api.open({
+            message: `Something went wrong during video upload`,
+          });
+        }
+
         setUploading(false);
-      } catch (e) {
-        console.error(e);
-        setUploading(false);
+      }
+
+      if (type === `online` && conflict) {
+        setActive(1);
         return api.open({
-          message: `Something went wrong during video upload`,
+          message: "You have chosen a disabled time, please check",
         });
       }
-    }
 
-    if (type === `online` && conflict) {
-      setActive(1)
-      return api.open({
-        message: "You have chosen a disabled time please check",
-      });
-    }
+      const requiredFields = {
+        title,
+        about,
+        benefits,
+        modules,
+        category,
+        image,
+        ...(type === "offline" && { startDate, endDate, startTime, endTime, room, location }),
+        ...(type === "online" && {
+          startDate,
+          endDate,
+          ...(instant ? { startTime, endTime } : { days: days.filter((day: any) => day.checked).length }),
+        }),
+        ...(type === "video" && { videos }),
+        ...(type === "pdf" && { pdf }),
+      };
 
-    console.log(title, about,
-      duration,
-      category,
-      image,
-      startDate,
-      endDate,
-      startTime,
-      endTime)
+      const missingFields = Object.entries(requiredFields)
+        .filter(([key, value]) => !value || (Array.isArray(value) && value.length === 0))
+        .map(([key]) => key);
 
-    if (
-      title &&
-      about &&
-      category &&
-      image &&
-      benefits.length >= 1 &&
-      (type === "offline" ? startDate && endDate && startTime && endTime && room && location :
-        type === "online" ? instant ? startDate && endDate && startTime && endTime : startDate && endDate && days.filter((day: any) => day.checked).length > 0 : type === "video" ? videos : pdf)
-    ) {
+      if (missingFields.length > 0) {
+        return api.open({
+          message: `Please fill in the following fields: ${missingFields.join(', ')}`,
+        });
+      }
 
-      const startDateTime = (type === "video" || type === "pdf") ? dayjs() : dayjs.utc(`${dayjs(startDate || "").format(`YYYY-MM-DD`)}T${instant ? startTime : days.filter((day: any) => day.checked)[0].startTime}:00`);
-      const endDateTime = (type === "video" || type === "pdf") ? dayjs() : dayjs.utc(`${dayjs(endDate || "").format(`YYYY-MM-DD`)}T${instant ? endTime : days.filter((day: any) => day.checked)[0].endTime}:00`);
+      const startDateTime =
+        type === "video" || type === "pdf"
+          ? dayjs()
+          : dayjs.utc(
+            `${dayjs(startDate || "").format(`YYYY-MM-DD`)}T${instant ? startTime : days.filter((day: any) => day.checked)[0]?.startTime
+            }:00`
+          );
+      const endDateTime =
+        type === "video" || type === "pdf"
+          ? dayjs()
+          : dayjs.utc(
+            `${dayjs(endDate || "").format(`YYYY-MM-DD`)}T${instant ? endTime : days.filter((day: any) => day.checked)[0]?.endTime
+            }:00`
+          );
 
       const startDateJS = startDateTime.toDate();
       const endDateJS = endDateTime.toDate();
 
       setLoading(true);
-      apiService.post(`courses/add-course/${user.id}`, {
-        asset: image,
-        title,
-        target,
-        about,
-        duration: duration.toString(),
-        type,
-        startDate: new Date(startDateJS).toISOString(),
-        endDate: new Date(endDateJS).toISOString(),
-        startTime: startTime,
-        endTime: endTime,
-        category: category === "" ? categoryIndex : category,
-        privacy,
-        fee: fee.toString(),
-        strikedFee: striked.toString(),
-        room,
-        modules,
-        location,
-        videos,
-        pdf,
-        days,
-        benefits,
-        timeframe: {
-          value: courseDuration,
-          unit: timeframe
-        },
-        scholarship: getScholarship(),
-        audience: audience.map((data: any) => data.value)
-      })
+
+      apiService
+        .post(`courses/add-course/${user.id}`, {
+          asset: image,
+          title,
+          target,
+          about,
+          duration: duration.toString(),
+          type,
+          startDate: new Date(startDateJS).toISOString(),
+          endDate: new Date(endDateJS).toISOString(),
+          startTime: startTime,
+          endTime: endTime,
+          category: category === "" ? categoryIndex : category,
+          privacy,
+          fee: fee.toString(),
+          strikedFee: striked.toString(),
+          room,
+          modules,
+          location,
+          videos,
+          pdf,
+          days,
+          benefits,
+          timeframe: {
+            value: courseDuration,
+            unit: timeframe,
+          },
+          scholarship: getScholarship(),
+          audience: audience.map((data: any) => data.value),
+        })
         .then(function (response) {
           api.open({
             message: "Course successfully created!",
           });
           console.log(response.data);
           setLoading(false);
-          // setResource(true);
           handleClick();
         })
-        .catch(error => {
-          console.log(error);
+        .catch((error) => {
+          console.error(error);
           setLoading(false);
           api.open({
-            message: error.response.data.message,
+            message: error.response?.data?.message || "An error occurred",
           });
-          if (error.response.data.showPop && setShowPremium) {
-            setShowPremium(true)
+          if (error.response?.data?.showPop && setShowPremium) {
+            setShowPremium(true);
           }
-
         });
-    } else {
+    } catch (error) {
+      console.error(error);
       api.open({
-        message: "Please fill all fields!",
+        message: "An unexpected error occurred",
       });
     }
   };
+
 
   const getLiveCourses = () => {
     apiService.get('courses/live')

@@ -33,7 +33,6 @@ const addmissions = () => {
 
   const getStudents = () => {
     apiService.put('/user/mystudents', {
-      course: user.assignedCourse,
       id: user.id
     })
       .then(function (response) {

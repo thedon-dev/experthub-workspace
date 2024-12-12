@@ -171,6 +171,9 @@ export default function Home() {
                       </li>
                     ))}
                   </ul>
+                  <button onClick={() => { setCourse(course); setOpen(true) }} className="mt-4 inline-flex items-center px-5 py-2.5 border border-transparent text-sm leading-4 hover:scale-105 font-medium duration-300   bg-yellow-500  ">
+                    Enroll Now
+                  </button>
                 </div>
               </div>
             )}
