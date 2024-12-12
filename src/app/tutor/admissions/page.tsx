@@ -14,17 +14,29 @@ const addmissions = () => {
   const [active, setActive] = useState("students")
   const user = useAppSelector((state) => state.value);
   const [students, setStudents] = useState<UserType | []>([])
+  const [mentees, setMentees] = useState<UserType | []>([])
+
   const [all, setAll] = useState<UserType | []>([])
   const [contact, setContact] = useState(false)
   const [showPremuim, setShowPremuim] = useState(false)
 
+  const getMentees = () => {
+    apiService.put('/user/mymentees', {
+      course: user.assignedCourse,
+    })
+      .then(function (response) {
+        setMentees(response.data.students)
+        setAll(response.data.students)
+        console.log(response.data)
+      })
+  }
+
   const getStudents = () => {
     apiService.put('/user/mystudents', {
-      course: user.assignedCourse
+      id: user.id
     })
       .then(function (response) {
         setStudents(response.data.students)
-        setAll(response.data.students)
         console.log(response.data)
       })
   }
@@ -37,6 +49,7 @@ const addmissions = () => {
 
   useEffect(() => {
     getStudents()
+    getMentees()
   }, [])
   return (
     <DashboardLayout>
@@ -51,9 +64,9 @@ const addmissions = () => {
 
       <section className='m-4'>
         <div className='flex justify-between lg:w-1/2'>
-          <div onClick={() => setActive("contact")} className={active === "contact" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
+          {/* <div onClick={() => setActive("contact")} className={active === "contact" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
             <p className='font-medium text-lg'>Contacts</p>
-          </div>
+          </div> */}
           <div onClick={() => setActive("students")} className={active === "students" ? "border-b-2 border-[#DC9F08] py-2" : "py-2 cursor-pointer"}>
             <p className='font-medium text-lg'>My Students</p>
           </div>

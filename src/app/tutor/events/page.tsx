@@ -33,12 +33,12 @@ const Events = () => {
         <p onClick={() => setEvent(true)}>Events</p>
       ),
     },
-    {
-      key: '3',
-      label: (
-        <p onClick={() => setResources(true)}>Resources</p>
-      ),
-    },
+    // {
+    //   key: '3',
+    //   label: (
+    //     <p onClick={() => setResources(true)}>Resources</p>
+    //   ),
+    // },
 
   ];
 
@@ -67,7 +67,7 @@ const Events = () => {
       <EventsComp action={() => getAllEvents()} events={events} />
 
       <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
-      <AddResources open={resources} handleClick={() => setResources(!resources)} />
+      {/* <AddResources open={resources} handleClick={() => setResources(!resources)} /> */}
       <AddEvents setShowPremium={setShowPremuim} open={event} handleClick={() => setEvent(!event)} course={null} />
       <GoPremuim show={showPremuim} setShow={setShowPremuim} />
 

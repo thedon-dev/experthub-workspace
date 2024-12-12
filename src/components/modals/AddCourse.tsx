@@ -43,6 +43,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
   const [categoryIndex, setCategoryIndex] = useState("")
   const [resources, setResource] = useState(false)
   const [conflict, setConflict] = useState(false)
+  const [fileName, setFileName] = useState("")
 
   const [liveCourses, setLiveCourses] = useState([])
   const [courseDuration, setCourseDuration] = useState<number>(0)
@@ -206,6 +207,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
       throw e
     }
   };
+
   const getCategories = () => {
     apiService.get('category/all').then(function (response) {
       setCategories(response.data.category)
@@ -213,6 +215,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
       console.log(error)
     })
   }
+
   const handleTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     if (user.role === 'tutor' && (e.target.value === "online" && (!userProfile?.premiumPlan || userProfile?.premiumPlan === "basic")) && setShowPremium) {
       handleClick()
@@ -221,6 +224,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
       setType(e.target.value)
     }
   }
+
   const handleModulesInputChange = (index: number, field: string, value: string | number | boolean) => {
     const updatedObjects = [...modules];
     updatedObjects[index] = { ...updatedObjects[index], [field]: value };
@@ -270,6 +274,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
     }
 
   };
+
   const removeVideo = (index: number) => {
     const newVideos = videos.filter((_, i) => i !== index)
     if (newVideos.length === 0) {
@@ -279,7 +284,6 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
     }
 
   };
-
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -307,6 +311,8 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
 
     const reader = new FileReader()
     if (files && files.length > 0) {
+      setFileName(files[0].name)
+
       reader.readAsDataURL(files[0])
       reader.onloadend = () => {
         if (reader.result) {
@@ -371,14 +377,12 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
     }
   }
 
-
   const add = async () => {
-
-    if (type === 'video') {
-      try {
+    try {
+      if (type === 'video') {
         console.log(videos.filter(video => video.video === null));
 
-        if (videos.filter(video => video.video === null).length > 0) {
+        if (videos.some(video => !video.video)) {
           return api.open({
             message: `You must upload a video file to create this course`,
           });
@@ -387,105 +391,129 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
         setUploading(true);
         console.log(videos);
 
-        await Promise.all(videos.map((_, index) => uploadVideo(index)));
+        try {
+          await Promise.all(videos.map((_, index) => uploadVideo(index)));
+        } catch (e) {
+          console.error(e);
+          setUploading(false);
+          return api.open({
+            message: `Something went wrong during video upload`,
+          });
+        }
+
         setUploading(false);
-      } catch (e) {
-        console.error(e);
-        setUploading(false);
+      }
+
+      if (type === `online` && conflict) {
+        setActive(1);
         return api.open({
-          message: `Something went wrong during video upload`,
+          message: "You have chosen a disabled time, please check",
         });
       }
-    }
 
-    if (type === `online` && conflict) {
-      setActive(1)
-      return api.open({
-        message: "You have chosen a disabled time please check",
-      });
-    }
+      const requiredFields = {
+        title,
+        about,
+        benefits,
+        modules,
+        category,
+        image,
+        ...(type === "offline" && { startDate, endDate, startTime, endTime, room, location }),
+        ...(type === "online" && {
+          startDate,
+          endDate,
+          ...(instant ? { startTime, endTime } : { days: days.filter((day: any) => day.checked).length }),
+        }),
+        ...(type === "video" && { videos }),
+        ...(type === "pdf" && { pdf }),
+      };
 
-    console.log(title, about,
-      duration,
-      category,
-      image,
-      startDate,
-      endDate,
-      startTime,
-      endTime)
+      const missingFields = Object.entries(requiredFields)
+        .filter(([key, value]) => !value || (Array.isArray(value) && value.length === 0))
+        .map(([key]) => key);
 
-    if (
-      title &&
-      about &&
-      category &&
-      image &&
-      benefits.length >= 1 &&
-      (type === "offline" ? startDate && endDate && startTime && endTime && room && location :
-        type === "online" ? instant ? startDate && endDate && startTime && endTime : startDate && endDate && days.filter((day: any) => day.checked).length > 0 : type === "video" ? videos : pdf)
-    ) {
+      if (missingFields.length > 0) {
+        return api.open({
+          message: `Please fill in the following fields: ${missingFields.join(', ')}`,
+        });
+      }
 
-      const startDateTime = (type === "video" || type === "pdf") ? dayjs() : dayjs.utc(`${dayjs(startDate || "").format(`YYYY-MM-DD`)}T${instant ? startTime : days.filter((day: any) => day.checked)[0].startTime}:00`);
-      const endDateTime = (type === "video" || type === "pdf") ? dayjs() : dayjs.utc(`${dayjs(endDate || "").format(`YYYY-MM-DD`)}T${instant ? endTime : days.filter((day: any) => day.checked)[0].endTime}:00`);
+      const startDateTime =
+        type === "video" || type === "pdf"
+          ? dayjs()
+          : dayjs.utc(
+            `${dayjs(startDate || "").format(`YYYY-MM-DD`)}T${instant ? startTime : days.filter((day: any) => day.checked)[0]?.startTime
+            }:00`
+          );
+      const endDateTime =
+        type === "video" || type === "pdf"
+          ? dayjs()
+          : dayjs.utc(
+            `${dayjs(endDate || "").format(`YYYY-MM-DD`)}T${instant ? endTime : days.filter((day: any) => day.checked)[0]?.endTime
+            }:00`
+          );
 
       const startDateJS = startDateTime.toDate();
       const endDateJS = endDateTime.toDate();
 
       setLoading(true);
-      apiService.post(`courses/add-course/${user.id}`, {
-        asset: image,
-        title,
-        target,
-        about,
-        duration: duration.toString(),
-        type,
-        startDate: new Date(startDateJS).toISOString(),
-        endDate: new Date(endDateJS).toISOString(),
-        startTime: startTime,
-        endTime: endTime,
-        category: category === "" ? categoryIndex : category,
-        privacy,
-        fee: fee.toString(),
-        strikedFee: striked.toString(),
-        room,
-        modules,
-        location,
-        videos,
-        pdf,
-        days,
-        benefits,
-        timeframe: {
-          value: courseDuration,
-          unit: timeframe
-        },
-        scholarship: getScholarship(),
-        audience: audience.map((data: any) => data.value)
-      })
+
+      apiService
+        .post(`courses/add-course/${user.id}`, {
+          asset: image,
+          title,
+          target,
+          about,
+          duration: duration.toString(),
+          type,
+          startDate: new Date(startDateJS).toISOString(),
+          endDate: new Date(endDateJS).toISOString(),
+          startTime: startTime,
+          endTime: endTime,
+          category: category === "" ? categoryIndex : category,
+          privacy,
+          fee: fee.toString(),
+          strikedFee: striked.toString(),
+          room,
+          modules,
+          location,
+          videos,
+          pdf,
+          days,
+          benefits,
+          timeframe: {
+            value: courseDuration,
+            unit: timeframe,
+          },
+          scholarship: getScholarship(),
+          audience: audience.map((data: any) => data.value),
+        })
         .then(function (response) {
           api.open({
             message: "Course successfully created!",
           });
           console.log(response.data);
           setLoading(false);
-          setResource(true);
           handleClick();
         })
-        .catch(error => {
-          console.log(error);
+        .catch((error) => {
+          console.error(error);
           setLoading(false);
           api.open({
-            message: error.response.data.message,
+            message: error.response?.data?.message || "An error occurred",
           });
-          if (error.response.data.showPop && setShowPremium) {
-            setShowPremium(true)
+          if (error.response?.data?.showPop && setShowPremium) {
+            setShowPremium(true);
           }
-
         });
-    } else {
+    } catch (error) {
+      console.error(error);
       api.open({
-        message: "Please fill all fields!",
+        message: "An unexpected error occurred",
       });
     }
   };
+
 
   const getLiveCourses = () => {
     apiService.get('courses/live')
@@ -515,13 +543,6 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
     const newArray = modules.filter((item: any, index: any) => index !== targetIndex);
     setModules(newArray)
   }
-
-
-
-
-
-
-
 
   return (
     open ? <div>
@@ -593,15 +614,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
               multiple={false}
             />
 
-            {
-              type === 'pdf' && <div>
-                <p className='text-sm font-medium  my-1'>Course Content</p>
-                <button className='border border-[#1E1E1ED9] h-32 p-2 my-1 rounded-md font-medium w-full' onClick={() => pdfUploadRef.current?.click()}>
-                  <img src="/images/icons/upload.svg" className='w-8 mx-auto' alt="" />
-                  <p> Click to upload</p></button>
-                <p className='text-sm'>{pdf === "" ? " " : pdf.slice(0, 20)}</p>
-              </div>
-            }
+
             <input
               onChange={handlePdf}
               type="file"
@@ -710,6 +723,19 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
                             <option value="video">Video</option>
                             <option value="pdf">PDF</option>
                           </select>
+                          {
+                            type === 'pdf' && <div>
+                              <p className='text-sm font-medium my-1'>Course Content</p>
+                              <button className='w-full flex my-3' onClick={() => pdfUploadRef.current?.click()}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#FDC332" className="bi bi-file-earmark-arrow-up" viewBox="0 0 16 16">
+                                  <path d="M8.5 11.5a.5.5 0 0 1-1 0V7.707L6.354 8.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 7.707z" />
+                                  <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                                </svg>
+                                <p className='ml-4 text-sm'> Click to upload</p>
+                              </button>
+                              <p className='text-sm'>{fileName}</p>
+                            </div>
+                          }
                           {/* {type === "online" && <>
                             {
                               zoomUser === null ? (
@@ -932,7 +958,7 @@ const AddCourse = ({ open, handleClick, course, setShowPremium }: { open: boolea
           </div>
         </div>
       </div>
-    </div> : resources ? <AddResources handleClick={() => setResource(false)} open={resources} /> : null
+    </div> : null
   );
 };
 

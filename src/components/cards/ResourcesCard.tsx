@@ -57,7 +57,7 @@ const ResourcesCard = ({ material, getAll }: { material: ResourceType, getAll: a
           </div>
         </div>
       </div>
-      <AddResources open={edit} handleClick={() => setEdit(false)} material={material} />
+      <AddResources open={edit} handleClick={() => setEdit(false)} material={material} course={material.assignedCourse} />
     </div>
   );
 };
