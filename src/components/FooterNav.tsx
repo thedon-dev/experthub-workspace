@@ -2,53 +2,63 @@ import React from 'react';
 
 const FooterNav = () => {
   return (
-    <footer id='footer' className='bg-[#253131] text-white flex flex-wrap justify-between lg:p-16 p-4'>
-      <div className='lg:w-1/2 w-full'>
-        <h3 className='text-xl font-bold'>EXPERTHUB TRAININGS</h3>
-        <p>We are determine to raise the next generation of global leaders
-          and empower youths to harness the immense power of
-          technology to overcome the challenges our planet faces
-          including its dwindling economy. Our platform is more than
-          just a website; it's a thriving community of like-minded
-          individuals who share a passion for change. Together
-          we learn, grow, and collaborate to make a tangible
-          impact on our communities and planet.</p>
-        <div className='flex sm:justify-between sm:my-4'>
-          <img className='m-2' src="/images/icons/mdi_facebook.svg" alt="" />
-          <img className='m-2' src="/images/icons/formkit_twitter.svg" alt="" />
-          <img className='m-2' src="/images/icons/icomoon-free_linkedin.svg" alt="" />
-        </div>
-      </div>
-      <div className='lg:w-[20%] w-[40%]'>
-        <p className='font-medium uppercase'>Navigate</p>
-        <p className='my-3 text-sm'>www.experthubllc.com</p>
-        <p className='my-3 text-sm'>www.peoplespower.me</p>
-        <p className='my-3 text-sm'>theplaint.org</p>
-        <p className='my-3 text-sm'>Terms & Conditions</p>
-        <p className='my-3 text-sm'>Privacy Policy</p>
-      </div>
-      <div className='lg:w-[20%] w-[55%]'>
-        <p className='font-medium uppercase'>Contact</p>
-        <div className='flex my-3'>
-          <img src="/images/icons/location.svg" alt="" />
-          <div className='ml-2'>
-            <p className='text-sm font-medium'>OUR LOCATION</p>
-            <p className='text-xs'>1st Floor Chelsea International Plaza, KM10 Igwuruta Road, Port Harcourt, Rivers State, Nigeria.</p>
+    <footer className="bg-black text-white font-sans py-8">
+      <div className="container mx-auto px-4 pt-8">
+        {/* Footer Content Rows */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+          {/* Logo */}
+          <div>
+            <h2 className="text-primary font-heading text-lg font-bold">
+              EXPERTHUB
+            </h2>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="font-heading text-base font-bold mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="hover:underline">About Us</a></li>
+              <li><a href="#" className="hover:underline">Locations</a></li>
+              <li><a href="#" className="hover:underline">Book a Tour</a></li>
+              <li><a href="#" className="hover:underline">FAQs</a></li>
+            </ul>
+          </div>
+
+          {/* Contact Us */}
+          <div>
+            <h3 className="font-heading text-base font-bold mb-4">Contact Us</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="hover:underline">Email</a></li>
+              <li><a href="#" className="hover:underline">Contact Info</a></li>
+              <li><a href="#" className="hover:underline">Head Office</a></li>
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="font-heading text-base font-bold mb-4">Resources</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="hover:underline">Career Opportunities</a></li>
+              <li><a href="#" className="hover:underline">Services</a></li>
+              <li><a href="#" className="hover:underline">Customer Support</a></li>
+            </ul>
+          </div>
+
+          {/* Legal Section */}
+          <div>
+            <h3 className="font-heading text-base font-bold mb-4">Legal</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="hover:underline">Privacy Policy</a></li>
+              <li><a href="#" className="hover:underline">Terms of Service</a></li>
+            </ul>
           </div>
         </div>
-        <div className='flex my-3'>
-          <img src="/images/icons/mail.svg" alt="" />
-          <div className='ml-2'>
-            <p className='text-sm font-medium'>SEND US A MAIL</p>
-            <p className='text-xs'>trainings@experthubllc.com</p>
-          </div>
-        </div>
-        <div className='flex my-3'>
-          <img src="/images/icons/call.svg" alt="" />
-          <div className='ml-2'>
-            <p className='text-sm font-medium'>CALL US</p>
-            <p className='text-xs'>+2342013303380</p>
-          </div>
+
+        {/* Copyright Section */}
+        <div className="mt-8 text-center">
+          <p className="text-gray-400 text-sm">
+            © 2024 Workspace Co. All Rights Reserved.
+          </p>
         </div>
       </div>
     </footer>
