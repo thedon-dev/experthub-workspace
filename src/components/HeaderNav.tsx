@@ -32,7 +32,7 @@ const HeaderNav = () => {
       <div className="container mx-auto px-4 flex justify-between items-center h-16">
         <div className="flex ">
           {/* Logo */}
-          <Image src="/icons/logo.png" width={100} height={100} alt="logo" />
+          <Image src="/images/icons/logo.png" width={100} height={100} alt="logo" />
           <Link
             href="/"
             className="flex items-center text-primary font-bold font-sans text-lg"
