@@ -3,14 +3,10 @@
 
 import FooterNav from "@/components/FooterNav";
 import HeaderNav from "@/components/HeaderNav";
-import SliderComp from "@/components/SliderComp";
-import Link from "next/link";
 import { Fragment, useEffect, useRef, useState } from "react";
 import type { CollapseProps } from 'antd';
-import { Collapse } from 'antd';
 import { CourseType } from "@/types/CourseType";
 import apiService from "@/utils/apiService";
-import Loader from "@/components/Loader";
 import CourseDetails from "@/components/modals/CourseDetails";
 import Hero from "@/components/hero/hero";
 import Advantages from "@/components/advantage-component/advantage";

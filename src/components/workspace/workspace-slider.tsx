@@ -19,7 +19,7 @@ const workspaceData = [
     description:
       "A range of ready-to use, fully equipped offices with everything you need to get started.",
     image: "/images/workspace-slider/meeting-room.png",
-    reserveUrl: "/custome-page",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
@@ -37,18 +37,18 @@ const workspaceData = [
     description:
       "A Professional on-demand office space. Perfect when you need to get your head down and do your best work.",
     image: "/images/workspace-slider/board-room.png",
-    reserveUrl: "/custome-page",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
-    tab: "Office Space",
-    title: "Membership Plan",
-    description:
-      "Flexible access to Day Offices where and when you choose with 5, 10 and unlimited days per month.",
-    image: "/images/workspace-slider/board-room.png",
-    reserveUrl: "/custome-page",
-    learnMoreUrl: "/learn-more/private-office",
-  },
+    "tab": "Office Space",
+    "title": "Monthly Offices",
+    "description": "Enjoy flexible access to fully-equipped office spaces tailored to your needs, with the convenience of monthly plans.",
+    "image": "/images/workspace-slider/board-room.png",
+    "reserveUrl": "/reservation",
+    "learnMoreUrl": "/learn-more/private-office"
+},
+
 
   {
     tab: "Coworking Desk",
@@ -56,7 +56,7 @@ const workspaceData = [
     description:
       "Rent as many desks as you need in a dynamic, shared office space. Business address and storage.",
     image: "/images/workspace-slider/meeting-room.png",
-    reserveUrl: "/reserve/private-office",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
@@ -65,7 +65,7 @@ const workspaceData = [
     description:
       "On-demand access to inspiring, open-plan coworking spaces, so there's always a desk when you need one.",
     image: "/images/workspace-slider/training-room.png",
-    reserveUrl: "/reserve/private-office",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
@@ -74,7 +74,7 @@ const workspaceData = [
     description:
       "Want to Hot Desk more regularly? Rent a desk for 5, 10 or unlimited days each month.",
     image: "/images/workspace-slider/board-room.png",
-    reserveUrl: "/reserve/private-office",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
@@ -83,7 +83,7 @@ const workspaceData = [
     description:
       "Perfect places to meet, collaborate, and conduct interviews, research groups, and appraisals. Available hourly and daily.",
     image: "/images/workspace-slider/meeting-room.png",
-    reserveUrl: "/reserve/private-office",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
@@ -92,7 +92,7 @@ const workspaceData = [
     description:
       "Perfect when you need a purpose-built space with desks, whiteboards, and screens/projectors for training sessions.",
     image: "/images/workspace-slider/training-room.png",
-    reserveUrl: "/reserve/private-office",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
@@ -101,7 +101,7 @@ const workspaceData = [
     description:
       "A professional on-demand office space perfect for board, management, and staff meetings.",
     image: "/images/workspace-slider/board-room.png",
-    reserveUrl: "/reserve/private-office",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
@@ -110,7 +110,7 @@ const workspaceData = [
     description:
       "A range of ready-to use, fully equipped offices with everything you need to get started.",
     image: "/images/workspace-slider/meeting-room.png",
-    reserveUrl: "/reserve/private-office",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
@@ -119,7 +119,7 @@ const workspaceData = [
     description:
       "When off-the-shelf simply isnt enough. Customize all aspects of your space, including furniture and branding..",
     image: "/images/workspace-slider/training-room.png",
-    reserveUrl: "/reserve/private-office",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
@@ -128,7 +128,7 @@ const workspaceData = [
     description:
       "A prestigious business address with telephone answering, a virtual receptionist, and access to meeting rooms and 5 days of physical office per month.",
     image: "/images/workspace-slider/board-room.png",
-    reserveUrl: "/reserve/private-office",
+    reserveUrl: "/reservation",
     learnMoreUrl: "/learn-more/private-office",
   },
   {
@@ -172,7 +172,7 @@ const WorkspaceSlider: React.FC = () => {
         Book Our Workspaces
       </h1>
       {/* Tabs */}
-      <div className="flex justify-center space-x-6 mb-8 border-b border-gray-200">
+      <div className="flex justify-center space-x-6 mb-8 border-b border-gray-200 flex-wrap">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -190,60 +190,60 @@ const WorkspaceSlider: React.FC = () => {
 
       {/* Swiper */}
       <Swiper
-        spaceBetween={20}
-        slidesPerView={1}
-        breakpoints={{
-          640: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-        }}
-      >
-        {filteredCards.map((card, index) => (
-          <SwiperSlide key={index} className="p-4">
-            <div>
-              <div className="relative h-96 rounded-md overflow-hidden shadow-lg">
-                {/* Background Image */}
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  width={500} // Adjust width based on your design
-                  height={256} // Adjust height based on your design
-                  className="w-full h-96 object-cover"
-                  priority // Optional: for optimizing loading
-                />
+  spaceBetween={10} // Reduced space to make the next card partially visible
+  slidesPerView={1.2} // Adjust to show part of the next card
+  breakpoints={{
+    640: { slidesPerView: 1.2 },
+    768: { slidesPerView: 2.2 },
+    1024: { slidesPerView: 3.2 }, // Adjust for different screen sizes
+  }}
+>
+  {filteredCards.map((card, index) => (
+    <SwiperSlide key={index} className="p-4">
+      <div>
+        <div className="relative h-96 rounded-md overflow-hidden shadow-lg">
+          {/* Background Image */}
+          <Image
+            src={card.image}
+            alt={card.title}
+            width={500}
+            height={256}
+            className="w-full h-96 object-cover"
+            priority
+          />
 
-                {/* Overlay Content */}
-                <div
-                  className="absolute bottom-0 right-0 w-3/4 bg-primary text-black p-4"
-                  style={{ border: "4px solid #ffffff" }}
-                >
-                  <h3 className="text-lg font-bold">{card.title}</h3>
-                  <p className="text-sm mt-2">{card.description}</p>
-                </div>
-              </div>
-              {/* Action Buttons */}
-              <div className="mt-5 flex justify-between space-x-2">
-                <a
-                  href={card.reserveUrl}
-                  className="bg-primary text-white px-4 py-2 rounded-2xl shadow hover:bg-yellow-100"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Reserve
-                </a>
-                <a
-                  href={card.learnMoreUrl}
-                  className="bg-white text-primary px-4 py-2 rounded-2xl shadow hover:bg-yellow-600 border-solid border-2 border-primary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn More
-                </a>
-              </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+          {/* Overlay Content */}
+          <div
+            className="absolute bottom-0 right-0 w-3/4 bg-primary text-black p-4"
+            style={{ border: "4px solid #ffffff" }}
+          >
+            <h3 className="text-lg font-bold">{card.title}</h3>
+            <p className="text-sm mt-2">{card.description}</p>
+          </div>
+        </div>
+        {/* Action Buttons */}
+        <div className="mt-5 flex justify-between space-x-2">
+          <a
+            href={card.reserveUrl}
+            className="bg-primary text-white px-4 py-2 rounded-2xl shadow hover:bg-yellow-100"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Reserve
+          </a>
+          <a
+            href={card.learnMoreUrl}
+            className="bg-white text-primary px-4 py-2 rounded-2xl shadow hover:bg-yellow-600 border-solid border-2 border-primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn More
+          </a>
+        </div>
+      </div>
+    </SwiperSlide>
+  ))}
+</Swiper>
     </div>
   );
 };

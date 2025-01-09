@@ -21,7 +21,7 @@ const Hero: React.FC = () => {
           <p className="mt-4 text-lg  md:text-xl font-sans ">
             Choose to work online with your team or any <br/> of the physical locations close to you.
           </p>
-          <Link href="/register">
+          <Link href="/auth/signup">
             <button className="mt-11 px-14 py-3 bg-secondary text-white font-semibold text-lg rounded-full hover:bg-yellow-600 transition">
               Register
             </button>

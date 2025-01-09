@@ -1,7 +1,13 @@
 import React from "react";
+import HeaderNav from "../../components/HeaderNav"
+import FooterNav from "@/components/FooterNav";
 
 const CustomizeWorkspaceForm = () => {
   return (
+    <div>
+
+      <HeaderNav />
+      
     <div className="flex flex-row justify-center items-center h-screen mt-24 space-x-8">
       {/* Left Side - Form */}
       <div className="basis-3/5 max-w-xl p-8 rounded-lg shadow-md">
@@ -107,6 +113,8 @@ const CustomizeWorkspaceForm = () => {
           Add more details or an image here to provide additional information.
         </p> */}
       </div>
+    </div>
+    <FooterNav />
     </div>
   );
 };

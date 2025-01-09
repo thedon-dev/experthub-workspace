@@ -7,10 +7,9 @@ const MembershipOffers: React.FC = () => {
       <h2 className="text-center font-heading text-4xl font-bold text-gray-800 mb-8">
         Our Membership Offers
       </h2>
-      <div className="max-w-4xl mt-20 mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6 px-4">
+      <div className="max-w-4xl mt-20 mx-auto flex flex-col lg:flex-row gap-6 px-4">
         {/* Instant Workspace Membership */}
-        <div className="bg-orange-100 shadow-xl shadow-gray-800 rounded-lg overflow-hidden border-b-4 border-primary">
-
+        <div className="bg-orange-100 shadow-xl shadow-gray-800 rounded-lg overflow-hidden border-b-4 border-primary flex-1">
           <div className="relative w-full h-96">
             <Image
               src="/images/membership/instant-workingplace.png"
@@ -34,7 +33,7 @@ const MembershipOffers: React.FC = () => {
         </div>
 
         {/* Hot Desk Membership */}
-        <div className="bg-orange-100 shadow-xl shadow-gray-800 rounded-lg overflow-hidden border-b-4 border-primary">
+        <div className="bg-orange-100 shadow-xl shadow-gray-800 rounded-lg overflow-hidden border-b-4 border-primary flex-1">
           <div className="relative w-full h-96">
             <Image
               src="/images/membership/hot-desk.png"
