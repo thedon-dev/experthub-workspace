@@ -27,7 +27,7 @@ const ReadyToCustomize = () => {
         Your Office?</p>
         </h2>
         <div className="w-96">
-        <p className="mt-10 text-gray-700 text-sm lg:text-lg font-sans">
+        <p className="mt-10 text-gray-700 text-sm lg:text-lg font-sans p-3">
         With Online WorkSpace you are powering productive workforces, connecting and collaborating with your team, achieving more together. It is the best platform for online meetings.
         </p>
         <div className="mt-14 text-gray-700 text-sm lg:text-lg font-sans">
