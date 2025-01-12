@@ -72,7 +72,7 @@ const ReservationList: React.FC = () => {
   return (
     <div className="container p-6 mt-5 mb-24">
       {/* Filters */}
-      <div className="flex flex-wrap justify-center items-center gap-4 mb-6">
+      <div className="container lg:flex lg:flex-wrap justify-center items-center gap-4 mb-6">
         <select
           name="spaceType"
           value={filters.spaceType}
@@ -135,7 +135,7 @@ const ReservationList: React.FC = () => {
         />
         <button
           onClick={applyFilters}
-          className="bg-primary text-white px-4 py-2 rounded"
+          className="bg-primary m-2 text-white px-4 py-2 rounded"
         >
           Filter
         </button>
@@ -146,7 +146,7 @@ const ReservationList: React.FC = () => {
         {filteredEvents.map((event) => (
           <div
             key={event.id}
-            className="border rounded-lg shadow-lg flex items-center p-4 "
+            className="border rounded-lg shadow-lg lg:flex items-center p-4 "
             
           >
             <img
@@ -154,7 +154,7 @@ const ReservationList: React.FC = () => {
               alt={event.title}
               className="w-16 h-16 object-cover rounded mr-4"
             />
-            <div className="flex-grow">
+            <div className="flex-grow mb-2">
               <h3 className="text-lg font-semibold">{event.title}</h3>
               <p className="text-sm text-gray-500">{event.speaker}</p>
               <p className="text-sm text-gray-500">{event.date}</p>
