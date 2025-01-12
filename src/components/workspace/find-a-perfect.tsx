@@ -19,7 +19,7 @@ const FindAPerfect = () => {
           </p>
         </h2>
         <div className="w-96">
-          <p className="mt-10 text-gray-700 text-sm lg:text-lg font-sans p-3">
+          <p className="mt-10 text-gray-700 text-sm lg:text-lg font-sans p-5">
           Explore our range of workspace to discover the ideal match for your work style. Multiple locations give you the freedom to work your way.
           </p>
           <div className="mt-8 text-gray-700 text-sm lg:text-lg font-sans">

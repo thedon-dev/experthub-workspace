@@ -80,7 +80,17 @@ const ReservationList: React.FC = () => {
           className="border rounded px-2 py-1"
         >
           <option value="Meeting Room">Meeting Room</option>
-          <option value="Conference Room">Conference Room</option>
+          <option value="Meeting Room">Training Room</option>
+          <option value="Meeting Room">Board Room</option>
+          <option value="Office Space">Private Office</option>
+          <option value="Office Space">Day Office</option>
+          <option value="Office Space">Monthly Office</option>
+          <option value="Coworking Desk">Dedicated Desk</option>
+          <option value="Coworking Desk">Day Coworkiing</option>
+          <option value="Coworking Desk">Coworking Membership</option>
+          <option value="Virtual Offices">Online Workspace</option>
+          <option value="Virtual Offices">Business Address</option>
+          <option value="Virtual Offices">Virtual Office Standard</option>
         </select>
         <input
           type="date"
@@ -110,6 +120,7 @@ const ReservationList: React.FC = () => {
         <input
           type="number"
           name="numberOfPeople"
+          placeholder="Number of People"
           value={filters.numberOfPeople}
           onChange={handleFilterChange}
           className="border rounded px-2 py-1"
