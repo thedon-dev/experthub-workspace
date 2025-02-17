@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/modals/AddCourse.tsx",
+    "src/components/modals/AddWorkspace.tsx",
     "src/components/modals/CourseDetails.jsx",
     "src/components/modals/EnrollStudent.jsx",
     "src/components/cards/Category.jsx",

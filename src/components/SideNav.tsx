@@ -5,12 +5,12 @@ import React, { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { notification } from "antd";
 import apiService from "@/utils/apiService";
-import { useAppSelector } from '@/store/hooks';
+import { useAppSelector } from "@/store/hooks";
 
 const SideNav = () => {
   const [api, contextHolder] = notification.useNotification();
   const pathname = usePathname();
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(false);
   const [nav, setNav] = useState<any[]>([]);
   const router = useRouter();
   const user = useAppSelector((state) => state.value);
@@ -99,11 +99,20 @@ const SideNav = () => {
       ),
     },
     {
-      href: '/tutor/admissions',
-      name: 'Admissions',
-      icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person" viewBox="0 0 16 16">
-        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
-      </svg>,
+      href: "/tutor/admissions",
+      name: "Admissions",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className="bi bi-person"
+          viewBox="0 0 16 16"
+        >
+          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z" />
+        </svg>
+      ),
     },
     {
       href: "/tutor/assesment",
@@ -198,7 +207,14 @@ const SideNav = () => {
       href: "/applicant/certificates",
       name: "Cerfiticates",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-award" viewBox="0 0 16 16">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className="bi bi-award"
+          viewBox="0 0 16 16"
+        >
           <path d="M9.669.864 8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68zm1.196 1.193.684 1.365 1.086 1.072L12.387 6l.248 1.506-1.086 1.072-.684 1.365-1.51.229L8 10.874l-1.355-.702-1.51-.229-.684-1.365-1.086-1.072L3.614 6l-.25-1.506 1.087-1.072.684-1.365 1.51-.229L8 1.126l1.356.702z" />
           <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z" />
         </svg>
@@ -328,8 +344,8 @@ const SideNav = () => {
       ),
     },
     {
-      href: "/admin/courses",
-      name: "Courses",
+      href: "/admin/workspaces",
+      name: "Workspaces",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -461,13 +477,19 @@ const SideNav = () => {
     // },
   ];
 
-
   const calenderNav = [
     {
       href: "/appointment",
       name: "Appointments",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-workspace" viewBox="0 0 16 16">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className="bi bi-person-workspace"
+          viewBox="0 0 16 16"
+        >
           <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
           <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.4 5.4 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2z" />
         </svg>
@@ -477,20 +499,27 @@ const SideNav = () => {
       href: "/calender",
       name: "Calender",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-calendar-event" viewBox="0 0 16 16">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          className="bi bi-calendar-event"
+          viewBox="0 0 16 16"
+        >
           <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z" />
           <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
         </svg>
       ),
     },
-  ]
+  ];
 
   useEffect(() => {
     pathname.includes("applicant")
       ? setNav(ApplicantNavigation)
       : pathname.includes("admin")
-        ? setNav(AdminNav)
-        : setNav(TutorNavigation);
+      ? setNav(AdminNav)
+      : setNav(TutorNavigation);
   }, []);
 
   const logout = async () => {
@@ -503,10 +532,12 @@ const SideNav = () => {
   return (
     <aside className="h-screen fixed lg:w-[20%] lg:z-10 z-100 w-full bg-[#F8F7F4] sm:mt-4 shadow-md p-6">
       {contextHolder}
-      <Link href={"/#courses"} className="font-bold text-lg text-[#DC9F08]">EXPERTHUB INSTITUTE</Link>
+      <Link href={"/#courses"} className="font-bold text-lg text-[#DC9F08]">
+        EXPERTHUB INSTITUTE
+      </Link>
       <div className="flex-1 flex flex-col h-full my-6 overflow-auto">
         <ol className="text-sm font-medium flex-1">
-          {nav?.map((item, idx) => ( 
+          {nav?.map((item, idx) => (
             <li key={idx} className="my-3">
               <Link
                 href={item.href}
@@ -530,30 +561,43 @@ const SideNav = () => {
               }
             >
               <div className="text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-calendar-event" viewBox="0 0 16 16">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  className="bi bi-calendar-event"
+                  viewBox="0 0 16 16"
+                >
                   <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z" />
                   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
                 </svg>
               </div>
               Calender
             </div>
-            {
-              active && <div className="ml-6">
-                {calenderNav.map((item, idx) => <li key={idx} className="my-3">
-                  <Link
-                    href={user.role === 'student' ? '/applicant' + item.href : '/' + user.role + item.href}
-                    className={
-                      active && pathname.includes(item.href)
-                        ? "flex items-center gap-x-2 text-white p-2 rounded-lg bg-[#DC9F08]"
-                        : "flex items-center gap-x-2 text-gray-600 p-2 rounded-lg"
-                    }
-                  >
-                    <div className="text-gray-500">{item.icon}</div>
-                    {item.name}
-                  </Link>
-                </li>)}
+            {active && (
+              <div className="ml-6">
+                {calenderNav.map((item, idx) => (
+                  <li key={idx} className="my-3">
+                    <Link
+                      href={
+                        user.role === "student"
+                          ? "/applicant" + item.href
+                          : "/" + user.role + item.href
+                      }
+                      className={
+                        active && pathname.includes(item.href)
+                          ? "flex items-center gap-x-2 text-white p-2 rounded-lg bg-[#DC9F08]"
+                          : "flex items-center gap-x-2 text-gray-600 p-2 rounded-lg"
+                      }
+                    >
+                      <div className="text-gray-500">{item.icon}</div>
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
               </div>
-            }
+            )}
           </li>
           {pathname.includes("applicant") && (
             <li className="my-3">

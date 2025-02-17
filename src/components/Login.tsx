@@ -14,6 +14,8 @@ const Login = ({ type }: { type?: string }) => {
   const dispatch = useAppDispatch();
   const [api, contextHolder] = notification.useNotification();
 
+  // Provider and Client for signUp page
+
   interface LoginTypes {
     email: string;
     password: string;
@@ -37,7 +39,7 @@ const Login = ({ type }: { type?: string }) => {
             })
           );
           localStorage.setItem("tid", response.data.accessToken);
-          if (response.data.user.role === 'User') {
+          if (response.data.user.role === "User") {
             api.open({
               message: "No account associated with this email!",
             });
@@ -53,13 +55,12 @@ const Login = ({ type }: { type?: string }) => {
               response.data.user.role === "student"
                 ? "/applicant"
                 : response.data.user.role === "admin"
-                  ? "/admin"
-                  : response.data.user.role === "tutor"
-                    ? "/tutor"
-                    : ''
+                ? "/admin"
+                : response.data.user.role === "tutor"
+                ? "/tutor"
+                : ""
             );
           }
-
         })
         .catch((error) => {
           setLoading(false);

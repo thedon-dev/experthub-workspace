@@ -1,7 +1,7 @@
-export interface CourseType {
+export interface WorkspaceType {
   _id: string;
   title: string;
-  thumbnail: ThumbnailType | string;
+  thumbnail: ThumbnailType;
   category: string;
   about: string;
   duration: number;
@@ -12,7 +12,7 @@ export interface CourseType {
   endTime: string;
   fee: number;
   strikedFee: number;
-  enrolledStudents: any[];
+  registeredClients: any[];
   resources: any[];
   videos: any[];
   [key: string]: any;

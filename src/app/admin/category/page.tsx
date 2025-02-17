@@ -1,47 +1,59 @@
-"use client"
+"use client";
 
-import DashboardLayout from '@/components/DashboardLayout';
-import CategoryModal from '@/components/modals/CategoryModal';
-import { CategoryType } from '@/types/CourseType';
-import React, { useEffect, useState } from 'react';
-import { Accordion, AccordionItem as Item } from '@szhsin/react-accordion';
-import Category from '@/components/cards/Category';
-import apiService from '@/utils/apiService';
+import DashboardLayout from "@/components/DashboardLayout";
+import CategoryModal from "@/components/modals/CategoryModal";
+import { CategoryType } from "@/types/CourseType";
+import React, { useEffect, useState } from "react";
+import { Accordion, AccordionItem as Item } from "@szhsin/react-accordion";
+import Category from "@/components/cards/Category";
+import apiService from "@/utils/apiService";
 // import chevron from "@/../public/images/icons/chevron-down.svg";
 
-
-
 const category = () => {
-  const [category, setCategory] = useState(false)
-  const [categories, setCategories] = useState<CategoryType[]>([])
+  const [category, setCategory] = useState(false);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const getCategories = () => {
-    apiService.get('category/all').then(function (response) {
-      // console.log(response.data)
-      setCategories(response.data.category)
-    }).catch(error => {
-      console.log(error)
-    })
-  }
+    apiService
+      .get("workspace/all/category")
+      .then(function (response) {
+        // console.log(response.data)
+        setCategories(response.data.allWorkspaces);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
-    getCategories()
-  }, [])
+    getCategories();
+  }, []);
 
   return (
     <DashboardLayout>
-      <div className='p-4'>
+      <div className="p-4">
         <div>
-          <button onClick={() => setCategory(true)} className='bg-primary p-3 rounded-md '>Add Category</button>
+          <button
+            onClick={() => setCategory(true)}
+            className="bg-primary p-3 rounded-md "
+          >
+            Add Category
+          </button>
         </div>
         <div>
           <Accordion>
-            {categories.map(category => <div className='my-6' key={category._id}>
-              <Category category={category} fetch={() => getCategories()} />
-            </div>)}
+            {categories.map((category) => (
+              <div className="my-6" key={category._id}>
+                <Category category={category} fetch={() => getCategories()} />
+              </div>
+            ))}
           </Accordion>
         </div>
-        <CategoryModal open={category} category={null} handleClick={() => setCategory(false)} />
+        <CategoryModal
+          open={category}
+          category={null}
+          handleClick={() => setCategory(false)}
+        />
       </div>
     </DashboardLayout>
   );
