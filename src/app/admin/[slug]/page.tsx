@@ -1,6 +1,6 @@
 "use client";
 
-import { CourseType } from "@/types/CourseType";
+import { WorkspaceType } from "@/types/CourseType";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import React, { Fragment, useEffect, useState } from "react";
@@ -11,7 +11,7 @@ import SinglePage from "@/components/SinglePage";
 import apiService from "@/utils/apiService";
 
 const SingleCourse = () => {
-  const [repo, setRepo] = useState<CourseType | null>(null);
+  const [repo, setRepo] = useState<WorkspaceType | null>(null);
   const pathname = useSearchParams().get("page");
   const view = useSearchParams().get("view");
   const page = usePathname().slice(7);
