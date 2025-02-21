@@ -203,7 +203,10 @@ const tutor = () => {
               .map((course: CourseType) => (
                 <div key={course._id} className="lg:w-[32%]">
                   {" "}
-                  <CoursesCard getCourse={() => getCourses()} course={course} />
+                  <CoursesCard
+                    getWorkspace={() => getCourses()}
+                    workspace={course}
+                  />
                 </div>
               ))
           ) : (
