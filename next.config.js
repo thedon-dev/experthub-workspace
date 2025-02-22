@@ -11,8 +11,9 @@ const nextConfig = {
         hostname: "localhost",
       },
     ],
+    unoptimized: true,
   },
-  output: "export", // Enable static HTML export
+  output: "export", 
 };
 
 module.exports = nextConfig;
