@@ -15,10 +15,31 @@ export interface WorkspaceType {
   registeredClients: any[];
   resources: any[];
   videos: any[];
-  [key: string]: any;
+ 
 }
 
 export interface CourseType {
+  _id: string;
+  title: string;
+  thumbnail: ThumbnailType;
+  category: string;
+  about: string;
+  duration: number;
+  type: string;
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  fee: number;
+  strikedFee: number;
+  registeredClients: any[];
+  enrolledStudents: any[];
+  resources: any[];
+  videos: any[];
+  [key: string]: any;
+}
+
+export interface WorkspaceType {
   _id: string;
   title: string;
   thumbnail: ThumbnailType;
