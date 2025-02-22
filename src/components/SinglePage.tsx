@@ -1,3 +1,5 @@
+"use client"
+
 import { CourseType } from '@/types/CourseType';
 import React, { useEffect, useState } from 'react';
 import FileDownload from '@/components/FileDownload'
