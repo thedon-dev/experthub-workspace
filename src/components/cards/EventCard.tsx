@@ -79,7 +79,7 @@ const EventCard = ({ event, action }: { event: CourseType, action: any }) => {
           <div>
             <p className='text-xs my-1'>Students {event.enrolledStudents.length}</p>
             <div className='flex ml-1'>
-              {event.enrolledStudents.slice(0, 6).map((event: { _id: React.Key | null | undefined; profilePicture: string | undefined; }) => <img key={event._id} src={event.profilePicture  ? event.profilePicture : '/images/user.png'} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
+              {event.enrolledStudents.slice(0, 6).map(event => <img key={event._id} src={event.profilePicture  ? event.profilePicture : '/images/user.png'} className='w-5 rounded-full h-5 -ml-1' alt="" />)}
               {/* <img src="/images/user.png" className='w-5 h-5' alt="" />
             <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" />
             <img src="/images/user.png" className='w-5 h-5 -ml-2' alt="" /> */}

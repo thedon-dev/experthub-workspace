@@ -33,6 +33,7 @@ export interface CourseType {
   fee: number;
   strikedFee: number;
   registeredClients: any[];
+  enrolledStudents: any[];
   resources: any[];
   videos: any[];
   [key: string]: any;
