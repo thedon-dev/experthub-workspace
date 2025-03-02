@@ -20,7 +20,7 @@ export default function SingleCourse() {
 
   const getData = async () => {
     await apiService
-      .get(`courses/single-course/${page}`)
+      .get(`workspace/single-workspace/${page}`)
       .then(function (response) {
         setRepo(response.data.course);
         console.log(response.data);
