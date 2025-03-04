@@ -27,7 +27,7 @@ const SingleCourse = async ({ params }: { params: { slug: string } }) => {
 
   try {
     const response = await apiService.get(
-      `courses/single-course/${params.slug}`
+      `workspace/single-workspace/${params.slug}`
     );
     repo = response.data.course;
   } catch (error) {
