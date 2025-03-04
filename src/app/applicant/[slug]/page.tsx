@@ -12,8 +12,13 @@ import apiService from "@/utils/apiService";
 
 export default function SingleCourse() {
   const [repo, setRepo] = useState<WorkspaceType | null>(null);
-  const pathname = useSearchParams().get("page");
-  const page = usePathname().slice(11);
+  // const pathname = useSearchParams().get("page");
+  // const page = usePathname().slice(11);
+
+  const pathname = usePathname();
+  const segments = pathname.split("/");
+  const page = segments[segments.length - 1]; // Get last segment
+
   const user = useAppSelector((state) => state.value);
   const [auth, setAuth] = useState(false);
   const [action, setAction] = useState("login");

@@ -2,72 +2,85 @@
 
 import DashboardLayout from "@/components/DashboardLayout";
 import { useAppSelector } from "@/store/hooks";
-import { AssesmentElement, AssesmentType } from "@/types/AssesmentType";
+import { AssesmentType } from "@/types/AssesmentType";
 import apiService from "@/utils/apiService";
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const SingleAssesment: React.FC = () => {
+const SingleAssessment: React.FC = () => {
   const pathname = usePathname();
-  const [assesment, setAssesment] = useState<AssesmentType | null>(null);
-  const user = useAppSelector((state) => state.value);
-  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
-  const [showGradeModal, setShowGradeModal] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const type = searchParams.get("type"); // Access query parameter "name"
-  const [answers, setAnswers] = useState<any>([])
+  const user = useAppSelector((state) => state.value);
+  const type = searchParams.get("type");
 
-  // Fetch Assessment
-  const getAssesment = async () => {
-    try {
-      const response = await apiService.get(
-        `assessment/single/${pathname.slice(16)}`
-      );
-      const fetchedAssesment = response.data.myAssesment[0];
-      setAssesment(fetchedAssesment);
-      fetchedAssesment.assesment.map(() => setAnswers([...answers, { answer: "" }]))
-      setSelectedAnswers(new Array(fetchedAssesment.assesment.length).fill(-1)); // Initialize answers
-    } catch (error) {
-      console.error("Error fetching assessment:", error);
-    }
+  const [assessment, setAssessment] = useState<AssesmentType | null>(null);
+  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+  const [answers, setAnswers] = useState<{ answer: string }[]>([]);
+  const [showGradeModal, setShowGradeModal] = useState(false);
+
+  useEffect(() => {
+    const getAssessment = async () => {
+      try {
+        const response = await apiService.get(
+          `assessment/single/${pathname.split("/").pop()}`
+        );
+        const fetchedAssessment = response.data.myAssesment[0];
+        setAssessment(fetchedAssessment);
+        setAnswers(
+          new Array(fetchedAssessment.assesment.length).fill({ answer: "" })
+        );
+        setSelectedAnswers(
+          new Array(fetchedAssessment.assesment.length).fill(-1)
+        );
+      } catch (error) {
+        console.error("Error fetching assessment:", error);
+      }
+    };
+    getAssessment();
+  }, [pathname]);
+
+  const handleInputChange = (index: number, value: string) => {
+    setAnswers((prev) => {
+      const updated = [...prev];
+      updated[index] = { answer: value };
+      return updated;
+    });
   };
 
-  const handleInputChange = (index: number, field: string, value: string | number) => {
-    const updatedObjects = [...answers];
-    updatedObjects[index] = { ...updatedObjects[index], [field]: value };
-    setAnswers(updatedObjects);
-  };
-
-  // Handle Option Selection
   const handleSelect = (questionIndex: number, answerIndex: number) => {
-    const updatedAnswers = [...selectedAnswers];
-    updatedAnswers[questionIndex] = answerIndex;
-    setSelectedAnswers(updatedAnswers);
+    setSelectedAnswers((prev) => {
+      const updated = [...prev];
+      updated[questionIndex] = answerIndex;
+      return updated;
+    });
   };
 
-  // Calculate Grade
   const calculateGrade = (): number => {
-    if (!assesment) return 0;
-    return assesment.assesment.reduce((grade: any, question: any, index: number) => {
-      return grade + (selectedAnswers[index] === question.correctAnswerIndex ? 1 : 0);
-    }, 0);
+    if (!assessment) return 0;
+    return assessment.assesment.reduce(
+      (grade: any, question: any, index: any) => {
+        return (
+          grade +
+          (selectedAnswers[index] === question.correctAnswerIndex ? 1 : 0)
+        );
+      },
+      0
+    );
   };
 
-  // Check Eligibility for Certificate
   const isEligibleForCertificate = (): boolean => {
-    if (!assesment) return false;
+    if (!assessment) return false;
     const totalScore = calculateGrade();
-    const totalQuestions = assesment.assesment.length;
-    const percentage = (totalScore / totalQuestions) * 100;
-    return percentage >= 50 || (totalScore === 1 && totalQuestions === 1);
+    const totalQuestions = assessment.assesment.length;
+    return (
+      (totalScore / totalQuestions) * 100 >= 50 ||
+      (totalScore === 1 && totalQuestions === 1)
+    );
   };
 
-  // Handle Form Submission
-  const handleSubmit = () => {
-    if (!assesment) return;
-    if (selectedAnswers.includes(-1)) {
+  const handleSubmit = async () => {
+    if (!assessment || selectedAnswers.includes(-1)) {
       alert("Please answer all questions before submitting.");
       return;
     }
@@ -76,137 +89,88 @@ const SingleAssesment: React.FC = () => {
 
   const send = async () => {
     try {
-      await apiService.post(`assessment/submit-assessment/${pathname.slice(16)}`, {
-        studentId: user.id,
-        answers
-      });
-      alert("Assesment submitted!");
-      router.back()
+      await apiService.post(
+        `assessment/submit-assessment/${pathname.split("/").pop()}`,
+        {
+          studentId: user.id,
+          answers,
+        }
+      );
+      alert("Assessment submitted!");
+      router.back();
     } catch (error) {
-      console.error("Error submitting", error);
+      console.error("Error submitting assessment:", error);
     }
-  }
+  };
 
-  // Claim Certificate
   const claimCertificate = async () => {
-    if (!assesment) return;
+    if (!assessment) return;
     try {
       await apiService.post("certificate/claim", {
         user: user.id,
-        title: assesment.title,
-        tutor: assesment.tutor,
+        title: assessment.title,
+        tutor: assessment.tutor,
       });
-      setShowGradeModal(false)
       alert("Certificate claimed successfully!");
-      router.back()
+      router.back();
     } catch (error) {
-      setShowGradeModal(false)
       console.error("Error claiming certificate:", error);
     }
   };
 
-  useEffect(() => {
-    getAssesment();
-  }, []);
-
   return (
     <DashboardLayout>
-      <div>
-        <div className="border-b p-4 border-[#1E1E1E38]">
-          <p className="text-lg">Welcome</p>
-          <p className="font-medium text-lg capitalize">{user.fullName}</p>
-        </div>
-        <div className="p-4">
-          <p>
-            Confirm Your Skill & Technical Level (
-            {assesment?.title || "Loading..."})
-          </p>
-          <p>Answer all questions in order.</p>
-          {type === 'theory' ? assesment?.assesment.map((question: any, index: any) => (<div key={index} className="bg-[#FFFFFFCC] p-4 my-3 rounded-md"
-          >
-            <div className="flex">
-              <img src="/images/icons/heroicons_list-bullet.svg" alt="" />
-              <p className="ml-2">Question {index + 1}</p>
-            </div>
-            <input
-              value={question.question}
-              disabled
-              type="text"
-              className="p-2 bg-[#D9D9D94D] my-3 w-full"
-            />
+      <div className="p-4">
+        <p className="text-lg font-medium">Welcome, {user.fullName}</p>
+        <p>
+          Confirm Your Skill & Technical Level (
+          {assessment?.title || "Loading..."})
+        </p>
 
-            <textarea onChange={(e) => handleInputChange(index, "answer", e.target.value)} placeholder="Enter your response here" className="p-2 bg-[#D9D9D94D] my-3 w-full h-16"></textarea>
-
-          </div>)) : assesment?.assesment.map((question: any, questionIndex: any) => (
-            <div
-              key={questionIndex}
-              className="bg-[#FFFFFFCC] p-4 my-3 rounded-md"
-            >
-              <div className="flex">
-                <img src="/images/icons/heroicons_list-bullet.svg" alt="" />
-                <p className="ml-2">Question {questionIndex + 1}</p>
-              </div>
-              <input
-                value={question.question}
-                disabled
-                type="text"
-                className="p-2 bg-[#D9D9D94D] my-3 w-full"
+        {assessment?.assesment.map((question: any, index: number) => (
+          <div key={index} className="bg-white p-4 my-3 rounded-md">
+            <p className="font-medium">Question {index + 1}</p>
+            <p>{question.question}</p>
+            {type === "theory" ? (
+              <textarea
+                onChange={(e) => handleInputChange(index, e.target.value)}
+                placeholder="Enter your response here"
+                className="p-2 bg-gray-200 w-full h-16"
               />
-              {["A", "B", "C"].map((option, optionIndex) => (
-                <div key={optionIndex} className="flex relative">
-                  <p className="mx-2 my-auto">{option}</p>
+            ) : (
+              ["A", "B", "C"].map((option, optionIndex) => (
+                <div key={optionIndex} className="flex items-center">
                   <input
-                    value={question[`answer${option}` as keyof AssesmentElement]}
-                    disabled
-                    type="text"
-                    className="p-2 bg-[#D9D9D94D] my-3 w-full"
+                    type="radio"
+                    checked={selectedAnswers[index] === optionIndex}
+                    onChange={() => handleSelect(index, optionIndex)}
                   />
-                  <img
-                    src={
-                      selectedAnswers[questionIndex] === optionIndex
-                        ? "/images/checked.png"
-                        : "/images/icons/game-icons_check-mark.svg"
-                    }
-                    onClick={() => handleSelect(questionIndex, optionIndex)}
-                    className="absolute right-4 top-5 cursor-pointer w-6"
-                    alt=""
-                  />
+                  <p className="ml-2">{question[`answer${option}`]}</p>
                 </div>
-              ))}
-            </div>
-          ))}
+              ))
+            )}
+          </div>
+        ))}
 
-          {type === 'theory' ?
-            <button onClick={() => send()} className="p-2 px-10 bg-[#FDC332]">
-              Submit
-            </button> : <button onClick={handleSubmit} className="p-2 px-10 bg-[#FDC332]">
-              Submit
-            </button>}
-        </div>
+        <button
+          onClick={type === "theory" ? send : handleSubmit}
+          className="p-2 px-10 bg-yellow-500 rounded-md"
+        >
+          Submit
+        </button>
+
         {showGradeModal && (
-          <div>
-            <div className="fixed bg-black opacity-50 top-0 left-0 w-full h-full z-10"></div>
-            <div className="fixed top-10 left-0 right-0 mx-auto w-11/12 lg:w-1/2 bg-white rounded-md p-6 z-20">
-              <div className="flex justify-between">
-                <p className="text-lg font-medium">Assessment Grade</p>
-                <img
-                  src="/images/icons/material-symbols_cancel-outline.svg"
-                  onClick={() => setShowGradeModal(false)}
-                  className="w-6 h-6 cursor-pointer"
-                  alt="Close"
-                />
-              </div>
-              <div className="text-center mt-4">
-                <h1 className="text-2xl capitalize">
-                  Congratulations {user.fullName}!
-                </h1>
-                <p>
-                  {isEligibleForCertificate()
-                    ? "You have successfully passed the assessment and can claim your certificate."
-                    : "You scored below average. Please retake the test to qualify for a certificate."}
-                </p>
-              </div>
-              <div className="flex justify-center mt-6">
+          <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded-md text-center">
+              <h1 className="text-2xl font-medium">
+                Congratulations {user.fullName}!
+              </h1>
+              <p>
+                {isEligibleForCertificate()
+                  ? "You passed and can claim your certificate."
+                  : "You scored below average. Retake the test to qualify."}
+              </p>
+              <div className="flex justify-center mt-4">
                 {isEligibleForCertificate() && (
                   <button
                     onClick={claimCertificate}
@@ -216,8 +180,8 @@ const SingleAssesment: React.FC = () => {
                   </button>
                 )}
                 <button
-                  onClick={() => { router.back() }}
-                  className="p-2 px-6 bg-primary text-white rounded-md"
+                  onClick={() => router.back()}
+                  className="p-2 px-6 bg-gray-500 text-white rounded-md"
                 >
                   Close
                 </button>
@@ -230,4 +194,4 @@ const SingleAssesment: React.FC = () => {
   );
 };
 
-export default SingleAssesment;
+export default SingleAssessment;
