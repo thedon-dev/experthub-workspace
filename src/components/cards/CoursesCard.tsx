@@ -45,11 +45,11 @@ const CoursesCard = ({
       ? [
           {
             key: "2",
-            label: <p onClick={() => setEnroll(true)}>Enroll Student</p>,
+            label: <p onClick={() => setEnroll(true)}>Enroll Client</p>,
           },
           {
             key: "3",
-            label: <p onClick={() => setAssign(true)}>Asign Tutor</p>,
+            label: <p onClick={() => setAssign(true)}>Asign Provider</p>,
           },
         ]
       : []),
@@ -63,7 +63,7 @@ const CoursesCard = ({
                   setDelete(true);
                 }}
               >
-                Delete course
+                Delete workspace
               </p>
               // <p onClick={() => { course.enrolledStudents.length >= 1 ? setEnrolled(true) : setDelete(true) }}>Delete course</p>
             ),
@@ -77,7 +77,7 @@ const CoursesCard = ({
                 }`}
                 onClick={() => workspace.type !== `online` && setEdit(true)}
               >
-                Edit course
+                Edit workspace
               </p>
             ),
           },
@@ -210,7 +210,7 @@ const CoursesCard = ({
         </div>
       </div>
       <CourseDetails
-        course={workspace}
+        workspace={workspace}
         action={"Course"}
         open={open}
         call={null}
@@ -218,19 +218,19 @@ const CoursesCard = ({
         handleClick={() => setOpen(false)}
       />
       <AddCourse
-        course={workspace}
+        workspace={workspace}
         open={edit}
         handleClick={() => setEdit(false)}
       />
       <EnrollStudent
         open={enroll}
         handleClick={() => setEnroll(false)}
-        course={workspace}
+        workspace={workspace}
       />
       <AssignTutor
         open={assign}
         handleClick={() => setAssign(false)}
-        course={workspace}
+        workspace={workspace}
         getCourse={() => getWorkspace()}
       />
       {deletec && (

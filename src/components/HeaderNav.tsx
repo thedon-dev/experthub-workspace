@@ -1,18 +1,17 @@
-"use client"
+"use client";
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { usePathname, useRouter } from 'next/navigation';
-
+import { usePathname, useRouter } from "next/navigation";
 
 const HeaderNav = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const user = useAppSelector((state) => state.value);
-  const router = useRouter()
-  const pathname = usePathname()
+  const router = useRouter();
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -32,7 +31,12 @@ const HeaderNav = () => {
       <div className="container mx-auto px-4 flex justify-between items-center h-16">
         <div className="flex ">
           {/* Logo */}
-          <Image src="/images/icons/logo.png" width={100} height={100} alt="logo" />
+          <Image
+            src="/images/icons/logo.png"
+            width={100}
+            height={100}
+            alt="logo"
+          />
           <Link
             href="/"
             className="flex items-center text-primary font-bold font-sans text-lg"
@@ -49,8 +53,8 @@ const HeaderNav = () => {
           <Link href="/my-business" className="hover:text-yellow-500">
             My Business
           </Link>
-          <Link href="/trainings" className="hover:text-yellow-500">
-            Trainings
+          <Link href="/workspaces" className="hover:text-yellow-500">
+            Workspaces
           </Link>
           <Link href="/add-workspace" className="hover:text-yellow-500">
             Add Workspace

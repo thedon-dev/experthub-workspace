@@ -34,12 +34,12 @@ dayjs.extend(advancedFormat);
 const AddWorkspace = ({
   open,
   handleClick,
-  course,
+  workspace,
   setShowPremium,
 }: {
   open: boolean;
   handleClick: any;
-  course: WorkspaceType | null;
+  workspace: WorkspaceType | null;
   setShowPremium?: Dispatch<SetStateAction<boolean>>;
 }) => {
   const user = useAppSelector((state) => state.value);
@@ -49,15 +49,15 @@ const AddWorkspace = ({
   const pdfUploadRef = useRef<HTMLInputElement>(null);
   const [api, contextHolder] = notification.useNotification();
   const [active, setActive] = useState(0);
-  const [about, setAbout] = useState(course?.about || "");
-  const [startDate, setStartDate] = useState(course?.startDate || undefined);
-  const [endDate, setEndDate] = useState(course?.endDate || undefined);
-  const [startTime, setStartTime] = useState(course?.startTime || undefined);
-  const [endTime, setEndTime] = useState(course?.endTime || undefined);
-  const [striked, setStriked] = useState<number>(course?.strikedFee || 0);
-  const [fee, setFee] = useState<number>(course?.fee || 0);
-  const [duration, setDuration] = useState<number>(course?.duration || 0);
-  const [category, setCategory] = useState(course?.category || "");
+  const [about, setAbout] = useState(workspace?.about || "");
+  const [startDate, setStartDate] = useState(workspace?.startDate || undefined);
+  const [endDate, setEndDate] = useState(workspace?.endDate || undefined);
+  const [startTime, setStartTime] = useState(workspace?.startTime || undefined);
+  const [endTime, setEndTime] = useState(workspace?.endTime || undefined);
+  const [striked, setStriked] = useState<number>(workspace?.strikedFee || 0);
+  const [fee, setFee] = useState<number>(workspace?.fee || 0);
+  const [duration, setDuration] = useState<number>(workspace?.duration || 0);
+  const [category, setCategory] = useState(workspace?.category || "");
   const [categoryIndex, setCategoryIndex] = useState("");
   const [resources, setResource] = useState(false);
   const [conflict, setConflict] = useState(false);
@@ -69,14 +69,14 @@ const AddWorkspace = ({
 
   const [userProfile, setUser] = useState<any>();
 
-  const [privacy, setPrivacy] = useState(course?.privacy || "");
-  const [type, setType] = useState(course?.type || "offline");
-  const [title, setTitle] = useState(course?.title || "");
-  const [image, setImage] = useState<any>(course?.thumbnail || null);
-  const [location, setLocation] = useState(course?.loaction || "");
-  const [target, setTarget] = useState(course?.target || 0);
+  const [privacy, setPrivacy] = useState(workspace?.privacy || "");
+  const [type, setType] = useState(workspace?.type || "offline");
+  const [title, setTitle] = useState(workspace?.title || "");
+  const [image, setImage] = useState<any>(workspace?.thumbnail || null);
+  const [location, setLocation] = useState(workspace?.loaction || "");
+  const [target, setTarget] = useState(workspace?.target || 0);
 
-  const [room, setRoom] = useState(course?.room || "");
+  const [room, setRoom] = useState(workspace?.room || "");
   const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState<{ label: string; value: string }[]>(
     []
@@ -115,7 +115,7 @@ const AddWorkspace = ({
     title: "",
     description: "",
   };
-  const [videos, setVideos] = useState(course?.videos || [layout]);
+  const [videos, setVideos] = useState(workspace?.videos || [layout]);
 
   const [uploadedCount, setUploadedCount] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -124,10 +124,10 @@ const AddWorkspace = ({
 
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
-  const [modules, setModules] = useState(course?.modules || [module]);
-  const [benefits, setBenefits] = useState(course?.benefits || [""]);
+  const [modules, setModules] = useState(workspace?.modules || [module]);
+  const [benefits, setBenefits] = useState(workspace?.benefits || [""]);
   const [days, setDays] = useState(
-    course?.days || [
+    workspace?.days || [
       {
         day: "Monday",
         startTime: "",
@@ -245,7 +245,7 @@ const AddWorkspace = ({
 
   const getCategories = () => {
     apiService
-      .get("category/all")
+      .get("workspace/all/category")
       .then(function (response) {
         setCategories(response.data.category);
       })
@@ -411,7 +411,7 @@ const AddWorkspace = ({
       const startDateJS = startDateTime.toDate();
       const endDateJS = endDateTime.toDate();
       apiService
-        .put(`courses/edit/${course?._id}`, {
+        .put(`workspace/edit/${workspace?._id}`, {
           // image,
           title,
           benefits,
@@ -429,8 +429,8 @@ const AddWorkspace = ({
           privacy,
           fee: fee.toString(),
           strikedFee: striked.toString(),
-          enrolledStudents: course && [
-            ...course?.enrolledStudents,
+          enrolledStudents: workspace && [
+            ...workspace?.enrolledStudents,
             ...getScholarship(),
           ],
           room,
@@ -554,34 +554,21 @@ const AddWorkspace = ({
       setLoading(true);
 
       apiService
-        .post(`courses/add-course/${user.id}`, {
-          asset: image,
-          title,
-          target,
-          about,
+        .post(`workspace/add-workspace/${user.id}`, {
+          workSpaceTitle: title,
+          about: about,
           duration: duration.toString(),
-          type,
+          type: type,
           startDate: new Date(startDateJS).toISOString(),
           endDate: new Date(endDateJS).toISOString(),
           startTime: startTime,
           endTime: endTime,
           category: category === "" ? categoryIndex : category,
-          privacy,
-          fee: fee.toString(),
+          privacy: privacy,
+          // workDuration: workspaceData.workDuration,
+          fees: fee.toString(),
           strikedFee: striked.toString(),
-          room,
-          modules,
-          location,
-          videos,
-          pdf,
-          days,
-          benefits,
-          timeframe: {
-            value: courseDuration,
-            unit: timeframe,
-          },
-          scholarship: getScholarship(),
-          audience: audience.map((data: any) => data.value),
+          thumbnail: image,
         })
         .then(function (response) {
           api.open({
@@ -1549,7 +1536,7 @@ const AddWorkspace = ({
                   </div>
                 )}
                 <div className="flex">
-                  {course === null ? (
+                  {workspace === null ? (
                     active === 3 ? (
                       <button
                         disabled={uploading}

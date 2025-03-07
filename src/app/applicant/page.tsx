@@ -35,7 +35,7 @@ const applicant = () => {
   };
   const getRecommended = async () => {
     await apiService
-      .get(`courses/recommended-courses/${user?.id}`)
+      .get(`workspace/recommended-workspaces/${user?.id}`)
       .then(function (response) {
         setReccomended(response.data.courses);
         // console.log(response.data)
@@ -47,7 +47,7 @@ const applicant = () => {
 
   const getCourses = async () => {
     await apiService
-      .get(`courses/enrolled-courses/${user?.id}`)
+      .get(`workspace/enrolled-workspaces/${user?.id}`)
       .then(function (response) {
         // const all: CourseType[] = []
         // response.data.enrolledCourses.map((course: CourseType) => {
@@ -55,8 +55,8 @@ const applicant = () => {
         //     all.push(course)
         //   }
         // })
-        setCourses(response.data.enrolledCourses);
-        console.log(response.data.enrolledCourses);
+        setCourses(response.data.workspaces);
+        console.log(response.data.workspaces);
       })
       .catch((e) => {
         setCourses([]);

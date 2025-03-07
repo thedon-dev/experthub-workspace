@@ -12,7 +12,7 @@ import AddResources from "@/components/modals/AddResources";
 import AddCourse from "@/components/modals/AddWorkspace";
 import { useAppSelector } from "@/store/hooks";
 import { ResourceType } from "@/types/ResourceType";
-import { CourseType } from "@/types/CourseType";
+import { CourseType, WorkspaceType } from "@/types/CourseType";
 import AddEvents from "@/components/modals/AddEvents";
 import apiService from "@/utils/apiService";
 import GoPremuim from "@/components/modals/GoPremuium";
@@ -78,8 +78,8 @@ const courses = () => {
     //   ),
     // },
   ];
-  const [courses, setCourses] = useState<CourseType | []>([]);
-  const [all, setAll] = useState<CourseType | []>([]);
+  const [workspaces, setWorkspaces] = useState<WorkspaceType | []>([]);
+  const [all, setAll] = useState<WorkspaceType | []>([]);
 
   const getCourses = async () => {
     apiService
@@ -88,7 +88,7 @@ const courses = () => {
         id: user.id,
       })
       .then(function (response) {
-        setCourses(response.data.courses);
+        setWorkspaces(response.data.courses);
         // console.log(response.data)
       });
   };
@@ -105,7 +105,7 @@ const courses = () => {
     const results = all.filter((obj: CourseType) =>
       obj.fullname.toLowerCase().includes(value.toLowerCase())
     );
-    setCourses(results);
+    setWorkspaces(results);
   };
 
   useEffect(() => {
@@ -175,18 +175,18 @@ const courses = () => {
       <section className="m-2 p-3">
         <p className="font-bold text-sm my-2">{user.assignedCourse}</p>
         <div className="lg:flex flex-wrap justify-between">
-          {courses.length > 0 ? (
-            courses.map((course: CourseType) => (
-              <div key={course._id} className="lg:w-[32%]">
+          {workspaces.length > 0 ? (
+            workspaces.map((workspace: WorkspaceType) => (
+              <div key={workspace._id} className="lg:w-[32%]">
                 {" "}
                 <CoursesCard
                   getWorkspace={() => getCourses()}
-                  workspace={course}
+                  workspace={workspace}
                 />
               </div>
             ))
           ) : (
-            <div>No courses available</div>
+            <div>No workspace available</div>
           )}
         </div>
       </section>
@@ -270,7 +270,7 @@ const courses = () => {
       </section>
 
       <AddCourse
-        course={null}
+        workspace={null}
         setShowPremium={setShowPremuim}
         open={open}
         handleClick={() => setOpen(!open)}

@@ -17,7 +17,7 @@ import AddEvents from "@/components/modals/AddEvents";
 import apiService from "@/utils/apiService";
 import AddCourseInterests from "@/components/modals/AddCourseInterests";
 import GoPremuim from "@/components/modals/GoPremuium";
-import { CourseType } from "@/types/CourseType";
+import { CourseType, WorkspaceType } from "@/types/CourseType";
 
 const tutor = () => {
   const user = useAppSelector((state) => state.value);
@@ -47,7 +47,7 @@ const tutor = () => {
     //   ),
     // },
   ];
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState<WorkspaceType[]>([]);
 
   const getStudents = () => {
     apiService
@@ -215,7 +215,7 @@ const tutor = () => {
         </div>
       </section>
       <AddCourse
-        course={null}
+        workspace={null}
         setShowPremium={setShowPremuim}
         open={open}
         handleClick={() => setOpen(!open)}
