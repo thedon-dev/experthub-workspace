@@ -102,8 +102,8 @@ const HeaderNav = () => {
               </Link>
             </li>
             <li>
-              <Link href="/trainings" onClick={toggleMobileMenu}>
-                Trainings
+              <Link href="/workspaces" onClick={toggleMobileMenu}>
+                Workspaces
               </Link>
             </li>
             <li>
@@ -114,14 +114,14 @@ const HeaderNav = () => {
             {/* Buttons in a flex row */}
             <li className="flex justify-start space-x-4">
               <Link
-                href="/register"
+                href="/auth/signup"
                 className="px-4 py-2 border border-black rounded hover:bg-gray-100"
                 onClick={toggleMobileMenu}
               >
                 Register
               </Link>
               <Link
-                href="/login"
+                href="/auth/login"
                 className="px-4 py-2 bg-primary text-white rounded hover:bg-secondary"
                 onClick={toggleMobileMenu}
               >
