@@ -236,7 +236,7 @@ const courses = () => {
           </div> : <div>No courses to review</div>}
         </div> */}
         <AddCourse
-          course={null}
+          workspace={null}
           open={open}
           handleClick={() => setOpen(!open)}
         />
