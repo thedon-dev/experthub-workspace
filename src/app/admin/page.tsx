@@ -150,7 +150,7 @@ const adminDashboard = () => {
         </div>
       </section>
       <AddWorkspace
-        course={null}
+        workspace={null}
         open={open}
         handleClick={() => setOpen(!open)}
       />

@@ -60,7 +60,11 @@ const Events = () => {
       </div>
       <EventsComp action={() => getAllEvents()} events={events} />
 
-      <AddCourse course={null} open={open} handleClick={() => setOpen(!open)} />
+      <AddCourse
+        workspace={null}
+        open={open}
+        handleClick={() => setOpen(!open)}
+      />
       {/* <AddResources open={resources} handleClick={() => setResources(!resources)} /> */}
       <AddEvents
         setShowPremium={setShowPremuim}
