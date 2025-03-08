@@ -55,7 +55,7 @@ const SingleCourse = async ({ params }: { params: { slug: string } }) => {
           <SinglePage pathname="course" repo={repo} page={params.slug} />
         )}
         {repo && (
-          <AddCourse course={repo} open={false} handleClick={() => {}} />
+          <AddCourse workspace={repo} open={false} handleClick={() => {}} />
         )}
       </section>
     </DashboardLayout>

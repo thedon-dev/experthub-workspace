@@ -137,7 +137,7 @@ const tutor = () => {
       <section className="m-2 p-3 shadow-md">
         <div className="text-sm lg:flex justify-between">
           <div className="flex justify-between lg:w-[40%]">
-            <p className="my-auto">Assigned Courses</p>
+            <p className="my-auto">Assigned workspaces</p>
 
             <Dropdown menu={{ items }} trigger={["click"]}>
               <button className="bg-primary p-2 font-medium text-sm rounded-md">
@@ -210,7 +210,7 @@ const tutor = () => {
                 </div>
               ))
           ) : (
-            <div>No Assigned course!</div>
+            <div>No Assigned Workspaces!</div>
           )}
         </div>
       </section>
