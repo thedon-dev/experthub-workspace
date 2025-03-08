@@ -87,7 +87,7 @@ const applicant = () => {
     <DashboardLayout>
       <section className="p-4 lg:flex hidden justify-between">
         <StatCard
-          title="Total No of Workspaces"
+          title="Total No of Workspaces enrolled"
           count={courses.length}
           bg="#27C2D6"
           img="clock-line"
