@@ -212,6 +212,7 @@ const CoursesCard = ({
       <CourseDetails
         workspace={workspace}
         action={"Course"}
+        course={workspace}
         open={open}
         call={null}
         type="view"

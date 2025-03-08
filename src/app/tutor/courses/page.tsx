@@ -157,9 +157,9 @@ const courses = () => {
       <section>
         <div className="lg:flex p-4">
           <div>
-            <p className="font-medium">Assigned Courses</p>
+            <p className="font-medium">Assigned Workspacecs</p>
             <p className="text-sm">
-              This is the list of courses and modules you are taking
+              This is the list of workspacs you have available
             </p>
           </div>
           <div className="lg:ml-10 sm:my-3">

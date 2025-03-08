@@ -87,7 +87,7 @@ const applicant = () => {
     <DashboardLayout>
       <section className="p-4 lg:flex hidden justify-between">
         <StatCard
-          title="Total No of Courses"
+          title="Total No of Workspaces"
           count={courses.length}
           bg="#27C2D6"
           img="clock-line"
@@ -116,7 +116,7 @@ const applicant = () => {
           <div className="">
             <div className="flex ">
               <h4 className="text-lg my-auto mr-6 font-medium">
-                Continue learning
+                Continue Working
               </h4>
               {/* <Link href={'/applicant/profile#interests'}> */}
               <button
@@ -178,7 +178,7 @@ const applicant = () => {
                 course.category === active || active === ""
             )
             .map((course: WorkspaceType) => (
-              <ApplicantCourses key={course._id} course={course} />
+              <ApplicantCourses key={course._id} workspace={course} />
             ))}
           {/* <ApplicantCourses />
           <ApplicantCourses />
@@ -188,24 +188,23 @@ const applicant = () => {
       <section className="m-4">
         <p className="text-xl font-medium my-3">Application status</p>
         <p className="text-sm">
-          You are a part of our Learning Community.
+          You are a part of our Working Community.
           <br /> <br />
-          You can begin your learning journey with some introductory courses in
-          your skill area. Enjoy your journey to becoming an expert and a
-          digital nomad.
+          You can begin your work with some recommended workspaces around you.
+          Enjoy your journey to becoming an expert and a digital nomad.
         </p>
       </section>
       <section className="m-2 p-3 shadow-md">
         <div className="text-sm my-3 flex justify-between">
           <p className="font-bold text-base">Recommended for you</p>
           <Link href={"/applicant/feeds"}>
-            <p className="text-sm">Other Courses</p>
+            <p className="text-sm">Other Workspaces</p>
           </Link>
           <p className="text-[#DC9F08] text-sm">VIEW ALL</p>
         </div>
         <div className="flex flex-wrap justify-between">
           {reccomended.length === 0 ? (
-            <div>No reccomended courses</div>
+            <div>No reccomended workspaces</div>
           ) : (
             reccomended
               .filter(

@@ -152,6 +152,7 @@ export default function Home() {
       {course && (
         <CourseDetails
           workspace={course}
+          course
           open={open}
           action={"Course"}
           type="enroll"

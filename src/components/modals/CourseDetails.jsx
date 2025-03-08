@@ -24,6 +24,7 @@ const CourseDetails = ({
   open,
   handleClick,
   workspace,
+  course,
   type,
   call,
   action,
@@ -410,14 +411,16 @@ const CourseDetails = ({
               <div className="py-4 lg:px-10 px-4 ">
                 <div className="lg:flex justify-between">
                   <div className="lg:w-[40%]">
-                    <ImageViewer image={workspace.thumbnail} />
+                    {/* <ImageViewer image={workspace.thumbnail} /> */}
                     {/* <img src={course.thumbnail} className='w-full h-52 object-cover' alt="" /> */}
                     <div className="p-4">
-                      <p className="font-medium text-base">{workspace.title}</p>
-                      {workspace.registeredClients?.length > 1 && (
+                      <p className="font-medium text-base">
+                        {workspace?.workSpaceTitle}
+                      </p>
+                      {workspace?.registeredClients?.length > 1 && (
                         <div className="flex">
                           <div className="flex ml-1">
-                            {workspace.registeredClients
+                            {workspace?.registeredClients
                               .slice(0, 6)
                               .map((course) => (
                                 <img
@@ -433,8 +436,8 @@ const CourseDetails = ({
                               ))}
                           </div>
                           <p className="text-xs ml-2 my-1">
-                            {course.enrolledStudents.length}+ students already
-                            started
+                            {workspace?.registeredClients.length}+ clients have
+                            enrolled for this workspace
                           </p>
                         </div>
                       )}
