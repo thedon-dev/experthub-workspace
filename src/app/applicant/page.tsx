@@ -21,6 +21,7 @@ const applicant = () => {
   const [active, setActive] = useState("");
   const [assesments, setAssesment] = useState<AssesmentType | []>([]);
   const [open, setOpen] = useState(false);
+  const [totalWorkspaces, setTotalWorkspaces] = useState<WorkspaceType[]>([]);
 
   const getAssesment = async () => {
     await apiService
@@ -62,6 +63,22 @@ const applicant = () => {
         setCourses([]);
       });
   };
+  const getTotalWorkspaces = async () => {
+    await apiService
+      .get("workspace/all")
+      .then(function (response) {
+        // const all: CourseType[] = []
+        // response.data.enrolledCourses.map((course: CourseType) => {
+        //   if (hasDatePassed(course)) {
+        //     all.push(course)
+        //   }
+        // })
+        setTotalWorkspaces(response.data.workspaces);
+      })
+      .catch((e) => {
+        setTotalWorkspaces([]);
+      });
+  };
   const getTutors = () => {
     apiService
       .put("user/myinstructors", {
@@ -80,6 +97,7 @@ const applicant = () => {
     getRecommended();
     getCourses();
     getTutors();
+    getTotalWorkspaces();
     getAssesment();
   }, []);
 
@@ -105,8 +123,8 @@ const applicant = () => {
           img="game-icons_progression"
         />
         <StatCard
-          title="Training Providers"
-          count={instructors.length}
+          title="Workspace Providers"
+          count={totalWorkspaces.length}
           bg="#7E34C9"
           img="ph_chalkboard-teacher"
         />

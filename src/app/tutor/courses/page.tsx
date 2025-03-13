@@ -65,12 +65,12 @@ const courses = () => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: <p onClick={() => setOpen(true)}>Courses</p>,
+      label: <p onClick={() => setOpen(true)}>Workspaces</p>,
     },
-    {
-      key: "2",
-      label: <p onClick={() => setEvent(true)}>Events</p>,
-    },
+    // {
+    //   key: "2",
+    //   label: <p onClick={() => setEvent(true)}>Events</p>,
+    // },
     // {
     //   key: '3',
     //   label: (
@@ -146,7 +146,7 @@ const courses = () => {
           onChange={(e) => search(e.target.value)}
           type="text"
           className="pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent"
-          placeholder="Search courses."
+          placeholder="Search Workspaces."
         />
         <img
           className="absolute top-2 w-6 left-2"
@@ -165,7 +165,7 @@ const courses = () => {
           <div className="lg:ml-10 sm:my-3">
             <Dropdown menu={{ items }} trigger={["click"]}>
               <button className="bg-primary p-2 font-medium text-sm rounded-md">
-                + Add training resources
+                + Add Workspace
                 <DownOutlined />
               </button>
             </Dropdown>
@@ -230,7 +230,7 @@ const courses = () => {
           </div>
         </div>
       </section> */}
-      <section className="mx-4 my-8 relative w-[90%]">
+      {/* <section className="mx-4 my-8 relative w-[90%]">
         <img src="/images/resources-bg.png" alt="" />
         <div className="absolute top-0 left-0 right-0">
           <div className="p-6">
@@ -266,8 +266,8 @@ const courses = () => {
             </div>
           </div>
         </div>
-        {/* <img className='w-52 h-52 absolute -right-10 top-10' src="/images/image_19.png" alt="" /> */}
-      </section>
+        <img className='w-52 h-52 absolute -right-10 top-10' src="/images/image_19.png" alt="" />
+      </section> */}
 
       <AddCourse
         workspace={null}

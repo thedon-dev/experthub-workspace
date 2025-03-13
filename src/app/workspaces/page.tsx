@@ -4,24 +4,18 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import apiService from "@/utils/apiService";
 import HeaderNav from "@/components/HeaderNav";
-
-type Workspace = {
-  _id: string;
-  workSpaceTitle: string;
-  thumbnail: { url: string };
-  category: string;
-  about: string;
-  workDuration: string;
-  strikedFee: number;
-};
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { WorkspaceType } from "@/types/CourseType";
 
 const WorkspacesPage = () => {
-  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
+  const [workspaces, setWorkspaces] = useState<WorkspaceType[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     apiService
       .get("workspace/all")
-      .then(function (response) {
+      .then((response) => {
         console.log(response.data);
         setWorkspaces(response.data.workspaces);
       })
@@ -29,6 +23,16 @@ const WorkspacesPage = () => {
         console.log(e);
       });
   }, []);
+
+  const handleEnroll = (workspaceId: string) => {
+    const accessToken = localStorage.getItem("tid"); // Check if the user is logged in
+
+    if (!accessToken) {
+      router.push("/auth/login"); // Redirect to login if no token is found
+    } else {
+      router.push(`/workspace/enroll/${workspaceId}`); // Proceed to enroll page if logged in
+    }
+  };
 
   return (
     <>
@@ -62,6 +66,12 @@ const WorkspacesPage = () => {
                 <p className="text-gray-700 font-semibold">
                   Fee: ₦{workspace.strikedFee.toLocaleString()}
                 </p>
+                <button
+                  onClick={() => handleEnroll(workspace._id)}
+                  className="mt-4 bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700"
+                >
+                  Enroll
+                </button>
               </div>
             </div>
           ))}

@@ -31,26 +31,26 @@ const adminDashboard = () => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: <p onClick={() => setOpen(true)}>Courses</p>,
-    },
-    {
-      key: "2",
-      label: <p onClick={() => setEvent(true)}>Events</p>,
+      label: <p onClick={() => setOpen(true)}>Workspace</p>,
     },
     // {
-    //   key: '3',
-    //   label: (
-    //     <p onClick={() => setResources(true)}>Resources</p>
-    //   ),
+    //   key: "2",
+    //   label: <p onClick={() => setEvent(true)}>Events</p>,
     // },
-    {
-      key: "4",
-      label: <p onClick={() => setCategory(true)}>Add Category</p>,
-    },
-    {
-      key: "4",
-      label: <p onClick={() => setNotice(true)}>Send Notice</p>,
-    },
+    // // {
+    // //   key: '3',
+    // //   label: (
+    // //     <p onClick={() => setResources(true)}>Resources</p>
+    // //   ),
+    // // },
+    // {
+    //   key: "4",
+    //   label: <p onClick={() => setCategory(true)}>Add Category</p>,
+    // },
+    // {
+    //   key: "4",
+    //   label: <p onClick={() => setNotice(true)}>Send Notice</p>,
+    // },
   ];
   const [workspaces, setWorkspaces] = useState([]);
   const [students, setStudents] = useState([]);
@@ -100,7 +100,7 @@ const adminDashboard = () => {
           img="clock-line"
         />
         <StatCard
-          title="Total No. of Admissions"
+          title="Total No. of Clients"
           count={students.length}
           bg="#DC9F08"
           img="ic_outline-assessment"
@@ -112,7 +112,7 @@ const adminDashboard = () => {
           img="game-icons_progression"
         />
         <StatCard
-          title="Providers"
+          title="Total No. of Providers"
           count={tutors.length}
           bg="#7E34C9"
           img="ph_chalkboard-teacher"
@@ -124,7 +124,7 @@ const adminDashboard = () => {
             <p className="my-auto">All Workspaces</p>
             <Dropdown menu={{ items }} trigger={["click"]}>
               <button className="bg-primary p-2 font-medium text-sm rounded-md">
-                + Add training resources
+                + Add Workspaces
                 <DownOutlined />
               </button>
             </Dropdown>

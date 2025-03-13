@@ -41,7 +41,7 @@ const tutor = () => {
             onChange={(e) => search(e.target.value)}
             type="text"
             className="pl-10 p-2 w-full rounded-md border border-[#1E1E1E8A] bg-transparent"
-            placeholder="Search courses, trainer, test etc"
+            placeholder="Search workspaces"
           />
           <img
             className="absolute top-2 w-6 left-2"
@@ -59,7 +59,7 @@ const tutor = () => {
             />
           ))
         ) : (
-          <p>No Instructors available!</p>
+          <p>No workspace available!</p>
         )}
       </section>
     </DashboardLayout>

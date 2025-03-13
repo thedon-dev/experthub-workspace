@@ -36,10 +36,10 @@ const tutor = () => {
       key: "1",
       label: <p onClick={() => setOpen(true)}>Courses</p>,
     },
-    {
-      key: "2",
-      label: <p onClick={() => setEvent(true)}>Events</p>,
-    },
+    // {
+    //   key: "2",
+    //   label: <p onClick={() => setEvent(true)}>Events</p>,
+    // },
     // {
     //   key: '3',
     //   label: (
@@ -72,15 +72,10 @@ const tutor = () => {
   };
 
   const getCourses = async () => {
-    apiService
-      .put(`courses/category/author`, {
-        category: user.assignedCourse,
-        id: user.id,
-      })
-      .then(function (response) {
-        setCourses(response.data.courses);
-        console.log(response.data);
-      });
+    apiService.get(`workspace/admissions/`, {}).then(function (response) {
+      setCourses(response.data.courses);
+      console.log(response.data);
+    });
   };
 
   useEffect(() => {
@@ -110,13 +105,13 @@ const tutor = () => {
       </section> */}
       <section className="p-4 lg:flex justify-between">
         <StatCard
-          title="Total No. of Courses"
+          title="Total No. of owned Workspaces"
           count={courses.length}
           bg="#27C2D6"
           img="clock-line"
         />
         <StatCard
-          title="My Students"
+          title="My Clients"
           count={students.length}
           bg="#DC9F08"
           img="ic_outline-assessment"
@@ -141,7 +136,7 @@ const tutor = () => {
 
             <Dropdown menu={{ items }} trigger={["click"]}>
               <button className="bg-primary p-2 font-medium text-sm rounded-md">
-                + Add training resources
+                + Add Workspace
                 <DownOutlined />
               </button>
             </Dropdown>
@@ -197,10 +192,10 @@ const tutor = () => {
             courses
               .slice(0, 6)
               .filter(
-                (course: CourseType) =>
+                (course: WorkspaceType) =>
                   course.category === active || active === ""
               )
-              .map((course: CourseType) => (
+              .map((course: WorkspaceType) => (
                 <div key={course._id} className="lg:w-[32%]">
                   {" "}
                   <CoursesCard

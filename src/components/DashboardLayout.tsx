@@ -22,8 +22,8 @@ const DashboardLayout = ({ children }: { children: any }) => {
       router.push("/applicant");
     } else if (user.role === "admin" && !pathname.includes("admin")) {
       router.push("/admin");
-    } else if (user.role === "provider" && !pathname.includes("provider")) {
-      router.push("/provider");
+    } else if (user.role === "provider" && !pathname.includes("tutor")) {
+      router.push("/tutor");
     }
   }, []);
 

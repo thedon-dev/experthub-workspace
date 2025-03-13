@@ -15,9 +15,9 @@ const signup = () => {
           <h3 className="font-bold text-base text-center">Sign up</h3>
           <div className="flex my-3 justify-evenly">
             <button
-              onClick={() => setRole("student")}
+              onClick={() => setRole("tutor")}
               className={
-                role === "student"
+                role === "tutor"
                   ? "bg-primary text-sm p-1 px-6 rounded-sm"
                   : "bg-gray p-1 px-6 text-sm rounded-sm"
               }
@@ -25,9 +25,9 @@ const signup = () => {
               Provider
             </button>
             <button
-              onClick={() => setRole("tutor")}
+              onClick={() => setRole("student")}
               className={
-                role === "tutor"
+                role === "student"
                   ? "bg-primary p-1 px-6 text-sm rounded-sm"
                   : "bg-gray p-1 px-6 text-sm rounded-sm"
               }

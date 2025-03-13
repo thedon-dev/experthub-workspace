@@ -648,7 +648,7 @@ const AddWorkspace = ({
           <div className="lg:w-[48%]">
             <div>
               <p className="text-sm font-medium my-1">
-                Course Image/Video Overview
+                Workspace Image/Video Overview
               </p>
               {image ? (
                 image.type === "image" ? (
@@ -680,7 +680,7 @@ const AddWorkspace = ({
                     className="w-8 mx-auto"
                     alt=""
                   />
-                  <p> Add course</p>
+                  <p> Add Workspace</p>
                 </button>
               )}
 
@@ -748,7 +748,7 @@ const AddWorkspace = ({
                     : "p-2 cursor-pointer"
                 }
               >
-                <p onClick={() => setActive(0)}>Course Details</p>
+                <p onClick={() => setActive(0)}>Workspace Details</p>
               </div>
               <div
                 className={
@@ -768,7 +768,7 @@ const AddWorkspace = ({
               >
                 <p onClick={() => setActive(2)}>Fee</p>
               </div>
-              <div
+              {/* <div
                 className={
                   active === 3
                     ? "border-b border-primary p-2"
@@ -776,7 +776,7 @@ const AddWorkspace = ({
                 }
               >
                 <p onClick={() => setActive(3)}>Modules</p>
-              </div>
+              </div> */}
             </div>
             <div>
               {(() => {
@@ -787,7 +787,7 @@ const AddWorkspace = ({
                         <div className="flex justify-between my-1">
                           <div className="w-full">
                             <label className="text-sm font-medium my-1">
-                              Course Category
+                              Workspace Category
                             </label>
                             <select
                               onChange={(e) => setCategoryIndex(e.target.value)}
@@ -835,7 +835,7 @@ const AddWorkspace = ({
                         <div className="flex justify-between">
                           <div className="w-[48%]">
                             <label className="text-sm font-medium my-1">
-                              Course Duration
+                              Workspace Duration
                             </label>
                             <input
                               onChange={(e) =>
@@ -862,7 +862,7 @@ const AddWorkspace = ({
                             </select>
                           </div>
                         </div>
-                        <div className="my-1">
+                        {/* <div className="my-1">
                           <label className="text-sm font-medium my-1">
                             Target
                           </label>
@@ -872,11 +872,11 @@ const AddWorkspace = ({
                             type="text"
                             className="border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent"
                           />
-                        </div>
+                        </div> */}
 
                         <div className="my-1">
                           <label className="text-sm font-medium my-1">
-                            Course title
+                            Workspace title
                           </label>
                           <input
                             onChange={(e) => setTitle(e.target.value)}
@@ -887,7 +887,7 @@ const AddWorkspace = ({
                         </div>
                         <div className="my-1">
                           <label className="text-sm font-medium my-1">
-                            About course
+                            About Workspace
                           </label>
                           <textarea
                             onChange={(e) => setAbout(e.target.value)}
@@ -898,7 +898,7 @@ const AddWorkspace = ({
 
                         <div className="my-1">
                           <label className="text-sm font-medium my-1">
-                            Course Benefits
+                            Workspace Benefits
                           </label>
                           {benefits.map((single: string, index: any) => (
                             <div className="flex">
@@ -950,7 +950,7 @@ const AddWorkspace = ({
                         <div className="flex justify-between mt-6 my-1">
                           <div className="w-[48%]">
                             <label className="text-sm font-medium my-1 inline-flex items-center">
-                              Course type
+                              Workspace type
                             </label>
                             <select
                               onChange={handleTypeChange}
@@ -965,7 +965,7 @@ const AddWorkspace = ({
                             {type === "pdf" && (
                               <div>
                                 <p className="text-sm font-medium my-1">
-                                  Course Content
+                                  Workspace Content
                                 </p>
                                 <button
                                   className="w-full flex my-3"
@@ -1069,7 +1069,7 @@ const AddWorkspace = ({
                                     instant ? `bg-primary` : `bg-gray`
                                   }`}
                                 >
-                                  One Time Course
+                                  One Time Workspace
                                 </button>
                                 <button
                                   onClick={() => {
@@ -1080,7 +1080,7 @@ const AddWorkspace = ({
                                     !instant ? `bg-primary` : `bg-gray`
                                   }`}
                                 >
-                                  Scheduled Course
+                                  Scheduled Workspace
                                 </button>
                               </div>
                             )}
@@ -1156,10 +1156,10 @@ const AddWorkspace = ({
                             <div className="flex justify-between my-1">
                               <div className="w-[48%]">
                                 <label className="text-sm font-medium my-1">
-                                  Course Location
+                                  Workspace Location
                                 </label>
                                 <input
-                                  placeholder="Place where this course will be held"
+                                  placeholder="Place where this workspace is located"
                                   onChange={(e) => setLocation(e.target.value)}
                                   value={location}
                                   type="text"
@@ -1168,7 +1168,7 @@ const AddWorkspace = ({
                               </div>
                               <div className="w-[48%]">
                                 <label className="text-sm font-medium my-1">
-                                  Course Room
+                                  Workspace Room
                                 </label>
                                 <input
                                   placeholder="Room No."
@@ -1399,7 +1399,7 @@ const AddWorkspace = ({
                       <div>
                         <div className="my-1">
                           <label className="text-sm font-medium my-1">
-                            Course Fee
+                            Workspace Fee
                           </label>
                           <input
                             onChange={(e) => setFee(parseInt(e.target.value))}
@@ -1408,12 +1408,12 @@ const AddWorkspace = ({
                             className="border rounded-md w-full border-[#1E1E1ED9] p-2 bg-transparent"
                           />
                           <p className="text-xs">
-                            Set course fee to 0 for a free course
+                            Set Workspace fee to 0 for a free Workspace
                           </p>
                         </div>
                         <div className="my-1">
                           <label className="text-sm font-medium my-1">
-                            Who gets this course for free (Scholarship)
+                            Who gets this Workspace for free
                           </label>
                           <Select
                             isMulti
@@ -1514,7 +1514,7 @@ const AddWorkspace = ({
               })()}
               <div>
                 <p className="text-sm my-4">
-                  By uploading you agree that this course is a product of you
+                  By uploading you agree that this Workspace is a product of you
                   and not being forged
                   <input className="ml-2" type="checkbox" />
                 </p>
