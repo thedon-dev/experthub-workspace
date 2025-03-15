@@ -70,21 +70,7 @@ const courses = () => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: <p onClick={() => setOpen(true)}>Courses</p>,
-    },
-    {
-      key: "2",
-      label: <p onClick={() => setEvent(true)}>Events</p>,
-    },
-    // {
-    //   key: '3',
-    //   label: (
-    //     <p onClick={() => setResources(true)}>Resources</p>
-    //   ),
-    // },
-    {
-      key: "4",
-      label: <p onClick={() => setCategory(true)}>Add Category</p>,
+      label: <p onClick={() => setOpen(true)}>Workspace</p>,
     },
   ];
 
@@ -241,7 +227,7 @@ const courses = () => {
           handleClick={() => setOpen(!open)}
         />
         {/* <AddResources open={resources} handleClick={() => setResources(!resources)} /> */}
-        <AddEvents
+        {/* <AddEvents
           open={event}
           handleClick={() => setEvent(!event)}
           course={null}
@@ -250,7 +236,7 @@ const courses = () => {
           open={category}
           category={null}
           handleClick={() => setCategory(false)}
-        />
+        /> */}
       </section>
     </DashboardLayout>
   );

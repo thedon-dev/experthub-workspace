@@ -25,12 +25,12 @@ const WorkspacesPage = () => {
   }, []);
 
   const handleEnroll = (workspaceId: string) => {
-    const accessToken = localStorage.getItem("tid"); // Check if the user is logged in
+    const accessToken = localStorage.getItem("tid");
 
     if (!accessToken) {
-      router.push("/auth/login"); // Redirect to login if no token is found
+      router.push("/auth/login");
     } else {
-      router.push(`/workspace/enroll/${workspaceId}`); // Proceed to enroll page if logged in
+      router.push(`/workspace/enroll/${workspaceId}`);
     }
   };
 

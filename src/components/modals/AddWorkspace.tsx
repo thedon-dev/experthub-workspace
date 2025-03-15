@@ -122,7 +122,13 @@ const AddWorkspace = ({
   const [uploading, setUploading] = useState(false);
   const [instant, setInstant] = useState(true);
 
-  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([
+    {
+      _id: "1",
+      category: "Coffee",
+      subCategory: ["Espresso", "Latte", "Cappuccino"],
+    },
+  ]);
 
   const [modules, setModules] = useState(workspace?.modules || [module]);
   const [benefits, setBenefits] = useState(workspace?.benefits || [""]);
@@ -247,7 +253,7 @@ const AddWorkspace = ({
     apiService
       .get("workspace/all/category")
       .then(function (response) {
-        setCategories(response.data.category);
+        // setCategories(response.data.allWorkspaces);
       })
       .catch((error) => {
         console.log(error);
@@ -410,43 +416,26 @@ const AddWorkspace = ({
       const endDateTime = dayjs.utc(`${endDate}T${endTime}:00`);
       const startDateJS = startDateTime.toDate();
       const endDateJS = endDateTime.toDate();
-      apiService
-        .put(`workspace/edit/${workspace?._id}`, {
-          // image,
-          title,
-          benefits,
-          days: days,
-          about,
-          modules,
-          duration: duration.toString(),
-          type,
-          startDate: new Date(startDateJS).toISOString(),
-          endDate: new Date(endDateJS).toISOString(),
-          target,
-          startTime,
-          endTime,
-          category,
-          privacy,
-          fee: fee.toString(),
-          strikedFee: striked.toString(),
-          enrolledStudents: workspace && [
-            ...workspace?.enrolledStudents,
-            ...getScholarship(),
-          ],
-          room,
-          location,
-          timeframe: {
-            value: courseDuration,
-            unit: timeframe,
-          },
-          // videos,
-          // pdf
-        })
-        .then(function (response) {
-          console.log(response.data);
-          setLoading(false);
-          handleClick();
-        });
+      apiService.put(`workspace/edit/${workspace?._id}`, {
+        workSpaceTitle: title, // Updated key
+        thumbnail: image,
+        category,
+        privacy,
+        about,
+        providerId: workspace?.providerId, // Keeping providerId from workspace
+        duration: duration.toString(), // Ensure it's a number
+        type,
+        startDate: new Date(startDateJS).toISOString(),
+        endDate: new Date(endDateJS).toISOString(),
+        startTime,
+        endTime,
+        workDuration: courseDuration, // Updated key
+        strikedFee: striked.toString(), // Ensure it's a number
+        assignedSpaceProvider: workspace?.assignedSpaceProvider || [],
+        registeredClients: workspace?.registeredClients || [],
+        approved: workspace?.approved || false,
+        enrollments: workspace?.enrollments || [],
+      });
     } catch (e) {
       console.log(e);
     }
@@ -490,7 +479,6 @@ const AddWorkspace = ({
         title,
         about,
         benefits,
-        modules,
         category,
         image,
         ...(type === "offline" && {
@@ -498,8 +486,6 @@ const AddWorkspace = ({
           endDate,
           startTime,
           endTime,
-          room,
-          location,
         }),
         ...(type === "online" && {
           startDate,
@@ -556,6 +542,7 @@ const AddWorkspace = ({
       apiService
         .post(`workspace/add-workspace/${user.id}`, {
           workSpaceTitle: title,
+          thumbnail: image,
           about: about,
           duration: duration.toString(),
           type: type,
@@ -568,11 +555,10 @@ const AddWorkspace = ({
           // workDuration: workspaceData.workDuration,
           fees: fee.toString(),
           strikedFee: striked.toString(),
-          thumbnail: image,
         })
         .then(function (response) {
           api.open({
-            message: "Course successfully created!",
+            message: "Workspace successfully created!",
           });
           console.log(response.data);
           setLoading(false);
@@ -635,7 +621,7 @@ const AddWorkspace = ({
       ></div>
       <div className="fixed top-10 bottom-10 left-0 overflow-y-auto rounded-md right-0 lg:w-[70%] w-[95%] mx-auto z-20 bg-[#F8F7F4]">
         <div className="shadow-[0px_1px_2.799999952316284px_0px_#1E1E1E38] p-4 lg:px-12 flex justify-between">
-          <p className="font-medium">Add Course</p>
+          <p className="font-medium">Add Workspace</p>
           <img
             onClick={() => handleClick()}
             className="w-6 h-6 cursor-pointer"
@@ -1009,7 +995,7 @@ const AddWorkspace = ({
                           {type === "online" && (
                             <div className="w-[48%]">
                               <label className="text-sm font-medium my-1 inline-flex items-center gap-1">
-                                Class Duration{" "}
+                                Workspace Duration{" "}
                                 {type === `online` && (
                                   <>
                                     -{" "}
@@ -1543,7 +1529,7 @@ const AddWorkspace = ({
                         onClick={() => add()}
                         className="p-2 bg-primary font-medium w-40 rounded-md text-sm"
                       >
-                        {loading ? <Spin /> : "Add Course"}
+                        {loading ? <Spin /> : "Add Workspace"}
                       </button>
                     ) : (
                       <button

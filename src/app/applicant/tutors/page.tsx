@@ -14,7 +14,7 @@ const tutor = () => {
   const [showPremuim, setShowPremuim] = useState(false);
 
   const getTutors = () => {
-    apiService.get("user/myinstructors").then(function (response) {
+    apiService.get("workspaces/all").then(function (response) {
       setInstructors(response.data.instructors);
       setAll(response.data.instructors);
       console.log(response.data);
